@@ -1,0 +1,11 @@
+This folder contains all of the wave data used in this project.
+
+"FB" contains wave sites from False Bay.
+
+"TB" contains wave sites from Table Bay.
+
+"HE" contains wave sites from Hermanus area.
+
+"SH" contains wave sites from St Helena Bay area.
+
+The site list for these wave data may be found at "metadata/sites_complete.csv". This file gives the names of the kelp sampling sites, their lon/lat values, and the closest corrseponding wave site, as shown by the wave site annotation. Wave sites at the 7 m and 15 m isobath are given.

@@ -1,0 +1,78 @@
+---
+title: "Quantifying the impacts of physical factors on the ocean temperatures along the South African coastal system"
+author: "Amieroh Abrahams"
+date: "30 March 2018"
+output:
+  word_document:
+    toc: yes
+  html_document:
+    fig_caption: yes
+    fig_height: 5
+    fig_width: 5
+    highlight: default
+    number_sections: yes
+    theme: paper
+    toc: yes
+    toc_float: yes
+  pdf_document:
+    fig_caption: yes
+    fig_height: 6
+    fig_width: 6
+    highlight: zenburn
+    latex_engine: xelatex
+mainfont: PT Serif
+monofont: PT Mono
+language: Australian
+sansfont: PT Sans
+fontsize: 12pt
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+\newpage
+##Introduction
+
+Temperature is the main determinant of biogeographical patterns and ecosystem processes. Seawater temperature has a large effect on the survival and reproduction of marine organisms at various scales and effect the biochemical and physiological rates in organisms. One example of a biogeographic distribution that is limited by seawater temperature is kelp, where increasing temperature gradients reduce kelp distribution. All the ocean heat virtually comes from the sun, because of this heat input at the surface, the surface layers of the sea is the  warmest and the temperature decreases with depth. Temperature and hydrodynamic flow not only influence the distribution of organims, but have shown to affect the morphology of these organisms. Increased temperature also reduces the photosynthetic rate, as well as a substantial decrease in respiration.
+
+Remote sensing technology improvements over many decades have allowed researchers to map the global sea surface temperature (SST) at increasing resolutions. Satelite temperature data sets are widely used for monitioring the changes in ocean temperatures. Satellite-derived SST data are being used to predict effects of climate change on the coastal marine biota. The need for suitable seawater temperature records has encouraged the development of gridded data products spanning the satellite era for the last three decades and/or longer instrumental data ranging back to 1972 in the South African coastal temperature network (SACTN) data set. In some regions the temperature records contained in these diverse datasets have been validated against precise and accurate *in situ* temperature measurements, this however may be true for offshore regions where satellite data generally reflect reality. It is known that satellite-derived temperature measurements may differ from *in situ* measurements. Satellite measurements often failed to record small-scale variability or provide reliable information on temperature. 
+
+The application of gridded SSTs to the coast are not accurate or reliable, this however is not widely known and many different regions across the globe simply do not have suitable *in situ* coastal temperature datasets available. Thus it has been strongly recommended to make use of in situ data to support research conducted within 400m of the shoreline. Where records of *in situ* coastal seawater temperature do exist, the reliability of these datasets could be used in place of the remotely sensed SST data.
+
+Physical factors largely influence biological systems in the marine environment and may influence the temperature profiles. There is a large variation in the seawater temperature along the South African coastline, where the Benguela and Agulhas currents are the two major currents and govern the marine environment in the nearshore environment. The Benguela Marine Province (BMP) lies West of Cape Point and is characterised by cold water moving north from the Southern Ocean via the Benguela current. The Agulhas Bank Ecoregion lies east of Cape Point . This ecoregion makes up the western half of the Agulhas province, which is governed by the warm Agulhas current that flows south along the east coast of South Africa. The two currents can vary in as much as 10Â°C on a single day. Thus this variation results in fluctuations in seawater temperatures. Various process such as coastal upwelling occur along these coasts. This is the process where winds blow surface water offshore. Thus winds play a role in the ocean temperature variation by driving various processes such as upwelling and downwelling. 
+
+
+##Aim 
+
+The aim of this study is, therefore, to examine whether there is homogeniety between the sites and which physical variables shows a similar trend in changes per month. The study is also aimed at examining the driving factors causing a difference in seawater temperatures along the South African coastline.This will be achieved by examining the wave and coastal seawater temperature datasets to test the amount of variability between the sites along the coast
+
+##Study area 
+
+The South African coastline is 3,100 km long and provides a large area for temperature recordings by using satellite and *in situ* measurements, therefore, the extent of the study area included the entire Southern African coastline. The west coast of the country is distinct from the other two coasts as it is bordered by the Benguela Current thus forming an Eastern Boundary Upwelling System. The east coast however, is dominated by a western boundary current, the Agulhas Current. The south coast is also bordered by this Agulhas Current, but differs from the east coast in that it experiences both shear-forced and wind driven upwelling. In order to compare the temperature variation between sites along the coast, datasets for both temperature and waves were accessed. Coastal seawater temperatures were sourced from the South African Coastal Temperature Network (SACTN).
+
+Temparature along the coast is known to be influenced by wave exposure,waves however are made up by a range of different factors. These factors include wave height, wave direction and period. However not much is understood on the specific wave parameters and their influence on the temperature at specific sites a long the coast as some these sites may be exposed or sheltered from wave action. We therefore used existing thermal and wave energy data for all the sites across the South African coastline, to investigate the impact of abiotic parameters on the seawater temperature at the different sites.
+
+Previous studies suggest that the ocean temperature of these regions are constantly changing. This is evident with an increase in seawater temperature being reported in the Agulhas Current and a decrease in southern Benguela.
+
+## Sites
+Sites were chosen which reflect locations that displayed variable wave and temperature regimes.
+
+## Method 
+
+The SACTN temperatures datset were measured manually using a hand-held thermometer or electronically using underwater temperature recorders (UTRs). This study comprise of 129 *in situ* time series. Of these 135 time series, 87 are collected with mercury thermometers and 48 are recorded with UTRs. The *in situ* temperature data were obtained from sites along the coast of South Africa for a period ranging from 1972 to 2017. This data was collected by seven different sources (DEA, SAWS, UWC, DAFF, SAEON, KZNSB, EKZNW).  Two of the seven sources made use of thermometers for data collection. In KwaZulu-Natal the KZNSB took temperature measurements approximately 20 cm below the sea-surface using hand-held alcohol thermometers. SAWS provided the second set of thermometer data and these recordings were measured daily at locations around the coast also using hand-held thermometers in shallow water. The DEA, DAFF and EKZN UTRs were attached at a depth of 4 and 9 m. The SAEON data were collected at a depth of 3m and the UWC UTR data were collected at a depth of 1m. These *in situ* collected data are preferred over satellite SST, which have shown to exhibit large biases. Approximatly two thirds of the data however was collected using themometers which are recorded at a 0.5°C precision and the UTRs at a precision of 0.001°C.
+
+#Data
+
+#SACTN- temperature data
+
+The temperature data was obtained from SACTN (South African coastal temperature network).
+The statistical properties of in situ seawater temperature time series representing the
+whole coastline which includes the mean, minimum and maximum temperature which vary greatly among the different coastal sites as a result of the two major South African currents.
+
+# Wave data
+Wave energy data formed part of the South African Coastal Vulnerability Assessment, presented to the Department of Environmental Affairs. These data are first forecasted using NOAA Wave Watch III (WWIII), with National Centers for Environmental Predictions (NCEP) product as the numerical input. Hindcast data from WWIII range from 1994-2013 at a 3-hour resolution. The data are then used to model short crested waves generated by the wind into the coastal environment, using Simulating Waves in the Nearshore. SWAN allows one to extract wave parameters from specific locations in the nearshore.
+
+
+# Statistical analysis
+Redundancy Analyses (RDA) were performed to examine the impact of environmental drivers on coastal seawater temperature. An RDA performs linear regressions between response and explanitory variables. This allows the one to calculate the amount of variation in response variables explained for by explanatory variables. Response variables were represented by temperature measurements, with wave measurements selected as explanatory variables. Multiple regression to compare the differences between variables, these variables are the physical factors that affect temperature. Pairwise correlations were plotted to test whether wave and temperature parameters correlate with one another around the coast.Therefore fluctuations such as minimum, maximum, range and standard deviations were included as temperature parameters, and standard deviations were included as wave parameters.
