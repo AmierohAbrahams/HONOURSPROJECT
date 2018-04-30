@@ -190,3 +190,10 @@ wave_15m <- rbind(wave_monthly, wave_annually) %>%
 # Combining both the wave at 15m and wave directions
 wave_final<- cbind(wave_15m, combining_dirs)
 
+temp <- load("~/Honours/Honours_Project/SACTN_data/SACTN_daily_v4.2.RData")
+
+# Tclimatology is found in the script labelled climatology
+# This works with monthly and yearly values not daily
+
+index_temp <- merge(Tclimatology, temp, by = "index")
+gathered_index_temp<- gather(data = index_temp, "stat", "value", 2:66)
