@@ -89,7 +89,8 @@ wave_annually <- wave_data %>%
   mutate(date = "Annually") %>% 
   select(site, date, everything())
 
-directions <- subset(wave_data, select = c(1, 2, 5, 6)) # Only focusingon dir and dirw
+# Only focusingon dir and dirw
+directions <- subset(wave_data, select = c(1, 2, 5, 6)) 
 
 # Seasons calculating the stats(min/max/mean etc)
 # working with all the sites
