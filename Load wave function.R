@@ -8,7 +8,6 @@
 library(tidyverse)
 library(lubridate)
 library(ggpubr)
-library(dplyr)
 
 # Create function ---------------------------------------------------------
 # Directory with wave files
@@ -49,22 +48,18 @@ HE <- trial_load("data/wave_data/HE")
 SH <- trial_load("data/wave_data/SH")
 
 # Combining all the wave data collected a the different sites 
-wave_data<- rbind(FB, TB, HE, SH)
+wave_data <- rbind(FB, TB, HE, SH)
 
 # Calculating the daily monthly and annual wave data
 
 ########### NW######
 #####Calculating the daily wave data
 wave_daily <- wave_data %>% 
-  mutate(date = lubridate::day(date, label = TRUE)) %>% 
+  mutate(date = as.Date(date)) %>% 
   group_by(site, date) %>% 
-  summarise_all(funs(mean = mean, sd = sd), na.rm = T) 
+  summarise_all(funs(mean = mean, sd = sd), na.rm = T) %>% 
   ungroup()
 
-  
-wave_daily <- wave_data %>% 
-    format(as.POSIXct(strptime(wave_data$date,"%Y%m%d% H%M", tz = "Africa/Johannesburg")), 
-                    format = "%H:%M")
 
 ##############
 # same/ as file name climatology but working with the wave data
