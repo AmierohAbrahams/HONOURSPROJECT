@@ -12,7 +12,7 @@ library(ggpubr)
 # Create function ---------------------------------------------------------
 # Directory with wave files
 
-test_func <-function(wave_files){
+test_func <- function(wave_files){
 #Determining the site names
   site_type <- sapply(strsplit(as.character(wave_files), "/"), "[[", 3)
   site_num <- sapply(strsplit(as.character(wave_files), "/"), "[[", 4)
@@ -23,6 +23,7 @@ test_func <-function(wave_files){
 # creating a new column but includes time and date
 # get time only???
   try1 <- read.csv(wave_files, col.names = c("date", "hs", "tp", "dir", "dirw", "spw"), sep = "", header = F) %>%
+    filter(tp != -999) %>% 
     mutate(date = as.POSIXct(as.character(date), "%Y%m%d%H%M", tz = "Africa/Johannesburg")) %>%
     mutate(site = site_name) %>%
     select(site, everything())
@@ -30,7 +31,6 @@ test_func <-function(wave_files){
   # Finish
   return(try1)
 }
-
 
 # feed as vector
 
@@ -101,7 +101,7 @@ dirs_monthly <- directions %>%
                      "Sep","Oct","Nov","Dec")) %>% 
   ungroup()
 
-dirs_annually<- directions %>% 
+dirs_annually <- directions %>% 
   mutate(date = lubridate::month(date, label = TRUE)) %>% 
   group_by(site, date) %>% 
   summarise(dir_min = min(dir, na.rm = TRUE),
@@ -180,7 +180,7 @@ wave_15m <- rbind(wave_monthly, wave_annually) %>%
   na.omit()
 
 # Combining both the wave at 15m and wave directions
-wave_final<- cbind(wave_15m, combining_dirs)
+wave_final <- cbind(wave_15m, combining_dirs)
 
 temp <- load("~/Honours/Honours_Project/SACTN_data/SACTN_daily_v4.2.RData")
 
@@ -188,4 +188,4 @@ temp <- load("~/Honours/Honours_Project/SACTN_data/SACTN_daily_v4.2.RData")
 # This works with monthly and yearly values not daily
 
 index_temp <- merge(Tclimatology, temp, by = "index")
-gathered_index_temp<- gather(data = index_temp, "stat", "value", 2:66)
+gathered_index_temp <- gather(data = index_temp, "stat", "value", 2:66)
