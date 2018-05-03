@@ -52,6 +52,7 @@ ggsave(clusters, filename = "cluster.png")
 load("SACTN_data/SACTN_daily_v4.2.RData")
 
 # Create cluster index
+set.seed(666)
 site_list$cluster <- as.factor(kmeans(site_list[,c(15, 18:19)], 4)$cluster)
 
 SACTN_daily_clusters <- left_join(SACTN_daily_v4.2, site_list[,c(4, 13, 21)]) %>% 
