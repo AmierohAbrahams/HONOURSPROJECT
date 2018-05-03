@@ -58,7 +58,10 @@ SH <- trial_load("data/wave_data/SH")
 
 # Combining all the wave data collected a the different sites 
 wave_data <- rbind(FB, TB, HE, SH)
-wave_data <- left_join(wave_data, sites_complete)
+wave_data <- left_join(wave_data, sites_complete)%>% 
+  rename(site_wave = site,
+         site = site_real)
+rm(FB, TB, HE, SH)
 
 # Calculating the daily monthly and annual wave data
 
@@ -66,7 +69,7 @@ wave_data <- left_join(wave_data, sites_complete)
 #####Calculating the daily wave data
 wave_daily <- wave_data %>% 
   mutate(date = as.Date(date)) %>% 
-  group_by(site_real, site, depth, lon, lat, date) %>% 
+  group_by(site, site_wave, depth, lon, lat, date) %>% 
   summarise_all(funs(mean = mean, sd = sd), na.rm = T) %>% 
   ungroup()
 
@@ -75,7 +78,7 @@ wave_daily <- wave_data %>%
 
 wave_monthly <- wave_data %>% 
   mutate(date = lubridate::month(date, label = TRUE)) %>%
-  group_by(site, date) %>% 
+  group_by(site, site_wave, depth, lon, lat, date) %>% 
   summarise_all(funs(mean = mean, sd = sd), na.rm = TRUE) %>%
   filter(date %in% c("Jan","Feb","Mar","Apr",
                      "May","Jun","Jul","Aug",
@@ -84,7 +87,7 @@ wave_monthly <- wave_data %>%
 
 wave_annually <- wave_data %>% 
   mutate(date = lubridate::year(date)) %>% 
-  group_by(site, date) %>% 
+  group_by(site, site_wave, depth, lon, lat, date) %>% 
   summarise_all(funs(mean = mean, sd = sd), na.rm = TRUE) %>%
   ungroup() %>%
   filter(date != 2000) # The year 2000 only has 1 row of data 

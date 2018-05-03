@@ -12,6 +12,7 @@ library(zoo)
 library(lubridate)
 library(ggpubr)
 library(ggrepel)
+library(FNN)
 
 # Load data ---------------------------------------------------------------
 
@@ -175,3 +176,78 @@ ggplot(data = SACTN_clust_1_legit,
 # Load wave data ----------------------------------------------------------
 
 source("Load wave function.R")
+
+# Subset the two different depths
+sites_complete_7 <- sites_complete %>% 
+  filter(depth == "wave_7")
+
+sites_complete_15 <- sites_complete %>% 
+  filter(depth == "wave_15")
+
+# Cluster wave data -------------------------------------------------------
+
+# First subset the site list to match the 3 decade sites
+site_list_30_years <- site_list %>% 
+  filter(index %in% SACTN_daily_clusters$index)
+
+# Use fastest nearest neighbour (FNN) to find nearest wave data for each SACTN site
+waves_idx_7 <- as.data.frame(knnx.index( as.matrix(sites_complete_7[,2:3]), as.matrix(site_list_30_years[,5:6]), k = 1)) 
+waves_idx_15 <- as.data.frame(knnx.index( as.matrix(sites_complete_15[,2:3]), as.matrix(site_list_30_years[,5:6]), k = 1)) 
+
+# Subset out the 7 and 15 metre wave sites
+sites_complete_subset_7 <- sites_complete_7[as.matrix(waves_idx_7),]
+sites_complete_subset_15 <- sites_complete_15[as.matrix(waves_idx_15),]
+
+# Stick them together and clean it up
+sites_complete_subset <- cbind(sites_complete_subset_7, sites_complete_subset_15[,4:5])
+colnames(sites_complete_subset)[c(5, 7)] <- c("wave_7", "wave_15")
+sites_complete_subset <- sites_complete_subset[, c(1:3, 5, 7)]
+
+# Then add the cluster column to the wave sites info
+site_list_match <- cbind(site_list_30_years[,c(4:6,21)], sites_complete_subset)
+colnames(site_list_match) <- c("index", "lon1", "lat1", "cluster", "site_real", "lon2", "lat2", "wave_7", "wave_15")
+
+# Now calculate the distances between these points
+source("earthdist.R")
+
+# First convert the degrees to radians
+site_list_match_dist <- site_list_match %>% 
+  mutate(lon1 = deg2rad(lon1),
+         lat1 = deg2rad(lat1),
+         lon2 = deg2rad(lon2),
+         lat2 = deg2rad(lat2),
+         dist = NA)
+
+# Quick for loop to get distances
+for(i in 1:nrow(site_list_match_dist)){
+  dist <- gcd.hf(site_list_match_dist$lon1[i], site_list_match_dist$lat1[i], 
+                 site_list_match_dist$lon2[i], site_list_match_dist$lat2[i])
+  site_list_match_dist$dist[i] <- dist
+}
+
+# Now stick this info onto the 30 year site list
+site_list_30_years <- left_join(site_list_30_years, site_list_match_dist[, c(1, 8:10)])
+# With that info now all in one place it will be easier to get everything to "talk"
+
+# Up next we want to combine the temperature and wave data
+# First for the 7 metre depth waves
+SACTN_daily_clusters_7 <- left_join(SACTN_daily_clusters, site_list_30_years[, c(4, 22)]) %>% 
+  left_join(wave_daily[, c(2:3, 6:16)], by = c("date", "wave_7" = "site_wave"))
+# Then the 15 metre depth waves
+SACTN_daily_clusters_15 <- left_join(SACTN_daily_clusters, site_list_30_years[, c(4, 23)]) %>% 
+  left_join(wave_daily, by = c("date", "wave_15" = "site_wave"))
+
+
+# Summary stats -----------------------------------------------------------
+
+SACTN_daily_clusters_7 %>%
+  group_by(index) %>%
+  summarise(temp_dir_cor = cor(temp, dir_mean))
+
+# Plotting temps and waves ------------------------------------------------
+
+# With the values now synced up it is possible to plot them together
+ggplot(data = SACTN_daily_clusters_7, aes(x = temp, y = dir_mean)) +
+  geom_line() +
+  facet_wrap(~index)
+
