@@ -150,10 +150,10 @@ ggplot(data = SACTN_clust_1_match, aes(x = index_pair)) +
 # plotted here...
 library(stringr)
 SACTN_clust_1_legit %>% 
-  filter(str_detect(index_pair, "Glenmore/KZNSB -")) %>% 
+  # filter(str_detect(index_pair, "Glenmore/KZNSB -")) %>% 
   ggplot(aes(x = year, y = temp_mean_month_year)) +
   geom_line(aes(group = index_pair, colour = index_pair), alpha = 0.7, show.legend = F) +
-  geom_smooth(method = "gam", se = F, aes(colour = index_pair), show.legend = F)  +
+  geom_smooth(method = "gam", se = F, aes(colour = index_pair), show.legend = T)  +
   facet_wrap(~month) + 
   theme_pubclean()
 # Referring to the plot above: since the KZNSB data series are very long, we can
@@ -166,5 +166,6 @@ ggplot(data = SACTN_clust_1_legit,
        aes(x = year, y = temp_sd_month_year)) +
   geom_line(aes(group = index_pair, colour = index_pair), alpha = 0.7) +
   geom_smooth(method = "gam", se = F, aes(colour = index_pair))  +
-  facet_wrap(~month)
+  facet_wrap(~month) + 
+  theme_pubclean()
 
