@@ -74,15 +74,11 @@ wave_monthly <- wave_data %>%
   ungroup()
 
 wave_annually <- wave_data %>% 
-  mutate(date = lubridate::month(date, label = TRUE)) %>% 
+  mutate(date = lubridate::year(date)) %>% 
   group_by(site, date) %>% 
   summarise_all(funs(mean = mean, sd = sd), na.rm = TRUE) %>%
-  ungroup() %>% 
-  select(-date) %>% #exclude date
-  group_by(site) %>% 
-  summarise_all(funs(mean), na.rm = TRUE) %>% 
-  mutate(date = "Annually") %>% 
-  select(site, date, everything())
+  ungroup() %>%
+  filter(date != 2000) # The year 2000 only has 1 row of data 
 
 # Only focusingon dir and dirw
 directions <- subset(wave_data, select = c(1, 2, 5, 6)) 
