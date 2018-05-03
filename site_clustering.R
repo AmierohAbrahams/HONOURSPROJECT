@@ -29,7 +29,7 @@ kmeans(site_list[,c(15, 18, 19)], 3)$cluster
 clust_columns <- site_list[,c(15:19)]
 
 clust_i <- function(i) {
-  set.seed(666)
+  set.seed(10)
   ggplot(data = site_list, 
          aes(x = lon, y = lat, 
              colour = as.factor(kmeans(clust_columns, i)$cluster))) +
@@ -54,7 +54,7 @@ ggsave(clusters, filename = "cluster.png")
 load("SACTN_data/SACTN_daily_v4.2.RData")
 
 # Create cluster index
-set.seed(666)
+set.seed(10)
 site_list$cluster <- as.factor(kmeans(site_list[,c(15, 18:19)], 4)$cluster)
 
 SACTN_daily_clusters <- left_join(SACTN_daily_v4.2, site_list[,c(4, 13, 21)]) %>% 
