@@ -29,6 +29,7 @@ kmeans(site_list[,c(15, 18, 19)], 3)$cluster
 clust_columns <- site_list[,c(15:19)]
 
 clust_i <- function(i) {
+  set.seed(666)
   ggplot(data = site_list, 
          aes(x = lon, y = lat, 
              colour = as.factor(kmeans(clust_columns, i)$cluster))) +
@@ -45,6 +46,7 @@ clust_4 <- clust_i(4)
 clust_3 <- clust_i(3)
 
 clusters <- ggarrange(clust_6, clust_5, clust_4, clust_3, common.legend = T)
+clusters
 
 ggsave(clusters, filename = "cluster.png")
 # Cluster sites by k-means results ----------------------------------------
