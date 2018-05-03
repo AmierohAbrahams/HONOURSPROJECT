@@ -21,12 +21,13 @@ load("site_list_v4.2.RData")
 # Perform clustering ------------------------------------------------------
 
 # Neat
+set.seed(10)
 kmeans(site_list[,c(15, 18, 19)], 3)$cluster
 
 
 # Visualise different cluster options -------------------------------------
 
-clust_columns <- site_list[,c(15:19)]
+clust_columns <- site_list[,c(15, 18:19)]
 
 clust_i <- function(i) {
   set.seed(10)
@@ -48,7 +49,8 @@ clust_3 <- clust_i(3)
 clusters <- ggarrange(clust_6, clust_5, clust_4, clust_3, common.legend = T)
 clusters
 
-ggsave(clusters, filename = "cluster.png")
+# ggsave(clusters, filename = "cluster.png")
+
 # Cluster sites by k-means results ----------------------------------------
 
 load("SACTN_data/SACTN_daily_v4.2.RData")
@@ -169,3 +171,7 @@ ggplot(data = SACTN_clust_1_legit,
   facet_wrap(~month) + 
   theme_pubclean()
 
+
+# Load wave data ----------------------------------------------------------
+
+source("Load wave function.R")
