@@ -12,6 +12,9 @@ library(FNN)
 
 # Load data ---------------------------------------------------------------
 load("SACTN_data/SACTN_daily_v4.2.RData")
+load("site_list_v4.2.RData")
+load("Mapping/south_africa_coast.RData")
+load("Mapping/sa_provinces.RData")
 
 # Create cluster index
 set.seed(10)
@@ -326,39 +329,46 @@ ggplot(data = cluster4_sites, aes(x = lon, y = lat)) +
         axis.text = element_blank())
 
 # Matching the sites
-SACTN_clust_4_match <- data.frame()
-for (i in 1:length(levels(SACTN_clust_4$index))) {
-  # for (i in 1:10) {
-  SACTN_df_1 <- filter(SACTN_clust_4, index == levels(index)[i])
-  for (j in 1:length(levels(SACTN_clust_4$index))) {
-    # for(j in 1:10) {
-    if (i == j) {
-      next
-    }
-    if (j < i) {
-      next
-    }
-    SACTN_df_2 <- filter(SACTN_clust_4, index == levels(index)[j])
-    SACTN_df_3 <-
-      left_join(SACTN_df_1, SACTN_df_2, by = "date") %>%
-      na.trim() %>%
-      select(date,
-             index.x,
-             temp.x,
-             index.y,
-             temp.y,
-             -cluster.x,
-             -cluster.y) %>%
-      rename(
-        index_1 = index.x,
-        temp_1 = temp.x,
-        index_2 = index.y,
-        temp_2 = temp.y
-      ) %>%
-      mutate(index_pair = paste0(index_1, " - ", index_2))
-    SACTN_clust_4_match <- rbind(SACTN_clust_4_match, SACTN_df_3)
-  }
-}
+# SACTN_clust_4_match <- data.frame()
+# for (i in 1:length(levels(SACTN_clust_4$index))) {
+#   # for (i in 1:10) {
+#   SACTN_df_1 <- filter(SACTN_clust_4, index == levels(index)[i])
+#   for (j in 1:length(levels(SACTN_clust_4$index))) {
+#     # for(j in 1:10) {
+#     if (i == j) {
+#       next
+#     }
+#     if (j < i) {
+#       next
+#     }
+#     SACTN_df_2 <- filter(SACTN_clust_4, index == levels(index)[j])
+#     SACTN_df_3 <-
+#       left_join(SACTN_df_1, SACTN_df_2, by = "date") %>%
+#       na.trim() %>%
+#       select(date,
+#              index.x,
+#              temp.x,
+#              index.y,
+#              temp.y,
+#              -cluster.x,
+#              -cluster.y) %>%
+#       rename(
+#         index_1 = index.x,
+#         temp_1 = temp.x,
+#         index_2 = index.y,
+#         temp_2 = temp.y
+#       ) %>%
+#       mutate(index_pair = paste0(index_1, " - ", index_2))
+#     SACTN_clust_4_match <- rbind(SACTN_clust_4_match, SACTN_df_3)
+#   }
+# }
+
+# RWS: One way of dealing with long calculation times like this is to save the results
+# so that you don't need to keep running the code each time you start up again
+# save(SACTN_clust_4_match, file = "data/SACTN_clust_4_match.RData")
+# load("data/SACTN_clust_4_match.RData")
+# That being said, there are too many sites being compared to one another here.
+# We need to make a plan about what to do with that.
 
 # Paired difference values
 SACTN_clust_4_legit <- SACTN_clust_4_match %>% 
