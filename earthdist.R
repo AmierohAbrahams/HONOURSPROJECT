@@ -1,7 +1,8 @@
 ### Distance functions found at:
 # http://r.789695.n4.nabble.com/Geographic-distance-between-lat-long-points-in-R-td3442338.html --
-## According to that blogpost, I am using the function gcd.hf using the haversine formula. I wrapped it up in a function called CalcDists so that I can get a distance matrix between N sites.
-
+## According to that blogpost, I am using the function gcd.hf using the haversine formula.
+## wrapped it up in a function called CalcDists so that I can get a distance matrix between N sites.
+# Haversine calc
 # Convert degrees to radians
 deg2rad <- function(deg) return(deg*pi/180)
 
@@ -29,7 +30,9 @@ CalcDists <- function(latlongs) {
   return(z)
 }
 
-# Distances between consecutive pairs of sites in a list. This function requires a data.frame with site in column 1, lon in column 2 and lat in column 3. Beforehand lats and lons in degrees need to be convereted to radians using the haversine function above.
+# Distances between consecutive pairs of sites in a list. This function requires a 
+# data.frame with site in column 1, lon in column 2 and lat in column 3. Beforehand lats and 
+# lons in degrees need to be convereted to radians using the haversine function above.
 PairsDists <- function(latlongs) {
   n <- nrow(latlongs)
   z <- matrix(0, n, 1, dimnames = list(latlongs[,1]))
