@@ -24,7 +24,7 @@ load("site_list_v4.2.RData")
 # Neat
 set.seed(10)
 kmeans(site_list[,c(15, 18, 19)], 3)$cluster
-
+ 
 
 # Visualise different cluster options -------------------------------------
 
