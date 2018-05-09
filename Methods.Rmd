@@ -236,7 +236,7 @@ sites_complete_15 <- sites_complete %>%
   filter(depth == "wave_15")
 ```
 
-Using the FNN package to deetermine the nearest wave data for each of the SACTN sites present in this cluster. Once that was determined only waves minimised to only include the 7 and 15m depths:
+Using the FNN package to determine the nearest wave data for each of the SACTN sites present in this cluster. Once that was determined only waves minimised to only include the 7 and 15m depths:
 
 ```{r unique_name2}
 waves_idx_7 <- as.data.frame(knnx.index( as.matrix(sites_complete_7[,2:3]), as.matrix(site_list_30_years[,5:6]), k = 1)) 
