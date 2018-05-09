@@ -61,8 +61,8 @@ set.seed(10)
 site_list$cluster <- as.factor(kmeans(site_list[,c(15, 18:19)], 4)$cluster)
 
 SACTN_daily_clusters <- left_join(SACTN_daily_v4.2, site_list[,c(4, 13, 21)]) %>% 
-  filter(length >= 3650 * 3) 
-# Here adjusted to 30 years, which works with the KZNSB data;
+  filter(length >= 3650 * 1) 
+# Here adjusted to 10 years, which works with the KZNSB data;
 # use a shorter time for sites along other coastlines
 
 SACTN_clust_1 <- SACTN_daily_clusters %>% 
@@ -72,8 +72,7 @@ SACTN_clust_1 <- SACTN_daily_clusters %>%
 
 # How many sites in this cluster?
 length(unique(SACTN_clust_1$index)) 
-# 42 of them if time series are 10 years or less; 
-# or 33 if lengths of 30 years are selected...
+
 # This might have to be adjusted depending on the coastline 
 # we are working on
 
