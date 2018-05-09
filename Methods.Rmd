@@ -195,7 +195,7 @@ SACTN_clust_1_plot1 <- clust_plot(df = SACTN_clust_1_match)
 SACTN_clust_2_plot1 <- clust_plot(df = SACTN_clust_2_match)
 ```
 
-Now I make a visualisation to reveal the relationship between the mean temperature for each month of each year for each of the sites in cluster 
+Now I make a visualisation to reveal the relationship between the mean temperature for each month of each year for each of the sites in cluster:
 
 ```{r define_fun4, include=FALSE}
 clust_plot2 <- function(df){
@@ -210,7 +210,6 @@ clust_plot2 <- function(df){
 ```
 
 ```{r run_fun}
-
 SACTN_clust_1_plot2 <- clust_plot2(df = SACTN_clust_1_legit)
 SACTN_clust_2_plot2 <- clust_plot2(df = SACTN_clust_2_legit)
 ```
@@ -233,7 +232,7 @@ test_func <- function(wave_files) {
 }
 ```
 
-Feeding as a vector
+Feeding as a vector:
 
 ```{r, include=FALSE}
 trial_load <- function(directory){
@@ -243,7 +242,7 @@ trial_load <- function(directory){
 }
 ```
 
-Loading the wave data for the sites along the South African coast
+Loading the wave data for the sites along the South African coast:
 
 ```{r, include=FALSE}
 sites_complete <- read_csv("data/sites_complete.csv") %>% 
@@ -257,13 +256,13 @@ HE <- trial_load("data/wave_data/HE")
 SH <- trial_load("data/wave_data/SH")
 
 wave_data <- rbind(FB, TB, HE, SH)
-wave_data <- left_join(wave_data, sites_complete)%>% 
+wave_data <- left_join(wave_data, sites_complete) %>% 
   rename(site_wave = site,
          site = site_real)
 rm(FB, TB, HE, SH)
 ```
 
-Converting the 3-hour resolution wave data into daily data
+Converting the 3-hour resolution wave data into daily data:
 
 ```{r, include=FALSE}
 wave_daily <- wave_data %>% 
@@ -273,7 +272,7 @@ wave_daily <- wave_data %>%
   ungroup()
 ```
 
-The annual wave data for each of the sites excluding the year 2000
+The annual wave data for each of the sites excluding the year 2000:
 
 ```{r, include=FALSE}
 wave_annually <- wave_data %>% 
@@ -283,7 +282,6 @@ wave_annually <- wave_data %>%
   ungroup() %>%
   filter(date != 2000)
 ```
-
 
 Now splitting the wave data into the different depths either a depth of 7m or a depth of 15m:
 
@@ -298,6 +296,7 @@ sites_complete_15 <- sites_complete %>%
 Using the FNN package to determine the nearest wave data for each of the SACTN sites present in this cluster. Once that was determined only waves minimised to only include the 7 and 15m depths:
 
 ```{r unique_name2}
+# AJS: `site_list_30_years` is only defined for the first time, below (and that depends on `site_list_match`, which also is not yet defined)
 waves_idx_7 <- as.data.frame(knnx.index( as.matrix(sites_complete_7[,2:3]), as.matrix(site_list_30_years[,5:6]), k = 1)) 
 waves_idx_15 <- as.data.frame(knnx.index( as.matrix(sites_complete_15[,2:3]), as.matrix(site_list_30_years[,5:6]), k = 1)) 
 
@@ -339,7 +338,7 @@ CalcDists <- function(latlongs) {
 After the sites were matched the distance was converted to radians the siteswere matched with the sites of the 30year time series. Hereafter the wave data was combined with the temperature data at a depth of 7 and 15m respectivley. 
 
 ```{r unique_name3}
-site_list_match_dist <- site_list_match %>% 
+site_list_match_dist <- site_list_match %>% # AJS: `site_list_match` not previously defined
   mutate(lon1 = deg2rad(lon1),
          lat1 = deg2rad(lat1),
          lon2 = deg2rad(lon2),
