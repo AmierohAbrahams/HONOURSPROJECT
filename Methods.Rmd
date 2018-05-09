@@ -99,24 +99,24 @@ set.seed(10)
 site_list$cluster <- as.factor(kmeans(site_list[,c(15, 18:19)], 4)$cluster)
 
 SACTN_daily_clusters <- left_join(SACTN_daily_v4.2, site_list[,c(4, 13, 21)]) %>% 
-  filter(length >= 3650 * 3) 
+  filter(length >= 3650) 
 ```
 
 
 The function droplevels is used here to drop unused levels from the factor such as the length column. The unique function is then used to determine the amount sites found within this cluster. 
 ```{r setup, include=FALSE}
-SACTN_clust_1 <- SACTN_daily_clusters %>% 
-  filter(cluster == 1) %>% 
-  select(-length) %>% 
-  droplevels()
-length(unique(SACTN_clust_1$index))
+# SACTN_clust_1 <- SACTN_daily_clusters %>% 
+#   filter(cluster == 1) %>% 
+#   select(-length) %>% 
+#   droplevels()
+# length(unique(SACTN_clust_1$index))
 
 ```
 
 Creating a function matching the sites 
 ```{r setup, include=FALSE}
-clust_match <- function(df){
-SACTN_clust_1_match <- data.frame()
+clust_match <- function(df, clust){
+SACTN_clust_x_match <- data.frame()
   for (i in 1:length(levels(SACTN_clust_1$index))) {
     # for (i in 1:10) {
     SACTN_df_1 <- filter(SACTN_clust_1, index == levels(index)[i])
