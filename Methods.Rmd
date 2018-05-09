@@ -115,6 +115,7 @@ length(unique(SACTN_clust_1$index))
 
 Creating a function matching the sites 
 ```{r setup, include=FALSE}
+clust_match <- function(df){
 SACTN_clust_1_match <- data.frame()
   for (i in 1:length(levels(SACTN_clust_1$index))) {
     # for (i in 1:10) {
@@ -148,6 +149,7 @@ SACTN_clust_1_match <- data.frame()
       SACTN_clust_1_match <- rbind(SACTN_clust_1_match, SACTN_df_3)
     }
   }
+}
 ```
 
 I calculated the monthly mean temperature and standard deviation for each year and site found in cluster 1. Consequently we have a data frame with 5 columns and a row for each of months per year. 
