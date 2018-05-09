@@ -17,6 +17,7 @@ gcd.hf <- function(long1, lat1, long2, lat2) {
   return(d) # Distance in km
 }
 
+
 # Function to calculate matrix of distances between each two sites usng the haversine function, above:
 CalcDists <- function(latlongs) {
   name <- list(rownames(latlongs), rownames(latlongs))
