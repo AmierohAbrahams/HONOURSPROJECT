@@ -157,7 +157,8 @@ I calculated the monthly mean temperature and standard deviation for each year a
 # Calculate all of the matche-ups in cluster 1
 SACTN_clust_1_match <- clust_match(df = SACTN_daily_clusters, clust = 1)
 
-SACTN_clust_1_legit <- SACTN_clust_1_match %>% 
+clust_legit <- function(df){
+SACTN_clust_x_legit <- df %>% 
   mutate(temp_legit = temp_1-temp_2,
          month = month(date, abbr = T, label = T),
          year = year(date)) %>% 
@@ -165,6 +166,10 @@ SACTN_clust_1_legit <- SACTN_clust_1_match %>%
   group_by(index_pair, month, year) %>% 
   summarise(temp_mean_month_year = mean(temp_legit, na.rm = T),
             temp_sd_month_year = sd(temp_legit, na.rm = T))
+return(SACTN_clust_x_legit)
+}
+
+SACTN_clust_1_legit <- clust_legit(df = SACTN_clust_1_match)
 ```
 
 
