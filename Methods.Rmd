@@ -115,12 +115,20 @@ The function droplevels is used here to drop unused levels from the factor such 
 
 Creating a function matching the sites 
 ```{r setup, include=FALSE}
+## testing...
+df <- SACTN_daily_clusters
+clust <- 1
+##
 clust_match <- function(df, clust){
-SACTN_clust_x_match <- data.frame()
-  for (i in 1:length(levels(SACTN_clust_1$index))) {
+  SACTN_clust_x_match <- data.frame()
+  df2 <- df %>% 
+    filter(cluster == clust) %>%
+    select(-length) %>%
+    droplevels()
+  for (i in 1:length(levels(df2$index))) {
     # for (i in 1:10) {
-    SACTN_df_1 <- filter(SACTN_clust_1, index == levels(index)[i])
-    for (j in 1:length(levels(SACTN_clust_1$index))) {
+    SACTN_df_1 <- filter(df2, index == levels(index)[i])
+    for (j in 1:length(levels(df2$index))) {
       # for(j in 1:10) {
       if (i == j) {
         next
@@ -128,7 +136,7 @@ SACTN_clust_x_match <- data.frame()
       if (j < i) {
         next
       }
-      SACTN_df_2 <- filter(SACTN_clust_1, index == levels(index)[j])
+      SACTN_df_2 <- filter(df2, index == levels(index)[j])
       SACTN_df_3 <-
         left_join(SACTN_df_1, SACTN_df_2, by = "date") %>%
         na.trim() %>%
@@ -139,16 +147,15 @@ SACTN_clust_x_match <- data.frame()
                temp.y,
                -cluster.x,
                -cluster.y) %>%
-        rename(
-          index_1 = index.x,
+        rename(index_1 = index.x,
           temp_1 = temp.x,
           index_2 = index.y,
-          temp_2 = temp.y
-        ) %>%
+          temp_2 = temp.y) %>%
         mutate(index_pair = paste0(index_1, " - ", index_2))
-      SACTN_clust_1_match <- rbind(SACTN_clust_1_match, SACTN_df_3)
+      SACTN_clust_x_match <- rbind(SACTN_clust_x_match, SACTN_df_3)
     }
   }
+  return(SACTN_clust_x_match)
 }
 ```
 
