@@ -156,6 +156,7 @@ I calculated the monthly mean temperature and standard deviation for each year a
 ```{r setup, include=FALSE}
 # Calculate all of the matche-ups in cluster 1
 SACTN_clust_1_match <- clust_match(df = SACTN_daily_clusters, clust = 1)
+SACTN_clust_2_match <- clust_match(df = SACTN_daily_clusters, clust = 2)
 
 clust_legit <- function(df){
 SACTN_clust_x_legit <- df %>% 
@@ -170,16 +171,23 @@ return(SACTN_clust_x_legit)
 }
 
 SACTN_clust_1_legit <- clust_legit(df = SACTN_clust_1_match)
+SACTN_clust_2_legit <- clust_legit(df = SACTN_clust_2_match)
 ```
+
 
 
 The code below lets us visualise the temperature variation at each of the sites found in cluster 1
 ```{r setup, include=FALSE}
-ggplot(data = SACTN_clust_1_match, aes(x = index_pair)) +
+clust_plot <- function(df){
+plot1 <- ggplot(df, aes(x = index_pair)) +
   geom_boxplot(aes(y = temp_1), fill = "khaki4", alpha = 0.3) +
   geom_boxplot(aes(y = temp_2), fill = "chartreuse3", alpha = 0.3) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  return(plot1)
+}
 
+SACTN_clust_1_plot1 <- clust_plot(df = SACTN_clust_1_match)
+SACTN_clust_2_plot1 <- clust_plot(df = SACTN_clust_2_match)
 ```
 
 Now I make a visualisation to reveal the relationship between the mean temperature for each month of each year for eacch of the sites in cluster 1.
