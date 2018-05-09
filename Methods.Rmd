@@ -195,15 +195,24 @@ SACTN_clust_1_plot1 <- clust_plot(df = SACTN_clust_1_match)
 SACTN_clust_2_plot1 <- clust_plot(df = SACTN_clust_2_match)
 ```
 
-Now I make a visualisation to reveal the relationship between the mean temperature for each month of each year for eacch of the sites in cluster 1:
+Now I make a visualisation to reveal the relationship between the mean temperature for each month of each year for each of the sites in cluster 
 
-```{r plt1, include=FALSE}
-SACTN_clust_1_legit %>% 
-  ggplot(aes(x = year, y = temp_mean_month_year)) +
-  geom_line(aes(group = index_pair, colour = index_pair), alpha = 0.7, show.legend = F) +
-  geom_smooth(method = "gam", se = F, aes(colour = index_pair), show.legend = T)  +
-  facet_wrap(~month) + 
-  theme_pubclean()
+```{r define_fun4, include=FALSE}
+clust_plot2 <- function(df){
+  plot2 <- df %>% 
+    ggplot(aes(x = year, y = temp_mean_month_year)) +
+    geom_line(aes(group = index_pair, colour = index_pair), alpha = 0.7, show.legend = F) +
+    geom_smooth(method = "gam", se = F, aes(colour = index_pair), show.legend = T)  +
+    facet_wrap(~month) + 
+    theme_pubclean()
+  return(plot2)
+}
+```
+
+```{r run_fun}
+
+SACTN_clust_1_plot2 <- clust_plot2(df = SACTN_clust_1_legit)
+SACTN_clust_2_plot2 <- clust_plot2(df = SACTN_clust_2_legit)
 ```
 
 Creating a function which allows me to load all the wave data:
@@ -224,9 +233,59 @@ test_func <- function(wave_files) {
 }
 ```
 
-Now splitting the wave data into the different depths either a depth of 7m or a depth of 15m:
+Feeding as a vector
 
-# AJS: I cannot move past here because `sites_complete` has not yet been defined...
+```{r, include=FALSE}
+trial_load <- function(directory){
+  files_list <- dir(directory, full.names = TRUE)
+  final <- plyr::ldply(files_list, test_func, .progress = "text")
+  return(final)
+}
+```
+
+Loading the wave data for the sites along the South African coast
+
+```{r, include=FALSE}
+sites_complete <- read_csv("data/sites_complete.csv") %>% 
+  select(-site_list) %>% 
+  rename(site_real = site) %>% 
+  gather(key = "depth", value = "site", -site_real, -lon, -lat)
+
+FB <- trial_load("data/wave_data/FB")
+TB <- trial_load("data/wave_data/TB")
+HE <- trial_load("data/wave_data/HE")
+SH <- trial_load("data/wave_data/SH")
+
+wave_data <- rbind(FB, TB, HE, SH)
+wave_data <- left_join(wave_data, sites_complete)%>% 
+  rename(site_wave = site,
+         site = site_real)
+rm(FB, TB, HE, SH)
+```
+
+Converting the 3-hour resolution wave data into daily data
+
+```{r, include=FALSE}
+wave_daily <- wave_data %>% 
+  mutate(date = as.Date(date)) %>% 
+  group_by(site, site_wave, depth, lon, lat, date) %>% 
+  summarise_all(funs(mean = mean, sd = sd), na.rm = T) %>% 
+  ungroup()
+```
+
+The annual wave data for each of the sites excluding the year 2000
+
+```{r, include=FALSE}
+wave_annually <- wave_data %>% 
+  mutate(date = lubridate::year(date)) %>% 
+  group_by(site, site_wave, depth, lon, lat, date) %>% 
+  summarise_all(funs(mean = mean, sd = sd), na.rm = TRUE) %>%
+  ungroup() %>%
+  filter(date != 2000)
+```
+
+
+Now splitting the wave data into the different depths either a depth of 7m or a depth of 15m:
 
 ```{r unique_name1}
 sites_complete_7 <- sites_complete %>% 
