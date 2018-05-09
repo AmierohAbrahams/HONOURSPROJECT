@@ -192,12 +192,18 @@ SACTN_clust_2_plot1 <- clust_plot(df = SACTN_clust_2_match)
 
 Now I make a visualisation to reveal the relationship between the mean temperature for each month of each year for eacch of the sites in cluster 1.
 ```{r setup, include=FALSE}
-SACTN_clust_1_legit %>% 
+clust_plot2 <- function(df){
+  plot2 <- df %>% 
   ggplot(aes(x = year, y = temp_mean_month_year)) +
   geom_line(aes(group = index_pair, colour = index_pair), alpha = 0.7, show.legend = F) +
   geom_smooth(method = "gam", se = F, aes(colour = index_pair), show.legend = T)  +
   facet_wrap(~month) + 
   theme_pubclean()
+    return(plot2)
+}
+
+SACTN_clust_1_plot2 <- clust_plot2(df = SACTN_clust_1_legit)
+SACTN_clust_2_plot2 <- clust_plot2(df = SACTN_clust_2_legit)
 ```
 
 Creating a function which allows me to load all the wave data
