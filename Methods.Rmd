@@ -87,7 +87,7 @@ clusters <- ggarrange(clust_6, clust_5, clust_4, clust_3, common.legend = T)
 clusters
 ```
 
-It is now nescessary to load the SACTN dataset. The SACTN dataset comprise of 129 *in situ* coastal seawater temperatures derived from daily measurements over up to 40 years. Clustering the sites using the k-means results:
+It is now necessary to load the SACTN dataset. The SACTN dataset comprise of 129 *in situ* coastal seawater temperatures derived from daily measurements over up to 40 years. Clustering the sites using the k-means results:
 
 ```{r load_files2, include=FALSE}
 load("SACTN_data/SACTN_daily_v4.2.RData")
@@ -102,7 +102,6 @@ site_list$cluster <- as.factor(kmeans(site_list[,c(15, 18:19)], 4)$cluster)
 SACTN_daily_clusters <- left_join(SACTN_daily_v4.2, site_list[,c(4, 13, 21)]) %>% 
   filter(length >= 3650) 
 ```
-
 
 The function droplevels is used here to drop unused levels from the factor such as the length column. The unique function is then used to determine the amount sites found within this cluster:
 
