@@ -116,8 +116,8 @@ The function droplevels is used here to drop unused levels from the factor such 
 Creating a function matching the sites 
 ```{r setup, include=FALSE}
 ## testing...
-df <- SACTN_daily_clusters
-clust <- 1
+# df <- SACTN_daily_clusters
+# clust <- 1
 ##
 clust_match <- function(df, clust){
   SACTN_clust_x_match <- data.frame()
@@ -137,16 +137,9 @@ clust_match <- function(df, clust){
         next
       }
       SACTN_df_2 <- filter(df2, index == levels(index)[j])
-      SACTN_df_3 <-
-        left_join(SACTN_df_1, SACTN_df_2, by = "date") %>%
+      SACTN_df_3 <- left_join(SACTN_df_1, SACTN_df_2, by = "date") %>%
         na.trim() %>%
-        select(date,
-               index.x,
-               temp.x,
-               index.y,
-               temp.y,
-               -cluster.x,
-               -cluster.y) %>%
+        select(date, index.x, temp.x, index.y, temp.y, -cluster.x, -cluster.y) %>%
         rename(index_1 = index.x,
           temp_1 = temp.x,
           index_2 = index.y,
@@ -161,6 +154,9 @@ clust_match <- function(df, clust){
 
 I calculated the monthly mean temperature and standard deviation for each year and site found in cluster 1. Consequently we have a data frame with 5 columns and a row for each of months per year. 
 ```{r setup, include=FALSE}
+# Calculate all of the matche-ups in cluster 1
+SACTN_clust_1_match <- clust_match(df = SACTN_daily_clusters, clust = 1)
+
 SACTN_clust_1_legit <- SACTN_clust_1_match %>% 
   mutate(temp_legit = temp_1-temp_2,
          month = month(date, abbr = T, label = T),
