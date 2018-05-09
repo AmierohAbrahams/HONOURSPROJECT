@@ -49,23 +49,24 @@ library(ggpubr)
 library(ggrepel)
 library(FNN)
 library(stringr)
-
 ```
 
 Now to get to the data. The first step involves the loading of the site list. 
+
 ```{r setup, include=FALSE}
 load("site_list_v4.2.RData")
 ```
 
 Performing the k-means clustering on a data matrix using the kmeans() function of the FNN package. This aims to partition the points into k groups such that the sum of squares from points to the assigned cluster centres is minimized.  At the minimum, all cluster centres are at the mean of the set of data points which are nearest to the cluster centre.  K means clustering using the multiple random seeds finds a number of k-means clusting solutions using R's kmeans function, and selects as the final solution the one that has the minimum total within-cluster sum of squared distances. K-Means attempts to minimize distortion. The data contain variables from many sites along the South African coast, but in the analysis I use only some of them. These variables are the mean, min and max.
+
 ```{r setup, include=FALSE}
 set.seed(10)
 kmeans(site_list[,c(15, 18, 19)], 3)$cluster
 clust_columns <- site_list[,c(15, 18:19)]
 ```
 
+Visualisation of the clusters. My plotting functions partition the data into the clusters and colour code each point accordingly so I can see patterns that exist.
 
-Visualisation of the clusters. My plotting functions partition the data into the clusters and colour code each point accordingly so I can see patterns that exist
 ```{r setup, include=FALSE}
 clust_i <- function(i) {
   set.seed(10)
@@ -88,12 +89,14 @@ clusters <- ggarrange(clust_6, clust_5, clust_4, clust_3, common.legend = T)
 clusters
 ```
 
-It is now nescessary to load the SACTN dataset. The SACTN dataset comprise of 129 *in situ* coastal seawater temperatures derived from daily measurements over up to 40 years. Clustering the sites using the k-means results
+It is now nescessary to load the SACTN dataset. The SACTN dataset comprise of 129 *in situ* coastal seawater temperatures derived from daily measurements over up to 40 years. Clustering the sites using the k-means results:
+
 ```{r setup, include=FALSE}
 load("SACTN_data/SACTN_daily_v4.2.RData")
 ```
 
-Creating a cluster index whilst only selecting cluster 4. Working with three decades of data for each of the sites along the coast. This allows for a longer time series
+Creating a cluster index whilst only selecting cluster 4. Working with three decades of data for each of the sites along the coast. This allows for a longer time series:
+
 ```{r setup, include=FALSE}
 set.seed(10)
 site_list$cluster <- as.factor(kmeans(site_list[,c(15, 18:19)], 4)$cluster)
@@ -103,7 +106,8 @@ SACTN_daily_clusters <- left_join(SACTN_daily_v4.2, site_list[,c(4, 13, 21)]) %>
 ```
 
 
-The function droplevels is used here to drop unused levels from the factor such as the length column. The unique function is then used to determine the amount sites found within this cluster. 
+The function droplevels is used here to drop unused levels from the factor such as the length column. The unique function is then used to determine the amount sites found within this cluster:
+
 ```{r setup, include=FALSE}
 # SACTN_clust_1 <- SACTN_daily_clusters %>% 
 #   filter(cluster == 1) %>% 
@@ -113,13 +117,14 @@ The function droplevels is used here to drop unused levels from the factor such 
 
 ```
 
-Creating a function matching the sites 
+Creating a function matching the sites:
+
 ```{r setup, include=FALSE}
 ## testing...
 # df <- SACTN_daily_clusters
 # clust <- 1
 ##
-clust_match <- function(df, clust){
+clust_match <- function(df, clust) {
   SACTN_clust_x_match <- data.frame()
   df2 <- df %>% 
     filter(cluster == clust) %>%
@@ -153,12 +158,13 @@ clust_match <- function(df, clust){
 ```
 
 I calculated the monthly mean temperature and standard deviation for each year and site found in cluster 1. Consequently we have a data frame with 5 columns and a row for each of months per year. 
+
 ```{r setup, include=FALSE}
 # Calculate all of the matche-ups in cluster 1
 SACTN_clust_1_match <- clust_match(df = SACTN_daily_clusters, clust = 1)
 SACTN_clust_2_match <- clust_match(df = SACTN_daily_clusters, clust = 2)
 
-clust_legit <- function(df){
+clust_legit <- function(df) {
 SACTN_clust_x_legit <- df %>% 
   mutate(temp_legit = temp_1-temp_2,
          month = month(date, abbr = T, label = T),
@@ -174,11 +180,10 @@ SACTN_clust_1_legit <- clust_legit(df = SACTN_clust_1_match)
 SACTN_clust_2_legit <- clust_legit(df = SACTN_clust_2_match)
 ```
 
+The code below lets us visualise the temperature variation at each of the sites found in cluster 1:
 
-
-The code below lets us visualise the temperature variation at each of the sites found in cluster 1
 ```{r setup, include=FALSE}
-clust_plot <- function(df){
+clust_plot <- function(df) {
 plot1 <- ggplot(df, aes(x = index_pair)) +
   geom_boxplot(aes(y = temp_1), fill = "khaki4", alpha = 0.3) +
   geom_boxplot(aes(y = temp_2), fill = "chartreuse3", alpha = 0.3) +
@@ -190,7 +195,8 @@ SACTN_clust_1_plot1 <- clust_plot(df = SACTN_clust_1_match)
 SACTN_clust_2_plot1 <- clust_plot(df = SACTN_clust_2_match)
 ```
 
-Now I make a visualisation to reveal the relationship between the mean temperature for each month of each year for eacch of the sites in cluster 1.
+Now I make a visualisation to reveal the relationship between the mean temperature for each month of each year for eacch of the sites in cluster 1:
+
 ```{r setup, include=FALSE}
 SACTN_clust_1_legit %>% 
   ggplot(aes(x = year, y = temp_mean_month_year)) +
@@ -200,9 +206,10 @@ SACTN_clust_1_legit %>%
   theme_pubclean()
 ```
 
-Creating a function which allows me to load all the wave data
+Creating a function which allows me to load all the wave data:
+
 ```{r}
-test_func <- function(wave_files){
+test_func <- function(wave_files) {
   site_type <- sapply(strsplit(as.character(wave_files), "/"), "[[", 3)
   site_num <- sapply(strsplit(as.character(wave_files), "/"), "[[", 4)
   site_num <- sapply(strsplit(site_num, ".txt"), "[[", 1)
@@ -217,7 +224,8 @@ test_func <- function(wave_files){
 }
 ```
 
-Now splitting the wave data into the different depths either a depth of 7m or a depth of 15m
+Now splitting the wave data into the different depths either a depth of 7m or a depth of 15m:
+
 ```{r}
 sites_complete_7 <- sites_complete %>% 
   filter(depth == "wave_7")
@@ -226,7 +234,8 @@ sites_complete_15 <- sites_complete %>%
   filter(depth == "wave_15")
 ```
 
-Using the FNN package to deetermine the nearest wave data for each of the SACTN sites present in this cluster. Once that was determined only waves minimised to only include the 7 and 15m depths
+Using the FNN package to deetermine the nearest wave data for each of the SACTN sites present in this cluster. Once that was determined only waves minimised to only include the 7 and 15m depths:
+
 ```{r}
 waves_idx_7 <- as.data.frame(knnx.index( as.matrix(sites_complete_7[,2:3]), as.matrix(site_list_30_years[,5:6]), k = 1)) 
 waves_idx_15 <- as.data.frame(knnx.index( as.matrix(sites_complete_15[,2:3]), as.matrix(site_list_30_years[,5:6]), k = 1)) 
@@ -236,7 +245,8 @@ sites_complete_subset_15 <- sites_complete_15[as.matrix(waves_idx_15),]
 
 ```
 
-Creating a function using the haversine formula to calculate the geodesic distance between two points specified by radian lat/lon. 
+Creating a function using the haversine formula to calculate the geodesic distance between two points specified by radian lat/lon:
+
 ```{r}
 deg2rad <- function(deg) return(deg*pi/180)
 gcd.hf <- function(long1, lat1, long2, lat2) {
@@ -250,7 +260,8 @@ gcd.hf <- function(long1, lat1, long2, lat2) {
 }
 ```
 
-Creating a function to calculate matrix of distances between each two sites following the haversine formula
+Creating a function to calculate matrix of distances between each two sites following the haversine formula:
+
 ```{r}
 CalcDists <- function(latlongs) {
   name <- list(rownames(latlongs), rownames(latlongs))
@@ -266,6 +277,7 @@ CalcDists <- function(latlongs) {
 ```
 
 After the sites were matched the distance was converted to radians the siteswere matched with the sites of the 30year time series. Hereafter the wave data was combined with the temperature data at a depth of 7 and 15m respectivley. 
+
 ```{r}
 site_list_match_dist <- site_list_match %>% 
   mutate(lon1 = deg2rad(lon1),
@@ -275,7 +287,7 @@ site_list_match_dist <- site_list_match %>%
          dist = NA)
 
 # Creating a loop for dstances
-for(i in 1:nrow(site_list_match_dist)){
+for(i in 1:nrow(site_list_match_dist)) {
   dist <- gcd.hf(site_list_match_dist$lon1[i], site_list_match_dist$lat1[i], 
                  site_list_match_dist$lon2[i], site_list_match_dist$lat2[i])
   site_list_match_dist$dist[i] <- dist
