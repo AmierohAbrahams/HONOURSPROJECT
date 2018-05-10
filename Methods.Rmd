@@ -364,10 +364,10 @@ PairsDists <- function(latlongs) {
 }
 ```
 
-After the sites were matched the distance was converted to radians the siteswere matched with the sites of the 10year time series. Hereafter the wave data was combined with the temperature data at a depth of 7 and 15m respectivley. 
+After the sites were matched the distance was converted to radians the sites were matched with the sites of the 10 year time series. Hereafter the wave data were combined with the temperature data at a depth of 7 and 15m respectivley. 
 
 ```{r unique_name3}
-site_list_match_dist <- site_list_match %>% # AJS: `site_list_match` not previously defined
+site_list_match_dist <- site_list_match %>%
   mutate(lon1 = deg2rad(lon1),
          lat1 = deg2rad(lat1),
          lon2 = deg2rad(lon2),
@@ -401,7 +401,6 @@ SACTN_daily_clusters_7 %>%
 ggplot(data = SACTN_daily_clusters_7, aes(x = temp, y = dir_mean)) +
   geom_line() +
   facet_wrap(~index)
-
 ```
 
 
