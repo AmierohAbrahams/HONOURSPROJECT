@@ -53,7 +53,7 @@ Now to get to the data. The first step involves the loading of the site list.
 load("site_list_v4.2.RData")
 ```
 
-Performing the k-means clustering on a data matrix using the `kmeans()` function, which uses multiple random seeds to find a number of clusting solutions; it selects as the final solution the one that has the minimum total within-cluster sum of squared distances. K-means attempts to minimise distortion. At the minimum, all cluster centres are at the mean of the set of data points which are nearest to the cluster centre. The data contain variables from many sites along the South African coast, but in the analysis I use only some of them. These variables are the mean, min and max. [AJS: there was some redundant writing in here, so I edited it.]
+Performing the k-means clustering on a data matrix using the `kmeans()` function, which uses multiple random seeds to find a number of clusting solutions; it selects as the final solution the one that has the minimum total within-cluster sum of squared distances. K-means attempts to minimise distortion. At the minimum, all cluster centres are at the mean of the set of data points which are nearest to the cluster centre. The data contain variables from many sites along the South African coast, but in the analysis I use only some of them. These variables are the mean, min and max. 
 
 ```{r setup_k-means, include=FALSE}
 set.seed(10)
@@ -61,7 +61,7 @@ kmeans(site_list[,c(15, 18, 19)], 3)$cluster
 clust_columns <- site_list[,c(15, 18:19)]
 ```
 
-Visualisation of the clusters. My plotting functions partition the data into the clusters and colour code each point accordingly so I can see patterns that exist.
+Visualisation of the clusters. My plotting functions partition the data into the clusters and colour code each point accordingly so that I am able to see patterns that exist.
 
 ```{r define_fun1, include=FALSE}
 clust_i <- function(i) {
@@ -93,7 +93,7 @@ It is now necessary to load the SACTN dataset. The SACTN dataset comprise of 129
 load("SACTN_data/SACTN_daily_v4.2.RData")
 ```
 
-Creating a cluster index whilst only selecting cluster 4. Working with three decades of data for each of the sites along the coast. This allows for a longer time series:
+Creating a cluster index whilst only selecting cluster 4. Working with one decade of data for each of the sites along the coast.
 
 ```{r run_k-means, include=FALSE}
 set.seed(10)
@@ -150,7 +150,6 @@ site_list_sub <- rbind(sites_1_sub, sites_2_sub, sites_3_sub, sites_4_sub)
 SACTN_daily_clusters_sub <- SACTN_daily_clusters %>% 
   filter(index %in% site_list_sub$index)
 ```
-
 
 The function droplevels is used here to drop unused levels from the factor such as the length column. The unique function is then used to determine the amount sites found within this cluster:
 
@@ -230,7 +229,7 @@ SACTN_clust_3_legit <- clust_legit(df = SACTN_clust_3_match)
 SACTN_clust_4_legit <- clust_legit(df = SACTN_clust_4_match)
 ```
 
-The code below lets us visualise the temperature variation at each of the sites found in cluster 1:
+The code below lets us visualise the temperature variation at each of the sites found in cluster 1
 
 ```{r define_fun3, include=FALSE}
 clust_plot <- function(df) {
@@ -326,7 +325,7 @@ wave_data <- left_join(wave_data, sites_complete) %>%
 rm(FB, TB, HE, SH)
 ```
 
-Converting the 3-hour resolution wave data into daily data:
+Converting the 3-hour resolution wave data into daily data. The funs function, funs(), is used here as it provides a flexible way to generate a named list of functions for input to other functions such as mean and sd:
 
 ```{r, include=FALSE}
 wave_daily <- wave_data %>% 
@@ -357,7 +356,7 @@ sites_complete_15 <- sites_complete %>%
   filter(depth == "wave_15")
 ```
 
-Creating a 10year time series
+Creating a time series over a period of 10 years:
 
 ```{r}
 site_list_10_years <- site_list %>% 
@@ -383,7 +382,7 @@ site_list_match <- cbind(site_list_10_years[,c(4:6,21)], sites_complete_subset)
 colnames(site_list_match) <- c("index", "lon1", "lat1", "cluster", "site_real", "lon2", "lat2", "wave_7", "wave_15")
 ```
 
-Creating a function using the haversine formula to calculate the geodesic distance between two points specified by radian lat/lon:
+Creating a function using the haversine formula to calculate the geodesic distance between two points specified by radian lat/lon. The use of this haversine formula is to calculate the distance between two points, which is the shortest distance over the earth’s surface. The haversine formula is particularly well-conditioned for numerical computations at both large and small scales:
 
 ```{r define_fun5}
 deg2rad <- function(deg) return(deg*pi/180)
