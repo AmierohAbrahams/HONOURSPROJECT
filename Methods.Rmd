@@ -292,10 +292,17 @@ sites_complete_15 <- sites_complete %>%
   filter(depth == "wave_15")
 ```
 
+Creating a 30year time series
+
+```{r}
+site_list_30_years <- site_list %>% 
+  filter(index %in% SACTN_daily_clusters$index)
+```
+
 Using the FNN package to determine the nearest wave data for each of the SACTN sites present in this cluster. Once that was determined only waves minimised to only include the 7 and 15m depths:
 
 ```{r unique_name2}
-# AJS: `site_list_30_years` is only defined for the first time, below (and that depends on `site_list_match`, which also is not yet defined)
+
 waves_idx_7 <- as.data.frame(knnx.index( as.matrix(sites_complete_7[,2:3]), as.matrix(site_list_30_years[,5:6]), k = 1)) 
 waves_idx_15 <- as.data.frame(knnx.index( as.matrix(sites_complete_15[,2:3]), as.matrix(site_list_30_years[,5:6]), k = 1)) 
 
