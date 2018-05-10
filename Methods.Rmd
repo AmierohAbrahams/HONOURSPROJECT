@@ -53,7 +53,7 @@ Now to get to the data. The first step involves the loading of the site list.
 load("site_list_v4.2.RData")
 ```
 
-Performing the k-means clustering on a data matrix using the kmeans() function of the FNN package. This aims to partition the points into k groups such that the sum of squares from points to the assigned cluster centres is minimized.  At the minimum, all cluster centres are at the mean of the set of data points which are nearest to the cluster centre.  K means clustering using the multiple random seeds finds a number of k-means clusting solutions using R's kmeans function, and selects as the final solution the one that has the minimum total within-cluster sum of squared distances. K-Means attempts to minimize distortion. The data contain variables from many sites along the South African coast, but in the analysis I use only some of them. These variables are the mean, min and max.
+Performing the k-means clustering on a data matrix using the `kmeans()` function, which uses multiple random seeds to find a number of clusting solutions; it selects as the final solution the one that has the minimum total within-cluster sum of squared distances. K-means attempts to minimise distortion. At the minimum, all cluster centres are at the mean of the set of data points which are nearest to the cluster centre. The data contain variables from many sites along the South African coast, but in the analysis I use only some of them. These variables are the mean, min and max. [AJS: there was some redundant writing in here, so I edited it.]
 
 ```{r setup_k-means, include=FALSE}
 set.seed(10)
@@ -111,7 +111,6 @@ The function droplevels is used here to drop unused levels from the factor such 
 #   select(-length) %>% 
 #   droplevels()
 # length(unique(SACTN_clust_1$index))
-
 ```
 
 Creating a function matching the sites:
@@ -234,7 +233,7 @@ test_func <- function(wave_files) {
 Feeding as a vector:
 
 ```{r, include=FALSE}
-trial_load <- function(directory){
+trial_load <- function(directory) {
   files_list <- dir(directory, full.names = TRUE)
   final <- plyr::ldply(files_list, test_func, .progress = "text")
   return(final)
@@ -282,7 +281,7 @@ wave_annually <- wave_data %>%
   filter(date != 2000)
 ```
 
-Now splitting the wave data into the different depths either a depth of 7m or a depth of 15m:
+Now splitting the wave data into the different depths; either a depth of 7m or a depth of 15m:
 
 ```{r unique_name1}
 sites_complete_7 <- sites_complete %>% 
@@ -302,15 +301,12 @@ site_list_10_years <- site_list %>%
 Using the FNN package to determine the nearest wave data for each of the SACTN sites present in this cluster. Once that was determined only waves minimised to only include the 7 and 15m depths:
 
 ```{r unique_name2}
-
 waves_idx_7 <- as.data.frame(knnx.index( as.matrix(sites_complete_7[,2:3]), as.matrix(site_list_10_years[,5:6]), k = 1)) 
 waves_idx_15 <- as.data.frame(knnx.index( as.matrix(sites_complete_15[,2:3]), as.matrix(site_list_10_years[,5:6]), k = 1)) 
 
 sites_complete_subset_7 <- sites_complete_7[as.matrix(waves_idx_7),]
 sites_complete_subset_15 <- sites_complete_15[as.matrix(waves_idx_15),]
 ```
-
-
 
 ```{r}
 sites_complete_subset <- cbind(sites_complete_subset_7, sites_complete_subset_15[,4:5])
