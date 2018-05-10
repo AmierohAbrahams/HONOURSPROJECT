@@ -99,9 +99,58 @@ Creating a cluster index whilst only selecting cluster 4. Working with three dec
 set.seed(10)
 site_list$cluster <- as.factor(kmeans(site_list[,c(15, 18:19)], 4)$cluster)
 
+site_list_clusters <- site_list %>% 
+  filter(length >= 3650)
+
 SACTN_daily_clusters <- left_join(SACTN_daily_v4.2, site_list[,c(4, 13, 21)]) %>% 
   filter(length >= 3650) 
 ```
+
+With the sites now split into four clusters, the next step is to reduce the number of sites per cluster down to a manageable, but still representative sub-sample of the whole. THis is done primarily for two reasons. The first, simply, is to allow for the comparisons to be more readily interpretable by humans. The second more objective reason is to allow for an equal amount of sampling per cluster. The East coast is much more heavily sampled than the rest and so this imbalance must be addressed. The criteria that must be considered for the sub-samples are that both instrument types (UTR and thermometre) are present, and as many sources are included as are possible.
+
+```{r site_sub_samples, include=FALSE}
+# First simply divide up the site list by cluster
+sites_1 <- site_list_clusters %>% 
+  filter(cluster == 1)
+sites_2 <- site_list_clusters %>% 
+  filter(cluster == 2)
+sites_3 <- site_list_clusters %>% 
+  filter(cluster == 3)
+sites_4 <- site_list_clusters %>% 
+  filter(cluster == 4)
+
+# I then grouped the sub-samples by source and took the longest time series
+# When fewer than 4 sources were present, I took the next longest time series etc.
+sites_1_sub <- sites_1 %>% 
+  group_by(src) %>%
+  filter(length %in% head(length, 2)) %>% 
+  ungroup()
+sites_2_sub <- sites_2 %>% 
+  group_by(src) %>%
+  filter(length %in% head(length, 3)) %>% 
+  ungroup()
+sites_3_sub <- sites_3 %>% 
+  group_by(src) %>%
+  filter(length %in% head(length, 2)) %>% 
+  ungroup() %>% 
+  slice(1:4)
+# These sites don't all overlap...
+sites_4_sub <- sites_4 %>% 
+  group_by(src) %>%
+  filter(length %in% head(length, 1)) %>% 
+  ungroup()
+
+# This then creates subsets of the four sites per cluster
+# Though we may want to consider the distance between sites as well...
+# Anyway, for now I stitch them together to be used as a further index 
+# for subsetting the daily data
+site_list_sub <- rbind(sites_1_sub, sites_2_sub, sites_3_sub, sites_4_sub)
+
+# Then subset the daily data
+SACTN_daily_clusters_sub <- SACTN_daily_clusters %>% 
+  filter(index %in% site_list_sub$index)
+```
+
 
 The function droplevels is used here to drop unused levels from the factor such as the length column. The unique function is then used to determine the amount sites found within this cluster:
 
@@ -158,11 +207,14 @@ I calculated the monthly mean temperature and standard deviation for each year a
 
 ```{r run_fun2, include=FALSE}
 # Calculate all of the matche-ups in cluster 1
-SACTN_clust_1_match <- clust_match(df = SACTN_daily_clusters, clust = 1)
-SACTN_clust_2_match <- clust_match(df = SACTN_daily_clusters, clust = 2)
+SACTN_clust_1_match <- clust_match(df = SACTN_daily_clusters_sub, clust = 1)
+SACTN_clust_2_match <- clust_match(df = SACTN_daily_clusters_sub, clust = 2)
+SACTN_clust_3_match <- clust_match(df = SACTN_daily_clusters_sub, clust = 3)
+SACTN_clust_4_match <- clust_match(df = SACTN_daily_clusters_sub, clust = 4)
+
 
 clust_legit <- function(df) {
-SACTN_clust_x_legit <- df %>% 
+  SACTN_clust_x_legit <- df %>% 
   mutate(temp_legit = temp_1-temp_2,
          month = month(date, abbr = T, label = T),
          year = year(date)) %>% 
@@ -170,28 +222,36 @@ SACTN_clust_x_legit <- df %>%
   group_by(index_pair, month, year) %>% 
   summarise(temp_mean_month_year = mean(temp_legit, na.rm = T),
             temp_sd_month_year = sd(temp_legit, na.rm = T))
-return(SACTN_clust_x_legit)
+  return(SACTN_clust_x_legit)
 }
 
 SACTN_clust_1_legit <- clust_legit(df = SACTN_clust_1_match)
 SACTN_clust_2_legit <- clust_legit(df = SACTN_clust_2_match)
+SACTN_clust_3_legit <- clust_legit(df = SACTN_clust_3_match)
+SACTN_clust_4_legit <- clust_legit(df = SACTN_clust_4_match)
 ```
 
 The code below lets us visualise the temperature variation at each of the sites found in cluster 1:
 
 ```{r define_fun3, include=FALSE}
 clust_plot <- function(df) {
-plot1 <- ggplot(df, aes(x = index_pair)) +
-  geom_boxplot(aes(y = temp_1), fill = "khaki4", alpha = 0.3) +
-  geom_boxplot(aes(y = temp_2), fill = "chartreuse3", alpha = 0.3) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  plot1 <- ggplot(df, aes(x = index_pair)) +
+    geom_boxplot(aes(y = temp_1), fill = "khaki4", alpha = 0.3) +
+    geom_boxplot(aes(y = temp_2), fill = "chartreuse3", alpha = 0.3) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
   return(plot1)
 }
 ```
 
 ```{r run_fun3}
 SACTN_clust_1_plot1 <- clust_plot(df = SACTN_clust_1_match)
+SACTN_clust_1_plot1
 SACTN_clust_2_plot1 <- clust_plot(df = SACTN_clust_2_match)
+SACTN_clust_2_plot1
+SACTN_clust_3_plot1 <- clust_plot(df = SACTN_clust_3_match)
+SACTN_clust_3_plot1
+SACTN_clust_4_plot1 <- clust_plot(df = SACTN_clust_4_match)
+SACTN_clust_4_plot1
 ```
 
 Now I make a visualisation to reveal the relationship between the mean temperature for each month of each year for each of the sites in cluster:
@@ -210,7 +270,13 @@ clust_plot2 <- function(df){
 
 ```{r run_fun}
 SACTN_clust_1_plot2 <- clust_plot2(df = SACTN_clust_1_legit)
+SACTN_clust_1_plot2
 SACTN_clust_2_plot2 <- clust_plot2(df = SACTN_clust_2_legit)
+SACTN_clust_2_plot2
+SACTN_clust_3_plot2 <- clust_plot2(df = SACTN_clust_3_legit)
+SACTN_clust_3_plot2
+SACTN_clust_4_plot2 <- clust_plot2(df = SACTN_clust_4_legit)
+SACTN_clust_4_plot2
 ```
 
 Creating a function which allows me to load all the wave data:
