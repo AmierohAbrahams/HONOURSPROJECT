@@ -136,9 +136,12 @@ sites_3_sub <- sites_3 %>%
   slice(1:4) 
 # These sites don't all overlap...
 sites_4_sub <- sites_4 %>% 
+  filter(src != "SAWS") %>% # The SAWS data time series doesn't match up
   group_by(src) %>%
-  filter(length %in% head(length, 1)) %>% 
-  ungroup()
+  filter(length %in% head(length, 2)) %>% 
+  filter(NA.perc %in% tail(NA.perc, 2)) %>% 
+  ungroup() %>% 
+  slice(c(1,4,7,12))
 
 # 
 # This then creates subsets of the four sites per cluster
