@@ -296,13 +296,13 @@ clust_plot3 <- function(df){
 ```
 
 ```{r run_fun}
-SACTN_clust_1_plot3 <- clust_plot2(df = SACTN_clust_1_legit)
+SACTN_clust_1_plot3 <- clust_plot3(df = SACTN_clust_1_legit)
 SACTN_clust_1_plot3
-SACTN_clust_2_plot3 <- clust_plot2(df = SACTN_clust_2_legit)
+SACTN_clust_2_plot3 <- clust_plot3(df = SACTN_clust_2_legit)
 SACTN_clust_2_plot3
-SACTN_clust_3_plot3 <- clust_plot2(df = SACTN_clust_3_legit)
+SACTN_clust_3_plot3 <- clust_plot3(df = SACTN_clust_3_legit)
 SACTN_clust_3_plot3
-SACTN_clust_4_plot3 <- clust_plot2(df = SACTN_clust_4_legit)
+SACTN_clust_4_plot3 <- clust_plot3(df = SACTN_clust_4_legit)
 SACTN_clust_4_plot3
 ```
 
