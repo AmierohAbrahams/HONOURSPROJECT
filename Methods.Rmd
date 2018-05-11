@@ -281,6 +281,32 @@ SACTN_clust_4_plot2 <- clust_plot2(df = SACTN_clust_4_legit)
 SACTN_clust_4_plot2
 ```
 
+Now I make a visualisation to reveal the relationship between the sd temperature for each month of each year for each of the sites in cluster
+
+```{r define_fun5, include=False}
+clust_plot3 <- function(df){
+  plot3 <- df %>% 
+    ggplot(aes(x = year, y = temp_sd_month_year)) +
+  geom_line(aes(group = index_pair, colour = index_pair), alpha = 0.7) +
+  geom_smooth(method = "gam", se = F, aes(colour = index_pair))  +
+  facet_wrap(~month) + 
+  theme_pubclean()
+  return(plot3)
+}
+```
+
+```{r run_fun}
+SACTN_clust_1_plot3 <- clust_plot2(df = SACTN_clust_1_legit)
+SACTN_clust_1_plot3
+SACTN_clust_2_plot3 <- clust_plot2(df = SACTN_clust_2_legit)
+SACTN_clust_2_plot3
+SACTN_clust_3_plot3 <- clust_plot2(df = SACTN_clust_3_legit)
+SACTN_clust_3_plot3
+SACTN_clust_4_plot3 <- clust_plot2(df = SACTN_clust_4_legit)
+SACTN_clust_4_plot3
+```
+
+
 Creating a function which allows me to load all the wave data:
 
 ```{r define_fun4}
