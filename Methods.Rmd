@@ -425,7 +425,7 @@ PairsDists <- function(latlongs) {
 }
 ```
 
-After the sites were matched the distance was converted to radians the sites were matched with the sites of the 10 year time series. Hereafter the wave data were combined with the temperature data at a depth of 7 and 15m respectivley. 
+Once the sites were matched with the sites of the 10 year time series, the distance was converted to radians. Hereafter the wave data were combined with the temperature data at a depth of 7 and 15m respectivley. 
 
 ```{r unique_name3}
 site_list_match_dist <- site_list_match %>%
