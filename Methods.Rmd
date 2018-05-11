@@ -133,13 +133,14 @@ sites_3_sub <- sites_3 %>%
   group_by(src) %>%
   filter(length %in% head(length, 2)) %>% 
   ungroup() %>% 
-  slice(1:4)
+  slice(1:4) 
 # These sites don't all overlap...
 sites_4_sub <- sites_4 %>% 
   group_by(src) %>%
   filter(length %in% head(length, 1)) %>% 
   ungroup()
 
+# 
 # This then creates subsets of the four sites per cluster
 # Though we may want to consider the distance between sites as well...
 # Anyway, for now I stitch them together to be used as a further index 
