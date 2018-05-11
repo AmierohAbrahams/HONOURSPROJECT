@@ -325,7 +325,7 @@ wave_data <- left_join(wave_data, sites_complete) %>%
 rm(FB, TB, HE, SH)
 ```
 
-Converting the 3-hour resolution wave data into daily data. The funs function, funs(), is used here as it provides a flexible way to generate a named list of functions for input to other functions such as mean and sd:
+Converting the 3-hour resolution wave data into daily data. The funs function, funs(), is used here as it provides a flexible way to generate a named list of functions for input to other functions such as the mean and sd:
 
 ```{r, include=FALSE}
 wave_daily <- wave_data %>% 
@@ -335,7 +335,7 @@ wave_daily <- wave_data %>%
   ungroup()
 ```
 
-The annual wave data for each of the sites excluding the year 2000:
+Calculating the annual wave data for each of the sites excluding the year 2000:
 
 ```{r, include=FALSE}
 wave_annually <- wave_data %>% 
@@ -363,7 +363,7 @@ site_list_10_years <- site_list %>%
   filter(index %in% SACTN_daily_clusters$index)
 ```
 
-Using the FNN package to determine the nearest wave data for each of the SACTN sites present in this cluster. Once that was determined only waves minimised to only include the 7 and 15m depths:
+Using the FNN package to determine the nearest wave data for each of the SACTN sites present in this cluster. Once that was determined only waves minimised to only include the 7 and 15m depths. Thereafter wave 7 and wave 15 was combined and all unnessasary infomationwas removed and the cluster column was then added to the sites infomation:
 
 ```{r unique_name2}
 waves_idx_7 <- as.data.frame(knnx.index( as.matrix(sites_complete_7[,2:3]), as.matrix(site_list_10_years[,5:6]), k = 1)) 
@@ -382,7 +382,7 @@ site_list_match <- cbind(site_list_10_years[,c(4:6,21)], sites_complete_subset)
 colnames(site_list_match) <- c("index", "lon1", "lat1", "cluster", "site_real", "lon2", "lat2", "wave_7", "wave_15")
 ```
 
-Creating a function using the haversine formula to calculate the geodesic distance between two points specified by radian lat/lon. The use of this haversine formula is to calculate the distance between two points, which is the shortest distance over the earth’s surface. The haversine formula is particularly well-conditioned for numerical computations at both large and small scales:
+Creating a function using the haversine formula to calculate the geodesic distance between two points specified by radian lat/lon, which is the shortest distance over the earth’s surface. This formula is particularly well-conditioned for numerical computations at both large and small scales:
 
 ```{r define_fun5}
 deg2rad <- function(deg) return(deg*pi/180)
