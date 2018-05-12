@@ -245,7 +245,7 @@ clust_plot <- function(df) {
 }
 ```
 
-```{r run_fun3}
+```{r run_fun3,  fig.cap = "Site locations along the South African coast represented by various temperature parameters. Temperature parameters include minimum, maximum and mean temperatures (° Celsius).", fig.height = 8, fig.width = 12}
 SACTN_clust_1_plot1 <- clust_plot(df = SACTN_clust_1_match)
 SACTN_clust_1_plot1
 SACTN_clust_2_plot1 <- clust_plot(df = SACTN_clust_2_match)
@@ -255,6 +255,8 @@ SACTN_clust_3_plot1
 SACTN_clust_4_plot1 <- clust_plot(df = SACTN_clust_4_match)
 SACTN_clust_4_plot1
 ```
+The general trend is that ocean temperature varies across the various sites. On average, Sodwana has the highest temperature and Port Nolloth has the lowest. In general however, most sites have relatively similar average temperatures with several sites having near identical temperatures (for example, Gansbaai and Cape Aghulus which has nearly no difference between them), likely owing to their geographical locations. Furthermore, we see that the temperatures of sites occurring along the same coasts have similar temperatures, but temperatures differ between coasts as we would expect.
+
 
 Now I make a visualisation to reveal the relationship between the mean temperature for each month of each year for each of the sites in cluster:
 
@@ -270,7 +272,7 @@ clust_plot2 <- function(df){
 }
 ```
 
-```{r run_fun}
+```{r run_fun, fig.cap = "Site locations represented by the monthly average temperatures between two sites (° Celsius). Each graphic shows a different month overtime from 1990 to 2016. These site locations are coloured by the temperature statistic relative to the legends provided.", fig.height = 8, fig.width = 12}
 SACTN_clust_1_plot2 <- clust_plot2(df = SACTN_clust_1_legit)
 SACTN_clust_1_plot2
 SACTN_clust_2_plot2 <- clust_plot2(df = SACTN_clust_2_legit)
@@ -280,6 +282,8 @@ SACTN_clust_3_plot2
 SACTN_clust_4_plot2 <- clust_plot2(df = SACTN_clust_4_legit)
 SACTN_clust_4_plot2
 ```
+Over a period of 16 years, we found that changes in average ocean temperatures did not occur uniformly across our various sites along the coasts of South Africa. Some sites increased in temperature at faster rates than others, for example Gansbaai increased in temperature faster than Cape Aghulus over the same time period. In addition, we found instances of seasonal variation having an effect on the changes to average ocean temperatures at a yearly rate, and again this does not occur uniformly across coastal sites.
+
 
 Now I make a visualisation to reveal the relationship between the sd temperature for each month of each year for each of the sites in cluster
 
@@ -295,7 +299,7 @@ clust_plot3 <- function(df){
 }
 ```
 
-```{r run_fun}
+```{r run_fun, fig.cap = "fig.cap = "Site locations represented by temperature parameters. Temperature parameters include monthly standard deviation between two sites (° Celsius). Each graphic shows a different month overtime from 1990 to 2016. These site locations are coloured by the temperature statistic relative to the legends provided.", fig.height = 8, fig.width = 12}
 SACTN_clust_1_plot3 <- clust_plot3(df = SACTN_clust_1_legit)
 SACTN_clust_1_plot3
 SACTN_clust_2_plot3 <- clust_plot3(df = SACTN_clust_2_legit)
@@ -487,6 +491,7 @@ SACTN_daily_clusters_7 %>%
   group_by(index) %>%
   summarise(temp_dir_cor = cor(temp, dir_mean))
 ```
+
 
 ```{r plt2}
 ggplot(data = SACTN_daily_clusters_7, aes(x = temp, y = dir_mean)) +
