@@ -245,7 +245,7 @@ clust_plot <- function(df) {
 }
 ```
 
-```{r run_fun3,  fig.cap = "Site locations along the South African coast represented by various temperature parameters. Temperature parameters include minimum, maximum and mean temperatures (° Celsius).", fig.height = 8, fig.width = 12}
+```{r run_fun3,  fig.cap = "Boxplots representing the different site locations along the South African coast represented by various temperature parameters. Temperature parameters include minimum, maximum and mean temperatures (° Celsius). The Boxplots represent the minimum, 25th percentile, median and 75th percentile of the temperatures measured. The interquartile can be dedudced by the difference between the percentiles with the dots representing the outliers in the data.", fig.height = 8, fig.width = 12}
 SACTN_clust_1_plot1 <- clust_plot(df = SACTN_clust_1_match)
 SACTN_clust_1_plot1
 SACTN_clust_2_plot1 <- clust_plot(df = SACTN_clust_2_match)
@@ -255,7 +255,12 @@ SACTN_clust_3_plot1
 SACTN_clust_4_plot1 <- clust_plot(df = SACTN_clust_4_match)
 SACTN_clust_4_plot1
 ```
-The general trend is that ocean temperature varies across the various sites. On average, Sodwana has the highest temperature and Port Nolloth has the lowest. In general however, most sites have relatively similar average temperatures with several sites having near identical temperatures (for example, Gansbaai and Cape Aghulus which has nearly no difference between them), likely owing to their geographical locations. Furthermore, we see that the temperatures of sites occurring along the same coasts have similar temperatures, but temperatures differ between coasts as we would expect.
+
+Temperatures were not uniformly distributed across our four clusters formed from Cluster three, with each set of sites having unique patterns of temperature variation. In cluster 1, which includes Cape Agulhas, Gansbaai, Mossel Bay, and Ystervarkpunt, we have a range of temperatures that varies between approximately 10 ºC to 24 ºC. Within this cluster of sites, we found that Mossel Bay had both the lowest minimum and highest maximum temperatures between the four sites, and had a comparatively tall box plot. This showed that Mossel Bay had the largest amount of variation in temperature within this cluster. Conversely, Gansbaai had the lowest amount of temperature variation as it had a relatively short box plot. Cape Agulhas and Ystervarkpunt had relatively similar ranges and distributions of temperature data as evident by their plots nearly overlapping completely. For each of these sites, temperature distribution was always skewed towards higher temperatures. 
+In the cluster consisting of Gordons Bay, Kalk Bay, Muizenberg, and Tsitsikamma, we find overall lower temperatures than those of the first cluster. In this cluster, temperatures ranged from between approximately 8 ºC to 24 ºC, with most box plots being relatively short. Whilst the overall range was similar to the first cluster, here the upper quartiles of temperatures were considerably and consistently lower than at the sites within the first cluster. Muizenberg had the widest variation of temperatures out of the four sites, with the remaining three having relatively similar temperature variations. As such, with the exception of comparisons relating to Muizenberg, each of the box plots greatly overlapped with one another with relatively few differences between them. Median temperatures across sites were nearly identical, with each being close to approximately 16 ºC.   
+The third cluster of cluster three had significantly lower temperatures than the others. In this cluster, which consisted of Honderklipbaai, Oudekraal, Patternoster, and Port Nolloth, we found much taller box plots with lower temperatures throughout. Temperatures within this cluster ranged from approximately 6.5 ºC to 17 ºC, with the average median temperature being close to 12 ºC across all four sites. Oudekraal had the largest variation of temperature across sites, and had a large amount of skewness towards lower temperatures. Conversely, Patternoster has relatively low variation in temperature as it had a comparatively short box plot with relatively evenly distributed temperatures. Port Nolloth, Patternoster, and Honderklipbaai were relatively similar in terms of temperature variances, as their box plots were largely overlapping with little differences between them. There were however several outliers present within the temperatures of these sites.
+The fourth cluster comprised of Aliwal Shoal, Sodwana, Glenmore, and Port Edward. Overall, the temperatures of these sites were higher than those of the sites within the other clusters, with a range of between 16.5 ºC to 27.5 ºC, which is considerably higher than that of the others. Box plots were all relatively short, and had little skewness. Temperatures differed greatly between these four sites however, with most of the box plots not overlapping very well. Sodwana had considerably more high temperatures than that of Port Edward and Glenmore. Median temperatures thus greatly differed amongst these four sites.
+
 
 
 Now I make a visualisation to reveal the relationship between the mean temperature for each month of each year for each of the sites in cluster:
@@ -272,7 +277,7 @@ clust_plot2 <- function(df){
 }
 ```
 
-```{r run_fun, fig.cap = "Site locations represented by the monthly average temperatures between two sites (° Celsius). Each graphic shows a different month overtime from 1990 to 2016. These site locations are coloured by the temperature statistic relative to the legends provided.", fig.height = 8, fig.width = 12}
+```{r run_fun, fig.cap = "Line graphs representing the monthly average temperatures between two sites (° Celsius). Each graphic showing a different month overtime from 1990 to 2016. These site locations are coloured by the temperature statistic relative to the legends provided. The linear lines are the linear models in their respective colours ", fig.height = 8, fig.width = 12}
 SACTN_clust_1_plot2 <- clust_plot2(df = SACTN_clust_1_legit)
 SACTN_clust_1_plot2
 SACTN_clust_2_plot2 <- clust_plot2(df = SACTN_clust_2_legit)
@@ -299,7 +304,7 @@ clust_plot3 <- function(df){
 }
 ```
 
-```{r run_fun, fig.cap = "fig.cap = "Site locations represented by temperature parameters. Temperature parameters include monthly standard deviation between two sites (° Celsius). Each graphic shows a different month overtime from 1990 to 2016. These site locations are coloured by the temperature statistic relative to the legends provided.", fig.height = 8, fig.width = 12}
+```{r run_fun, fig.cap = "fig.cap = "Line graph representing the standard deviation of the monthly temperatures (° Celsius). Each graphic shows a different month overtime from 1990 to 2016. These site locations are coloured by the temperature statistic relative to the legends provided.", fig.height = 8, fig.width = 12}
 SACTN_clust_1_plot3 <- clust_plot3(df = SACTN_clust_1_legit)
 SACTN_clust_1_plot3
 SACTN_clust_2_plot3 <- clust_plot3(df = SACTN_clust_2_legit)
@@ -490,13 +495,6 @@ SACTN_daily_clusters_15 <- left_join(SACTN_daily_clusters, site_list_10_years[, 
 SACTN_daily_clusters_7 %>%
   group_by(index) %>%
   summarise(temp_dir_cor = cor(temp, dir_mean))
-```
-
-
-```{r plt2}
-ggplot(data = SACTN_daily_clusters_7, aes(x = temp, y = dir_mean)) +
-  geom_line() +
-  facet_wrap(~index)
 ```
 
 
