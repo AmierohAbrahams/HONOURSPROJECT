@@ -53,7 +53,7 @@ Now to get to the data. The first step involves the loading of the site list.
 load("data/site_list_v4.2.RData")
 ```
 
-Performing the k-means clustering on a data matrix using the `kmeans()` function, which uses multiple random seeds to find a number of clusting solutions; it selects as the final solution the one that has the minimum total within-cluster sum of squared distances. K-means attempts to minimise distortion. At the minimum, all cluster centres are at the mean of the set of data points which are nearest to the cluster centre. The data contain variables from many sites along the South African coast, but in the analysis I use only some of them. These variables are the mean, min and max. [AJS: there was some redundant writing in here, so I edited it.]
+Performing the k-means clustering on a data matrix using the `kmeans()` function, which uses multiple random seeds to find a number of clusting solutions; it selects as the final solution the one that has the minimum total within-cluster sum of squared distances. K-means attempts to minimise distortion. At the minimum, all cluster centres are at the mean of the set of data points which are nearest to the cluster centre. The data contain variables from many sites along the South African coast, but in the analysis I use only some of them. These variables are the mean, min and max. 
 
 ```{r setup_k-means, include=TRUE}
 set.seed(10)
@@ -61,7 +61,7 @@ kmeans(site_list[,c(15, 18, 19)], 3)$cluster
 clust_columns <- site_list[,c(15, 18:19)]
 ```
 
-Visualisation of the clusters. My plotting functions partition the data into the clusters and colour code each point accordingly so I can see patterns that exist.
+Visualisation of the clusters. My plotting functions partition the data into the clusters and colour code each point accordingly so that I am able to see patterns that exist.
 
 ```{r define_fun1, include=TRUE}
 clust_i <- function(i) {
@@ -93,7 +93,7 @@ It is now necessary to load the SACTN dataset. The SACTN dataset comprise of 129
 load("SACTN_data/SACTN_daily_v4.2.RData")
 ```
 
-Creating a cluster index whilst only selecting cluster 4. Working with three decades of data for each of the sites along the coast. This allows for a longer time series:
+Creating a cluster index whilst only selecting cluster 4. Working with one decade of data for each of the sites along the coast.
 
 ```{r run_k-means, include=TRUE}
 set.seed(10)
@@ -131,15 +131,43 @@ sites_2_sub <- sites_2 %>%
   ungroup()
 sites_3_sub <- sites_3 %>%
   group_by(src) %>%
+<<<<<<< HEAD
   filter(length %in% head(length, 2)) %>%
   ungroup() %>%
   slice(1:4)
+||||||| merged common ancestors
+  filter(length %in% head(length, 2)) %>% 
+  ungroup() %>% 
+  slice(1:4)
+=======
+  filter(length %in% head(length, 2)) %>% 
+  ungroup() %>% 
+  slice(1:4) 
+>>>>>>> 51fd8d58146e317b0c285bbeb979ab2a51550192
 # These sites don't all overlap...
+<<<<<<< HEAD
 sites_4_sub <- sites_4 %>%
+||||||| merged common ancestors
+sites_4_sub <- sites_4 %>% 
+=======
+sites_4_sub <- sites_4 %>% 
+  filter(src != "SAWS") %>% # The SAWS data time series doesn't match up
+>>>>>>> 51fd8d58146e317b0c285bbeb979ab2a51550192
   group_by(src) %>%
+<<<<<<< HEAD
   filter(length %in% head(length, 1)) %>%
   ungroup()
+||||||| merged common ancestors
+  filter(length %in% head(length, 1)) %>% 
+  ungroup()
+=======
+  filter(length %in% head(length, 2)) %>% 
+  filter(NA.perc %in% tail(NA.perc, 2)) %>% 
+  ungroup() %>% 
+  slice(c(1,4,7,12))
+>>>>>>> 51fd8d58146e317b0c285bbeb979ab2a51550192
 
+# 
 # This then creates subsets of the four sites per cluster
 # Though we may want to consider the distance between sites as well...
 # Anyway, for now I stitch them together to be used as a further index
@@ -228,7 +256,7 @@ SACTN_clust_3_legit <- clust_legit(df = SACTN_clust_3_match)
 SACTN_clust_4_legit <- clust_legit(df = SACTN_clust_4_match)
 ```
 
-The code below lets us visualise the temperature variation at each of the sites found in cluster 1:
+The code below lets us visualise the temperature variation at each of the sites found in cluster 1
 
 ```{r define_fun3, include=TRUE}
 clust_plot <- function(df) {
@@ -240,10 +268,16 @@ clust_plot <- function(df) {
 }
 ```
 
+<<<<<<< HEAD
 ```{r run_fun3}
 SACTN_clust_1_match %>% 
   gather(key = "index", value = "temp", temp_1, temp_2, -date, -index_pair)
 
+||||||| merged common ancestors
+```{r run_fun3}
+=======
+```{r run_fun3,  fig.cap = "Boxplots representing the different site locations along the South African coast represented by various temperature parameters. Temperature parameters include minimum, maximum and mean temperatures (°C). The Boxplots represent the minimum, 25th percentile, median and 75th percentile of the temperatures measured. The interquartile can be dedudced by the difference between the percentiles with the dots representing the outliers in the data.", fig.height = 8, fig.width = 12}
+>>>>>>> 51fd8d58146e317b0c285bbeb979ab2a51550192
 SACTN_clust_1_plot1 <- clust_plot(df = SACTN_clust_1_match)
 SACTN_clust_1_plot1
 SACTN_clust_2_plot1 <- clust_plot(df = SACTN_clust_2_match)
@@ -252,9 +286,73 @@ SACTN_clust_3_plot1 <- clust_plot(df = SACTN_clust_3_match)
 SACTN_clust_3_plot1
 SACTN_clust_4_plot1 <- clust_plot(df = SACTN_clust_4_match)
 SACTN_clust_4_plot1
+
+combined_plot <- ggarrange(SACTN_clust_1_plot1,SACTN_clust_2_plot1,SACTN_clust_3_plot1,SACTN_clust_4_plot1)
+combined_plot
 ```
 
-Now I make a visualisation to reveal the relationship between the mean temperature for each month of each year for each of the sites in cluster:
+```{r}
+clust_plot_individual <- function(df) {
+  plot1_individual <- ggplot(df, aes(x = index_pair)) +
+    #geom_boxplot(aes(y = temp_1), fill = "khaki4", alpha = 0.3) +
+    geom_boxplot(aes(y = temp_2), fill = "chartreuse3", alpha = 0.3) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  return(plot1_individual)
+}
+```
+
+```{r}
+SACTN_clust_1_plot1_individual <- clust_plot_individual(df = SACTN_clust_1_match)
+SACTN_clust_1_plot1_individual
+SACTN_clust_2_plot1_individual <- clust_plot_individual(df = SACTN_clust_2_match)
+SACTN_clust_2_plot1_individual
+SACTN_clust_3_plot1_individual <- clust_plot_individual(df = SACTN_clust_3_match)
+SACTN_clust_3_plot1_individual
+SACTN_clust_4_plot1_individual <- clust_plot_individual(df = SACTN_clust_4_match)
+SACTN_clust_4_plot1_individual
+```
+
+```{r}
+clust1_plot_individual <- function(df) {
+  plot1_individual <- ggplot(df, aes(x = index_pair)) +
+    geom_boxplot(aes(y = temp_1), fill = "khaki4", alpha = 0.3) +
+    #geom_boxplot(aes(y = temp_2), fill = "chartreuse3", alpha = 0.3) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  return(plot1_individual)
+}
+```
+
+```{r}
+SACTN_clust_1_plot1.1_individual <- clust1_plot_individual(df = SACTN_clust_1_match)
+SACTN_clust_1_plot1.1_individual
+SACTN_clust_2_plot1.1_individual <- clust1_plot_individual(df = SACTN_clust_2_match)
+SACTN_clust_2_plot1.1_individual
+SACTN_clust_3_plot1.1_individual <- clust1_plot_individual(df = SACTN_clust_3_match)
+SACTN_clust_3_plot1.1_individual
+SACTN_clust_4_plot1.1_individual <- clust1_plot_individual(df = SACTN_clust_4_match)
+SACTN_clust_4_plot1.1_individual
+```
+
+```{r}
+cluster_1 <- ggarrange(SACTN_clust_1_plot1_individual,SACTN_clust_1_plot1.1_individual)
+cluster_1
+cluster_2 <- ggarrange(SACTN_clust_2_plot1_individual,SACTN_clust_2_plot1.1_individual)
+cluster_2
+cluster_3 <- ggarrange(SACTN_clust_3_plot1_individual,SACTN_clust_3_plot1.1_individual)
+cluster_3
+cluster_4 <- ggarrange(SACTN_clust_4_plot1_individual,SACTN_clust_4_plot1.1_individual)
+cluster_4
+```
+
+Temperatures were not uniformly distributed across our four clusters formed from Cluster three, with each set of sites having unique patterns of temperature variation. In cluster 1, which includes Cape Agulhas, Gansbaai, Mossel Bay, and Ystervarkpunt, we have a range of temperatures that varies between approximately 10 ºC to 24 ºC. Within this cluster of sites, we found that Mossel Bay had both the lowest minimum and highest maximum temperatures between the four sites, and had a comparatively tall box plot. This showed that Mossel Bay had the largest amount of variation in temperature within this cluster. Conversely, Gansbaai had the lowest amount of temperature variation as it had a relatively short box plot. Cape Agulhas and Ystervarkpunt had relatively similar ranges and distributions of temperature data as evident by their plots nearly overlapping completely. For each of these sites, temperature distribution was always skewed towards higher temperatures. 
+In the cluster consisting of Gordons Bay, Kalk Bay, Muizenberg, and Tsitsikamma, we find overall lower temperatures than those of the first cluster. In this cluster, temperatures ranged from between approximately 8ºC to 24ºC, with most box plots being relatively short. Whilst the overall range was similar to the first cluster, here the upper quartiles of temperatures were considerably and consistently lower than at the sites within the first cluster. Muizenberg had the widest variation of temperatures out of the four sites, with the remaining three having relatively similar temperature variations. As such, with the exception of comparisons relating to Muizenberg, each of the box plots greatly overlapped with one another with relatively few differences between them. Median temperatures across sites were nearly identical, with each being close to approximately 16ºC.   
+The third cluster had significantly lower temperatures than the others. In this cluster, which consisted of Honderklipbaai, Oudekraal, Patternoster, and Port Nolloth, we found much taller box plots with lower temperatures throughout (RWS: The boxplots are not taller in cluster 3. Rather, the y-axis is smaller than the other clusters, so they appear taller. Be careful about making comparisons between graphs). Temperatures within this cluster ranged from approximately 6.5ºC to 17ºC, with the average median temperature being close to 12ºC across all four sites. Oudekraal had the largest variation of temperature across sites, and had a large amount of skewness towards lower temperatures. Conversely, Patternoster has relatively low variation in temperature as it had a comparatively short box plot with relatively evenly distributed temperatures. Port Nolloth, Patternoster, and Honderklipbaai were relatively similar in terms of temperature variances, as their box plots were largely overlapping with little differences between them. There were however several outliers present within the temperatures of these sites.
+The fourth cluster comprised of Aliwal Shoal, Sodwana, Glenmore, and Port Edward. Overall, the temperatures of these sites were higher than those of the sites within the other clusters, with a range of between 16.5ºC to 27.5ºC, which is considerably higher than that of the others. Box plots were all relatively short, and had little skewness. Temperatures differed greatly between these four sites however, with most of the box plots not overlapping very well. Sodwana had considerably more high temperatures than that of Port Edward and Glenmore. Median temperatures thus greatly differed amongst these four sites.
+
+(RWS: I think it would be useful to include normal boxplots of the sites in each cluster as well. The boxplots above show the comparisons for overlapping temperatures, but they don't give the exact representation of what the temperatures are in each time series. I think it could look good to create a two-panel boxplot figure for each cluster. The top panel would show normal boxplots and the bottom panel would show these types of box plots. One two-panel figure for each cluster.)
+
+
+Now I make a visualisation to reveal the relationship between the mean temperature for each month of each year over time for each of the sites in cluster:
 
 ```{r define_fun4, include=TRUE}
 clust_plot2 <- function(df){
@@ -268,7 +366,7 @@ clust_plot2 <- function(df){
 }
 ```
 
-```{r run_fun}
+```{r run_fun, fig.cap = "Line graphs representing the monthly average temperatures between two sites (° Celsius). Each graphic showing a different month overtime from 1990 to 2016. These site locations are coloured by the temperature statistic relative to the legends provided. The linear lines are the linear models in their respective colours ", fig.height = 8, fig.width = 12}
 SACTN_clust_1_plot2 <- clust_plot2(df = SACTN_clust_1_legit)
 SACTN_clust_1_plot2
 SACTN_clust_2_plot2 <- clust_plot2(df = SACTN_clust_2_legit)
@@ -277,7 +375,48 @@ SACTN_clust_3_plot2 <- clust_plot2(df = SACTN_clust_3_legit)
 SACTN_clust_3_plot2
 SACTN_clust_4_plot2 <- clust_plot2(df = SACTN_clust_4_legit)
 SACTN_clust_4_plot2
+
+plot2_final <- ggarrange(SACTN_clust_1_plot2,SACTN_clust_2_plot2,SACTN_clust_3_plot2,SACTN_clust_4_plot2)
+plot2_final
 ```
+
+On a monthly basis, between 1990 to 2016, the rates of changes in differences of average temperatures between sites within cluster 1 (Cape Agulhas, Gansbaai, Mossel Bay, and Ystervarkpunt) varied on an apparent seasonal basis. During the summer months we saw that there were large differences in average temperatures between Gansbaai and the remaining three sites, and that the rate of changes between these rapidly increased on yearly basis. Towards the end of summer and autumn months, in addition to the continuing trends observed between Gansbaai and the remaining sites we then also saw an increase in the rate of change in differences between Cape Agulhas and Mossel Bay, and Ystervarkpunt respectively. During winter we see very little differences in average temperatures between all four sites, and this remained relatively stable over the time period. During spring months there was an increase in the rate of change of average temperatures between Cape Agulhas and Gansbaai which continues into summer. 
+Conversely to the first cluster, in the cluster containing Kalk Bay, Gordons Bay, Muizenberg and Tsitsikamma the largest rates of changes were observed during autumn and winter months. In this cluster we saw large differences in average temperatures between Muizenberg and the remaining sites, with the differences increasing annually throughout 1972 and 2016 during winter. Similarly, the rates of changes in differences of average temperatures also increased between Kalk Bay and Muizenberg during these same months. In the summer and spring months we saw relatively little differences in average temperatures between sites, with minimal differences in the rates of these changes over the 44 year time period. These rates increased during spring.
+In the cluster that was comprised of Hondeklipbaai, Oudekraal, Patternoster, and Port Nolloth, we found large differences in average temperatures between sites at certain months between 1990 and 2016. The rate of change in the difference of average temperatures between Port Nolloth and Oudekraal increased every month for this time period, and was most prominent during spring and summer. There were also large increases in the rate of change between differences of average temperature between Peternoster and Oudekraal throughout spring. For the remining sites, differences in average temperatures were relatively low throughout each month, with relatively stable rates of change.
+In  the forth cluster, which was comprised of Aliwal Shoal, Glenmore, Port Edward, and Sodwana, we found large changes in the differences of average temperatures between sites on a monthly basis between 1980 and 2016. Here, the biggest changes occurred in the month of April. In this month we saw a steep increase in the rate of change of differences of average temperature between Aliwal Shoal and Sodwana, and Aliwal Shoal and Port Edward. Additionally, there was a large difference in average temperature between Port Edward and Sodwana, with the most prominent increase in the rate of change occurring during the autumn and winter months. 
+
+Now I make a visualisation to reveal the relationship between the sd of the temperatures for each month of each year for each of the sites in the clusters.
+
+```{r define_fun5, include=False}
+clust_plot3 <- function(df){
+  plot3 <- df %>% 
+    ggplot(aes(x = year, y = temp_sd_month_year)) +
+  geom_line(aes(group = index_pair, colour = index_pair), alpha = 0.7) +
+  geom_smooth(method = "gam", se = F, aes(colour = index_pair))  +
+  facet_wrap(~month) + 
+  theme_pubclean()
+  return(plot3)
+}
+```
+
+```{r run_fun, include = True, fig.cap = "fig.cap = "Line graph representing the standard deviation of the monthly temperatures (° Celsius). Each graphic shows a different month overtime from 1990 to 2016. These site locations are coloured by the temperature statistic relative to the legends provided.", fig.height = 8, fig.width = 12}
+SACTN_clust_1_plot3 <- clust_plot3(df = SACTN_clust_1_legit)
+SACTN_clust_1_plot3
+SACTN_clust_2_plot3 <- clust_plot3(df = SACTN_clust_2_legit)
+SACTN_clust_2_plot3
+SACTN_clust_3_plot3 <- clust_plot3(df = SACTN_clust_3_legit)
+SACTN_clust_3_plot3
+SACTN_clust_4_plot3 <- clust_plot3(df = SACTN_clust_4_legit)
+SACTN_clust_4_plot3
+
+plot3_final<- ggarrange(SACTN_clust_1_plot3,SACTN_clust_2_plot3,SACTN_clust_3_plot3,SACTN_clust_4_plot3)
+plot3_final
+```
+
+To further show changes in temperatures between sites within clusters we also assessed the standard deviations of the temperature differences. In the cluster consisting of Cape Agulhas, Gansbaai, Mossel Bay, and Ystervarkpunt, we found relatively little differences in changes to standard deviation. The most variation occurred towards the end of the summer season within the months of February, March, and April. The changes in standard deviation were mostly seen between Ystervarkpunt and Mossel Bay, throughout the above mentioned months as well as in December, and between Gaansbaai and Ystervarkpunt through the same time period where the rates of standard deviation fluctuations differed. Throughout the remaining months, standard deviations of the differences in temperature were relatively similar and did not vary much across all sites. 
+We found similar trends within the cluster containing Gordons Bay, Kalk Bay, Muizenberg, and Tsitsikamma. Here, again we found that there were very few changes in standard deviations for sites within most months except those towards the end of summer and spring seasons. Most variation was found within the months of February, March, and April, and mostly occurred between Kalk Bay and Tsitsikamma. Most sites had very straight trend lines and did not have any apparent differences in standard deviations of temperature differences across their overlapping time period.
+In the cluster containing Hondeklipbaai, Patternoster, Port Nolloth, and Oudekraal, the biggest shifts in standard deviations of temperature between sites were most prominent during summer. Here, changes in differences of standard deviations fluctuated greatly in November, December, and Januaury. Most variation occurred within November, and seemingly occurred across all four sites as seen by the large slopes in the trend lines. Conversely, winter months had relatively little differences between standard deviations of temperatures across sites apart from Port Nolloth and Oudekraal which fluctuated throughout, as well as Hondeklipbaai and Oudekraal which had steep linear model lines throughout each month.
+The cluster containing Aliwal Shoal, Glenmore, Port Edward, and Sodwana had relatively little changes in standard deviations of temperature differences between sites over the overlapping time periods. Here, we saw that most variation occurred within the months of March, April, and May where there were changes between Sodwana and Aliwal Shoal, Glenmore, and Port Edward respectively. Throughout the remaining months there were relatively little changes in differences of standard deviations of temperature differences between sites as most linear models produced straight lines across the overlapping time periods. 
 
 Creating a function which allows me to load all the wave data:
 
@@ -327,7 +466,7 @@ wave_data <- left_join(wave_data, sites_complete) %>%
 rm(FB, TB, HE, SH)
 ```
 
-Converting the 3-hour resolution wave data into daily data:
+Converting the 3-hour resolution wave data into daily data. The funs function, funs(), is used here as it provides a flexible way to generate a named list of functions for input to other functions such as the mean and sd:
 
 ```{r, include=TRUE}
 wave_daily <- wave_data %>%
@@ -337,7 +476,7 @@ wave_daily <- wave_data %>%
   ungroup()
 ```
 
-The annual wave data for each of the sites excluding the year 2000:
+Calculating the annual wave data for each of the sites excluding the year 2000:
 
 ```{r, include=TRUE}
 wave_annually <- wave_data %>%
@@ -358,14 +497,14 @@ sites_complete_15 <- sites_complete %>%
   filter(depth == "wave_15")
 ```
 
-Creating a 10year time series
+Creating a time series over a period of 10 years:
 
 ```{r}
 site_list_10_years <- site_list %>%
   filter(index %in% SACTN_daily_clusters$index)
 ```
 
-Using the FNN package to determine the nearest wave data for each of the SACTN sites present in this cluster. Once that was determined only waves minimised to only include the 7 and 15m depths:
+Using the FNN package to determine the nearest wave data for each of the SACTN sites present in this cluster. Once that was determined only waves minimised to only include the 7 and 15m depths. Thereafter wave 7 and wave 15 was combined and all unnessasary infomationwas removed and the cluster column was then added to the sites infomation:
 
 ```{r unique_name2}
 waves_idx_7 <- as.data.frame(knnx.index( as.matrix(sites_complete_7[,2:3]), as.matrix(site_list_10_years[,5:6]), k = 1))
@@ -384,7 +523,7 @@ site_list_match <- cbind(site_list_10_years[,c(4:6,20)], sites_complete_subset)
 colnames(site_list_match) <- c("index", "lon1", "lat1", "cluster", "site_real", "lon2", "lat2", "wave_7", "wave_15")
 ```
 
-Creating a function using the haversine formula to calculate the geodesic distance between two points specified by radian lat/lon:
+Creating a function using the haversine formula to calculate the geodesic distance between two points specified by radian lat/lon, which is the shortest distance over the earth’s surface. This formula is particularly well-conditioned for numerical computations at both large and small scales:
 
 ```{r define_fun5}
 deg2rad <- function(deg) return(deg*pi/180)
@@ -427,7 +566,13 @@ PairsDists <- function(latlongs) {
 }
 ```
 
+<<<<<<< HEAD
 After the sites were matched the distance was converted to radians the sites were matched with the sites of the 10 year time series. Hereafter the wave data were combined with the temperature data at a depth of 7 and 15m respectivley.
+||||||| merged common ancestors
+After the sites were matched the distance was converted to radians the sites were matched with the sites of the 10 year time series. Hereafter the wave data were combined with the temperature data at a depth of 7 and 15m respectivley. 
+=======
+Once the sites were matched with the sites of the 10 year time series, the distance was converted to radians. Hereafter the wave data were combined with the temperature data at a depth of 7 and 15m respectivley. 
+>>>>>>> 51fd8d58146e317b0c285bbeb979ab2a51550192
 
 ```{r unique_name3}
 site_list_match_dist <- site_list_match %>%
@@ -460,13 +605,10 @@ SACTN_daily_clusters_7 %>%
   summarise(temp_dir_cor = cor(temp, dir_mean))
 ```
 
-```{r plt2}
-ggplot(data = SACTN_daily_clusters_7, aes(x = temp, y = dir_mean)) +
-  geom_line() +
-  facet_wrap(~index)
+
+```{r}
+
 ```
-
-
 
 
 
