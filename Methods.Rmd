@@ -256,7 +256,7 @@ SACTN_clust_4_plot1 <- clust_plot(df = SACTN_clust_4_match)
 SACTN_clust_4_plot1
 
 combined_plot <- ggarrange(SACTN_clust_1_plot1,SACTN_clust_2_plot1,SACTN_clust_3_plot1,SACTN_clust_4_plot1)
-
+combined_plot
 ```
 
 ```{r}
@@ -278,10 +278,7 @@ SACTN_clust_3_plot1_individual <- clust_plot_individual(df = SACTN_clust_3_match
 SACTN_clust_3_plot1_individual
 SACTN_clust_4_plot1_individual <- clust_plot_individual(df = SACTN_clust_4_match)
 SACTN_clust_4_plot1_individual
-
-
 ```
-
 
 ```{r}
 clust1_plot_individual <- function(df) {
@@ -302,8 +299,6 @@ SACTN_clust_3_plot1.1_individual <- clust1_plot_individual(df = SACTN_clust_3_ma
 SACTN_clust_3_plot1.1_individual
 SACTN_clust_4_plot1.1_individual <- clust1_plot_individual(df = SACTN_clust_4_match)
 SACTN_clust_4_plot1.1_individual
-
-
 ```
 
 ```{r}
@@ -352,11 +347,11 @@ SACTN_clust_4_plot2
 plot2_final <- ggarrange(SACTN_clust_1_plot2,SACTN_clust_2_plot2,SACTN_clust_3_plot2,SACTN_clust_4_plot2)
 plot2_final
 ```
+
 On a monthly basis, between 1990 to 2016, the rates of changes in differences of average temperatures between sites within cluster 1 (Cape Agulhas, Gansbaai, Mossel Bay, and Ystervarkpunt) varied on an apparent seasonal basis. During the summer months we saw that there were large differences in average temperatures between Gansbaai and the remaining three sites, and that the rate of changes between these rapidly increased on yearly basis. Towards the end of summer and autumn months, in addition to the continuing trends observed between Gansbaai and the remaining sites we then also saw an increase in the rate of change in differences between Cape Agulhas and Mossel Bay, and Ystervarkpunt respectively. During winter we see very little differences in average temperatures between all four sites, and this remained relatively stable over the time period. During spring months there was an increase in the rate of change of average temperatures between Cape Agulhas and Gansbaai which continues into summer. 
 Conversely to the first cluster, in the cluster containing Kalk Bay, Gordons Bay, Muizenberg and Tsitsikamma the largest rates of changes were observed during autumn and winter months. In this cluster we saw large differences in average temperatures between Muizenberg and the remaining sites, with the differences increasing annually throughout 1972 and 2016 during winter. Similarly, the rates of changes in differences of average temperatures also increased between Kalk Bay and Muizenberg during these same months. In the summer and spring months we saw relatively little differences in average temperatures between sites, with minimal differences in the rates of these changes over the 44 year time period. These rates increased during spring.
 In the cluster that was comprised of Hondeklipbaai, Oudekraal, Patternoster, and Port Nolloth, we found large differences in average temperatures between sites at certain months between 1990 and 2016. The rate of change in the difference of average temperatures between Port Nolloth and Oudekraal increased every month for this time period, and was most prominent during spring and summer. There were also large increases in the rate of change between differences of average temperature between Peternoster and Oudekraal throughout spring. For the remining sites, differences in average temperatures were relatively low throughout each month, with relatively stable rates of change.
 In  the forth cluster, which was comprised of Aliwal Shoal, Glenmore, Port Edward, and Sodwana, we found large changes in the differences of average temperatures between sites on a monthly basis between 1980 and 2016. Here, the biggest changes occurred in the month of April. In this month we saw a steep increase in the rate of change of differences of average temperature between Aliwal Shoal and Sodwana, and Aliwal Shoal and Port Edward. Additionally, there was a large difference in average temperature between Port Edward and Sodwana, with the most prominent increase in the rate of change occurring during the autumn and winter months. 
-
 
 Now I make a visualisation to reveal the relationship between the sd of the temperatures for each month of each year for each of the sites in the clusters.
 
@@ -385,6 +380,7 @@ SACTN_clust_4_plot3
 plot3_final<- ggarrange(SACTN_clust_1_plot3,SACTN_clust_2_plot3,SACTN_clust_3_plot3,SACTN_clust_4_plot3)
 plot3_final
 ```
+
 To further show changes in temperatures between sites within clusters we also assessed the standard deviations of the temperature differences. In the cluster consisting of Cape Agulhas, Gansbaai, Mossel Bay, and Ystervarkpunt, we found relatively little differences in changes to standard deviation. The most variation occurred towards the end of the summer season within the months of February, March, and April. The changes in standard deviation were mostly seen between Ystervarkpunt and Mossel Bay, throughout the above mentioned months as well as in December, and between Gaansbaai and Ystervarkpunt through the same time period where the rates of standard deviation fluctuations differed. Throughout the remaining months, standard deviations of the differences in temperature were relatively similar and did not vary much across all sites. 
 We found similar trends within the cluster containing Gordons Bay, Kalk Bay, Muizenberg, and Tsitsikamma. Here, again we found that there were very few changes in standard deviations for sites within most months except those towards the end of summer and spring seasons. Most variation was found within the months of February, March, and April, and mostly occurred between Kalk Bay and Tsitsikamma. Most sites had very straight trend lines and did not have any apparent differences in standard deviations of temperature differences across their overlapping time period.
 In the cluster containing Hondeklipbaai, Patternoster, Port Nolloth, and Oudekraal, the biggest shifts in standard deviations of temperature between sites were most prominent during summer. Here, changes in differences of standard deviations fluctuated greatly in November, December, and Januaury. Most variation occurred within November, and seemingly occurred across all four sites as seen by the large slopes in the trend lines. Conversely, winter months had relatively little differences between standard deviations of temperatures across sites apart from Port Nolloth and Oudekraal which fluctuated throughout, as well as Hondeklipbaai and Oudekraal which had steep linear model lines throughout each month.
