@@ -446,13 +446,13 @@ ggplot(data = site_coordinates4, aes(x = lon, y = lat)) +
 Creating a function which allows me to load all the wave data:
 
 ```{r define_fun4}
-test_func <- function(wave_files) {
+load_wave <- function(wave_files) {
   site_type <- sapply(strsplit(as.character(wave_files), "/"), "[[", 3)
   site_num <- sapply(strsplit(as.character(wave_files), "/"), "[[", 4)
   site_num <- sapply(strsplit(site_num, ".txt"), "[[", 1)
   site_name <- paste(site_type, site_num, sep = "")
 
-  try1 <- read.csv(wave_files, col.names = c("date", "hs", "tp", "dir", "dirw", "spw"), sep = "", header = F) %>%
+  try1 <- read_csv(wave_files, col.names = c("date", "hs", "tp", "dir", "dirw", "spw"), sep = "", header = F) %>%
     filter(tp != -999) %>%
     mutate(date = as.POSIXct(as.character(date), "%Y%m%d%H%M", tz = "Africa/Johannesburg")) %>%
     mutate(site = site_name) %>%
@@ -529,7 +529,7 @@ site_list_10_years <- site_list %>%
   filter(index %in% SACTN_daily_clusters$index)
 ```
 
-Using the FNN package to determine the nearest wave data for each of the SACTN sites present in this cluster. Once that was determined only waves minimised to only include the 7 and 15m depths. Thereafter wave 7 and wave 15 was combined and all unnessasary infomationwas removed and the cluster column was then added to the sites infomation:
+Using the FNN package to determine the nearest wave data for each of the SACTN sites present in this cluster. Once that was determined only waves minimised to only include the 7 and 15m depths. Thereafter wave 7 and wave 15 was combined and all unnessasary infomation was removed and the cluster column was then added to the sites infomation:
 
 ```{r unique_name2}
 waves_idx_7 <- as.data.frame(knnx.index( as.matrix(sites_complete_7[,2:3]), as.matrix(site_list_10_years[,5:6]), k = 1))
