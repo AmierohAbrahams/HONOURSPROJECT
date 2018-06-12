@@ -1,5 +1,9 @@
 This folder contains all of the wave data used in this project.
 
+----------------------------------
+
+The files labelled with only two letters (see below) are old and were taken from Tim Ponton's project last year.
+
 "FB" contains wave sites from False Bay.
 
 "TB" contains wave sites from Table Bay.
@@ -9,3 +13,9 @@ This folder contains all of the wave data used in this project.
 "SH" contains wave sites from St Helena Bay area.
 
 The site list for these wave data may be found at "metadata/sites_complete.csv". This file gives the names of the kelp sampling sites, their lon/lat values, and the closest corrseponding wave site, as shown by the wave site annotation. Wave sites at the 7 m and 15 m isobath are given.
+
+----------------------------------
+
+The new wave data to be used in Amieroh's project, which match the sites chosen for each coastal cluster, may be found in folders with the full site name written out.
+
+The wave data may be matched to the final sites found in 'data/site_list_sub.csv' by the matching site and folder names. This may require a bit of editing for some naming constraints (e.g. Betty's Bay). 
