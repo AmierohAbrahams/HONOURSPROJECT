@@ -105,7 +105,7 @@ site_list_clusters <- site_list %>%
   filter(length >= 3650, depth <= 5)
 
 SACTN_daily_clusters <- left_join(SACTN_daily_v4.2, site_list[,c(4, 13, 21)]) %>% 
-  filter(index %in% site_list_clusters$index) 
+  filter(index %in% site_list_clusters$index)                                                                                                                 
 ```
 
 With the sites now split into four clusters, the next step is to reduce the number of sites per cluster down to a manageable, but still representative, sub-sample of the whole. This is done primarily for two reasons. The first, simply, is to allow for the comparisons to be more readily interpretable by humans. The second more objective reason is to allow for an equal amount of sampling per cluster. The East coast is much more heavily sampled than the rest and so this imbalance must be addressed. The criteria that must be considered for the sub-samples are that both instrument types (UTR and thermometer) are present, and as many sources are included as are possible.
@@ -183,7 +183,7 @@ clust_match <- function(df, clust) {
     filter(cluster == clust) %>%
     select(-length) %>%
     droplevels()
-  for (i in 1:length(levels(df2$index))) {
+  for (i in 1:length(levels(df2$index))) {                                                                                                                                                                                                                                                                                            
     # for (i in 1:10) {
     SACTN_df_1 <- filter(df2, index == levels(index)[i])
     for (j in 1:length(levels(df2$index))) {
@@ -248,7 +248,7 @@ clust_plot <- function(df) {
     geom_boxplot(aes(y = temp, fill = temp_grp), alpha = 0.3) +
     scale_fill_manual(values = c("khaki4", "chartreuse3")) +
     theme(axis.text.x = element_text(angle = 45, hjust = 1))
-  return(plot1)
+      return(plot1)
 }
 ```
 
@@ -305,7 +305,11 @@ plot2_final <- ggarrange(SACTN_clust_1_plot2,SACTN_clust_2_plot2,SACTN_clust_3_p
 plot2_final
 ```
 
-On a monthly basis, between 1990 to 2016, the rates of changes in differences of average temperatures between sites within cluster 1 (Cape Agulhas, Gansbaai, Mossel Bay, and Ystervarkpunt) varied on an apparent seasonal basis. During the summer months we saw that there were large differences in average temperatures between Gansbaai and the remaining three sites, and that the rate of changes between these rapidly increased on yearly basis <AJS: I don't see how you can conclude from these graphs that the rates of change rapidly increased on a yearly basis... but the preceding statement seems correct. I think this should be tested statistically... We need to figure out a way to do an ANCOVA to test the constancy of slopes seasonally.>. Towards the end of summer and autumn months, in addition to the continuing trends observed between Gansbaai and the remaining sites, we then also saw an increase in the rate of change <AJS: again, "increase in rate of change" cannot be inferred from linear models...> in differences between Cape Agulhas and Mossel Bay, and Ystervarkpunt respectively. During winter we see very little differences in average temperatures between all four sites, and this remained relatively stable over the time period. During spring months there was an increase in the rate of change of average temperatures between Cape Agulhas and Gansbaai which continues into summer. <AJS: I like this finding. We should have a meeting with Rob W soon as he also have some new funky data that I think corrobotae your analysis.>
+On a monthly basis, between 1990 to 2016, the rates of changes in differences of average temperatures between sites within cluster 1 (Cape Agulhas, Gansbaai, Mossel Bay, and Ystervarkpunt) varied on an apparent seasonal basis. During the summer months we saw that there were large differences in average temperatures between Gansbaai and the remaining three sites, and that the rate of changes between these rapidly increased on yearly basis 
+
+<AJS: I don't see how you can conclude from these graphs that the rates of change rapidly increased on a yearly basis... but the preceding statement seems correct. I think this should be tested statistically... We need to figure out a way to do an ANCOVA to test the constancy of slopes seasonally.>. Towards the end of summer and autumn months, in addition to the continuing trends observed between Gansbaai and the remaining sites, we then also saw an increase in the rate of change <AJS: again, "increase in rate of change" cannot be inferred from linear models...> 
+
+in differences between Cape Agulhas and Mossel Bay, and Ystervarkpunt respectively. During winter we see very little differences in average temperatures between all four sites, and this remained relatively stable over the time period. During spring months there was an increase in the rate of change of average temperatures between Cape Agulhas and Gansbaai which continues into summer. <AJS: I like this finding. We should have a meeting with Rob W soon as he also have some new funky data that I think corrobotae your analysis.>
 
 Conversely to the first cluster, in the cluster containing Kalk Bay, Gordons Bay, Muizenberg and Tsitsikamma the largest rates of changes were observed during autumn and winter months. In this cluster we saw large differences in average temperatures between Muizenberg and the remaining sites, with the differences increasing annually throughout 1972 and 2016 during winter <AJS: this is a correct statement that I can live with.>. Similarly, the rates of changes in differences of average temperatures also increased between Kalk Bay and Muizenberg during these same months. In the summer and spring months we saw relatively little differences in average temperatures between sites, with minimal differences in the rates of these changes over the 44 year time period. These rates increased during spring.
 
@@ -356,97 +360,52 @@ Map showing the location of each site within each of the four clusters
 ```{r}
 library(ggrepel)
 
-# site_coordinates1 <- filter(site_list_sub, cluster == 1) %>% 
-#   select(site, lon, lat)
+site_coordinates1 <- filter(site_list_sub, cluster == 1) %>% 
+  select(site, lon, lat)
 # write_csv(site_coordinates1, path = "Mapping/site_coordinates1.csv")
-# site_coordinates2 <- filter(site_list_sub, cluster == 2) %>% 
-#   select(site, lon, lat)
+
+site_coordinates2 <- filter(site_list_sub, cluster == 2) %>% 
+  select(site, lon, lat)
 # write_csv(site_coordinates2, path = "Mapping/site_coordinates2.csv")
-# site_coordinates3 <- filter(site_list_sub, cluster == 3) %>% 
-#   select(site, lon, lat)
+
+site_coordinates3 <- filter(site_list_sub, cluster == 3) %>% 
+   select(site, lon, lat)
 # write_csv(site_coordinates3, path = "Mapping/site_coordinates3.csv")
-# site_coordinates4 <- filter(site_list_sub, cluster == 4) %>% 
-#   select(site, lon, lat)
+
+site_coordinates4 <- filter(site_list_sub, cluster == 4) %>% 
+  select(site, lon, lat)
 # write_csv(site_coordinates4, path = "Mapping/site_coordinates4.csv")
 
-# Creating graphs to better view and understand the site location
-# Clusters in clus 1
-# cluster 1
-# Cape agulhas
-# Ystervarkpunt
-# mossel bay
-# Gansbaai
-
-
 # Loading the data --------------------------------------------------------
-load("Mapping/3_site_clustering/sa_provinces.RData")
-site_coordinates1 <- read_csv("Mapping/site_coordinates1.csv")
+load("Mapping/sa_provinces.RData")
 load("Mapping/south_africa_coast.RData")
 
 
 # mapping -----------------------------------------------------------------
-
-
-ggplot(data = site_coordinates1, aes(x = lon, y = lat)) +
+mapping_plot <- function(df){
+  mapping <- df %>% 
+ggplot(aes(x = lon, y = lat)) +
   geom_polygon(data = south_africa_coast, aes(group = group), fill = "grey70") +
   coord_cartesian(xlim = c(12, 36), ylim = c(-38, -26)) +
   geom_path(data = sa_provinces, aes(group = group)) +
-  geom_point(data = site_coordinates1)  +
-  geom_label_repel(data =site_coordinates1, aes(x = lon, y = lat, label = site), 
+  geom_point(data = df)  +
+  geom_label_repel(data =df, aes(x = lon, y = lat, label = site), 
                    size = 3, box.padding = 2, nudge_x = -0.5, nudge_y = 0.2, segment.alpha = 0.4) +
   theme(axis.title = element_blank(),
         axis.ticks = element_blank(),
         axis.text = element_blank())
+  return(mapping)
+}
 
-# cluster 2
-# Gordons Bay
-# Tsitsikamma
-# Kalk Bay
-# Muizenberg
-site_coordinates2 <- read_csv("Mapping/site_coordinates2.csv")
-ggplot(data = site_coordinates2, aes(x = lon, y = lat)) +
-  geom_polygon(data = south_africa_coast, aes(group = group), fill = "grey70") +
-  coord_cartesian(xlim = c(12, 36), ylim = c(-38, -26)) +
-  geom_path(data = sa_provinces, aes(group = group)) +
-  geom_point(data = site_coordinates2)  +
-  geom_label_repel(data =site_coordinates2, aes(x = lon, y = lat, label = site), 
-                   size = 3, box.padding = 2, nudge_x = -0.5, nudge_y = 0.2, segment.alpha = 0.4) +
-  theme(axis.title = element_blank(),
-        axis.ticks = element_blank(),
-        axis.text = element_blank())
-# cluster 3
-# Hondeklipbaai
-# Oudekraal
-# Paternoster
-# Port Nolloth
-site_coordinates3 <- read_csv("Mapping/site_coordinates3.csv")
-ggplot(data = site_coordinates3, aes(x = lon, y = lat)) +
-  geom_polygon(data = south_africa_coast, aes(group = group), fill = "grey70") +
-  coord_cartesian(xlim = c(12, 36), ylim = c(-38, -26)) +
-  geom_path(data = sa_provinces, aes(group = group)) +
-  geom_point(data = site_coordinates3)  +
-  geom_label_repel(data =site_coordinates3, aes(x = lon, y = lat, label = site), 
-                   size = 3, box.padding = 2, nudge_x = -0.5, nudge_y = 0.2, segment.alpha = 0.4) +
-  theme(axis.title = element_blank(),
-        axis.ticks = element_blank(),
-        axis.text = element_blank())
 
-# cluster 4
-# Aliwal Shoal
-# Sodwana
-# Glenmore
-# Port Edward
-site_coordinates4 <- read_csv("Mapping/site_coordinates4.csv")
-ggplot(data = site_coordinates4, aes(x = lon, y = lat)) +
-  geom_polygon(data = south_africa_coast, aes(group = group), fill = "grey70") +
-  coord_cartesian(xlim = c(12, 36), ylim = c(-38, -26)) +
-  geom_path(data = sa_provinces, aes(group = group)) +
-  geom_point(data = site_coordinates4)  +
-  geom_label_repel(data =site_coordinates4, aes(x = lon, y = lat, label = site), 
-                   size = 3, box.padding = 2, nudge_x = -0.5, nudge_y = 0.2, segment.alpha = 0.4) +
-  theme(axis.title = element_blank(),
-        axis.ticks = element_blank(),
-        axis.text = element_blank())
+map_clus1 <- mapping_plot(df = site_coordinates1)
+map_clus1
+map_clus2 <- mapping_plot(df = site_coordinates2)
+map_clus2
+map_clus3 <- mapping_plot(df = site_coordinates3)
+map_clus3
+map_clus4 <- mapping_plot(df = site_coordinates4)
+map_clus4
 ```
 
 Creating a function which allows me to load all the wave data:
