@@ -53,6 +53,8 @@ Now to get to the data. The first step involves the loading of the site list.
 load("data/site_list_v4.2.RData")
 ```
 
+AJS: Throughout all of this (maybe preceding each step in the analysis) I also want to see why the things you do are done, not only how they are done. This shows me the reasoning that goes into the approach being followed. These things correspond to the justification/rationale sections of research. I would also like to the the justifications being based on a knowledge/understanding of the literature---what gaps are you addressing, and why, and why do you recon addressing these gaps are important? Please do this THROUGHOUT the document here. I'm not expecting that everything gets attended to at once, but I'd like to check progress each week, and I would therefore like to see how these gaps are addressed systematicalluy, week after week.
+
 Performing the k-means clustering on a data matrix using the `kmeans()` function, which uses multiple random seeds to find a number of clusting solutions; it selects as the final solution the one that has the minimum total within-cluster sum of squared distances. K-means attempts to minimise distortion. At the minimum, all cluster centres are at the mean of the set of data points which are nearest to the cluster centre. The data contain variables from many sites along the South African coast, but in the analysis I use only some of them. These variables are the mean, min and max.
 
 ```{r setup_k-means, include=TRUE}
@@ -103,10 +105,13 @@ site_list_clusters <- site_list %>%
   filter(length >= 3650, depth <= 5)
 
 SACTN_daily_clusters <- left_join(SACTN_daily_v4.2, site_list[,c(4, 13, 21)]) %>% 
-  filter(index %in% site_list_clusters$index) 
+  filter(index %in% site_list_clusters$index)                                                                                                                 
 ```
 
 With the sites now split into four clusters, the next step is to reduce the number of sites per cluster down to a manageable, but still representative, sub-sample of the whole. This is done primarily for two reasons. The first, simply, is to allow for the comparisons to be more readily interpretable by humans. The second more objective reason is to allow for an equal amount of sampling per cluster. The East coast is much more heavily sampled than the rest and so this imbalance must be addressed. The criteria that must be considered for the sub-samples are that both instrument types (UTR and thermometer) are present, and as many sources are included as are possible.
+
+AJS: There's also criteria to do with duration of the time series, the instrument depth, etc. After the sites have been selected and clustering done, I'd suggest also writing bits (with relevant literature cited) about why these patterns exist, what drove the clustering, and which oceanographic forcings are thought to drive the patterns/processes there.
+
 
 ```{r site_sub_samples, include=TRUE}
 # First simply divide up the site list by cluster
@@ -178,7 +183,7 @@ clust_match <- function(df, clust) {
     filter(cluster == clust) %>%
     select(-length) %>%
     droplevels()
-  for (i in 1:length(levels(df2$index))) {
+  for (i in 1:length(levels(df2$index))) {                                                                                                                                                                                                                                                                                            
     # for (i in 1:10) {
     SACTN_df_1 <- filter(df2, index == levels(index)[i])
     for (j in 1:length(levels(df2$index))) {
@@ -232,7 +237,7 @@ SACTN_clust_3_legit <- clust_legit(df = SACTN_clust_3_match)
 SACTN_clust_4_legit <- clust_legit(df = SACTN_clust_4_match)
 ```
 
-The code below lets us visualise the temperature variation at each of the sites found in cluster 1
+The code below lets us visualise the temperature variation at each of the sites found in cluster 1.
 
 ```{r define_fun3, include=TRUE}
 clust_plot <- function(df) {
@@ -243,7 +248,7 @@ clust_plot <- function(df) {
     geom_boxplot(aes(y = temp, fill = temp_grp), alpha = 0.3) +
     scale_fill_manual(values = c("khaki4", "chartreuse3")) +
     theme(axis.text.x = element_text(angle = 45, hjust = 1))
-  return(plot1)
+      return(plot1)
 }
 ```
 
@@ -266,12 +271,11 @@ Temperatures were not uniformly distributed across our four clusters formed from
 
 In the cluster consisting of Gordons Bay, Kalk Bay, Muizenberg, and Tsitsikamma, we find overall lower temperatures than those of the first cluster. In this cluster, temperatures ranged from between approximately 8ºC to 24ºC, with most box plots being relatively short. Whilst the overall range was similar to the first cluster, here the upper quartiles of temperatures were considerably and consistently lower than at the sites within the first cluster. Muizenberg had the widest variation of temperatures out of the four sites, with the remaining three having relatively similar temperature variations. As such, with the exception of comparisons relating to Muizenberg, each of the box plots greatly overlapped with one another with relatively few differences between them. Median temperatures across sites were nearly identical, with each being close to approximately 16ºC.
 
-The third cluster had significantly lower temperatures than the others. In this cluster, which consisted of Honderklipbaai, Oudekraal, Patternoster, and Port Nolloth, we found much taller box plots with lower temperatures throughout (RWS: The boxplots are not taller in cluster 3. Rather, the y-axis is smaller than the other clusters, so they appear taller. Be careful about making comparisons between graphs). Temperatures within this cluster ranged from approximately 6.5ºC to 17ºC, with the average median temperature being close to 12ºC across all four sites. Oudekraal had the largest variation of temperature across sites, and had a large amount of skewness towards lower temperatures. Conversely, Patternoster has relatively low variation in temperature as it had a comparatively short box plot with relatively evenly distributed temperatures. Port Nolloth, Patternoster, and Honderklipbaai were relatively similar in terms of temperature variances, as their box plots were largely overlapping with little differences between them. There were however several outliers present within the temperatures of these sites.
+The third cluster had significantly <AJS: you cannot say *significant* as no stats was done to show this> lower temperatures than the others. In this cluster, which consisted of Honderklipbaai, Oudekraal, Patternoster, and Port Nolloth, we found much taller box plots with lower temperatures throughout (RWS: The boxplots are not taller in cluster 3. Rather, the y-axis is smaller than the other clusters, so they appear taller. Be careful about making comparisons between graphs). Temperatures within this cluster ranged from approximately 6.5ºC to 17ºC, with the average median temperature being close to 12ºC across all four sites. Oudekraal had the largest variation of temperature across sites, and had a large amount of skewness towards lower temperatures. Conversely, Patternoster has relatively low variation in temperature as it had a comparatively short box plot with relatively evenly distributed temperatures. Port Nolloth, Patternoster, and Honderklipbaai were relatively similar in terms of temperature variances, as their box plots were largely overlapping with little differences between them. There were however several outliers present within the temperatures of these sites.
 
 The fourth cluster comprised of Aliwal Shoal, Sodwana, Glenmore, and Port Edward. Overall, the temperatures of these sites were higher than those of the sites within the other clusters, with a range of between 16.5ºC to 27.5ºC, which is considerably higher than that of the others. Box plots were all relatively short, and had little skewness. Temperatures differed greatly between these four sites however, with most of the box plots not overlapping very well. Sodwana had considerably more high temperatures than that of Port Edward and Glenmore. Median temperatures thus greatly differed amongst these four sites.
 
 (RWS: I think it would be useful to include normal boxplots of the sites in each cluster as well. The boxplots above show the comparisons for overlapping temperatures, but they don't give the exact representation of what the temperatures are in each time series. I think it could look good to create a two-panel boxplot figure for each cluster. The top panel would show normal boxplots and the bottom panel would show these types of box plots. One two-panel figure for each cluster.)
-
 
 Now I make a visualisation to reveal the relationship between the mean temperature for each month of each year over time for each of the sites in cluster:
 
@@ -301,13 +305,17 @@ plot2_final <- ggarrange(SACTN_clust_1_plot2,SACTN_clust_2_plot2,SACTN_clust_3_p
 plot2_final
 ```
 
-On a monthly basis, between 1990 to 2016, the rates of changes in differences of average temperatures between sites within cluster 1 (Cape Agulhas, Gansbaai, Mossel Bay, and Ystervarkpunt) varied on an apparent seasonal basis. During the summer months we saw that there were large differences in average temperatures between Gansbaai and the remaining three sites, and that the rate of changes between these rapidly increased on yearly basis. Towards the end of summer and autumn months, in addition to the continuing trends observed between Gansbaai and the remaining sites we then also saw an increase in the rate of change in differences between Cape Agulhas and Mossel Bay, and Ystervarkpunt respectively. During winter we see very little differences in average temperatures between all four sites, and this remained relatively stable over the time period. During spring months there was an increase in the rate of change of average temperatures between Cape Agulhas and Gansbaai which continues into summer.
+On a monthly basis, between 1990 to 2016, the rates of changes in differences of average temperatures between sites within cluster 1 (Cape Agulhas, Gansbaai, Mossel Bay, and Ystervarkpunt) varied on an apparent seasonal basis. During the summer months we saw that there were large differences in average temperatures between Gansbaai and the remaining three sites, and that the rate of changes between these rapidly increased on yearly basis 
 
-Conversely to the first cluster, in the cluster containing Kalk Bay, Gordons Bay, Muizenberg and Tsitsikamma the largest rates of changes were observed during autumn and winter months. In this cluster we saw large differences in average temperatures between Muizenberg and the remaining sites, with the differences increasing annually throughout 1972 and 2016 during winter. Similarly, the rates of changes in differences of average temperatures also increased between Kalk Bay and Muizenberg during these same months. In the summer and spring months we saw relatively little differences in average temperatures between sites, with minimal differences in the rates of these changes over the 44 year time period. These rates increased during spring.
+<AJS: I don't see how you can conclude from these graphs that the rates of change rapidly increased on a yearly basis... but the preceding statement seems correct. I think this should be tested statistically... We need to figure out a way to do an ANCOVA to test the constancy of slopes seasonally.>. Towards the end of summer and autumn months, in addition to the continuing trends observed between Gansbaai and the remaining sites, we then also saw an increase in the rate of change <AJS: again, "increase in rate of change" cannot be inferred from linear models...> 
+
+in differences between Cape Agulhas and Mossel Bay, and Ystervarkpunt respectively. During winter we see very little differences in average temperatures between all four sites, and this remained relatively stable over the time period. During spring months there was an increase in the rate of change of average temperatures between Cape Agulhas and Gansbaai which continues into summer. <AJS: I like this finding. We should have a meeting with Rob W soon as he also have some new funky data that I think corrobotae your analysis.>
+
+Conversely to the first cluster, in the cluster containing Kalk Bay, Gordons Bay, Muizenberg and Tsitsikamma the largest rates of changes were observed during autumn and winter months. In this cluster we saw large differences in average temperatures between Muizenberg and the remaining sites, with the differences increasing annually throughout 1972 and 2016 during winter <AJS: this is a correct statement that I can live with.>. Similarly, the rates of changes in differences of average temperatures also increased between Kalk Bay and Muizenberg during these same months. In the summer and spring months we saw relatively little differences in average temperatures between sites, with minimal differences in the rates of these changes over the 44 year time period. These rates increased during spring.
 
 In the cluster that was comprised of Hondeklipbaai, Oudekraal, Patternoster, and Port Nolloth, we found large differences in average temperatures between sites at certain months between 1990 and 2016. The rate of change in the difference of average temperatures between Port Nolloth and Oudekraal increased every month for this time period, and was most prominent during spring and summer. There were also large increases in the rate of change between differences of average temperature between Peternoster and Oudekraal throughout spring. For the remining sites, differences in average temperatures were relatively low throughout each month, with relatively stable rates of change.
 
-In  the forth cluster, which was comprised of Aliwal Shoal, Glenmore, Port Edward, and Sodwana, we found large changes in the differences of average temperatures between sites on a monthly basis between 1980 and 2016. Here, the biggest changes occurred in the month of April. In this month we saw a steep increase in the rate of change of differences of average temperature between Aliwal Shoal and Sodwana, and Aliwal Shoal and Port Edward. Additionally, there was a large difference in average temperature between Port Edward and Sodwana, with the most prominent increase in the rate of change occurring during the autumn and winter months.
+In  the forth cluster, which was comprised of Aliwal Shoal, Glenmore, Port Edward, and Sodwana, we found large changes in the differences of average temperatures between sites on a monthly basis between 1980 and 2016. Here, the biggest changes occurred in the month of April. In this month we saw a steep increase in the rate of change of differences of average temperature between Aliwal Shoal and Sodwana, and Aliwal Shoal and Port Edward. Additionally, there was a large difference in average temperature between Port Edward and Sodwana, with the most prominent increase in the rate of change <AJS: no.> occurring during the autumn and winter months.
 
 Now I make a visualisation to reveal the relationship between the sd of the temperatures for each month of each year for each of the sites in the clusters.
 
@@ -337,6 +345,8 @@ plot3_final <- ggarrange(SACTN_clust_1_plot3,SACTN_clust_2_plot3,SACTN_clust_3_p
 plot3_final
 ```
 
+<AJS: I stopped here this time. Plenty for you to do in the meanwhile.>
+
 To further show changes in temperatures between sites within clusters we also assessed the standard deviations of the temperature differences. In the cluster consisting of Cape Agulhas, Gansbaai, Mossel Bay, and Ystervarkpunt, we found relatively little differences in changes to standard deviation. The most variation occurred towards the end of the summer season within the months of February, March, and April. The changes in standard deviation were mostly seen between Ystervarkpunt and Mossel Bay, throughout the above mentioned months as well as in December, and between Gaansbaai and Ystervarkpunt through the same time period where the rates of standard deviation fluctuations differed. Throughout the remaining months, standard deviations of the differences in temperature were relatively similar and did not vary much across all sites.
 
 We found similar trends within the cluster containing Gordons Bay, Kalk Bay, Muizenberg, and Tsitsikamma. Here, again we found that there were very few changes in standard deviations for sites within most months except those towards the end of summer and spring seasons. Most variation was found within the months of February, March, and April, and mostly occurred between Kalk Bay and Tsitsikamma. Most sites had very straight trend lines and did not have any apparent differences in standard deviations of temperature differences across their overlapping time period.
@@ -350,97 +360,52 @@ Map showing the location of each site within each of the four clusters
 ```{r}
 library(ggrepel)
 
-# site_coordinates1 <- filter(site_list_sub, cluster == 1) %>% 
-#   select(site, lon, lat)
+site_coordinates1 <- filter(site_list_sub, cluster == 1) %>% 
+  select(site, lon, lat)
 # write_csv(site_coordinates1, path = "Mapping/site_coordinates1.csv")
-# site_coordinates2 <- filter(site_list_sub, cluster == 2) %>% 
-#   select(site, lon, lat)
+
+site_coordinates2 <- filter(site_list_sub, cluster == 2) %>% 
+  select(site, lon, lat)
 # write_csv(site_coordinates2, path = "Mapping/site_coordinates2.csv")
-# site_coordinates3 <- filter(site_list_sub, cluster == 3) %>% 
-#   select(site, lon, lat)
+
+site_coordinates3 <- filter(site_list_sub, cluster == 3) %>% 
+   select(site, lon, lat)
 # write_csv(site_coordinates3, path = "Mapping/site_coordinates3.csv")
-# site_coordinates4 <- filter(site_list_sub, cluster == 4) %>% 
-#   select(site, lon, lat)
+
+site_coordinates4 <- filter(site_list_sub, cluster == 4) %>% 
+  select(site, lon, lat)
 # write_csv(site_coordinates4, path = "Mapping/site_coordinates4.csv")
 
-# Creating graphs to better view and understand the site location
-# Clusters in clus 1
-# cluster 1
-# Cape agulhas
-# Ystervarkpunt
-# mossel bay
-# Gansbaai
-
-
 # Loading the data --------------------------------------------------------
-load("Mapping/3_site_clustering/sa_provinces.RData")
-site_coordinates1 <- read_csv("Mapping/site_coordinates1.csv")
+load("Mapping/sa_provinces.RData")
 load("Mapping/south_africa_coast.RData")
 
 
 # mapping -----------------------------------------------------------------
-
-
-ggplot(data = site_coordinates1, aes(x = lon, y = lat)) +
+mapping_plot <- function(df){
+  mapping <- df %>% 
+ggplot(aes(x = lon, y = lat)) +
   geom_polygon(data = south_africa_coast, aes(group = group), fill = "grey70") +
   coord_cartesian(xlim = c(12, 36), ylim = c(-38, -26)) +
   geom_path(data = sa_provinces, aes(group = group)) +
-  geom_point(data = site_coordinates1)  +
-  geom_label_repel(data =site_coordinates1, aes(x = lon, y = lat, label = site), 
+  geom_point(data = df)  +
+  geom_label_repel(data =df, aes(x = lon, y = lat, label = site), 
                    size = 3, box.padding = 2, nudge_x = -0.5, nudge_y = 0.2, segment.alpha = 0.4) +
   theme(axis.title = element_blank(),
         axis.ticks = element_blank(),
         axis.text = element_blank())
+  return(mapping)
+}
 
-# cluster 2
-# Gordons Bay
-# Tsitsikamma
-# Kalk Bay
-# Muizenberg
-site_coordinates2 <- read_csv("Mapping/site_coordinates2.csv")
-ggplot(data = site_coordinates2, aes(x = lon, y = lat)) +
-  geom_polygon(data = south_africa_coast, aes(group = group), fill = "grey70") +
-  coord_cartesian(xlim = c(12, 36), ylim = c(-38, -26)) +
-  geom_path(data = sa_provinces, aes(group = group)) +
-  geom_point(data = site_coordinates2)  +
-  geom_label_repel(data =site_coordinates2, aes(x = lon, y = lat, label = site), 
-                   size = 3, box.padding = 2, nudge_x = -0.5, nudge_y = 0.2, segment.alpha = 0.4) +
-  theme(axis.title = element_blank(),
-        axis.ticks = element_blank(),
-        axis.text = element_blank())
-# cluster 3
-# Hondeklipbaai
-# Oudekraal
-# Paternoster
-# Port Nolloth
-site_coordinates3 <- read_csv("Mapping/site_coordinates3.csv")
-ggplot(data = site_coordinates3, aes(x = lon, y = lat)) +
-  geom_polygon(data = south_africa_coast, aes(group = group), fill = "grey70") +
-  coord_cartesian(xlim = c(12, 36), ylim = c(-38, -26)) +
-  geom_path(data = sa_provinces, aes(group = group)) +
-  geom_point(data = site_coordinates3)  +
-  geom_label_repel(data =site_coordinates3, aes(x = lon, y = lat, label = site), 
-                   size = 3, box.padding = 2, nudge_x = -0.5, nudge_y = 0.2, segment.alpha = 0.4) +
-  theme(axis.title = element_blank(),
-        axis.ticks = element_blank(),
-        axis.text = element_blank())
 
-# cluster 4
-# Aliwal Shoal
-# Sodwana
-# Glenmore
-# Port Edward
-site_coordinates4 <- read_csv("Mapping/site_coordinates4.csv")
-ggplot(data = site_coordinates4, aes(x = lon, y = lat)) +
-  geom_polygon(data = south_africa_coast, aes(group = group), fill = "grey70") +
-  coord_cartesian(xlim = c(12, 36), ylim = c(-38, -26)) +
-  geom_path(data = sa_provinces, aes(group = group)) +
-  geom_point(data = site_coordinates4)  +
-  geom_label_repel(data =site_coordinates4, aes(x = lon, y = lat, label = site), 
-                   size = 3, box.padding = 2, nudge_x = -0.5, nudge_y = 0.2, segment.alpha = 0.4) +
-  theme(axis.title = element_blank(),
-        axis.ticks = element_blank(),
-        axis.text = element_blank())
+map_clus1 <- mapping_plot(df = site_coordinates1)
+map_clus1
+map_clus2 <- mapping_plot(df = site_coordinates2)
+map_clus2
+map_clus3 <- mapping_plot(df = site_coordinates3)
+map_clus3
+map_clus4 <- mapping_plot(df = site_coordinates4)
+map_clus4
 ```
 
 Creating a function which allows me to load all the wave data:
