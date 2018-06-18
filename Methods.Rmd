@@ -501,6 +501,17 @@ wave_annually <- wave_data %>%
 
 (RWS: I stopped here with the loading of the wave data.)
 
+<<<<<<< HEAD
+=======
+Notes from meeting (June 13th, 2018)
+
+* Y2K boundary forcing wasnt provided and takes a year to re-run so won't be used.
+* Potentially filter out only days during some large presence of some value and then see how all values relate to temperature.
+* Run the relationships on all of the variables against the temperature first.
+* This may then provide guidance on what to do next.
+* Potentially run the MHW algorithm on the wave data variables.
+* 
+>>>>>>> 0e4f725e39c575509582d43107bcd1fe317cf586
 
 Now splitting the wave data into the different depths; either a depth of 7m or a depth of 15m:
 
