@@ -102,7 +102,7 @@ It is now necessary to load the SACTN dataset. The SACTN dataset comprise of 129
 load("SACTN_data/SACTN_daily_v4.2.RData")
 ```
 
-Creating a cluster index whilst only selecting cluster 4. Working with at least one decade of data for each of the sites along the coast, and not using any time series deeper than a five metres. This was done to ensure that the wave data accurately matches up with the temperature data. Some of the UTR's used to collected the temperature data were placed at a depth of 18m. The wave data however is recorded at 7m and 15m respectivley. 
+Creating a cluster index whilst only selecting cluster 4. Working with at least one decade of data for each of the sites along the coast, and excluding time series with temperature data collected deeper than a five metres. This was done to ensure that the wave data accurately matches up with the temperature data. Some of the UTR's used to collected the temperature data were placed at a depth of 18m. The wave data however is recorded at 7m and 15m respectivley.  
 
 ```{r run_k-means, include=TRUE}
 set.seed(10)
@@ -168,6 +168,60 @@ SACTN_daily_clusters_sub <- SACTN_daily_clusters %>%
   filter(index %in% site_list_sub$index)
 ```
 
+### Site locations
+
+Map showing the location of each site
+```{r}
+library(ggrepel)
+
+site_coordinates1 <- filter(site_list_sub, cluster == 1) %>% 
+  select(site, lon, lat)
+# write_csv(site_coordinates1, path = "Mapping/site_coordinates1.csv")
+
+site_coordinates2 <- filter(site_list_sub, cluster == 2) %>% 
+  select(site, lon, lat)
+# write_csv(site_coordinates2, path = "Mapping/site_coordinates2.csv")
+
+site_coordinates3 <- filter(site_list_sub, cluster == 3) %>% 
+   select(site, lon, lat)
+# write_csv(site_coordinates3, path = "Mapping/site_coordinates3.csv")
+
+site_coordinates4 <- filter(site_list_sub, cluster == 4) %>% 
+  select(site, lon, lat)
+# write_csv(site_coordinates4, path = "Mapping/site_coordinates4.csv")
+
+# Loading the data --------------------------------------------------------
+load("Mapping/sa_provinces.RData")
+load("Mapping/south_africa_coast.RData")
+
+
+# mapping -----------------------------------------------------------------
+mapping_plot <- function(df){
+  mapping <- df %>% 
+ggplot(aes(x = lon, y = lat)) +
+  geom_polygon(data = south_africa_coast, aes(group = group), fill = "grey70") +
+  coord_cartesian(xlim = c(12, 36), ylim = c(-38, -26)) +
+  geom_path(data = sa_provinces, aes(group = group)) +
+  geom_point(data = df)  +
+  geom_label_repel(data =df, aes(x = lon, y = lat, label = site), 
+                   size = 3, box.padding = 2, nudge_x = -0.5, nudge_y = 0.2, segment.alpha = 0.4) +
+  theme(axis.title = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text = element_blank())
+  return(mapping)
+}
+
+
+map_clus1 <- mapping_plot(df = site_coordinates1)
+map_clus1
+map_clus2 <- mapping_plot(df = site_coordinates2)
+map_clus2
+map_clus3 <- mapping_plot(df = site_coordinates3)
+map_clus3
+map_clus4 <- mapping_plot(df = site_coordinates4)
+map_clus4
+```
+
 The function droplevels is used here to drop unused levels from the factor such as the length column. The unique function is then used to determine the amount sites found within this cluster:
 
 ```{r, include=TRUE}
@@ -180,7 +234,7 @@ The function droplevels is used here to drop unused levels from the factor such 
 
 ### Matching sites
 
-Creating a function matching the sites: This function allows me to match sites within the same cluster or along the same coast based on the date that temperature was collected. Thus sites where temperature were collected over the same time period were matched together. This allows me to compare whether or not a temperature variation exist between sites within the same cluster and to examine the various reasons for this variation.
+Creating a function matching the sites: This function allows me to match sites within the same cluster or along the same coast based on the date that temperature was collected. Sites in which temperature was collected during the same time period were matched together. This allows me to compare whether or not a temperature variation exist between sites within the same cluster and to examine the various reasons for this variation.
 
 ```{r define_fun2, include=TRUE}
 ## testing...
@@ -247,63 +301,10 @@ SACTN_clust_3_legit <- clust_legit(df = SACTN_clust_3_match)
 SACTN_clust_4_legit <- clust_legit(df = SACTN_clust_4_match)
 ```
 
-### Site locations
-
-Map showing the location of each site
-```{r}
-library(ggrepel)
-
-site_coordinates1 <- filter(site_list_sub, cluster == 1) %>% 
-  select(site, lon, lat)
-# write_csv(site_coordinates1, path = "Mapping/site_coordinates1.csv")
-
-site_coordinates2 <- filter(site_list_sub, cluster == 2) %>% 
-  select(site, lon, lat)
-# write_csv(site_coordinates2, path = "Mapping/site_coordinates2.csv")
-
-site_coordinates3 <- filter(site_list_sub, cluster == 3) %>% 
-   select(site, lon, lat)
-# write_csv(site_coordinates3, path = "Mapping/site_coordinates3.csv")
-
-site_coordinates4 <- filter(site_list_sub, cluster == 4) %>% 
-  select(site, lon, lat)
-# write_csv(site_coordinates4, path = "Mapping/site_coordinates4.csv")
-
-# Loading the data --------------------------------------------------------
-load("Mapping/sa_provinces.RData")
-load("Mapping/south_africa_coast.RData")
-
-
-# mapping -----------------------------------------------------------------
-mapping_plot <- function(df){
-  mapping <- df %>% 
-ggplot(aes(x = lon, y = lat)) +
-  geom_polygon(data = south_africa_coast, aes(group = group), fill = "grey70") +
-  coord_cartesian(xlim = c(12, 36), ylim = c(-38, -26)) +
-  geom_path(data = sa_provinces, aes(group = group)) +
-  geom_point(data = df)  +
-  geom_label_repel(data =df, aes(x = lon, y = lat, label = site), 
-                   size = 3, box.padding = 2, nudge_x = -0.5, nudge_y = 0.2, segment.alpha = 0.4) +
-  theme(axis.title = element_blank(),
-        axis.ticks = element_blank(),
-        axis.text = element_blank())
-  return(mapping)
-}
-
-
-map_clus1 <- mapping_plot(df = site_coordinates1)
-map_clus1
-map_clus2 <- mapping_plot(df = site_coordinates2)
-map_clus2
-map_clus3 <- mapping_plot(df = site_coordinates3)
-map_clus3
-map_clus4 <- mapping_plot(df = site_coordinates4)
-map_clus4
-```
 
 ### Comparing sites
 
-The code below lets us visualise the temperature variation at each of the sites.  This box plot allows me to observe whether or not a variation exist between the sites found within the same cluster. Temperature 1 represents a site and temperature 2 represents a second site. The boxplot shows the temperature variation between the two sites found within the same cluster being compared to eachother.
+The code below lets us visualise the temperature variation at each of the sites.  This box plot allows me to observe whether or not a variation exist between the sites found within the same cluster. Temperature 1 represents a site and temperature 2 represents a second site. The boxplot shows the temperature variation between the two sites found within the same cluster being compared to eachother. Temperatures were not uniformly distributed with each set of sites having a unique temperature variation. 
 
 ```{r define_fun3, include=TRUE}
 clust_plot <- function(df) {
