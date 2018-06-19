@@ -371,6 +371,27 @@ plot2_final <- ggarrange(SACTN_clust_1_plot2,SACTN_clust_2_plot2,SACTN_clust_3_p
 plot2_final
 ```
 
+Anova analysis: 
+
+```{r}
+
+anova_func <- function(df){
+sites_aov <- aov(temp_mean_month_year ~ index_pair, data = df, na.rm=TRUE)
+return(sites_aov)
+}
+
+anova_clus_1_func1 <- anova_func(df = SACTN_clust_1_legit)
+summary(anova_clus_1_func1)
+anova_clus_2_func1 <- anova_func(df = SACTN_clust_2_legit)
+summary(anova_clus_2_func1)
+anova_clus_3_func1 <- anova_func(df = SACTN_clust_3_legit)
+summary(anova_clus_3_func1)
+anova_clus_4_func1 <- anova_func(df = SACTN_clust_4_legit)
+summary(anova_clus_4_func1)
+
+```
+
+
 On a monthly basis, differences of average temperatures between sites within cluster 1 (Cape Agulhas, Gansbaai, Mosterts Hoek, and Ystervarkpunt) varied on an apparent seasonal basis. During the summer months we saw that there were large differences in average temperatures between Gansbaai and the remaining three sites, and between Mosterts hoek and Cape Aghulus. Towards the end of summer and autumn months, in addition to the continuing trends observed between Gansbaai and the remaining sites, we then also saw differences in average temperatures between Cape Agulhas and Mosterts Hoek, and Ystervarkpunt respectively. During winter we see very little differences in average temperatures between all four sites, and this remained relatively stable over the time period. During spring months there were differences between average temperatures of Cape Agulhas and Gansbaai which continues into summer.
 
 Converse to the first cluster, in the cluster containing Kalk Bay, Gordons Bay, Muizenberg and Hermanus, the largest differences in average temperatures were observed during autumn and winter months. In this cluster we saw large differences in average temperatures between Muizenberg and the remaining sites, with the differences increasing annually throughout 1972 and 2016 during winter. Similarly, differences of average temperatures also increased between Kalk Bay and Muizenberg during these same months. In the summer and spring months we saw relatively little differences in average temperatures between sites, with minimal differences in the rates of these changes over the 44 year time period. These rates increased during spring.
@@ -503,8 +524,6 @@ wave_annually <- wave_data %>%
 
 (RWS: I stopped here with the loading of the wave data.)
 
-<<<<<<< HEAD
-=======
 Notes from meeting (June 13th, 2018)
 
 * Y2K boundary forcing wasnt provided and takes a year to re-run so won't be used.
@@ -512,8 +531,7 @@ Notes from meeting (June 13th, 2018)
 * Run the relationships on all of the variables against the temperature first.
 * This may then provide guidance on what to do next.
 * Potentially run the MHW algorithm on the wave data variables.
-* 
->>>>>>> 0e4f725e39c575509582d43107bcd1fe317cf586
+
 
 Now splitting the wave data into the different depths; either a depth of 7m or a depth of 15m:
 
@@ -526,104 +544,4 @@ sites_complete_15 <- wave_data %>%
 ```
 
 Creating a time series over a period of 10 years:
-
-```{r}
-site_list_10_years <- site_list_sub %>%
-  filter(index %in% SACTN_daily_clusters$index)
-```
-
-Using the FNN package to determine the nearest wave data for each of the SACTN sites present in this cluster. Once that was determined only waves minimised to only include the 7 and 15m depths. Thereafter wave 7 and wave 15 was combined and all unnessasary infomation was removed and the cluster column was then added to the sites infomation:
-
-```{r unique_name2}
-waves_idx_7 <- as.data.frame(knnx.index( as.matrix(sites_complete_7[,7:8]), as.matrix(site_list_10_years[,5:6]), k = 1))
-waves_idx_15 <- as.data.frame(knnx.index( as.matrix(sites_complete_15[,7:8]), as.matrix(site_list_10_years[,5:6]), k = 1))
-
-sites_complete_subset_7 <- sites_complete_7[as.matrix(waves_idx_7),]
-sites_complete_subset_15 <- sites_complete_15[as.matrix(waves_idx_15),]
-```
-
-```{r}
-sites_complete_subset <- cbind(sites_complete_subset_7, sites_complete_subset_15[,4:5])
-colnames(sites_complete_subset)[c(5, 7)] <- c("wave_7", "wave_15")
-sites_complete_subset <- sites_complete_subset[, c(1:3, 5, 7)]
-
-site_list_match <- cbind(site_list_10_years[,c(4:6,20)], sites_complete_subset)
-colnames(site_list_match) <- c("index", "lon1", "lat1", "cluster", "site_real", "lon2", "lat2", "wave_7", "wave_15")
-```
-
-Creating a function using the haversine formula to calculate the geodesic distance between two points specified by radian lat/lon, which is the shortest distance over the earth’s surface. This formula is particularly well-conditioned for numerical computations at both large and small scales:
-
-```{r define_fun5}
-deg2rad <- function(deg) return(deg*pi/180)
-gcd.hf <- function(long1, lat1, long2, lat2) {
-  R <- 6371
-  delta.long <- (long2 - long1)
-  delta.lat <- (lat2 - lat1)
-  a <- sin(delta.lat/2)^2 + cos(lat1) * cos(lat2) * sin(delta.long/2)^2
-  c <- 2 * asin(min(1,sqrt(a)))
-  d <- R * c
-  return(d)
-}
-```
-
-Creating a function to calculate matrix of distances between each two sites following the haversine formula:
-
-```{r define_fun6}
-CalcDists <- function(latlongs) {
-  name <- list(rownames(latlongs), rownames(latlongs))
-  n <- nrow(latlongs)
-  z <- matrix(0, n, n, dimnames = name)
-  for (i in 1:n) {
-    for (j in 1:n) z[i, j] <- gcd.hf(long1 = latlongs[i, 1],
-                                     lat1 = latlongs[i, 2], long2 = latlongs[j, 1], lat2 = latlongs[j,2])
-  }
-  z <- as.dist(z)
-  return(z)
-}
-```
-
-```{r}
-PairsDists <- function(latlongs) {
-  n <- nrow(latlongs)
-  z <- matrix(0, n, 1, dimnames = list(latlongs[,1]))
-  for (i in 1:n) {
-    z[i] <- gcd.hf(long1 = latlongs[i, 2], lat1 = latlongs[i, 3],
-                   long2 = latlongs[i+1, 2], lat2 = latlongs[i+1,3])
-  }
-  return(z)
-}
-```
-
-Once the sites were matched with the sites of the 10 year time series, the distance was converted to radians. Hereafter the wave data were combined with the temperature data at a depth of 7 and 15m respectivley.
-
-```{r unique_name3}
-site_list_match_dist <- site_list_match %>%
-  mutate(lon1 = deg2rad(lon1),
-         lat1 = deg2rad(lat1),
-         lon2 = deg2rad(lon2),
-         lat2 = deg2rad(lat2),
-         dist = NA)
-
-# Creating a loop for dstances
-for (i in 1:nrow(site_list_match_dist)) {
-  dist <- gcd.hf(site_list_match_dist$lon1[i], site_list_match_dist$lat1[i],
-                 site_list_match_dist$lon2[i], site_list_match_dist$lat2[i])
-  site_list_match_dist$dist[i] <- dist
-}
-
-site_list_10_years <- left_join(site_list_10_years, site_list_match_dist[, c(1, 8:10)])
-
-# Up next we want to combine the temperature and wave data
-# First for the 7 metre depth waves
-SACTN_daily_clusters_7 <- left_join(SACTN_daily_clusters, site_list_10_years[, c(4, 22)]) %>%
-  left_join(wave_daily[, c(2:3, 6:16)], by = c("date", "wave_7" = "site_wave"))
-
-# Then the 15 metre depth waves
-SACTN_daily_clusters_15 <- left_join(SACTN_daily_clusters, site_list_10_years[, c(4, 23)]) %>%
-  left_join(wave_daily, by = c("date", "wave_15" = "site_wave"))
-
-SACTN_daily_clusters_7 %>%
-  group_by(index) %>%
-  summarise(temp_dir_cor = cor(temp, dir_mean))
-```
 
