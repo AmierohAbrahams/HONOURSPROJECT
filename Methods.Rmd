@@ -508,21 +508,14 @@ wave_annually <- wave_data %>%
 
 ### Combining waves and temperatures
 
-<<<<<<< HEAD
 Notes from meeting (June 13th, 2018)
-=======
-Notes from meeting (June 13th, 2018):
->>>>>>> f5a2e5b7cef6e6c937b5c92ad950a962a5adbee6
+
 
 * Y2K boundary forcing wasnt provided and takes a year to re-run so won't be used.
 * Run the relationships on all of the variables against the temperature first.
 * Potentially filter out only days during some large presence of some value and then see how all values relate to temperature.
     * This may then provide guidance on what to do next.
 * Potentially run the MHW algorithm on the wave data variables.
-<<<<<<< HEAD
-
-=======
->>>>>>> f5a2e5b7cef6e6c937b5c92ad950a962a5adbee6
 
 Splitting the wave data into the different depths; either a depth of 7m or a depth of 15m:
 
