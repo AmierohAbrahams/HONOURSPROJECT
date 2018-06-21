@@ -1,6 +1,7 @@
 install.packages("fetchR")
 library(fetchR)
 library(rgdal)
+https://cran.r-project.org/web/packages/fetchR/vignettes/introduction-to-fetchR.html
 
 setwd("wind_direction")
 
