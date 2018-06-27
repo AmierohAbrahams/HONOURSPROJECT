@@ -98,7 +98,7 @@ clusters <- ggarrange(clust_6, clust_5, clust_4, clust_3, common.legend = T)
 clusters
 ```
 
-It is now necessary to load the SACTN temperature dataset. The SACTN dataset comprise of 135 *in situ* coastal seawater temperatures derived from daily measurements over up to 40 years. The SACTN temperature dataset was compiled by measuring coastal temperatures at 135 sites along the coast of South Africa, daily from 1972 until 2017. Temperatures were measured either manually using hand-held thermometers or electronically using underwater temperature recorders (UTRs). Of the 135 sites, 87 were measured using the thermometers and the remaining 48 were measured using UTRs. Seven sources contributed towards the compilation of this dataset; The Department of Environmental Affairs (DEA), South African Weather Services (SAWS), University of the Western Cape (UWC), Department of Forestry and Fisheries (DAFF), Kwa Zulu Natal Sharks Board (KZNSB), South African Environmental Observation Network (SAEON) and Ezemvelo KZN Wildlife Organization (EKZNW). Clustering the sites using the k-means results:
+It is now necessary to load the daily SACTN temperature dataset. The SACTN dataset comprise of 135 *in situ* coastal seawater temperatures derived from daily measurements over up to 40 years. The SACTN temperature dataset was compiled by measuring coastal temperatures at 135 sites along the coast of South Africa, daily from 1972 until 2017. Temperatures were measured either manually using hand-held thermometers or electronically using underwater temperature recorders (UTRs). Of the 135 sites, 87 were measured using the thermometers and the remaining 48 were measured using UTRs. Seven sources contributed towards the compilation of this dataset; The Department of Environmental Affairs (DEA), South African Weather Services (SAWS), University of the Western Cape (UWC), Department of Forestry and Fisheries (DAFF), Kwa Zulu Natal Sharks Board (KZNSB), South African Environmental Observation Network (SAEON) and Ezemvelo KZN Wildlife Organization (EKZNW). Clustering the sites using the k-means results:
 
 ```{r load_files2, include=TRUE}
 load("SACTN_data/SACTN_daily_v4.2.RData")
@@ -392,7 +392,6 @@ summary(anova_clus_4_func1)
 
 ```
 
-
 On a monthly basis, differences of average temperatures between sites within cluster 1 (Cape Agulhas, Gansbaai, Mosterts Hoek, and Ystervarkpunt) varied on an apparent seasonal basis. During the summer months we saw that there were large differences in average temperatures between Gansbaai and the remaining three sites, and between Mosterts hoek and Cape Aghulus. Towards the end of summer and autumn months, in addition to the continuing trends observed between Gansbaai and the remaining sites, we then also saw differences in average temperatures between Cape Agulhas and Mosterts Hoek, and Ystervarkpunt respectively. During winter we see very little differences in average temperatures between all four sites, and this remained relatively stable over the time period. During spring months there were differences between average temperatures of Cape Agulhas and Gansbaai which continues into summer.
 
 Converse to the first cluster, in the cluster containing Kalk Bay, Gordons Bay, Muizenberg and Hermanus, the largest differences in average temperatures were observed during autumn and winter months. In this cluster we saw large differences in average temperatures between Muizenberg and the remaining sites, with the differences increasing annually throughout 1972 and 2016 during winter. Similarly, differences of average temperatures also increased between Kalk Bay and Muizenberg during these same months. In the summer and spring months we saw relatively little differences in average temperatures between sites, with minimal differences in the rates of these changes over the 44 year time period. These rates increased during spring.
@@ -488,26 +487,43 @@ Converting the 3-hour resolution wave data into daily data. The funs function, f
 (RWS: The wave and wind direction daily and annual values need to be correctly caluclated with circular statistics.)
 
 ```{r, include=TRUE}
+library(circular)
+wave_daily_dir <- wave_data %>%
+  mutate(date = as.Date(date)) %>%
+  group_by(site, num, depth, date) %>%
+  summarise(dir_circ = mean(circular(dir, units = "degrees")),
+            dirw_circ = mean(circular(dirw, units = "degrees")))
+
 wave_daily <- wave_data %>%
   mutate(date = as.Date(date)) %>%
   group_by(site, num, depth, date) %>%
   summarise_all(funs(mean = mean, sd = sd), na.rm = T) %>%
-  ungroup()
+  ungroup() %>%
+  left_join(wave_daily_dir)
 ```
 
 Calculating the annual wave data for each of the sites excluding the year 2000:
 
 ```{r, include=TRUE}
+
+?circular
+
+wave_annually_dir <- wave_data %>%
+  mutate(date = lubridate::year(date)) %>%
+  group_by(site, num, depth, date) %>%
+  summarise(dir_circ = mean(circular(dir, units = "degrees")),
+            dirw_circ = mean(circular(dirw, units = "degrees")))
+
 wave_annually <- wave_data %>%
   mutate(date = lubridate::year(date)) %>%
   group_by(site, num, depth, date) %>%
   summarise_all(funs(mean = mean, sd = sd), na.rm = TRUE) %>%
   ungroup() %>%
+  left_join(wave_annually_dir) %>% 
   filter(date != 2000)
 ```
 
 ### Combining waves and temperatures
-
 Notes from meeting (June 13th, 2018)
 
 
@@ -525,6 +541,13 @@ sites_complete_7 <- wave_daily %>%
 
 sites_complete_15 <- wave_daily %>%
   filter(depth == "15m")
+
+sites_complete_7_dir <- wave_daily_dir %>%
+  filter(depth == "7m")
+
+sites_complete_15_dir <- wave_daily_dir %>%
+  filter(depth == "15m")
+
 ```
 
 Splitting the waves up into two different dataframes requires us to write a bit more code, but ultimately makes it easier to read.
@@ -543,11 +566,22 @@ SACTN_daily_clusters_7 <- SACTN_daily_clusters_sub %>%
 SACTN_daily_clusters_15 <- SACTN_daily_clusters_sub %>% 
   left_join(sites_complete_15, by = c("site", "date")) %>% 
   na.trim()
+
+# Combine the temperature and 7 m depth wave data
+SACTN_daily_clusters_7_dir <- SACTN_daily_clusters_sub %>% 
+  left_join(sites_complete_7_dir, by = c("site", "date")) %>% 
+  na.trim()
+
+# Combine the temperature and 15 m depth wave data
+SACTN_daily_clusters_15_dir <- SACTN_daily_clusters_sub %>% 
+  left_join(sites_complete_15_dir, by = c("site", "date")) %>% 
+  na.trim()
 ```
 
 ### Comparing waves and temperatures
 
 With our temperature and wave values paired up we now want to investigate what the relationship between these values may be. In order to do so we will use linear models, as this produces for us the coefficient of determination (R^2). We are going to use __`purrr`__ to do this as it will allow us to compare multiple variables at once.
+The following example uses purrr to solve a fairly realistic problem: split a data frame into pieces, fit a model to each piece, compute the summary, then extract the R2.
 
 ```{r compare-fun}
 # A function that runs a linear model on each metric of the combined data and get the R^2 value
@@ -576,11 +610,27 @@ SACTN_7_R2 <- SACTN_daily_clusters_7 %>%
 
 SACTN_15_R2 <- SACTN_daily_clusters_15 %>% 
   temp_wave_R2()
+
+SACTN_7_R2_dir <- SACTN_daily_clusters_7_dir %>% 
+  temp_wave_R2()
+
+SACTN_15_R2_dir <- SACTN_daily_clusters_15_dir %>% 
+  temp_wave_R2()
 ```
 
 As we may see from these results, the R^2 values between temperatures and wave data are rather low. With R^2 = 0.07 the highest value. Perhaps when the daily wind and wave directional values are calculated correclty using circular stats the relationships may improve.
 
-## Old unused code
+https://cran.r-project.org/web/packages/circular/circular.pdf (Pg 130)
 
-Creating a time series over a period of 10 years:
+Possible ways>>>>
+```{r}
+
+test <- circular::circular(wave_data$dir, units = "degrees")
+test <- mean(test) 
+
+```
+
+
+
+
 
