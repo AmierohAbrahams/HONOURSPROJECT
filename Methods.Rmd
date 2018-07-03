@@ -66,7 +66,7 @@ AJS: Throughout all of this (maybe preceding each step in the analysis) I also w
 
 ### Clustering
 
-Performing the k-means clustering on a data matrix using the `kmeans()` function, which uses multiple random seeds to find a number of clusting solutions; it selects as the final solution the one that has the minimum total within-cluster sum of squared distances. K-means attempts to minimise distortion. The data contain variables from many sites along the South African coastline, but in the analysis I use only some of them. These variables include the mean, min and max temperature values. 
+Performing the k-means clustering on a data matrix using the `kmeans()` function, which uses multiple random seeds to find a number of clusting solutions; it selects as the final solution the one that has the minimum total within-cluster sum of squared distances. The data contain variables from many sites along the South African coastline, but in the analysis I use only some of them. These variables include the mean, min and max temperature values. K-means attempts group all sites with similar min, mean and max temperature values together.
 
 ```{r setup_k-means, include=TRUE}
 set.seed(10)
@@ -106,8 +106,8 @@ It is now necessary to load the daily SACTN temperature dataset. The SACTN datas
 load("SACTN_data/SACTN_daily_v4.2.RData")
 ```
 
-Creating a cluster index whilst only selecting cluster 4. Working with at least one decade of data for each of the sites along the coast, and excluding time series with temperature data collected deeper than a five metres. This was done to ensure that the wave data accurately matches up with the temperature data. Some of the UTR's used to collected the temperature data were placed at a depth of 18m. The wave data however is recorded at 7m and 15m respectivley.  
-
+Creating a cluster index whilst only selecting cluster 4. Working with at least one decade of data for each of the sites along the coast, and excluding time series with temperature data collected deeper than a five metres. This was done to ensure that the wave data accurately matches up with the temperature data. Some of the UTR's used to collected the temperature data were placed at a depth of 18m. The wave data however is recorded at 7m and 15m respectivley. The length, decadal trend and precision of each time series were adjusted in a systematic manner. This forms the core of the analysis. The natural variability occuring between sites of each of the time series, which differs predictabily between the coastlines is affected by the Benguela and Agulhas currents.
+  
 ```{r run_k-means, include=TRUE}
 set.seed(10)
 site_list$cluster <- as.factor(kmeans(site_list[,c(15, 18:19)], 4)$cluster)
@@ -124,7 +124,7 @@ SACTN_daily_clusters <- SACTN_daily_v4.2 %>%
 
 With the sites now split into four clusters, the next step is to reduce the number of sites per cluster down to a manageable, but still representative, sub-sample of the whole. This is done primarily for two reasons. The first, simply, is to allow for the comparisons to be more readily interpretable by humans. The second more objective reason is to allow for an equal amount of sampling per cluster. The East coast is much more heavily sampled than the rest and so this imbalance must be addressed. The criteria that must be considered for the sub-samples are that both instrument types (UTR and thermometer) are present, and as many sources are included as are possible.......The statistical characteristics of the seawater temperature dataset was used as to guide analyses into the suitability of the time series which allows us to produce an accurate assessment of temperature variation between sites located within the same cluster. The precision, length and decadal trend of the time series for each of the sites were adjusted systematically. 
 
-***** AJS: There's also criteria to do with duration of the time series, the instrument depth, etc. After the sites have been selected and clustering done, I'd suggest also writing bits (with relevant literature cited) about why these patterns exist, what drove the clustering, and which oceanographic forcings are thought to drive the patterns/processes there. *****
+The next step is to divide up the site list by each of the clusters present in cluster 4. Hereafter, the sites being grouped by the different sources and the longest time series for each of the sites is selected. This generates a subset of four sites per cluster.
 
 ```{r site_sub_samples, include=TRUE}
 # First simply divide up the site list by cluster
