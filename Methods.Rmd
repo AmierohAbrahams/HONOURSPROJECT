@@ -238,12 +238,12 @@ The function droplevels is used here to drop unused levels from the factor such 
 # length(unique(SACTN_clust_1$index))
 ```
 
-### Matching sites
+## Calculating the distance between sites
 
-Creating a function matching the sites: This function allows me to match sites within the same cluster based on the date that temperature was collected. Sites in which temperature was collected during the same time period were matched together. This allows me to compare whether or not a temperature variation exist between sites within the same cluster and to examine the various reasons for this variation.
+Calculating the distance between each of the sites along the coastline. The deg2rad function transforms degrees to radians: Transforms between angles in degrees and radians. 
 
 ```{r calc-dists}
-options(scipen=999)
+options(scipen=999) # Forces R to not use exponential notation
 sa_coast_prep <- sa_coast %>% 
   mutate(site = 1:nrow(.),
          X = deg2rad(X),
@@ -260,6 +260,9 @@ sa_coast_dist <- as.data.frame(round(PairsDists(sa_coast_prep), 2)) %>%
          cum_dist = lag(cum_dist))
 ```
 
+### Matching sites
+
+Creating a function matching the sites: This function allows me to match sites within the same cluster based on the date that temperature was collected. Sites in which temperature was collected during the same time period were matched together. This allows me to compare whether or not a temperature variation exist between sites within the same cluster and to examine the various reasons for this variation. Here we consider date and distance between sites.
 
 ```{r define_fun2, include=TRUE}
 ## testing...
@@ -319,7 +322,7 @@ clust_match <- function(df, clust) {
 }
 ```
 
-I calculated the monthly mean temperature and standard deviation for each year and sites. Consequently we have a data frame with 5 columns and each of the rows representing each month for each of the years. By calculating the mean and SD for each site i am able identify trends in their temperatures and to compare these trends across sites within the same cluster. Mean and SD gives a broad look of the overall temperature for each of the sites. 
+I calculated the monthly mean temperature and standard deviation for each year and sites. Consequently we have a data frame with 7 columns and each of the rows representing each month for each of the years. By calculating the mean and SD for each site i am able identify trends in their temperatures and to compare these trends across sites within the same cluster. Mean and SD gives a broad look of the overall temperature for each of the sites. With each group of months representing the season.
 
 ```{r run_fun2, include=TRUE}
 # Calculate all of the matche-ups in cluster 1
@@ -563,10 +566,10 @@ wave_daily <- wave_data %>%
   ungroup() %>%
   left_join(wave_daily_dir)
 
-# test <- wave_daily %>% 
-#   filter(site == "Port Nolloth")
-# windrose(x = test$dir_circ, y = test$hs_mean, main = "Port Nolloth\nWave Rose")
-# windrose(x = test$dirw_circ, y = test$spw_mean, main = "Port Nolloth\nWind Rose")
+test <- wave_daily %>% 
+ filter(site == "Port Nolloth")
+windrose(x = test$dir_circ, y = test$hs_mean, main = "Port Nolloth\nWave Rose")
+windrose(x = test$dirw_circ, y = test$spw_mean, main = "Port Nolloth\nWind Rose")
 
 anom_func <- function(m){
   m1 <- m-mean(m, na.rm = T)
@@ -686,7 +689,9 @@ temp_wave_compare <- function(df){
   ggplot(data = df1, aes(x = index2)) +
     geom_line(aes(y = value, colour = variable, group = )) +
     facet_grid(variable~index, scales = "free_y")
+  return (temp_wave_compare)
 }
+
 temp_wave_compare(SACTN_daily_clusters_7)
 ```
 
