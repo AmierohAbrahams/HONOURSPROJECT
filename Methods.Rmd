@@ -355,7 +355,7 @@ SACTN_clust_4_matched <- clust_matched(df = SACTN_clust_4_match)
 
 ### Comparing sites
 
-The code below lets us visualise the temperatures for each of the sites.  This box plot allows me to observe whether or not a variation exist between the sites found within the same cluster. Temperature 1 represents a site and temperature 2 represents a second site. The boxplot shows the temperature variation of two sites within the same cluster (along the same coast) being compared to eachother. To conclude, temperatures were not uniformly distributed with each set of sites having a unique temperature variation. 
+The code below lets us visualise the temperatures for each of the sites.  This box plot allows me to observe whether or not a variation exist between the sites found within the same cluster. The values represent the distance "km" between the sites Temperature 1 represents a site and temperature 2 represents a second site. The boxplot shows the temperature variation of two sites within the same cluster (along the same coast) being compared to eachother. To conclude, temperatures were not uniformly distributed with each set of sites having a unique temperature variation. 
 
 ```{r define_fun3, include=TRUE}
 clust_plot <- function(df) {
@@ -541,9 +541,14 @@ wave_data <- rbind(betties_bay, bordjies, gordons_bay, hermanus, kalk_bay, muize
 rm(betties_bay, bordjies, gansbaai, gordons_bay, hermanus, kalk_bay, lamberts_bay, muizenberg, port_nolloth)
 ```
 
-Converting the 3-hour resolution wave data into daily data. The funs function, funs(), is used here as it provides a flexible way to generate a named list of functions for input to other functions such as the mean and sd:
+Converting the 3-hour resolution wave data into daily data. The funs function, funs(), is used here as it provides a flexible way to generate a named list of functions for input to other functions such as the mean and sd: https://cran.r-project.org/web/packages/circular/circular.pdf (Pg 130) The circular function creates circular objects around the wind and wave direction. The wave and wind direction was collected every three hours and by using the circular function we calcuated the daily mean wave and wind direction. There is a numerically large gap between 360 and 2 where as in degrees its not as large. The circular mean function returns the mean direction of a vector of circular data.
 
-(RWS: The wave and wind direction daily and annual values need to be correctly caluclated with circular statistics.)
+```{r}
+
+test <- circular::circular(wave_data$dir, units = "degrees")
+test <- mean(test) 
+
+```
 
 ```{r, include=TRUE}
 library(circular)
@@ -631,7 +636,7 @@ sites_complete_15_anom <- wave_daily_anom %>%
   filter(depth == "15m")
 ```
 
-Splitting the waves up into two different dataframes requires us to write a bit more code, but ultimately makes it easier to read.
+Splitting the waves up into two different dataframes requires us to write a bit more code, but ultimately makes it easier to read. The function s.window controls how rapidly the seasonal component can change. Small values allow more rapid change. Setting the seasonal window to be infinite is equivalent to forcing the seasonal component to be periodic. The stlplus package for R has a plot_seasonal function that can be used to generate a cycle-subseries plot in order to visually calibrate s.window. 
 
 ```{r}
 # Create site column from the index column
@@ -666,6 +671,8 @@ SACTN_daily_clusters_15_anom <- SACTN_daily_clusters_sub %>%
   group_by(site) %>% 
   mutate(temp_flat = stlplus(x = temp, n.p = 365, s.window = "periodic")[[1]]$remainder)
 ```
+
+
 
 ```{r plot-temp-wave-compare}
 # Plot for creating faceted line plots looking at comparisons of trends/patterns
@@ -704,8 +711,7 @@ temp_wave_compare(SACTN_daily_clusters_7)
 
 ### Comparing waves and temperatures
 
-With our temperature and wave values paired up we now want to investigate what the relationship between these values may be. In order to do so we will use linear models, as this produces for us the coefficient of determination (R^2). We are going to use __`purrr`__ to do this as it will allow us to compare multiple variables at once.
-The following example uses purrr to solve a fairly realistic problem: split a data frame into pieces, fit a model to each piece, compute the summary, then extract the R2.
+With our temperature and wave values paired up we now want to investigate what the relationship between these values may be. In order to do so we will use linear models, as this produces for us the coefficient of determination (R^2). We are going to use __`purrr`__ to do this as it will allow us to compare multiple variables at once: The following example uses purrr to solve a fairly realistic problem: split a data frame into pieces, fit a model to each piece, compute the summary, then extract the R2. The R2 value is a statistical measure of how close the data are to the fitted regression line. The R2 is the percentage of the response variable variation that is explained by a linear model.
 
 ```{r compare-fun}
 # A function that runs a linear model on each metric of the combined data and get the R^2 value
@@ -728,6 +734,7 @@ temp_wave_R2 <- function(df){
   }
 ```
 
+
 ```{r compare}
 SACTN_7_R2 <- SACTN_daily_clusters_7 %>% 
   temp_wave_R2()
@@ -742,18 +749,9 @@ SACTN_15_R2_anom <- SACTN_daily_clusters_15_anom %>%
   temp_wave_R2()
 ```
 
-As we may see from these results, the R^2 values between temperatures and wave data are rather low. With R^2 = 0.07 the highest value. Perhaps when the daily wind and wave directional values are calculated correclty using circular stats the relationships may improve.
+As we may see from these results, the R^2 values between temperatures and wave data are rather low. With R^2 = 0.07 the highest value.
 
-https://cran.r-project.org/web/packages/circular/circular.pdf (Pg 130)
 
-Possible ways
-
-```{r}
-
-test <- circular::circular(wave_data$dir, units = "degrees")
-test <- mean(test) 
-
-```
 
 
 
