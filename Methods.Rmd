@@ -262,7 +262,7 @@ sa_coast_dist <- as.data.frame(round(PairsDists(sa_coast_prep), 2)) %>%
 
 ### Matching sites
 
-Creating a function matching the sites: This function allows me to match sites within the same cluster based on the date that temperature was collected. Sites in which temperature was collected during the same time period were matched together. This allows me to compare whether or not a temperature variation exist between sites within the same cluster and to examine the various reasons for this variation. Here we consider date and distance between sites.
+Creating a function matching the sites: This function allows me to match sites within the same cluster based on the date that temperature was collected. Sites in which temperature was collected during the same time period were matched together. This allows me to compare whether or not a temperature variation exist between sites within the same cluster and to examine the various reasons for this variation. Here we consider distance between sites.
 
 ```{r define_fun2, include=TRUE}
 ## testing...
@@ -322,7 +322,7 @@ clust_match <- function(df, clust) {
 }
 ```
 
-I calculated the monthly mean temperature and standard deviation for each year and sites. Consequently we have a data frame with 7 columns and each of the rows representing each month for each of the years. By calculating the mean and SD for each site i am able identify trends in their temperatures and to compare these trends across sites within the same cluster. Mean and SD gives a broad look of the overall temperature for each of the sites. With each group of months representing the season.
+Creating a function which allows me to calculated the monthly mean temperature and standard deviation for each year and sites. Consequently we have a data frame with 7 columns and each of the rows representing each month for each of the years. By calculating the mean and SD for each site i am able identify trends in their temperatures and to compare these trends across sites within the same cluster. Mean and SD gives a broad look of the overall temperature for each of the sites. With each group of months representing the season.
 
 ```{r run_fun2, include=TRUE}
 # Calculate all of the matche-ups in cluster 1
@@ -388,6 +388,7 @@ combined_plot
 Temperatures were not uniformly distributed across our four clusters produced, with each set of sites having unique patterns of temperature variation. In cluster 1, which includes Cape Aghulus, Gansbaai, Mosterts Hoek, and Ystervarkpunt, we found that temperature varied from approximately 11 ºC to 23 ºC. Within this cluster of sites, we found that Cape Agulhas had the highest maximum temperatures and Mosterts Hoek had the lowest minimum temperatures between the four sites. Gansbaai had the lowest range of temperature variability as it produced a comparatively short box plot. Cape Aghulus and Ystervarkpunt had relatively similar ranges and distributions of temperatures as evident by their plots nearly overlapping completely. For each of these sites, temperature distribution was always skewed towards higher temperatures than lower than average temperatures.
 
 In the cluster comprised of Gordons Bay, Kalk Bay, Muizenberg, and Hermanus, temperatures ranged from approximately 8 ºC to 25 ºC, with most box plots being relatively short. Muizenberg had the widest range of temperature variation of the four sites, and Hermanus had the narrowest range. The remaining two sites, Gordons Bay and Kalk Bay, had identical temperature ranges. Despite the apparent differences in temperature ranges between these sites, the average temperatures across these were relatively similar and near completely identical.
+
 Sites within the third cluster had overall lower temperatures than those within the remaining clusters. This cluster consisted of Lamberts Bay, Bordjies, Betty’s Bay, and Port Nolloth, and here we found sharp declines in average temperatures throughout. Temperatures within this cluster ranged from approximately 8 ºC to 21 ºC, with the average median temperature being close to 14 ºC across all four sites. Bordjies and Betty’s Bay had the largest variation of temperature across sites. Conversely, Lamberts Bay had relatively low variation in temperature as it had a comparatively short box plot with relatively evenly distributed temperatures. Bordjies and Betty’s Bay were relatively similar in terms of temperature variances, as their box plots were largely overlapping with little differences between them. There were however several outliers present within the temperatures of these sites.
 
 The fourth cluster comprised of Richards Bay, Antsey’s Beach, Glenmore, and Port Edward. Overall, the temperatures of these sites were higher than those of the sites within the other clusters, with a range of between 16.5 ºC to 27.5 ºC, which is considerably higher than that of the others. Box plots were all relatively short, and had little skewness. Temperatures differed greatly between these four sites however, with most of the box plots not overlapping very well. Richards Bay and Antsey’s Beach had considerably more high temperatures than that of Port Edward and Glenmore. Median temperatures thus greatly differed amongst these four sites. 
@@ -424,7 +425,7 @@ plot2_final
 
 #### ANCOVA
 
-Ancova analysis: 
+Ancova analysis: This allows me to compare one variable in two or more groups taking into account the variability of other variables. This analysis of covariance is used to test the main effect of variables on a continuous variable. In this case we specifically analyse the relationship between index pair, year and season as a function of the mean temperature per year for each of the months. The results shows a significant difference between each pair of sites within each of the cluster.
 
 ```{r}
 anova_func <- function(df){
@@ -570,6 +571,10 @@ wave_daily <- wave_data %>%
   summarise_all(funs(mean = mean, sd = sd), na.rm = T) %>%
   ungroup() %>%
   left_join(wave_daily_dir)
+
+# The wind rose diagram gives an accurate representation of how wind speed and direction is distributed at a particular location. 
+# This is presented in a circular format. The length of each "spoke" around the circle is related to the frequency of time that the wind flows in a particular direction.
+# Each concentric circle represents a different frequency, with zero starting at the center and increasing frequencies in the outer circles
 
 test <- wave_daily %>% 
  filter(site == "Port Nolloth")
