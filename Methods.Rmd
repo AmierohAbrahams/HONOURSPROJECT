@@ -696,12 +696,11 @@ temp_wave_compare <- function(df){
   ggplot(data = df1, aes(x = index2)) +
     geom_line(aes(y = value, colour = variable, group = )) +
     facet_grid(variable~index, scales = "free_y")
-  return (temp_wave_compare)
 }
 
 temp_wave_compare(SACTN_daily_clusters_7)
+temp_wave_compare(SACTN_daily_clusters_15)
 ```
-
 
 ### Comparing wave data between sites in clusters
 
