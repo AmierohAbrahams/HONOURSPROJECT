@@ -688,8 +688,8 @@ temp_wave_compare <- function(df){
     facet_grid(variable~index, scales = "free_y")
 }
 temp_wave_compare(SACTN_daily_clusters_7)
+temp_wave_compare(SACTN_daily_clusters_15)
 ```
-
 
 ### Comparing wave data between sites in clusters
 
