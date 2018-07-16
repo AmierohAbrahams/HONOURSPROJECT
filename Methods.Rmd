@@ -538,8 +538,20 @@ lamberts_bay <- map_dfr(dir("data/wave_data/Lamberts Bay",
                           full.names = TRUE, pattern = "*.txt"), load_wave)
 port_nolloth <- map_dfr(dir("data/wave_data/Port Nolloth", 
                             full.names = TRUE, pattern = "*.txt"), load_wave)
-wave_data <- rbind(betties_bay, bordjies, gordons_bay, hermanus, kalk_bay, muizenberg, port_nolloth)
-rm(betties_bay, bordjies, gansbaai, gordons_bay, hermanus, kalk_bay, lamberts_bay, muizenberg, port_nolloth)
+antseys_beach <- map_dfr(dir("data/wave_data/Antsey's Beach", 
+                            full.names = TRUE, pattern = "*.txt"), load_wave)
+glenmore <-  map_dfr(dir("data/wave_data/Glenmore", 
+                            full.names = TRUE, pattern = "*.txt"), load_wave)
+mostertshoek <-  map_dfr(dir("data/wave_data/Mostertshoek", 
+                            full.names = TRUE, pattern = "*.txt"), load_wave)
+port_edward <- map_dfr(dir("data/wave_data/Port Edward", 
+                            full.names = TRUE, pattern = "*.txt"), load_wave)
+richards_bay <- map_dfr(dir("data/wave_data/Richards Bay", 
+                            full.names = TRUE, pattern = "*.txt"), load_wave)
+ystervarkpunt <- map_dfr(dir("data/wave_data/Ystervarkpunt", 
+                            full.names = TRUE, pattern = "*.txt"), load_wave)
+wave_data <- rbind(betties_bay, bordjies, gansbaai, gordons_bay, hermanus, kalk_bay, lamberts_bay, muizenberg, port_nolloth, antseys_beach, glenmore, mostertshoek, port_edward, richards_bay, ystervarkpunt)
+rm(betties_bay, bordjies, gansbaai, gordons_bay, hermanus, kalk_bay, lamberts_bay, muizenberg, port_nolloth, antseys_beach, glenmore, mostertshoek, port_edward, richards_bay, ystervarkpunt)
 ```
 
 Converting the 3-hour resolution wave data into daily data. The funs function, funs(), is used here as it provides a flexible way to generate a named list of functions for input to other functions such as the mean and sd: https://cran.r-project.org/web/packages/circular/circular.pdf (Pg 130) The circular function creates circular objects around the wind and wave direction. The wave and wind direction was collected every three hours and by using the circular function we calcuated the daily mean wave and wind direction. There is a numerically large gap between 360 and 2 where as in degrees its not as large. The circular mean function returns the mean direction of a vector of circular data.
