@@ -88,6 +88,7 @@ clust_i <- function(i) {
     coord_equal(xlim = c(15, 35), ylim = c(-37, -27)) +
     ggtitle(paste0("clust = ", i))
 }
+
 ```
 
 ```{r run_fun1, include=TRUE}
@@ -262,7 +263,7 @@ sa_coast_dist <- as.data.frame(round(PairsDists(sa_coast_prep), 2)) %>%
 
 ### Matching sites
 
-Creating a function matching the sites: This function allows me to match sites within the same cluster based on the date that temperature was collected. Sites in which temperature was collected during the same time period were matched together. This allows me to compare whether or not a temperature variation exist between sites within the same cluster and to examine the various reasons for this variation. Here we consider distance between sites.
+Creating a function matching the sites: This function allows me to match sites within the same cluster based on the date that temperature was collected. Sites in which temperature was collected during the same time period were matched together. This allows me to compare whether or not a temperature variation exist between sites within the same cluster and to examine the various reasons for this variation. Here we consider distance between sites. In this function the cumulative distance between sites were also calculated for each of the matching or paired sites.
 
 ```{r define_fun2, include=TRUE}
 ## testing...
@@ -766,6 +767,104 @@ SACTN_15_R2_anom <- SACTN_daily_clusters_15_anom %>%
 ```
 
 As we may see from these results, the R^2 values between temperatures and wave data are rather low. With R^2 = 0.07 the highest value.
+
+###########################################################
+The next step
+###########################################################
+Download AVHRR for the insitu sites
+find a matching time series for the insitu sites
+Start working with netCDF files
+
+Various packages in R such as ncdf4, ncdf4.helpers are useful tools for working with netCDF files. The ncdf4 package is used to read netCDF files into R. Here i load the standard packages used in R as well as the ncdf4 package to help run the data.
+
+```{r}
+library(ncdf4) # library for processing netCDFs
+library(data.table) # for fast .csv write function, `fwrite()`
+library(tidyverse) # misc. data processing conveniences
+library(reshape2) # for making a long data format
+library(plyr) # for `llply()`
+library(lubridate) # for working with dates
+library(stringr) # for working with strings
+library(doMC); doMC::registerDoMC(cores = 4) # for multicore spead-ups
+
+```
+
+The next step is to open the netCDF file. This requires the pathway in which the netCDF data is stored. The function nc_open found within the ncdf4 package is used here to open the netCDF file. This function opens the file, but does not read all the data in the file into R. Instead, this function reads into memory some infomation present within this file. By running the name "nc" i am able to view all the metadata within this file. This includes the various variables present within this dataset.
+
+```{r}
+# fn <- "/home/amieroh/Documents/AVHRR/Data/20020530140327-NCEI-L3C_GHRSST-SSTskin-AVHRR_Pathfinder-PFV5.3_NOAA16_G_2002150_day-v02.0-fv01.0.nc"
+# nc <- nc_open(fn) # This function opens the netCDF file but does not read all the data
+# nc 
+```
+
+The next step is to create a file path which will function as an output directory.
+Now creating a function to read the netCDF files
+
+```{r}
+nc.dir <- "/home/amieroh/Documents/spatial/test/netCDF"
+csv.dir <- "/home/amieroh/Documents/spatial/test/csv"
+```
+
+
+```{r}
+#          1         2
+# 1234567890123456789012345
+# avhrr-only-v2.19810901.nc
+
+# specify the region as "latmin", "latmax", "lonmin", "lonmax"
+
+coords <- c(-39.5, -25.5, 10.5, 39.5)
+
+ncRead <- function(nc.dir = nc.dir, csv.dir = csv.dir) {
+  nc.files <- list.files(path = nc.dir, pattern = "*.nc", full.names = TRUE, include.dirs = TRUE)
+  nc.files <- nc.files[1:10]
+  strt.date <- str_sub(basename(nc.files[1]), start = 15, end = 22)
+  end.date <- str_sub(basename(nc.files[length(nc.files)]), start = 15, end = 22)
+  nc.init <- nc_open(nc.files[1])
+  LatIdx <- which(nc.init$dim$lat$vals > coords[1] & nc.init$dim$lat$vals < coords[2])
+  LonIdx <- which(nc.init$dim$lon$vals > coords[3] & nc.init$dim$lon$vals < coords[4])
+  nc_close(nc.init)
+  
+  # nc.file <- nc.files[1]
+  
+  ncFun <- function(nc.file = nc.files, csv.dir = csv.dir) {
+    nc <- nc_open(nc.file)
+    name.stem <- substr(basename(nc.file), 1, 13) # local
+    date.stamp <- substr(basename(nc.file), 15, 22)
+    sst <- round(ncvar_get(nc,
+                           varid = "sst",
+                           start = c(LonIdx[1], LatIdx[1], 1, 1),
+                           count = c(length(LonIdx), length(LatIdx), 1, 1)),
+                 3)
+    dimnames(sst) <- list(lon = nc$dim$lon$vals[LonIdx],
+                          lat = nc$dim$lat$vals[LatIdx])
+    nc_close(nc)
+    sst <-
+      as.data.frame(melt(sst, value.name = "temp"), row.names = NULL) %>%
+      mutate(t = ymd(date.stamp)) %>%
+      na.omit()
+    fwrite(sst,
+           file = paste0(csv.dir, name.stem, "-", strt.date, "-", end.date, ".csv"),
+           append = TRUE, col.names = FALSE)
+    rm(sst)
+  }
+  llply(nc.files, ncFun, csv.dir = csv.dir, .parallel = FALSE)
+}
+```
+
+
+```{r}
+ncRead(nc.dir, csv.dir)
+```
+
+
+
+
+
+
+
+
+
 
 
 
