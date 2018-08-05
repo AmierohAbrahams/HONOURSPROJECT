@@ -424,6 +424,16 @@ plot2_final <- ggarrange(SACTN_clust_1_plot2,SACTN_clust_2_plot2,SACTN_clust_3_p
 plot2_final
 ```
 
+### Monthly comparisons
+
+On a monthly basis, differences of average temperatures between sites within cluster 1 (Cape Agulhas, Gansbaai, Mosterts Hoek, and Ystervarkpunt) varied on an apparent seasonal basis. During the summer months we saw that there were large differences in average temperatures between Gansbaai and the remaining three sites, and between Mosterts hoek and Cape Aghulus. Towards the end of summer and autumn months, in addition to the continuing trends observed between Gansbaai and the remaining sites, we then also saw differences in average temperatures between Cape Agulhas and Mosterts Hoek, and Ystervarkpunt respectively. During winter we see very little differences in average temperatures between all four sites, and this remained relatively stable over the time period. During spring months there were differences between average temperatures of Cape Agulhas and Gansbaai which continues into summer.
+
+Converse to the first cluster, in the cluster containing Kalk Bay, Gordons Bay, Muizenberg and Hermanus, the largest differences in average temperatures were observed during autumn and winter months. In this cluster we saw large differences in average temperatures between Muizenberg and the remaining sites, with the differences increasing annually throughout 1972 and 2016 during winter. Similarly, differences of average temperatures also increased between Kalk Bay and Muizenberg during these same months. In the summer and spring months we saw relatively little differences in average temperatures between sites, with minimal differences in the rates of these changes over the 44 year time period. These rates increased during spring.
+
+In the cluster comprised of Bordjies, Lamberts Bay, Betty's Bay,and Port Nolloth, we found large differences in average temperatures between sites at selected months between 2000 and 2016. During summer months, differences in average temperature between Lamberts Bay and the remaining sites increased throughout the 16 year time period. There were large increases in differences of average temperature between Port Nolloth and Bettys Bay throughout spring months. For the remaining sites, differences in average temperatures were relatively low throughout each month for the same time period.
+
+In the fourth cluster, which was comprised of Antsey's Beach, Glenmore, Port Edward, and Richards Bay, we found small changes in the differences of average temperatures between sites on a monthly basis between 1980 and 2016. Here, the biggest differences in temperatures were observed towards the end of spring and during summer months where we found large differences in average temperatures occurring between Port Edward and the remaining three sites. Some differences were also seen during the autumn months but temperatures were relatively stable throughout the remaining seasons across these four sites.  
+
 #### ANCOVA
 
 Ancova analysis: This allows me to compare one variable in two or more groups taking into account the variability of other variables. This analysis of covariance is used to test the main effect of variables on a continuous variable. In this case we specifically analyse the relationship between index pair, year and season as a function of the mean temperature per year for each of the months. The results shows a significant difference between each pair of sites within each of the cluster.
@@ -445,16 +455,6 @@ summary(anova_clus_3_func1)
 anova_clus_4_func1 <- anova_func(df = SACTN_clust_4_matched)
 summary(anova_clus_4_func1)
 ```
-
-### Monthly comparisons
-
-On a monthly basis, differences of average temperatures between sites within cluster 1 (Cape Agulhas, Gansbaai, Mosterts Hoek, and Ystervarkpunt) varied on an apparent seasonal basis. During the summer months we saw that there were large differences in average temperatures between Gansbaai and the remaining three sites, and between Mosterts hoek and Cape Aghulus. Towards the end of summer and autumn months, in addition to the continuing trends observed between Gansbaai and the remaining sites, we then also saw differences in average temperatures between Cape Agulhas and Mosterts Hoek, and Ystervarkpunt respectively. During winter we see very little differences in average temperatures between all four sites, and this remained relatively stable over the time period. During spring months there were differences between average temperatures of Cape Agulhas and Gansbaai which continues into summer.
-
-Converse to the first cluster, in the cluster containing Kalk Bay, Gordons Bay, Muizenberg and Hermanus, the largest differences in average temperatures were observed during autumn and winter months. In this cluster we saw large differences in average temperatures between Muizenberg and the remaining sites, with the differences increasing annually throughout 1972 and 2016 during winter. Similarly, differences of average temperatures also increased between Kalk Bay and Muizenberg during these same months. In the summer and spring months we saw relatively little differences in average temperatures between sites, with minimal differences in the rates of these changes over the 44 year time period. These rates increased during spring.
-
-In the cluster comprised of Bordjies, Lamberts Bay, Betty's Bay,and Port Nolloth, we found large differences in average temperatures between sites at selected months between 2000 and 2016. During summer months, differences in average temperature between Lamberts Bay and the remaining sites increased throughout the 16 year time period. There were large increases in differences of average temperature between Port Nolloth and Bettys Bay throughout spring months. For the remaining sites, differences in average temperatures were relatively low throughout each month for the same time period.
-
-In the fourth cluster, which was comprised of Antsey's Beach, Glenmore, Port Edward, and Richards Bay, we found small changes in the differences of average temperatures between sites on a monthly basis between 1980 and 2016. Here, the biggest differences in temperatures were observed towards the end of spring and during summer months where we found large differences in average temperatures occurring between Port Edward and the remaining three sites. Some differences were also seen during the autumn months but temperatures were relatively stable throughout the remaining seasons across these four sites.  
 
 Now I make a visualisation to reveal the relationship between the sd of the temperatures for each month of each year for each of the sites in the clusters. This further shows changes in temperature between sites within the same clusters.
 
@@ -849,16 +849,29 @@ I now load in the csv dataset that was created above.
 OISST_SAcoast <- read_csv("data/csvavhrr-only-v2-19810901-20180630.csv")
 ```
 
+I now load in the split OISST csv dataset
+
+```{r}
+xaa <- read_csv("data/xaa.csv")
+xab <- read_csv("data/xab.csv")
+xac <- read_csv("data/xac.csv")
+xad <- read_csv("data/xad.csv")
+xae <- read_csv("data/xae.csv")
+xaf <- read_csv("data/xaf.csv")
+
+combined_OISST <- cbind(xaa, xab, xac, xad, xae, xaf)
+```
+
 Here i am assigning column names to the dataset loaded above
 
 ```{r}
-colnames(OISST_SAcoast) <- c("lon", "lat", "temp", "date")
+colnames(combined_OISST) <- c("lon", "lat", "temp", "date")
 ```
 
 ######Ignore!!
 
 ```{r}
-OISST_subsetting <- OISST %>% 
+OISST_subsetting <- combined_OISST %>% 
   subset(temp, date> "2014-12-03" & date < "2014-12-05")
 
 pf_sub <- pf %>%
@@ -869,41 +882,12 @@ unique()
 ```
 
 
-Site coordinates
-Start and end date for subsetting
+subsetting by site location and not date
 
 ```{r}
- Gaansbaai
-19.33971 -34.58786 
-subset(temp, date> "1980-01-01" & date < "2017-01-26")
+try_subsetting <- site_list_sub %>% 
+  select(lon, lat)
 
-Cape Agulhas
-20.00439 -34.83353
-subset(temp, date> "1986-10-18" & date < "2017-10-05")
-
-Ystervarkpunt
-21.73972 -34.40278
-subset(temp, date> "1995-10-23" & date < "2007-06-21")
-
-Mosterts Hoek
-24.77944 -34.20667
-subset(temp, date> "1992-01-22" & date < "2009-11-11")
-
-Kalk Bay
-18.45077 -34.12811
-subset(temp, date> "1992-01-22" & date < "2009-11-11")
-
-
-
-
-
+subsetting_try1 <- filter(combined_OISST, lat >= min(df1$lat) & lat <= max(df1$lat) & 
+                                                            long >= min(df1$long) & long <= max(df1$long))
 ```
-
-
-
-
-
-
-
-
-
