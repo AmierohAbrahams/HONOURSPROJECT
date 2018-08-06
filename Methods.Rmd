@@ -859,13 +859,17 @@ xad <- read_csv("data/xad.csv")
 xae <- read_csv("data/xae.csv")
 xaf <- read_csv("data/xaf.csv")
 
-combined_OISST <- cbind(xaa, xab, xac, xad, xae, xaf)
+combined_OISST <- rbind(xaa, xab, xac, xad, xae, xaf)
 ```
 
 Here i am assigning column names to the dataset loaded above
 
 ```{r}
-colnames(combined_OISST) <- c("lon", "lat", "temp", "date")
+colnames(xaa) <- c("lon", "lat", "temp", "date")
+colnames(xab) <- c("lon", "lat", "temp", "date")
+colnames(xac) <- c("lon", "lat", "temp", "date")
+colnames(xad) <- c("lon", "lat", "temp", "date")
+colnames(xae) <- c("lon", "lat", "temp", "date")
 ```
 
 ######Ignore!!
@@ -891,3 +895,7 @@ try_subsetting <- site_list_sub %>%
 subsetting_try1 <- filter(combined_OISST, lat >= min(df1$lat) & lat <= max(df1$lat) & 
                                                             long >= min(df1$long) & long <= max(df1$long))
 ```
+
+# Try subsetting the data by the different coasts
+# This can be done by using filter
+
