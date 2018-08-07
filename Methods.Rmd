@@ -866,6 +866,8 @@ combined_OISST <- rbind(xaa, xab)
 rm(xaa, xab)
 ```
 
+Now we create a plot which allows me to visualise the temperatures variation along the South African coastline based on the maximum and minumum dates at which temperature was collected. This is done in order to visualise the data.
+
 ```{r}
 # Quick visualisation of the data
 combined_OISST %>% 
@@ -880,6 +882,7 @@ combined_OISST %>%
 ```
 
 ## Find nearest SST pixels
+Now we apply the FNN (Fast Nearest Neighbor) package to determine the nearesr SST pixel to the insitu collected sites. In some cases however our sites are located close to eachother and as such more than one sites may have the same SST record. Here we use a pixel of 1. 
 
 ```{r}
 unique_pixel <- combined_OISST %>% 
@@ -887,16 +890,18 @@ unique_pixel <- combined_OISST %>%
   unique()
 
 # Select 1 nearest pixel (k = 1)
+# here we ue knnx to find the closes pixel to the insitu sites
 match_index <- knnx.index(data = as.matrix(unique_pixel[,1:2]),
                           query = as.matrix(site_list_sub[,5:6]), k = 1)
 
-# Select SST pixels nearest to sites
+# Select SST pixels nearest to insitu sites
 pixel_match <- unique_pixel[match_index,] %>% 
   unite(col = combi, lon, lat, sep = "/", remove = F) %>% 
   mutate(site = site_list_sub$site)
 ```
 
 ## Subset OISST to match in situ
+I now subset the SST data to match the insitu collected seawater temperature data.
 
 ```{r}
 combined_OISST_match <- combined_OISST %>% 
@@ -921,6 +926,7 @@ ggplot(data = combined_OISST_match, aes(x = date, y = temp)) +
 ```
 
 ## Match up the OISST data and save
+This is the dataset showing the SST data for the insitu sites at the same time and date.
 
 ```{r}
 # Duplicate the pixel for Kalk Bay and Muizenberg
@@ -939,30 +945,5 @@ ggplot(data = combined_OISST_sites, aes(x = date, y = temp)) +
 save(combined_OISST_sites, file = "data/combined_OISST_sites.RData")
 ```
 
-######Ignore!!
-
-```{r}
-OISST_subsetting <- combined_OISST %>% 
-  filter(temp, date > "2014-12-03" & date < "2014-12-05")
-
-pf_sub <- pf %>%
-  filter(group == 1.1) %>% 
-  mutate(long = round(long, 1),
-         lat = round(lat, 1)) %>% 
-unique()
-```
-
-
-subsetting by site location and not date
-
-```{r}
-try_subsetting <- site_list_sub %>% 
-  select(lon, lat)
-
-subsetting_try1 <- filter(combined_OISST, lat >= min(df1$lat) & lat <= max(df1$lat) & 
-                                                            long >= min(df1$long) & long <= max(df1$long))
-```
-
-# Try subsetting the data by the different coasts
-# This can be done by using filter
-
+The next step is to now match the insitu temperature data with the SST data
+thisdddd
