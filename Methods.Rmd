@@ -902,6 +902,7 @@ pixel_match <- unique_pixel[match_index,] %>%
 combined_OISST_match <- combined_OISST %>% 
   unite(col = combi, lon, lat, sep = "/", remove = F) %>% 
   filter(combi %in% pixel_match$combi)
+rm(combined_OISST)
 ```
 
 ```{r}
@@ -915,8 +916,28 @@ combined_OISST_match %>%
 ggplot(data = combined_OISST_match, aes(x = date, y = temp)) +
   geom_line() +
   facet_wrap(~combi)
+# We see below that there are only 15 pixels
+# This is because Muizenberg and Kalk Bay are very close
 ```
 
+## Match up the OISST data and save
+
+```{r}
+# Duplicate the pixel for Kalk Bay and Muizenberg
+combined_OISST_sites <- combined_OISST_match %>% 
+  left_join(pixel_match, by = c("combi", "lon", "lat"))
+
+# Check that the pixel that is shared is duplicated
+# unique(combined_OISST_sites$site)
+# Visualise time series
+ggplot(data = combined_OISST_sites, aes(x = date, y = temp)) +
+  geom_line() +
+  facet_wrap(~site)
+```
+
+```{r}
+save(combined_OISST_sites, file = "data/combined_OISST_sites.RData")
+```
 
 ######Ignore!!
 
