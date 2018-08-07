@@ -50,7 +50,7 @@ library(stringr)
 library(broom)
 library(purrr)
 library(stlplus)
-source("earthdist.R") # lies in the folder labeled funtions
+source("functions/earthdist.R") # lies in the folder labeled funtions
 ```
 
 ### Load SACTN data
@@ -852,31 +852,52 @@ OISST_SAcoast <- read_csv("data/csvavhrr-only-v2-19810901-20180630.csv")
 I now load in the split OISST csv dataset
 
 ```{r}
-xaa <- read_csv("data/xaa.csv")
-xab <- read_csv("data/xab.csv")
-xac <- read_csv("data/xac.csv")
-xad <- read_csv("data/xad.csv")
-xae <- read_csv("data/xae.csv")
-xaf <- read_csv("data/xaf.csv")
+xaa <- read_csv("data/xaa.csv",  col_names = c("lon", "lat", "temp", "date"))
+xab <- read_csv("data/xab.csv",  col_names = c("lon", "lat", "temp", "date"))
+# xac <- read_csv("data/xac.csv",  col_names = c("lon", "lat", "temp", "date"))
+# xad <- read_csv("data/xad.csv",  col_names = c("lon", "lat", "temp", "date"))
+# xae <- read_csv("data/xae.csv",  col_names = c("lon", "lat", "temp", "date"))
+# xaf <- read_csv("data/xaf.csv",  col_names = c("lon", "lat", "temp", "date"))
 
-combined_OISST <- rbind(xaa, xab, xac, xad, xae, xaf)
+# combined_OISST <- rbind(xaa, xab, xac, xad, xae, xaf)
+combined_OISST <- rbind(xaa, xab)
+rm(xaa, xab)
 ```
-
-Here i am assigning column names to the dataset loaded above
 
 ```{r}
-colnames(xaa) <- c("lon", "lat", "temp", "date")
-colnames(xab) <- c("lon", "lat", "temp", "date")
-colnames(xac) <- c("lon", "lat", "temp", "date")
-colnames(xad) <- c("lon", "lat", "temp", "date")
-colnames(xae) <- c("lon", "lat", "temp", "date")
+# Quick visualisation of the data
+combined_OISST %>% 
+  filter(date == min(date)) %>% 
+  ggplot(aes(x = lon, y = lat)) +
+  geom_raster(aes(fill = temp))
+
+combined_OISST %>% 
+  filter(date == max(date)) %>% 
+  ggplot(aes(x = lon, y = lat)) +
+  geom_raster(aes(fill = temp))
 ```
+
+# FInd nearest SST pixels
+
+```{r}
+unique_pixel <- combined_OISST %>% 
+  select(lon, lat) %>% 
+  unique()
+
+# Select 1 nearest pixel (k = 1)
+match_index <- knnx.index(data = as.matrix(unique_pixel[,1:2]),
+                          query = as.matrix(site_list_sub[,5:6]), k = 1)
+
+# Select SST pixels nearest to sites
+pixel_match <- unique_pixel[match_index,]
+```
+
 
 ######Ignore!!
 
 ```{r}
 OISST_subsetting <- combined_OISST %>% 
-  subset(temp, date> "2014-12-03" & date < "2014-12-05")
+  filter(temp, date > "2014-12-03" & date < "2014-12-05")
 
 pf_sub <- pf %>%
   filter(group == 1.1) %>% 
