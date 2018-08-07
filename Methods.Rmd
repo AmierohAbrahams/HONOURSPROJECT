@@ -946,4 +946,3 @@ save(combined_OISST_sites, file = "data/combined_OISST_sites.RData")
 ```
 
 The next step is to now match the insitu temperature data with the SST data
-thisdddd
