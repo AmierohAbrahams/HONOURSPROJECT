@@ -104,6 +104,8 @@ clusters
 Creating a graph for the methods......
 
 ```{r}
+load("data/southern_africa_coast.Rdata")
+
 clust_i <- function(i) {
   set.seed(10)
 ggplot(data = southern_africa_coast, aes(x = long, y = lat)) +
