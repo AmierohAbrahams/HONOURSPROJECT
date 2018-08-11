@@ -79,16 +79,26 @@ The coastal region is divided into three sections, namely the cold west coast, w
 ```{r define_fun1, include=TRUE}
 clust_i <- function(i) {
   set.seed(10)
-  ggplot(data = site_list,
+ggplot(data = southern_africa_coast, aes(x = long, y = lat)) +
+  geom_polygon(aes(group = group), fill = "grey70") +
+    borders() +
+    geom_point(data = site_list,
          aes(x = lon, y = lat,
              colour = as.factor(kmeans(clust_columns, i)$cluster))) +
-    borders() +
-    geom_point() +
-    labs(colour = "cluster") +
-    coord_equal(xlim = c(15, 35), ylim = c(-37, -27)) +
-    ggtitle(paste0("clust = ", i))
+    labs(colour = "cluster")  +
+    coord_equal(xlim = c(15, 35), ylim = c(-37, -27))
 }
 
+clust_4 <- clust_i(4)
+clust_4
+
+
+
+
+
+
+
+ 
 ```
 
 ```{r run_fun1, include=TRUE}
@@ -100,6 +110,46 @@ clust_3 <- clust_i(3)
 clusters <- ggarrange(clust_6, clust_5, clust_4, clust_3, common.legend = T)
 clusters
 ```
+
+Creating a graph for the methods
+
+```{r}
+clust_i <- function(i) {
+  set.seed(10)
+  ggplot(data = site_list,
+         aes(x = lon, y = lat,
+             colour = as.factor(kmeans(clust_columns, i)$cluster))) +
+    #borders() +
+    #geom_polygon(aes(group = group), fill = "grey70", colour = "black", size = 0.5, show.legend = FALSE) +
+    geom_path(data = africa_borders) +
+  # The legend for the vector length
+    geom_label(aes(x = 36, y = -37, label = "1.0 m/s\n"), size = 3, label.padding = unit(0.5, "lines")) +
+    geom_segment(aes(x = 35, y = -37.5, xend = 37, yend = -37.5)) +
+  # The in situ sites
+    geom_point(data = site_list, shape = 1,  size = 2.8, colour = "ivory") +
+    geom_text(data = site_list, aes(label = order), size = 1.9, colour = "red") +
+  # Oceans
+    annotate("text", label = "INDIAN\nOCEAN", x = 37.00, y = -34.0, size = 4.0, angle = 0, colour = "ivory") +
+    annotate("text", label = "ATLANTIC\nOCEAN", x = 13.10, y = -34.0, size = 4.0, angle = 0, colour = "ivory") 
+
+    # geom_point() +
+    # labs(colour = "cluster") +
+    # coord_equal(xlim = c(15, 35), ylim = c(-37, -27)) +
+    ggtitle(paste0("clust = ", i))
+}
+
+
+
+clust_4 <- clust_i(4)
+clust_4
+```
+
+
+
+
+
+
+
 
 It is now necessary to load the daily SACTN temperature dataset. The SACTN dataset comprise of 135 *in situ* coastal seawater temperatures derived from daily measurements over up to 40 years. The SACTN temperature dataset was compiled by measuring coastal temperatures at 135 sites along the coast of South Africa, daily from 1972 until 2017. 
 
@@ -227,6 +277,11 @@ map_clus3 <- mapping_plot(df = site_coordinates3)
 map_clus3
 map_clus4 <- mapping_plot(df = site_coordinates4)
 map_clus4
+
+final_map_combined <- ggarrange(map_clus1, map_clus2, map_clus3, map_clus4,
+          ncol = 2, nrow = 2)
+final_map_combined
+
 ```
 
 The function droplevels is used here to drop unused levels from the factor such as the length column. The unique function is then used to determine the amount sites found within this cluster:
@@ -882,7 +937,7 @@ combined_OISST %>%
 ```
 
 ## Find nearest SST pixels
-Now we apply the FNN (Fast Nearest Neighbor) package to determine the nearesr SST pixel to the insitu collected sites. In some cases however our sites are located close to eachother and as such more than one sites may have the same SST record. Here we use a pixel of 1. 
+Now we apply the FNN (Fast Nearest Neighbor) package to determine the nearesr SST pixel to the insitu collected sites. In some cases however our sites are located close to eachother and as such more than one sites may have the same SST record. Here we use a pixe l of 1. 
 
 ```{r}
 unique_pixel <- combined_OISST %>% 
