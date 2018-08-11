@@ -79,26 +79,16 @@ The coastal region is divided into three sections, namely the cold west coast, w
 ```{r define_fun1, include=TRUE}
 clust_i <- function(i) {
   set.seed(10)
-ggplot(data = southern_africa_coast, aes(x = long, y = lat)) +
-  geom_polygon(aes(group = group), fill = "grey70") +
-    borders() +
-    geom_point(data = site_list,
+  ggplot(data = site_list,
          aes(x = lon, y = lat,
              colour = as.factor(kmeans(clust_columns, i)$cluster))) +
-    labs(colour = "cluster")  +
-    coord_equal(xlim = c(15, 35), ylim = c(-37, -27))
+    borders() +
+    geom_point() +
+    labs(colour = "cluster") +
+    coord_equal(xlim = c(15, 35), ylim = c(-37, -27)) +
+    ggtitle(paste0("clust = ", i))
 }
 
-clust_4 <- clust_i(4)
-clust_4
-
-
-
-
-
-
-
- 
 ```
 
 ```{r run_fun1, include=TRUE}
@@ -111,39 +101,44 @@ clusters <- ggarrange(clust_6, clust_5, clust_4, clust_3, common.legend = T)
 clusters
 ```
 
-Creating a graph for the methods
+Creating a graph for the methods......
 
 ```{r}
 clust_i <- function(i) {
   set.seed(10)
-  ggplot(data = site_list,
+ggplot(data = southern_africa_coast, aes(x = long, y = lat)) +
+  geom_polygon(aes(group = group), fill = "grey70") +
+    borders() +
+    geom_point(data = site_list,
          aes(x = lon, y = lat,
              colour = as.factor(kmeans(clust_columns, i)$cluster))) +
-    #borders() +
-    #geom_polygon(aes(group = group), fill = "grey70", colour = "black", size = 0.5, show.legend = FALSE) +
-    geom_path(data = africa_borders) +
-  # The legend for the vector length
-    geom_label(aes(x = 36, y = -37, label = "1.0 m/s\n"), size = 3, label.padding = unit(0.5, "lines")) +
-    geom_segment(aes(x = 35, y = -37.5, xend = 37, yend = -37.5)) +
-  # The in situ sites
-    geom_point(data = site_list, shape = 1,  size = 2.8, colour = "ivory") +
-    geom_text(data = site_list, aes(label = order), size = 1.9, colour = "red") +
-  # Oceans
-    annotate("text", label = "INDIAN\nOCEAN", x = 37.00, y = -34.0, size = 4.0, angle = 0, colour = "ivory") +
-    annotate("text", label = "ATLANTIC\nOCEAN", x = 13.10, y = -34.0, size = 4.0, angle = 0, colour = "ivory") 
-
-    # geom_point() +
-    # labs(colour = "cluster") +
-    # coord_equal(xlim = c(15, 35), ylim = c(-37, -27)) +
-    ggtitle(paste0("clust = ", i))
+    labs(colour = "cluster")  +
+    coord_equal(xlim = c(15, 35), ylim = c(-37, -27)) +
+  annotate("text", label = "INDIAN\nOCEAN", x = 32.00, y = -34.0, size = 3.0, angle = 0, colour = "black") +
+  annotate("text", label = "ATLANTIC\nOCEAN", x = 16.00, y = -34.0, size = 3.0, angle = 0, colour = "black") +
+  geom_segment(aes(x = 17.2, y = -32.6, xend = 15.2, yend = -29.5),
+                arrow = arrow(length = unit(0.3, "cm")), size = 0.1, colour = "black") +
+    annotate("text", label = "Benguela", x = 16.0, y = -31.8, size = 3.5, angle = 298, colour = "black") +
+    geom_segment(aes(x = 33, y = -29.5, xend = 29.8, yend = -33.0),
+                arrow = arrow(length = unit(0.3, "cm")), size = 0.1, colour = "black") +
+    annotate("text", label = "Agulhas", x = 31.7, y = -31.7, size = 3.5, angle = 53, colour = "black") +
+  scale_x_continuous(breaks = seq(15, 35, 5),
+                       labels = scales::unit_format("°E", sep = ""),
+                       position = "bottom") +
+    scale_y_continuous(breaks = seq(-35, -30, 5),
+                       labels = c("35°S", "30°S")) +
+    labs(x = NULL, y = NULL) +
+    coord_cartesian(xlim = c(10.5, 39.5), ylim = c(-39.5, -25.5), expand = F) +
+  theme_bw() +
+    theme(panel.border = element_rect(fill = NA, colour = "black", size = 1),
+          axis.text = element_text(colour = "black"),
+          axis.ticks = element_line(colour = "black"))
 }
-
-
 
 clust_4 <- clust_i(4)
 clust_4
-```
 
+```
 
 
 
