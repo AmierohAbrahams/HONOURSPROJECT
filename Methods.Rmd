@@ -142,13 +142,7 @@ clust_4
 
 ```
 
-
-
-
-
-
-
-It is now necessary to load the daily SACTN temperature dataset. The SACTN dataset comprise of 135 *in situ* coastal seawater temperatures derived from daily measurements over up to 40 years. The SACTN temperature dataset was compiled by measuring coastal temperatures at 135 sites along the coast of South Africa, daily from 1972 until 2017. 
+It is now necessary to load the daily SACTN temperature dataset. The SACTN dataset comprise of 129 *in situ* coastal seawater temperatures derived from daily measurements over up to 40 years. The SACTN temperature dataset was compiled by measuring coastal temperatures at 135 sites along the coast of South Africa, daily from 1972 until 2017. 
 
 ```{r load_files2, include=TRUE}
 load("SACTN_data/SACTN_daily_v4.2.RData")
@@ -254,19 +248,36 @@ ggplot(aes(x = lon, y = lat)) +
   geom_polygon(data = south_africa_coast, aes(group = group), fill = "grey70") +
   coord_cartesian(xlim = c(12, 36), ylim = c(-38, -26)) +
   geom_path(data = sa_provinces, aes(group = group)) +
-  geom_point(data = df)  +
+  geom_point(data = df, colour = "xy")  +
   geom_label_repel(data =df, aes(x = lon, y = lat, label = site), 
                    size = 3, box.padding = 2, nudge_x = -0.5, nudge_y = 0.2, 
                    segment.alpha = 0.4, force = 0.1) +
-  theme(axis.title = element_blank(),
-        axis.ticks = element_blank(),
-        axis.text = element_blank())
+  coord_equal(xlim = c(15, 35), ylim = c(-37, -27)) +
+  annotate("text", label = "INDIAN\nOCEAN", x = 35.00, y = -34.0, size = 3.0, angle = 0, colour = "black") +
+  annotate("text", label = "ATLANTIC\nOCEAN", x = 12.00, y = -34.0, size = 3.0, angle = 0, colour = "black") +
+  # geom_segment(aes(x = 17.2, y = -32.6, xend = 15.2, yend = -29.5),
+  #               arrow = arrow(length = unit(0.3, "cm")), size = 0.1, colour = "black") +
+  #   annotate("text", label = "Benguela", x = 14.0, y = -31.8, size = 3.5, angle = 298, colour = "black") +
+  #   geom_segment(aes(x = 33, y = -29.5, xend = 29.8, yend = -33.0),
+  #               arrow = arrow(length = unit(0.3, "cm")), size = 0.1, colour = "black") +
+  #   annotate("text", label = "Agulhas", x = 31.7, y = -31.7, size = 3.5, angle = 53, colour = "black") +
+  scale_x_continuous(breaks = seq(15, 35, 5),
+                       labels = scales::unit_format("°E", sep = ""),
+                       position = "bottom") +
+    scale_y_continuous(breaks = seq(-35, -30, 5),
+                       labels = c("35°S", "30°S")) +
+    labs(x = NULL, y = NULL) +
+    coord_cartesian(xlim = c(10.5, 39.5), ylim = c(-39.5, -25.5), expand = F) +
+  theme_bw() +
+    theme(panel.border = element_rect(fill = NA, colour = "black", size = 1),
+          axis.text = element_text(colour = "black"),
+          axis.ticks = element_line(colour = "black"))
   return(mapping)
 }
 ```
 
 ```{r run_fun2, include=TRUE}
-map_clus1 <- mapping_plot(df = site_coordinates1)
+map_clus1 <- mapping_plot(df = site_coordinates1, xy = limegreen)
 map_clus1
 map_clus2 <- mapping_plot(df = site_coordinates2)
 map_clus2
@@ -275,9 +286,9 @@ map_clus3
 map_clus4 <- mapping_plot(df = site_coordinates4)
 map_clus4
 
-final_map_combined <- ggarrange(map_clus1, map_clus2, map_clus3, map_clus4,
+final_map_combined_A <- ggarrange(map_clus1, map_clus2, map_clus3, map_clus4,
           ncol = 2, nrow = 2)
-final_map_combined
+final_map_combined_A
 
 ```
 
@@ -486,7 +497,7 @@ In the cluster comprised of Bordjies, Lamberts Bay, Betty's Bay,and Port Nolloth
 
 In the fourth cluster, which was comprised of Antsey's Beach, Glenmore, Port Edward, and Richards Bay, we found small changes in the differences of average temperatures between sites on a monthly basis between 1980 and 2016. Here, the biggest differences in temperatures were observed towards the end of spring and during summer months where we found large differences in average temperatures occurring between Port Edward and the remaining three sites. Some differences were also seen during the autumn months but temperatures were relatively stable throughout the remaining seasons across these four sites.  
 
-#### ANCOVA
+#### ANOVA
 
 Ancova analysis: This allows me to compare one variable in two or more groups taking into account the variability of other variables. This analysis of covariance is used to test the main effect of variables on a continuous variable. In this case we specifically analyse the relationship between index pair, year and season as a function of the mean temperature per year for each of the months. The results shows a significant difference between each pair of sites within each of the cluster.
 
