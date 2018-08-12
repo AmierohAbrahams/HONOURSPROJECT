@@ -103,8 +103,6 @@ clust_4 <- clust_i(4)
 clust_4
 ```
 
-## Data storage
-
 Once sites were grouped together, the next step was to reduce the amount of sites down to a manageable, but still representative, sub-sample of the whole. This was done primarily for two reasons. The first, simply, is to allow for the comparisons to be more readily interpretable by humans. The second objective reason is to allow for equal amount of sampling per coast. The east is more heavily sampled than the rest and as such this imbalance must be addressed. The criteria considered for the sub-samples were that both instrument types were present and that data from as many different organizations possible were included. This process yielded four sites for each of the clusters along the South African coastline (Figure 2). The statistical characteristics of the temperature was used to guide analysis of the time series to produce an accurate assessment of temperature variation between sites that are grouped together. 
 
 With each cluster having four sites I then used the haversine formula to calculate the geodesic distance between points specified by radians. Using this formula, I determined the distances (km) between each of the sites along the coastline. Thereafter, I matched sites within the same cluster based on the date that temperature was collected. This allows for a comparison to test whether or not temperature variation exists between sites within the same cluster. Once the sites were matched, I calculated means and standard deviations of temperatures between sites and clusters. This highlights the temperature variation between matched sites and allows for seasonal comparisons within the same cluster.
