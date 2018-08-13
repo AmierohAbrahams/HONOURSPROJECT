@@ -248,7 +248,7 @@ ggplot(aes(x = lon, y = lat)) +
   geom_polygon(data = south_africa_coast, aes(group = group), fill = "grey70") +
   coord_cartesian(xlim = c(12, 36), ylim = c(-38, -26)) +
   geom_path(data = sa_provinces, aes(group = group)) +
-  geom_point(data = df, colour = "xy")  +
+  geom_point(data = df, colour = xy)  +
   geom_label_repel(data =df, aes(x = lon, y = lat, label = site), 
                    size = 3, box.padding = 2, nudge_x = -0.5, nudge_y = 0.2, 
                    segment.alpha = 0.4, force = 0.1) +
@@ -279,11 +279,11 @@ ggplot(aes(x = lon, y = lat)) +
 ```{r run_fun2, include=TRUE}
 map_clus1 <- mapping_plot(df = site_coordinates1, xy = limegreen)
 map_clus1
-map_clus2 <- mapping_plot(df = site_coordinates2)
+map_clus2 <- mapping_plot(df = site_coordinates2, xy = limegreen)
 map_clus2
-map_clus3 <- mapping_plot(df = site_coordinates3)
+map_clus3 <- mapping_plot(df = site_coordinates3, xy = firebrick1)
 map_clus3
-map_clus4 <- mapping_plot(df = site_coordinates4)
+map_clus4 <- mapping_plot(df = site_coordinates4, xy= darkturquoise)
 map_clus4
 
 final_map_combined_A <- ggarrange(map_clus1, map_clus2, map_clus3, map_clus4,
