@@ -229,7 +229,7 @@ library(ggrepel)
 site_coordinates1 <- filter(site_list_sub, cluster == 1) %>% 
   select(site, lon, lat)
 # write_csv(site_coordinates1, path = "Mapping/site_coordinates1.csv")
-
+ 
 site_coordinates2 <- filter(site_list_sub, cluster == 2) %>% 
   select(site, lon, lat)
 # write_csv(site_coordinates2, path = "Mapping/site_coordinates2.csv")
@@ -240,9 +240,9 @@ site_coordinates3 <- filter(site_list_sub, cluster == 3) %>%
 
 site_coordinates4 <- filter(site_list_sub, cluster == 4) %>% 
   select(site, lon, lat)
-# write_csv(site_coordinates4, path = "Mapping/site_coordinates4.csv")
+# write_csv(site_coordinates4, path = "Mapping/site_coordinates4.csv") 
 
-mapping_plot <- function(df){
+mapping_plot <- function(df, xy = "salmon"){
   mapping <- df %>% 
 ggplot(aes(x = lon, y = lat)) +
   geom_polygon(data = south_africa_coast, aes(group = group), fill = "grey70") +
@@ -277,13 +277,13 @@ ggplot(aes(x = lon, y = lat)) +
 ```
 
 ```{r run_fun2, include=TRUE}
-map_clus1 <- mapping_plot(df = site_coordinates1, xy = limegreen)
+map_clus1 <- mapping_plot(df = site_coordinates1, xy = "limegreen")
 map_clus1
-map_clus2 <- mapping_plot(df = site_coordinates2, xy = limegreen)
+map_clus2 <- mapping_plot(df = site_coordinates2, xy = "limegreen")
 map_clus2
-map_clus3 <- mapping_plot(df = site_coordinates3, xy = firebrick1)
+map_clus3 <- mapping_plot(df = site_coordinates3, xy = "firebrick1")
 map_clus3
-map_clus4 <- mapping_plot(df = site_coordinates4, xy= darkturquoise)
+map_clus4 <- mapping_plot(df = site_coordinates4, xy= "darkturquoise")
 map_clus4
 
 final_map_combined_A <- ggarrange(map_clus1, map_clus2, map_clus3, map_clus4,

@@ -104,7 +104,76 @@ clust_4 <- clust_i(4)
 clust_4
 ```
 
-Once sites were grouped together, the next step was to reduce the amount of sites down to a manageable, but still representative, sub-sample of the whole. This was done primarily for two reasons. The first, simply, is to allow for the comparisons to be more readily interpretable by humans. The second objective reason is to allow for equal amount of sampling per coast. The east is more heavily sampled than the rest and as such this imbalance must be addressed. The criteria considered for the sub-samples were that both instrument types were present and that data from as many different organizations possible were included. This process yielded four sites for each of the clusters along the South African coastline (Figure 2). The statistical characteristics of the temperature was used to guide analysis of the time series to produce an accurate assessment of temperature variation between sites that are grouped together. 
+Once sites were grouped together, the next step was to reduce the amount of sites down to a manageable, but still representative, sub-sample of the whole. This was done primarily for two reasons. The first, simply, is to allow for the comparisons to be more readily interpretable by humans. The second objective reason is to allow for equal amount of sampling per coast. The east is more heavily sampled than the rest and as such this imbalance must be addressed. The criteria considered for the sub-samples were that both instrument types were present and that data from as many different organizations possible were included. This process yielded four sites for each of the clusters along the South African coastline (Figure 2). The statistical characteristics of the temperature was used to guide analysis of the time series to produce an accurate assessment of temperature variation between sites that are grouped together.
+
+```{r}
+library(ggrepel)
+
+site_coordinates1 <- filter(site_list_sub, cluster == 1) %>% 
+  select(site, lon, lat)
+# write_csv(site_coordinates1, path = "Mapping/site_coordinates1.csv")
+ 
+site_coordinates2 <- filter(site_list_sub, cluster == 2) %>% 
+  select(site, lon, lat)
+# write_csv(site_coordinates2, path = "Mapping/site_coordinates2.csv")
+
+site_coordinates3 <- filter(site_list_sub, cluster == 3) %>% 
+   select(site, lon, lat)
+# write_csv(site_coordinates3, path = "Mapping/site_coordinates3.csv")
+
+site_coordinates4 <- filter(site_list_sub, cluster == 4) %>% 
+  select(site, lon, lat)
+# write_csv(site_coordinates4, path = "Mapping/site_coordinates4.csv") 
+
+mapping_plot <- function(df, xy = "salmon"){
+  mapping <- df %>% 
+ggplot(aes(x = lon, y = lat)) +
+  geom_polygon(data = south_africa_coast, aes(group = group), fill = "grey70") +
+  coord_cartesian(xlim = c(12, 36), ylim = c(-38, -26)) +
+  geom_path(data = sa_provinces, aes(group = group)) +
+  geom_point(data = df, colour = xy)  +
+  geom_label_repel(data =df, aes(x = lon, y = lat, label = site), 
+                   size = 3, box.padding = 2, nudge_x = -0.5, nudge_y = 0.2, 
+                   segment.alpha = 0.4, force = 0.1) +
+  coord_equal(xlim = c(15, 35), ylim = c(-37, -27)) +
+  annotate("text", label = "INDIAN\nOCEAN", x = 35.00, y = -34.0, size = 3.0, angle = 0, colour = "black") +
+  annotate("text", label = "ATLANTIC\nOCEAN", x = 12.00, y = -34.0, size = 3.0, angle = 0, colour = "black") +
+  # geom_segment(aes(x = 17.2, y = -32.6, xend = 15.2, yend = -29.5),
+  #               arrow = arrow(length = unit(0.3, "cm")), size = 0.1, colour = "black") +
+  #   annotate("text", label = "Benguela", x = 14.0, y = -31.8, size = 3.5, angle = 298, colour = "black") +
+  #   geom_segment(aes(x = 33, y = -29.5, xend = 29.8, yend = -33.0),
+  #               arrow = arrow(length = unit(0.3, "cm")), size = 0.1, colour = "black") +
+  #   annotate("text", label = "Agulhas", x = 31.7, y = -31.7, size = 3.5, angle = 53, colour = "black") +
+  scale_x_continuous(breaks = seq(15, 35, 5),
+                       labels = scales::unit_format("°E", sep = ""),
+                       position = "bottom") +
+    scale_y_continuous(breaks = seq(-35, -30, 5),
+                       labels = c("35°S", "30°S")) +
+    labs(x = NULL, y = NULL) +
+    coord_cartesian(xlim = c(10.5, 39.5), ylim = c(-39.5, -25.5), expand = F) +
+  theme_bw() +
+    theme(panel.border = element_rect(fill = NA, colour = "black", size = 1),
+          axis.text = element_text(colour = "black"),
+          axis.ticks = element_line(colour = "black"))
+  return(mapping)
+}
+```
+
+```{r run_fun2, include=TRUE}
+map_clus1 <- mapping_plot(df = site_coordinates1, xy = "limegreen")
+map_clus1
+map_clus2 <- mapping_plot(df = site_coordinates2, xy = "limegreen")
+map_clus2
+map_clus3 <- mapping_plot(df = site_coordinates3, xy = "firebrick1")
+map_clus3
+map_clus4 <- mapping_plot(df = site_coordinates4, xy= "darkturquoise")
+map_clus4
+
+final_map_combined_A <- ggarrange(map_clus1, map_clus2, map_clus3, map_clus4,
+          ncol = 2, nrow = 2)
+final_map_combined_A
+```
+
 
 With each cluster having four sites I then used the haversine formula to calculate the geodesic distance between points specified by radians. Using this formula, I determined the distances (km) between each of the sites along the coastline. Thereafter, I matched sites within the same cluster based on the date that temperature was collected. This allows for a comparison to test whether or not temperature variation exists between sites within the same cluster. Once the sites were matched, I calculated means and standard deviations of temperatures between sites and clusters. This highlights the temperature variation between matched sites and allows for seasonal comparisons within the same cluster.
 
