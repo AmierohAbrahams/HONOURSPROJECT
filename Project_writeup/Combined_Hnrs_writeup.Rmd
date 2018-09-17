@@ -67,7 +67,7 @@ To compare temperatures along the South African coastline at a localized scale, 
 ```{r, echo= FALSE, message=FALSE, warning=FALSE, fig.cap="A map indicating the location of the 129 sites where temperatre measurements were collected along the South African coastline with the different coasts representing different colour variations.", fig.height=8, fig.width=12}
 
 library(knitr)
-load("data/southern_africa_coast.Rdata")
+#load("data/southern_africa_coast.Rdata")
 
 clust_i <- function(i) {
   set.seed(10)
@@ -75,7 +75,7 @@ ggplot(data = southern_africa_coast, aes(x = long, y = lat)) +
   geom_polygon(aes(group = group), fill = "grey70") +
     borders() +
     geom_point(data = site_list,
-         aes(x = lon, y = lat, size = 1,
+         aes(x = lon, y = lat,
              colour = as.factor(kmeans(clust_columns, i)$cluster))) +
     labs(colour = "cluster")  +
     coord_equal(xlim = c(15, 35), ylim = c(-37, -27)) +
@@ -94,6 +94,9 @@ ggplot(data = southern_africa_coast, aes(x = long, y = lat)) +
                        labels = c("35°S", "30°S")) +
     labs(x = NULL, y = NULL) +
     coord_cartesian(xlim = c(10.5, 39.5), ylim = c(-39.5, -25.5), expand = F) +
+  scaleBar(lon = 32.0, lat = -38.7, distanceLon = 200, distanceLat = 50, 
+           distanceLegend = 90, dist.unit = "km", arrow.length = 100,
+           arrow.distance = 130, arrow.North.size = 3) +
   theme_bw() +
     theme(panel.border = element_rect(fill = NA, colour = "black", size = 1),
           axis.text = element_text(colour = "black"),
@@ -151,6 +154,9 @@ ggplot(aes(x = lon, y = lat)) +
                        labels = c("35°S", "30°S")) +
     labs(x = NULL, y = NULL) +
     coord_cartesian(xlim = c(10.5, 39.5), ylim = c(-39.5, -25.5), expand = F) +
+     scaleBar(lon = 32.0, lat = -38.7, distanceLon = 200, distanceLat = 50, 
+           distanceLegend = 90, dist.unit = "km", arrow.length = 100,
+           arrow.distance = 130, arrow.North.size = 3) +
   theme_bw() +
     theme(panel.border = element_rect(fill = NA, colour = "black", size = 1),
           axis.text = element_text(colour = "black"),
@@ -174,7 +180,6 @@ final_map_combined_A <- ggarrange(map_clus1, map_clus2, map_clus3, map_clus4,
 final_map_combined_A
 ```
 
-
 With each cluster having four sites I then used the haversine formula to calculate the geodesic distance between points specified by radians. Using this formula, I determined the distances (km) between each of the sites along the coastline. Thereafter, I matched sites within the same cluster based on the date that temperature was collected. This allows for a comparison to test whether or not temperature variation exists between sites within the same cluster. Once the sites were matched, I calculated means and standard deviations of temperatures between sites and clusters. This highlights the temperature variation between matched sites and allows for seasonal comparisons within the same cluster.
 
 ## Data analyses
@@ -182,6 +187,10 @@ I used a series of ANOVA tests to compare the main effects of my variables on a 
 
 The wave data was collected at depths of 7 m or 15 m respectively. I used the ‘circular’ function in R software to create circular objects around the wave data to calculate the daily wave and wind direction. Thereafter I calculated the annual wave and wind direction for each of the sites. I then combined this to the temperature data for each site at the required time series where data was available. I then used the ‘s.window’ function in R to controls how rapidly the seasonal component of each variable varies, with small values allowing for rapid changes.
 
+With temperature and wave values now corresponding to their respective sites and depths, I then tested the hypothesis that there was a relationship between them. To do this I produced linear models for each site, reflecting temperature and wave variations at each depth. Linear models typically produce coefficients of determination R2 as an output, and I used the ‘purrr’ function within the ‘tidyverse’ R package to simultaneously compare temperature and wave data across sites and depths.
+
+Satellite data:
+Sea Surface temperature measurements were obtained from the National Oceanic and Atmospheric Administration Optimum Interpolation Sea Surface Temperature (NOAA OISST) V2 dataset. This dataset provides daily SSTs at a 0.25° grid resolution, ranging from 1 September 1981 to 3 June 2018. I generated a time series of SST of the South African coastline using from this dataset by bounding the region of extent at the latitudes (-39.5° S, -25.5° S), and the longitudes (10.5° E, 39.5° E). I used the ‘Fastest Nearest Neighbour (FNN)’ package in R was to determine the nearest 9 pixels containing SST data to in-situ sites 10km from the shoreline. I then matched the OISST satellite data to the data from in-situ sites. However, at some locations the in-situ sites were located too closely to each other and as a result they may have shared the same satellite data due to their close proximities. In these instances I matched the OISST SST data to in-situ collected temperature data based on time and date of collection.
 
 
 
@@ -190,6 +199,26 @@ The wave data was collected at depths of 7 m or 15 m respectively. I used the �
 
 
 
+
+
+
+
+
+
+
+
+
+## Some discussion points
+
+This study aimed to investigate how environmental factors wind and wave action influenced coastal seawater temperature variation along the South African coastline. Since seawater temperature is known to have large influences on species distributions (Bolton 2010, Smit et al. 2013), it is important to understand not only the variation across the coastline, but the factors driving variations as well. Here, I found that there were statistically significant differences in SST between the three coasts of South Africa, and that temperatures along these individual coasts varied at differing degrees. I found that the east coast of South Africa had overall little variation in temperatures between sites, whereas the south coast varied more frequently (Schlegel and Smit 2016). 
+
+Previous studies suggest that a longer time series containing more data would be more effective in detecting subtle changes in temperature changes obtained from highly variable coastal regions Schlegel and Smit 2016). Schlegel and Smit (2016) suggested that having a time series of greater than 30 years for sites with a low variance results in increased ability to detect significant changes (Schlegel and Smit 2016). They showed that high quality time series datasets typically have frequent measurements with minimal missing (NA) values present. Furthermore, low quality dataset (i.e. those with more than 5% of NA values), has an increased chance of detecting variation where none exists.
+
+Because temperature collection along the South African coastline started in the 1970s, and data collection was inconsistent in terms of instruments used, modifications to styles and methods used for data collection, calibration, and the locations where data were collected the metadata for older seawater temperature records within the SACTN dataset may have been lost or are unreliable. This metadata is essential as its absence prevents us from fully understanding the influence that instruments had on the temperature recordings. We do however have an accurate indication of which recordings were measured with thermometers and which were with UTR.
+
+The UTRs used to collect data in the SACTN dataset appear to express a lower number of NA values compared to the data collected with hand thermometers. As such, this may influenced the overall time series dataset (Smit and Schlegel, 2016). The level of precision at which data was collected also influenced the length of the time series needed. Time series in which temperature was collected at a precision of 0.5 degrees C may require another of data of another 24 months to precisely detect long term variation (Smit and Schlegel 2016).The average length of the thermometer time series component of the SACTN dataset was 346 whereas the average length of UTR time series was only 167 months. Knowing this difference in time series lengths, even once correcting for negative effects on the measurement precision of the thermometer collected time series, are essentially more useful compared to UTRs.
+
+Satellite derived SST data are undoubtedly useful. Globally, these data are used in numerous marine focussed studies and are critical in furthering our understanding of coastal systems. Satellite data are often used to model a range of oceanic processes, but only recently have these data been used to study benthic organisms. Here, I found that satellite data were significantly correlated with in situ collected temperature data. One potential drawback of this is that SST data derived from satellites are significantly different compared to actual coastal seawater temperatures. This is due to the fact that satellite derived SST data are collected from a thin boundary layer at the air-sea interface and collection is only reliable 10 km from the coast. These data should therefore be interpreted with caution.
 
 
 
