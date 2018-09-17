@@ -51,6 +51,8 @@ library(broom)
 library(purrr)
 library(stlplus)
 source("functions/earthdist.R") # lies in the folder labeled funtions
+source("functions/scale.bar.func.R")
+
 ```
 
 ### Load SACTN data
@@ -131,6 +133,9 @@ ggplot(data = southern_africa_coast, aes(x = long, y = lat)) +
                        labels = c("35°S", "30°S")) +
     labs(x = NULL, y = NULL) +
     coord_cartesian(xlim = c(10.5, 39.5), ylim = c(-39.5, -25.5), expand = F) +
+  scaleBar(lon = 32.0, lat = -38.7, distanceLon = 200, distanceLat = 50, 
+           distanceLegend = 90, dist.unit = "km", arrow.length = 100,
+           arrow.distance = 130, arrow.North.size = 3) +
   theme_bw() +
     theme(panel.border = element_rect(fill = NA, colour = "black", size = 1),
           axis.text = element_text(colour = "black"),
@@ -139,7 +144,6 @@ ggplot(data = southern_africa_coast, aes(x = long, y = lat)) +
 
 clust_4 <- clust_i(4)
 clust_4
-
 ```
 
 It is now necessary to load the daily SACTN temperature dataset. The SACTN dataset comprise of 129 *in situ* coastal seawater temperatures derived from daily measurements over up to 40 years. The SACTN temperature dataset was compiled by measuring coastal temperatures at 135 sites along the coast of South Africa, daily from 1972 until 2017. 
@@ -268,6 +272,9 @@ ggplot(aes(x = lon, y = lat)) +
                        labels = c("35°S", "30°S")) +
     labs(x = NULL, y = NULL) +
     coord_cartesian(xlim = c(10.5, 39.5), ylim = c(-39.5, -25.5), expand = F) +
+     scaleBar(lon = 32.0, lat = -38.7, distanceLon = 200, distanceLat = 50, 
+           distanceLegend = 90, dist.unit = "km", arrow.length = 100,
+           arrow.distance = 130, arrow.North.size = 3) +
   theme_bw() +
     theme(panel.border = element_rect(fill = NA, colour = "black", size = 1),
           axis.text = element_text(colour = "black"),
@@ -620,7 +627,7 @@ wave_data <- rbind(betties_bay, bordjies, gansbaai, gordons_bay, hermanus, kalk_
 rm(betties_bay, bordjies, gansbaai, gordons_bay, hermanus, kalk_bay, lamberts_bay, muizenberg, port_nolloth, antseys_beach, glenmore, mostertshoek, port_edward, richards_bay, ystervarkpunt)
 ```
 
-Converting the 3-hour resolution wave data into daily data. The funs function, funs(), is used here as it provides a flexible way to generate a named list of functions for input to other functions such as the mean and sd: https://cran.r-project.org/web/packages/circular/circular.pdf (Pg 130) The circular function creates circular objects around the wind and wave direction. The wave and wind direction was collected every three hours and by using the circular function we calcuated the daily mean wave and wind direction. There is a numerically large gap between 360 and 2 where as in degrees its not as large. The circular mean function returns the mean direction of a vector of circular data.
+Converting the 3-hour resolution wave data into daily data. The funs function, funs(), is used here as it provides a flexible way to generate a named list of functions for input to other functions such as the mean and sd: https://cran.r-project.org/web/packages/circular/circular.pdf (Pg 130). The circular function creates circular objects around the wind and wave direction. The wave and wind direction was collected every three hours and by using the circular function we calcuated the daily mean wave and wind direction. There is a numerically large gap between 360 and 2 where as in degrees its not as large. The circular mean function returns the mean direction of a vector of circular data.
 
 ```{r}
 test <- circular::circular(wave_data$dir, units = "degrees")
@@ -799,7 +806,9 @@ temp_wave_R2 <- function(df){
     mutate(adj.r.squared = round(adj.r.squared, 2),
            p.value = round(p.value, 4))
   return(results)
-  }
+}
+
+
 ```
 
 
@@ -860,7 +869,6 @@ csv.dir <- "/home/amieroh/Documents/spatial/test/csv"
 #          1         2
 # 1234567890123456789012345
 # avhrr-only-v2.19810901.nc
-
 # specify the region as "latmin", "latmax", "lonmin", "lonmax"
 
 coords <- c(-39.5, -25.5, 10.5, 39.5)
@@ -906,7 +914,7 @@ ncRead <- function(nc.dir = nc.dir, csv.dir = csv.dir) {
 ncRead(nc.dir, csv.dir)
 ```
 
-I now load in the csv dataset that was created above.
+I now load in the csv dataset created above.
 
 ```{r load_files1, include=TRUE}
 OISST_SAcoast <- read_csv("data/csvavhrr-only-v2-19810901-20180630.csv")
@@ -963,6 +971,20 @@ pixel_match <- unique_pixel[match_index,] %>%
   mutate(site = site_list_sub$site)
 ```
 
+
+```{r}
+# # create a bounding box of at least 9x resol(km) from station (note this will be a rough estimate
+# # due to lat/lon estimates of resol (km):
+# # 9km latitude 
+# 
+# # finding the closes pixel to the insitu sites
+# Latlon <- as.data.frame(site_list_sub[,5:6]) # Lat and longs of the insitu sites
+# 
+# Lat9 <- 9* (1/110.574)
+# # 9km longitude 
+# lon9 <- 9* (1/(111.320*cos(site_list_sub[,6]))) # R uses radians not degress
+```
+
 ## Subset OISST to match in situ
 I now subset the SST data to match the insitu collected seawater temperature data.
 
@@ -1009,3 +1031,30 @@ save(combined_OISST_sites, file = "data/combined_OISST_sites.RData")
 ```
 
 The next step is to now match the insitu temperature data with the SST data
+```{r}
+insitu_satellite <- SACTN_daily_clusters_sub  %>% 
+  left_join(combined_OISST_sites, by = c("site", "date")) %>% 
+  na.trim()
+```
+
+Plotting the the insitu collected temp data
+```{r}
+ggplot(data = insitu_satellite, aes(x = date, y = temp.x)) +
+  geom_line() +
+  facet_wrap(~site)
+```
+
+plotting the satellite collected temp data
+```{r}
+ggplot(data = insitu_satellite, aes(x = date, y = temp.y)) +
+  geom_line() +
+  facet_wrap(~site)
+```
+
+# Possible steps
+Split the satellite data up by clusters
+Plot the satellite data by clusters and the insitu collected data
+
+
+
+
