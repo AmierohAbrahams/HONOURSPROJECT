@@ -72,7 +72,7 @@ Performing the k-means clustering on a data matrix using the `kmeans()` function
 
 ```{r setup_k-means, include=TRUE}
 set.seed(10)
-kmeans(site_list[,c(15, 18, 19)], 3)$cluster
+kmeans(site_list[,c(15, 18, 19)], 6)$cluster
 clust_columns <- site_list[,c(15, 18:19)]
 ```
 
@@ -94,12 +94,14 @@ clust_i <- function(i) {
 ```
 
 ```{r run_fun1, include=TRUE}
+clust_8 <- clust_i(8)
+clust_7 <- clust_i(7)
 clust_6 <- clust_i(6)
 clust_5 <- clust_i(5)
 clust_4 <- clust_i(4)
 clust_3 <- clust_i(3)
 
-clusters <- ggarrange(clust_6, clust_5, clust_4, clust_3, common.legend = T)
+clusters <- ggarrange(clust_8, clust_7, clust_6, clust_5, clust_4, clust_3, common.legend = T)
 clusters
 ```
 
@@ -156,7 +158,7 @@ Clustering the sites using the k-means results: Creating a cluster index whilst 
   
 ```{r run_k-means, include=TRUE}
 set.seed(10)
-site_list$cluster <- as.factor(kmeans(site_list[,c(15, 18:19)], 4)$cluster)
+site_list$cluster <- as.factor(kmeans(site_list[,c(15, 18:19)], 6)$cluster)
 
 site_list_clusters <- site_list %>% 
   filter(length >= 3650, depth <= 5)
@@ -182,6 +184,13 @@ sites_3 <- site_list_clusters %>%
   filter(cluster == 3)
 sites_4 <- site_list_clusters %>%
   filter(cluster == 4)
+sites_5 <- site_list_clusters %>%
+  filter(cluster == 5)
+sites_6 <- site_list_clusters %>%
+  filter(cluster == 6)
+
+
+##############################################################################################################################
 
 # I then grouped the sub-samples by source and took the longest time series
 # When fewer than 4 sources were present, I took the next longest time series etc.
@@ -506,7 +515,9 @@ In the fourth cluster, which was comprised of Antsey's Beach, Glenmore, Port Edw
 
 #### ANOVA
 
-Ancova analysis: This allows me to compare one variable in two or more groups taking into account the variability of other variables. This analysis of covariance is used to test the main effect of variables on a continuous variable. In this case we specifically analyse the relationship between index pair, year and season as a function of the mean temperature per year for each of the months. The results shows a significant difference between each pair of sites within each of the cluster.
+Anova analysis: This allows me to compare one variable in two or more groups taking into account the variability of other variables. This analysis of covariance is used to test the main effect of variables on a continuous variable. In this case we specifically analyse the 
+- relationship between index pair, year and season as a function of the mean temperature per year for each of the months. 
+- The results shows a significant difference between each pair of sites within each of the cluster.
 
 ```{r define_fun6, include=TRUE}
 anova_func <- function(df){
@@ -657,15 +668,17 @@ wave_daily <- wave_data %>%
 # This is presented in a circular format. The length of each "spoke" around the circle is related to the frequency of time that the wind flows in a particular direction.
 # Each concentric circle represents a different frequency, with zero starting at the center and increasing frequencies in the outer circles
 
-test <- wave_daily %>% 
- filter(site == "Port Nolloth")
-windrose(x = test$dir_circ, y = test$hs_mean, main = "Port Nolloth\nWave Rose")
-windrose(x = test$dirw_circ, y = test$spw_mean, main = "Port Nolloth\nWind Rose")
+#Ignore...
+# test <- wave_daily %>% 
+#  filter(site == "Port Nolloth")
+# windrose(x = test$dir_circ, y = test$hs_mean, main = "Port Nolloth\nWave Rose")
+# windrose(x = test$dirw_circ, y = test$spw_mean, main = "Port Nolloth\nWind Rose")
 
 anom_func <- function(m){
   m1 <- m-mean(m, na.rm = T)
   return(m1)
 }
+
 suppressWarnings(wave_daily_anom <- wave_daily %>% 
   group_by(site, num, depth) %>% 
   mutate_at(vars(-c(site:date)), anom_func))
@@ -681,6 +694,7 @@ wave_annually_dir <- wave_data %>%
   summarise(dir_circ = mean(circular(dir, units = "degrees")),
             dirw_circ = mean(circular(dirw, units = "degrees")))
 
+# Calculating the mean and sd for each of the sites excluding year 2000
 wave_annually <- wave_data %>%
   mutate(date = lubridate::year(date)) %>%
   group_by(site, num, depth, date) %>%
@@ -783,6 +797,49 @@ temp_wave_compare <- function(df){
 temp_wave_compare(SACTN_daily_clusters_7)
 temp_wave_compare(SACTN_daily_clusters_15)
 ```
+# Pearsons correlation
+writing a function for the code bellow.
+
+```{r}
+cor.test(x = SACTN_daily_clusters_7$temp, SACTN_daily_clusters_7$hs_mean,
+         use = "everything", method = "pearson")
+
+cor.test(x = SACTN_daily_clusters_7$temp, SACTN_daily_clusters_7$tp_mean,
+         use = "everything", method = "pearson")
+
+cor.test(x = SACTN_daily_clusters_7$temp, SACTN_daily_clusters_7$dir_mean,
+         use = "everything", method = "pearson")
+
+cor.test(x = SACTN_daily_clusters_7$temp, SACTN_daily_clusters_7$dirw_mean,
+         use = "everything", method = "pearson")
+
+cor.test(x = SACTN_daily_clusters_7$temp, SACTN_daily_clusters_7$spw_mean,
+         use = "everything", method = "pearson")
+
+cor.test(x = SACTN_daily_clusters_7$temp, SACTN_daily_clusters_7$hs_sd,
+         use = "everything", method = "pearson")
+
+cor.test(x = SACTN_daily_clusters_7$temp, SACTN_daily_clusters_7$tp_sd,
+         use = "everything", method = "pearson")
+
+cor.test(x = SACTN_daily_clusters_7$temp, SACTN_daily_clusters_7$dir_sd,
+         use = "everything", method = "pearson")
+
+cor.test(x = SACTN_daily_clusters_7$temp, SACTN_daily_clusters_7$dirw_sd,
+         use = "everything", method = "pearson")
+
+cor.test(x = SACTN_daily_clusters_7$temp, SACTN_daily_clusters_7$spw_sd,
+         use = "everything", method = "pearson")
+
+cor.test(x = SACTN_daily_clusters_7$temp, SACTN_daily_clusters_7$dir_circ,
+         use = "everything", method = "pearson")
+
+# cor.test(x = SACTN_daily_clusters_7$temp, SACTN_daily_clusters_7$dirw_cir,
+#          use = "everything", method = "pearson")
+
+cor.test(x = SACTN_daily_clusters_7$temp, SACTN_daily_clusters_7$temp_flat,
+         use = "everything", method = "pearson")
+```
 
 ### Comparing waves and temperatures
 
@@ -807,8 +864,6 @@ temp_wave_R2 <- function(df){
            p.value = round(p.value, 4))
   return(results)
 }
-
-
 ```
 
 
@@ -996,12 +1051,6 @@ rm(combined_OISST)
 ```
 
 ```{r}
-# One map view
-combined_OISST_match %>% 
-  filter(date == max(date)) %>% 
-  ggplot(aes(x = lon, y = lat)) +
-  geom_raster(aes(fill = temp))
-
 # Visualise the time series
 ggplot(data = combined_OISST_match, aes(x = date, y = temp)) +
   geom_line() +
@@ -1012,6 +1061,12 @@ ggplot(data = combined_OISST_match, aes(x = date, y = temp)) +
 
 ## Match up the OISST data and save
 This is the dataset showing the SST data for the insitu sites at the same time and date.
+
+# One map view
+combined_OISST_match %>% 
+  filter(date == max(date)) %>% 
+  ggplot(aes(x = lon, y = lat)) +
+  geom_raster(aes(fill = temp))
 
 ```{r}
 # Duplicate the pixel for Kalk Bay and Muizenberg
@@ -1051,9 +1106,47 @@ ggplot(data = insitu_satellite, aes(x = date, y = temp.y)) +
   facet_wrap(~site)
 ```
 
-# Possible steps
-Split the satellite data up by clusters
-Plot the satellite data by clusters and the insitu collected data
+# Time series of insitu data
+```{r}
+insitu_plot <- ggplot(insitu_satellite, aes(x = date, y = temp.x)) +
+  geom_line() +
+  facet_wrap(~site, scales = "free_x", ncol = 2) +
+  labs(x = "Year", y = "Null") +
+  theme_bw() +
+  theme(panel.grid.minor = element_blank(),
+        panel.grid.major = element_line(color = "#cfcfcf", size = 0.4))
+
+ggsave(plot = try2, filename = "figures/insitu_plot.pdf")
+```
+
+#Time series of satellite data
+
+```{r}
+satellite_plot <- ggplot(insitu_satellite, aes(x = date, y = temp.y)) +
+  geom_line() +
+  facet_wrap(~site, scales = "free_x", ncol = 2) +
+  labs(x = "Year", y = "Null") +
+  theme_bw() +
+  theme(panel.grid.minor = element_blank(),
+        panel.grid.major = element_line(color = "#cfcfcf", size = 0.4))
+
+ggsave(plot = try1, filename = "figures/satellite_plot.pdf")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
