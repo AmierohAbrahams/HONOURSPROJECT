@@ -144,8 +144,8 @@ ggplot(data = southern_africa_coast, aes(x = long, y = lat)) +
           axis.ticks = element_line(colour = "black"))
 }
 
-clust_4 <- clust_i(4)
-clust_4
+clust_6 <- clust_i(6)
+clust_6
 ```
 
 It is now necessary to load the daily SACTN temperature dataset. The SACTN dataset comprise of 129 *in situ* coastal seawater temperatures derived from daily measurements over up to 40 years. The SACTN temperature dataset was compiled by measuring coastal temperatures at 135 sites along the coast of South Africa, daily from 1972 until 2017. 
@@ -189,37 +189,49 @@ sites_5 <- site_list_clusters %>%
 sites_6 <- site_list_clusters %>%
   filter(cluster == 6)
 
-
-##############################################################################################################################
-
 # I then grouped the sub-samples by source and took the longest time series
 # When fewer than 4 sources were present, I took the next longest time series etc.
 sites_1_sub <- sites_1 %>%
   group_by(src) %>%
   filter(length %in% head(length, 2)) %>%
   ungroup()
+
 sites_2_sub <- sites_2 %>%
   group_by(src) %>%
   filter(length %in% head(length, 4)) %>% 
-  ungroup()
+  ungroup() %>% 
+  slice(c(1,2,3))
+
 sites_3_sub <- sites_3 %>%
   group_by(src) %>%
   filter(length %in% head(length, 4)) %>% 
   ungroup() %>% 
-  slice(c(1,4,6,7))
+  slice(c(1,2,5))
+
 sites_4_sub <- sites_4 %>% 
-  filter(src != "SAWS") %>% # The one SAWS time series available is rather bad
   group_by(src) %>%
   filter(length %in% head(length, 2)) %>%
-  filter(NA.perc %in% tail(NA.perc, 2)) %>%
+  #filter(NA.perc %in% tail(NA.perc, 2)) %>%
   ungroup() %>% 
-  slice(c(1,4,7,9))
-#
+  slice(c(2,3,4))
+
+sites_5_sub <- sites_5 %>% 
+  group_by(src) %>%
+  filter(length %in% head(length, 4)) %>% 
+  ungroup() %>% 
+  slice(c(1,4, 10)) # slicing the 10row of site5.....
+
+sites_6_sub <- sites_6 %>% 
+  group_by(src) %>%
+  filter(length %in% head(length, 4)) %>% 
+  ungroup() %>% 
+  slice(c(1,2,3))
+
 # This then creates subsets of the four sites per cluster
 # Though we may want to consider the distance between sites as well...
 # Anyway, for now I stitch them together to be used as a further index
 # for subsetting the daily data
-site_list_sub <- rbind(sites_1_sub, sites_2_sub, sites_3_sub, sites_4_sub)
+site_list_sub <- rbind(sites_1_sub, sites_2_sub, sites_3_sub, sites_4_sub, sites_5_sub, sites_6_sub)
 # write_csv(site_list_sub, path = "data/site_list_sub.csv")
 
 # Then subset the daily data
@@ -254,6 +266,11 @@ site_coordinates3 <- filter(site_list_sub, cluster == 3) %>%
 site_coordinates4 <- filter(site_list_sub, cluster == 4) %>% 
   select(site, lon, lat)
 # write_csv(site_coordinates4, path = "Mapping/site_coordinates4.csv") 
+site_coordinates5 <- filter(site_list_sub, cluster == 5) %>% 
+  select(site, lon, lat)
+
+site_coordinates6 <- filter(site_list_sub, cluster == 6) %>% 
+  select(site, lon, lat)
 
 mapping_plot <- function(df, xy = "salmon"){
   mapping <- df %>% 
@@ -294,15 +311,14 @@ ggplot(aes(x = lon, y = lat)) +
 
 ```{r run_fun2, include=TRUE}
 map_clus1 <- mapping_plot(df = site_coordinates1, xy = "limegreen")
-map_clus1
 map_clus2 <- mapping_plot(df = site_coordinates2, xy = "limegreen")
-map_clus2
 map_clus3 <- mapping_plot(df = site_coordinates3, xy = "firebrick1")
-map_clus3
 map_clus4 <- mapping_plot(df = site_coordinates4, xy= "darkturquoise")
-map_clus4
+map_clus5 <- mapping_plot(df = site_coordinates5, xy= "salmon")
+map_clus6 <- mapping_plot(df = site_coordinates6, xy= "salmon")
 
-final_map_combined_A <- ggarrange(map_clus1, map_clus2, map_clus3, map_clus4,
+
+final_map_combined_A <- ggarrange(map_clus1, map_clus2, map_clus3, map_clus4, map_clus5, map_clus6,
           ncol = 2, nrow = 2)
 final_map_combined_A
 
@@ -410,6 +426,9 @@ SACTN_clust_1_match <- clust_match(df = SACTN_daily_clusters_sub, clust = 1)
 SACTN_clust_2_match <- clust_match(df = SACTN_daily_clusters_sub, clust = 2)
 SACTN_clust_3_match <- clust_match(df = SACTN_daily_clusters_sub, clust = 3)
 SACTN_clust_4_match <- clust_match(df = SACTN_daily_clusters_sub, clust = 4)
+SACTN_clust_5_match <- clust_match(df = SACTN_daily_clusters_sub, clust = 5)
+SACTN_clust_6_match <- clust_match(df = SACTN_daily_clusters_sub, clust = 6)
+
 
 clust_matched <- function(df) {
   SACTN_clust_x_matched <- df %>%
@@ -431,6 +450,8 @@ SACTN_clust_1_matched <- clust_matched(df = SACTN_clust_1_match)
 SACTN_clust_2_matched <- clust_matched(df = SACTN_clust_2_match)
 SACTN_clust_3_matched <- clust_matched(df = SACTN_clust_3_match)
 SACTN_clust_4_matched <- clust_matched(df = SACTN_clust_4_match)
+SACTN_clust_5_matched <- clust_matched(df = SACTN_clust_5_match)
+SACTN_clust_6_matched <- clust_matched(df = SACTN_clust_6_match)
 ```
 
 ### Comparing sites
@@ -458,10 +479,13 @@ SACTN_clust_2_plot1 <- clust_plot(df = SACTN_clust_2_match)
 SACTN_clust_3_plot1 <- clust_plot(df = SACTN_clust_3_match)
 # SACTN_clust_3_plot1
 SACTN_clust_4_plot1 <- clust_plot(df = SACTN_clust_4_match)
-# SACTN_clust_4_plot1
+SACTN_clust_5_plot1 <- clust_plot(df = SACTN_clust_5_match)
+SACTN_clust_6_plot1 <- clust_plot(df = SACTN_clust_6_match)
+
 
 combined_plot <- ggarrange(SACTN_clust_1_plot1, SACTN_clust_2_plot1,
-                           SACTN_clust_3_plot1, SACTN_clust_4_plot1)
+                           SACTN_clust_3_plot1, SACTN_clust_4_plot1, 
+                           SACTN_clust_5_plot1, SACTN_clust_6_plot1)
 combined_plot
 ```
 
@@ -498,8 +522,12 @@ SACTN_clust_3_plot2 <- clust_plot2(df = SACTN_clust_3_matched)
 # SACTN_clust_3_plot2
 SACTN_clust_4_plot2 <- clust_plot2(df = SACTN_clust_4_matched)
 # SACTN_clust_4_plot2
+SACTN_clust_5_plot2 <- clust_plot2(df = SACTN_clust_5_matched)
+SACTN_clust_6_plot2 <- clust_plot2(df = SACTN_clust_6_matched)
 
-plot2_final <- ggarrange(SACTN_clust_1_plot2,SACTN_clust_2_plot2,SACTN_clust_3_plot2,SACTN_clust_4_plot2)
+
+
+plot2_final <- ggarrange(SACTN_clust_1_plot2,SACTN_clust_2_plot2,SACTN_clust_3_plot2,SACTN_clust_4_plot2, SACTN_clust_5_plot2, SACTN_clust_6_plot2)
 plot2_final
 ```
 
@@ -535,6 +563,11 @@ anova_clus_3_func1 <- anova_func(df = SACTN_clust_3_matched)
 summary(anova_clus_3_func1)
 anova_clus_4_func1 <- anova_func(df = SACTN_clust_4_matched)
 summary(anova_clus_4_func1)
+anova_clus_5_func1 <- anova_func(df = SACTN_clust_5_matched)
+summary(anova_clus_5_func1)
+anova_clus_6_func1 <- anova_func(df = SACTN_clust_6_matched)
+summary(anova_clus_6_func1)
+
 ```
 
 Now I make a visualisation to reveal the relationship between the sd of the temperatures for each month of each year for each of the sites in the clusters. This further shows changes in temperature between sites within the same clusters.
@@ -656,7 +689,86 @@ wave_daily_dir <- wave_data %>%
             dirw_circ = mean.circular(circular(dirw, units = "degrees"))) #%>% 
   # mutate(dir_head = ,
   #        dirw_head = )
+```
 
+```{r}
+sites_complete_7a <- wave_daily_dir %>%
+  filter(depth == "7m")
+
+sites_complete_15a <- wave_daily_dir %>%
+  filter(depth == "15m")
+```
+
+
+Matching temp wth wave dir and dirw
+
+```{r}
+SACTN_daily_clusters_sub_1 <- SACTN_daily_clusters_sub %>% 
+  separate(index, into = c("site", "src"), sep = "/", remove = FALSE)
+
+# Combine the temperature and 7 m depth wave data
+SACTN_daily_clusters_7a <- SACTN_daily_clusters_sub %>% 
+  left_join(sites_complete_7a, by = c("site", "date")) %>% 
+  na.trim() %>% 
+  group_by(site)
+
+SACTN_daily_clusters_15a <- SACTN_daily_clusters_sub %>% 
+  left_join(sites_complete_15a, by = c("site", "date")) %>% 
+  na.trim() %>% 
+  group_by(site)
+```
+
+# Plotting graphs
+
+Creating scatter plotting dir dirw for waves data collected at 7m
+
+```{r}
+temp_dir_point <- ggplot(SACTN_daily_clusters_7a, aes(x = temp, y = dir_circ)) +
+  geom_point() +
+  facet_wrap(~site, scales = "free_x", ncol = 2) +
+  labs(x = "Year", y = "Null") +
+  theme_bw() +
+  theme(panel.grid.minor = element_blank(),
+        panel.grid.major = element_line(color = "#cfcfcf", size = 0.4))
+```
+
+```{r}
+temp_dirw_point <- ggplot(SACTN_daily_clusters_7a, aes(x = temp, y = dirw_circ)) +
+  geom_point() +
+  facet_wrap(~site, scales = "free_x", ncol = 2) +
+  labs(x = "Year", y = "Null") +
+  theme_bw() +
+  theme(panel.grid.minor = element_blank(),
+        panel.grid.major = element_line(color = "#cfcfcf", size = 0.4))
+```
+
+Histogram
+
+```{r}
+histogram_1 <- ggplot(data = SACTN_daily_clusters_7a, aes(x = dir_circ)) +
+geom_histogram() +
+facet_wrap(~site, scales = "free_x", ncol = 2) 
+histogram_1
+```
+
+```{r}
+histogram_2 <- ggplot(data = SACTN_daily_clusters_7a, aes(x = dirw_circ)) +
+geom_histogram() +
+facet_wrap(~site, scales = "free_x", ncol = 2) 
+histogram_2
+```
+
+
+
+##########################################################################################################################################
+
+
+
+
+
+
+
+```{r}
 wave_daily <- wave_data %>%
   mutate(date = as.Date(date)) %>%
   group_by(site, num, depth, date) %>%
