@@ -174,7 +174,7 @@ africa_map
 
 # More mapping - http://r-nold.blogspot.com/2014/06/creating-inset-map-with-ggplot2.html
 
-pdf("figures/SA_sites.pdf", width = 8, height = 5, pointsize = 6) # Set PDF dimensions
+pdf("figures/map_complete.pdf", width = 8, height = 5, pointsize = 6) # Set PDF dimensions
 vp1 <- viewport(x = -0.00, y = 0.05, w = 0.25, h = 0.25, just = c("left", "bottom")) # Africa
 vp2 <- viewport(x = 1.0, y = 1.0, w = 1.00, h = 1.00, just = c("right", "top"))  # South Africa
 print(clust_6, vp = vp2)
@@ -339,12 +339,12 @@ ggplot(aes(x = lon, y = lat)) +
 ```
 
 ```{r run_fun2, include=TRUE}
-map_clus1 <- mapping_plot(df = site_coordinates1, xy = "limegreen")
-map_clus2 <- mapping_plot(df = site_coordinates2, xy = "limegreen")
-map_clus3 <- mapping_plot(df = site_coordinates3, xy = "firebrick1")
-map_clus4 <- mapping_plot(df = site_coordinates4, xy= "darkturquoise")
-map_clus5 <- mapping_plot(df = site_coordinates5, xy= "salmon") # Match colours later
-map_clus6 <- mapping_plot(df = site_coordinates6, xy= "salmon") # Match colours later
+map_clus1 <- mapping_plot(df = site_coordinates1, xy = "salmon")
+map_clus2 <- mapping_plot(df = site_coordinates2, xy = "darkgoldenrod4")
+map_clus3 <- mapping_plot(df = site_coordinates3, xy = "springgreen4")
+map_clus4 <- mapping_plot(df = site_coordinates4, xy= "lightskyblue")
+map_clus5 <- mapping_plot(df = site_coordinates5, xy= "steelblue3") 
+map_clus6 <- mapping_plot(df = site_coordinates6, xy= "mediumorchid1") 
 
 final_map_combined_A <- ggarrange(map_clus1, map_clus2, map_clus3, map_clus4, map_clus5, map_clus6,
           ncol = 2, nrow = 2)
