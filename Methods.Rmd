@@ -329,8 +329,8 @@ map_clus1 <- mapping_plot(df = site_coordinates1, xy = "limegreen")
 map_clus2 <- mapping_plot(df = site_coordinates2, xy = "limegreen")
 map_clus3 <- mapping_plot(df = site_coordinates3, xy = "firebrick1")
 map_clus4 <- mapping_plot(df = site_coordinates4, xy= "darkturquoise")
-map_clus5 <- mapping_plot(df = site_coordinates5, xy= "salmon")
-map_clus6 <- mapping_plot(df = site_coordinates6, xy= "salmon")
+map_clus5 <- mapping_plot(df = site_coordinates5, xy= "salmon") # Match colours later
+map_clus6 <- mapping_plot(df = site_coordinates6, xy= "salmon") # Match colours later
 
 final_map_combined_A <- ggarrange(map_clus1, map_clus2, map_clus3, map_clus4, map_clus5, map_clus6,
           ncol = 2, nrow = 2)
@@ -714,42 +714,101 @@ Matching temp wth wave
 SACTN_daily_clusters_sub_1 <- SACTN_daily_clusters_sub %>% 
   separate(index, into = c("site", "src"), sep = "/", remove = FALSE)
 
-# Combine the temperature and 7 m depth wave data
-SACTN_daily_clusters_7a <- SACTN_daily_clusters_sub_1 %>% 
-  left_join(sites_complete_7a, by = c("site", "date")) %>% 
-  na.trim() %>% 
-  group_by(site) %>% 
-  mutate(temp_flat = stlplus(x = temp, n.p = 365, s.window = "periodic")[[1]]$remainder)
+try1 <- function(df) {
+  func1 <- df %>% 
+    left_join(sites_complete_7a, by = c("site", "date")) %>% 
+    na.trim() %>% 
+    group_by(site) %>% 
+    mutate(temp_flat = stlplus(x = temp, n.p = 365, s.window = "periodic")[[1]]$remainder)
+    return(func1)
+}
+try2 <- function(df) {
+  func2 <- df %>% 
+    left_join(sites_complete_15a, by = c("site", "date")) %>% 
+    na.trim() %>% 
+    group_by(site) %>% 
+    mutate(temp_flat = stlplus(x = temp, n.p = 365, s.window = "periodic")[[1]]$remainder)
+    return(func2)
+}
 
-SACTN_daily_clusters_15a <- SACTN_daily_clusters_sub_1 %>% 
-  left_join(sites_complete_15a, by = c("site", "date")) %>% 
-  na.trim() %>% 
-  group_by(site)%>% 
-  mutate(temp_flat = stlplus(x = temp, n.p = 365, s.window = "periodic")[[1]]$remainder)
+SACTN_daily_clusters_7a <- try1(df = SACTN_daily_clusters_sub_1)
+SACTN_daily_clusters_15a <- try2(df = SACTN_daily_clusters_sub_1)
 ```
 
-# Plotting graphs
-Scatter plot: Plotting dir and dirw
+Creating scatter plot where I compare wave dir,dirw,spw for the insitu datasets
 
 ```{r}
-temp_dir_scatter <- ggplot(SACTN_daily_clusters_7a, aes(x = temp, y = dir_circ)) +
-  geom_point() +
+plot_compare_spw <- function(df) {
+  plot_temp_wave <- df %>% 
+    ggplot(aes(x = temp, y = spw_circ )) +
+    geom_point() +
+  facet_wrap(~site, scales = "free_x", ncol = 2) +
+  # labs(x = "Year", y = "Null") +
+  theme_bw() +
+  theme(panel.grid.minor = element_blank(),
+        panel.grid.major = element_line(color = "#cfcfcf", size = 0.4))
+  return(plot_temp_wave)
+}
+
+plot_compare_hs <- function(df) {
+  plot_temp_wave <- df %>% 
+    ggplot(aes(x = temp, y = hs_circ )) +
+    geom_point() +
   facet_wrap(~site, scales = "free_x", ncol = 2) +
   labs(x = "Year", y = "Null") +
   theme_bw() +
   theme(panel.grid.minor = element_blank(),
         panel.grid.major = element_line(color = "#cfcfcf", size = 0.4))
-temp_dir_scatter
+  return(plot_temp_wave)
+}
 
-temp_dirw_scatter <- ggplot(SACTN_daily_clusters_7a, aes(x = temp, y = dirw_circ)) +
-  geom_point() +
+plot_compare_tp<- function(df) {
+  plot_temp_wave <- df %>% 
+    ggplot(aes(x = temp, y = tp_circ )) +
+    geom_point() +
   facet_wrap(~site, scales = "free_x", ncol = 2) +
-  labs(x = "Year", y = "Null") +
+  # labs(x = "Year", y = "Null") +
   theme_bw() +
   theme(panel.grid.minor = element_blank(),
         panel.grid.major = element_line(color = "#cfcfcf", size = 0.4))
-temp_dir_scatter
+  return(plot_temp_wave)
+}
 
+plot_compare_dir<- function(df) {
+  plot_temp_wave <- df %>% 
+    ggplot(aes(x = temp, y = dir_circ )) +
+    geom_point() +
+  facet_wrap(~site, scales = "free_x", ncol = 2) +
+  # labs(x = "Year", y = "Null") +
+  theme_bw() +
+  theme(panel.grid.minor = element_blank(),
+        panel.grid.major = element_line(color = "#cfcfcf", size = 0.4))
+  return(plot_temp_wave)
+}
+
+plot_compare_dirw<- function(df) {
+  plot_temp_wave <- df %>% 
+    ggplot(aes(x = temp, y = dirw_circ )) +
+    geom_point() +
+  facet_wrap(~site, scales = "free_x", ncol = 2) +
+  # labs(x = "Year", y = "Null") +
+  theme_bw() +
+  theme(panel.grid.minor = element_blank(),
+        panel.grid.major = element_line(color = "#cfcfcf", size = 0.4))
+  return(plot_temp_wave)
+}
+
+# For insitu data
+Insitu_spw_circ <- plot_compare_spw(df = SACTN_daily_clusters_7a)
+Insitu_hs_circ <- plot_compare_hs(df = SACTN_daily_clusters_7a)
+Insitu_tp_circ <- plot_compare_tp(df = SACTN_daily_clusters_7a)
+Insitu_dir_circ <- plot_compare_dir(df = SACTN_daily_clusters_7a)
+Insitu_dirw_circ <- plot_compare_dirw(df = SACTN_daily_clusters_7a)
+Insitu_spw_circ_15 <- plot_compare_spw(df = SACTN_daily_clusters_15a)
+Insitu_hs_circ_15 <- plot_compare_hs(df = SACTN_daily_clusters_15a)
+Insitu_tp_circ_15 <- plot_compare_tp(df = SACTN_daily_clusters_15a)
+Insitu_dir_circ_15 <- plot_compare_dir(df = SACTN_daily_clusters_15a)
+Insitu_dirw_circ_15 <- plot_compare_dirw(df = SACTN_daily_clusters_15a)
 ```
 
 Histogram: Plotting dir and dirw
@@ -764,6 +823,11 @@ histogram_2 <- ggplot(data = SACTN_daily_clusters_7a, aes(x = dirw_circ)) +
 geom_histogram() +
 facet_wrap(~site, scales = "free_x", ncol = 2) 
 histogram_2
+
+histogram_3 <- ggplot(data = SACTN_daily_clusters_7a, aes(x = spw_circ)) +
+geom_histogram() +
+facet_wrap(~site, scales = "free_x", ncol = 2) 
+histogram_3
 ```
 
 log transforming the Wave variables
@@ -1266,6 +1330,22 @@ AVHRR_temp_15 <- AVHRR_wave %>%
   mutate(temp_flat = stlplus(x = temp, n.p = 365, s.window = "periodic")[[1]]$remainder)
 ```
 
+# Plotting graphs
+Scatter plot: Plotting dir and dirw
+
+```{r}
+AVHRR_spw_circ <- plot_compare_spw(df = AVHRR_temp_7)
+AVHRR_hs_circ <- plot_compare_hs(df = AVHRR_temp_7)
+AVHRR_tp_circ <- plot_compare_tp(df = AVHRR_temp_7)
+AVHRR_dir_circ <- plot_compare_dir(df = AVHRR_temp_7)
+AVHRR_dirw_circ <- plot_compare_dirw(df = AVHRR_temp_7)
+AVHRR_spw_circ_15 <- plot_compare_spw(df = AVHRR_temp_7)
+AVHRR_hs_circ_15 <- plot_compare_hs(df = AVHRR_temp_7)
+AVHRR_tp_circ_15 <- plot_compare_tp(df = AVHRR_temp_7)
+AVHRR_dir_circ_15 <- plot_compare_dir(df = AVHRR_temp_7)
+AVHRR_dirw_circ_15 <- plot_compare_dirw(df = AVHRR_temp_7)
+```
+
 log transforming the Wave variables
 
 ```{r}
@@ -1277,9 +1357,111 @@ AVHRR_temp_15[, 15:17] <- log(AVHRR_temp_15[15:17], 2)
 Calculating the R2 value of each of the variables
 
 ```{r}
+AVHRR_temp_7_R2 <- AVHRR_temp_7 %>% 
+  temp_wave_R2()
+AVHRR_temp_15_R2 <- AVHRR_temp_15 %>% 
+  temp_wave_R2()
+```
+
+# Satellite data
+# Loading in the MUR satellite data
+
+```{r}
+MUR_Bordjies_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_Bordjies_SST_timeseries_5nearest.csv") 
+MUR_Eastern_Beach_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_Eastern Beach_SST_timeseries_5nearest.csv")
+MUR_Gansbaai_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_Gansbaai_SST_timeseries_5nearest.csv")
+MUR_Gordons_Bay_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_Gordons Bay_SST_timeseries_5nearest.csv")
+MUR_Hamburg_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_Hamburg_SST_timeseries_5nearest.csv")
+MUR_Kalk_Bay_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_Kalk Bay_SST_timeseries_5nearest.csv")
+MUR_Knysna_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_Knysna_SST_timeseries_5nearest.csv")
+MUR_Lamberts_Bay_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_Lamberts Bay_SST_timeseries_5nearest.csv")
+MUR_Leisure_Bay_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_Leisure Bay_SST_timeseries_5nearest.csv")
+MUR_Mossel_Bay_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_Mossel Bay_SST_timeseries_5nearest.csv")
+MUR_Muizenberg_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_Muizenberg_SST_timeseries_5nearest.csv")
+MUR_Orient_Beach_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_Orient Beach_SST_timeseries_5nearest.csv")
+MUR_Port_Edward_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_Port Edward_SST_timeseries_5nearest.csv")
+MUR_Saldanha_Bay_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_Saldanha Bay_SST_timeseries_5nearest.csv")
+MUR_Sea_Point_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_Sea Point_SST_timeseries_5nearest.csv")
+MUR_Stilbaai_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_Stilbaai_SST_timeseries_5nearest.csv")
+MUR_T_O_Strand_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_T.O. Strand_SST_timeseries_5nearest.csv")
+MUR_Port_Nolloth_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_Port Nolloth_SST_timeseries_5nearest.csv")
+
+MUR_data <- rbind(MUR_Orient_Beach_SST_timeseries_5nearest, MUR_Bordjies_SST_timeseries_5nearest, MUR_Eastern_Beach_SST_timeseries_5nearest,
+                  MUR_Gansbaai_SST_timeseries_5nearest, MUR_Gordons_Bay_SST_timeseries_5nearest, MUR_Hamburg_SST_timeseries_5nearest,
+                  MUR_Kalk_Bay_SST_timeseries_5nearest, MUR_Knysna_SST_timeseries_5nearest, MUR_Lamberts_Bay_SST_timeseries_5nearest,
+                  MUR_Leisure_Bay_SST_timeseries_5nearest, MUR_Mossel_Bay_SST_timeseries_5nearest, MUR_Muizenberg_SST_timeseries_5nearest,
+                  MUR_Port_Edward_SST_timeseries_5nearest, MUR_Port_Nolloth_SST_timeseries_5nearest,
+                  MUR_Saldanha_Bay_SST_timeseries_5nearest,MUR_Sea_Point_SST_timeseries_5nearest, MUR_Stilbaai_SST_timeseries_5nearest, 
+                  MUR_T_O_Strand_SST_timeseries_5nearest)
+rm(MUR_Orient_Beach_SST_timeseries_5nearest, MUR_Bordjies_SST_timeseries_5nearest, MUR_Eastern_Beach_SST_timeseries_5nearest,
+                  MUR_Gansbaai_SST_timeseries_5nearest, MUR_Gordons_Bay_SST_timeseries_5nearest, MUR_Hamburg_SST_timeseries_5nearest,
+                  MUR_Kalk_Bay_SST_timeseries_5nearest, MUR_Knysna_SST_timeseries_5nearest, MUR_Lamberts_Bay_SST_timeseries_5nearest,
+                  MUR_Leisure_Bay_SST_timeseries_5nearest, MUR_Mossel_Bay_SST_timeseries_5nearest, MUR_Muizenberg_SST_timeseries_5nearest,
+                  MUR_Port_Edward_SST_timeseries_5nearest, MUR_Port_Nolloth_SST_timeseries_5nearest,
+                  MUR_Saldanha_Bay_SST_timeseries_5nearest,MUR_Sea_Point_SST_timeseries_5nearest, MUR_Stilbaai_SST_timeseries_5nearest, 
+                  MUR_T_O_Strand_SST_timeseries_5nearest)
+
+MUR_data <- MUR_data %>% 
+  dplyr::rename(site = station) # Rename station name to site. This is done to match the wave data
+MUR_data$date <- (ymd(MUR_data$date))
+```
+
+Matching in situ sites with the MUR data sites
+```{r}
+insitu_MUR <- SACTN_daily_clusters_sub_1  %>% 
+  left_join(MUR_data, by = c("site", "date")) %>% 
+  na.trim()
+```
+
+Matching the MUR data with the wave data
+
+```{r}
+MUR_wave <- insitu_MUR %>% 
+  separate(index, into = c("site", "src"), sep = "/", remove = FALSE)
+
+# Combine the temperature and 7 m depth wave data
+MUR_7 <- MUR_wave %>% 
+  left_join(sites_complete_7a, by = c("site", "date")) %>% 
+  na.trim() %>% 
+  group_by(site)
+
+MUR_15 <- MUR_wave %>% 
+  left_join(sites_complete_15a, by = c("site", "date")) %>% 
+  na.trim() %>% 
+  group_by(site) 
+```
+
+```{r}
+temp_wave_compare <- function(df){
+  df1 <- df %>% 
+    dplyr::mutate(year = year(date), 
+                  week = week(date)) %>% 
+    dplyr::select(-date) %>% 
+    tidyr::gather(key = variable, value = value, 
+                  -c(index:src, year, week, length:depth)) %>% 
+    na.omit() %>% 
+    ungroup() %>% 
+    group_by(index, year, week, variable) %>% 
+    na.omit() %>% 
+    dplyr::summarise(value = mean(value, na.rm = T)) %>% 
+    arrange(index, year, week) %>% 
+    group_by(index, variable) %>% 
+    mutate(index2 = 1:n())
+  ggplot(data = df1, aes(x = index2)) +
+    geom_line(aes(y = value, colour = variable, group = )) +
+    facet_grid(variable~index, scales = "free_y")
+}
+
+temp_wave_compare(MUR_7)
+temp_wave_compare(SACTN_daily_clusters_15a)
+```
+
+Calculating the R2 value of each of the variables
+
+```{r}
 temp_wave_R2 <- function(df){
   results <- df %>% 
-    select(-index, -src, -date, -length, -c(num:depth), -temp, -lon, -lat, -combi) %>%
+    select(-index, -src, -date, -length, -c(num:depth), -temp) %>%
     gather(key = variable, 
            value = value,
            -cluster, -site, -temp_flat) %>%
@@ -1295,11 +1477,79 @@ temp_wave_R2 <- function(df){
   return(results)
 }
 
-AVHRR_temp_7_R2 <- AVHRR_temp_7 %>% 
+SACTN_7_R2_log_trans <- SACTN_daily_clusters_7a %>% 
   temp_wave_R2()
-AVHRR_temp_15_R2 <- AVHRR_temp_15 %>% 
+
+SACTN_15_R2_log_trans <- SACTN_daily_clusters_15a %>% 
   temp_wave_R2()
 ```
+
+
+
+# Loading in the CMC datasets
+
+```{r}
+CMC_Bordjies_SST_timeseries_5nearest <- read_csv("data/CMC/CMC_Bordjies_SST_timeseries_5nearest.csv")
+CMC_Eastern_Beach_SST_timeseries_5nearest <- read_csv("data/CMC/CMC_Eastern Beach_SST_timeseries_5nearest.csv")
+CMC_Gansbaai_SST_timeseries_5nearest <- read_csv("data/CMC/CMC_Gansbaai_SST_timeseries_5nearest.csv")
+CMC_Gordons_Bay_SST_timeseries_5nearest <- read_csv("data/CMC/CMC_Gordons Bay_SST_timeseries_5nearest.csv")
+CMC_Hamburg_SST_timeseries_5nearest <- read_csv("data/CMC/CMC_Hamburg_SST_timeseries_5nearest.csv")
+CMC_Kalk_Bay_SST_timeseries_5nearest <- read_csv("data/CMC/CMC_Kalk Bay_SST_timeseries_5nearest.csv")
+CMC_Knysna_SST_timeseries_5nearest <- read_csv("data/CMC/CMC_Knysna_SST_timeseries_5nearest.csv")
+CMC_Lamberts_Bay_SST_timeseries_5nearest <- read_csv("data/CMC/CMC_Lamberts Bay_SST_timeseries_5nearest.csv")
+CMC_Leisure_Bay_SST_timeseries_5nearest <- read_csv("data/CMC/CMC_Leisure Bay_SST_timeseries_5nearest.csv")
+CMC_Mossel_Bay_SST_timeseries_5nearest <- read_csv("data/CMC/CMC_Mossel Bay_SST_timeseries_5nearest.csv")
+CMC_Muizenberg_SST_timeseries_5nearest <- read_csv("data/CMC/CMC_Muizenberg_SST_timeseries_5nearest.csv")
+CMC_Orient_Beach_SST_timeseries_5nearest <- read_csv("data/CMC/CMC_Orient Beach_SST_timeseries_5nearest.csv")
+CMC_Port_Edward_SST_timeseries_5nearest <- read_csv("data/CMC/CMC_Port Edward_SST_timeseries_5nearest.csv")
+CMC_Port_Nolloth_SST_timeseries_5nearest <- read_csv("data/CMC/CMC_Port Nolloth_SST_timeseries_5nearest.csv")
+CMC_Saldanha_Bay_SST_timeseries_5nearest <- read_csv("data/CMC/CMC_Saldanha Bay_SST_timeseries_5nearest.csv")
+CMC_Sea_Point_SST_timeseries_5nearest <- read_csv("data/CMC/CMC_Sea Point_SST_timeseries_5nearest.csv")
+CMC_Stilbaai_SST_timeseries_5nearest <- read_csv("data/CMC/CMC_Stilbaai_SST_timeseries_5nearest.csv")
+CMC_T_O_Strand_SST_timeseries_5nearest <- read_csv("data/CMC/CMC_T.O. Strand_SST_timeseries_5nearest.csv")
+
+CMC_data <- rbind(CMC_Bordjies_SST_timeseries_5nearest, CMC_Eastern_Beach_SST_timeseries_5nearest, CMC_Gansbaai_SST_timeseries_5nearest,
+                  CMC_Gordons_Bay_SST_timeseries_5nearest, CMC_Hamburg_SST_timeseries_5nearest, CMC_Kalk_Bay_SST_timeseries_5nearest,
+                  CMC_Knysna_SST_timeseries_5nearest,CMC_Lamberts_Bay_SST_timeseries_5nearest, CMC_Leisure_Bay_SST_timeseries_5nearest,
+                  CMC_Mossel_Bay_SST_timeseries_5nearest, CMC_Muizenberg_SST_timeseries_5nearest,CMC_Orient_Beach_SST_timeseries_5nearest,
+                  CMC_Port_Edward_SST_timeseries_5nearest, CMC_Port_Nolloth_SST_timeseries_5nearest,CMC_Saldanha_Bay_SST_timeseries_5nearest,
+                  CMC_Sea_Point_SST_timeseries_5nearest,CMC_Stilbaai_SST_timeseries_5nearest,CMC_T_O_Strand_SST_timeseries_5nearest)
+rm(CMC_Bordjies_SST_timeseries_5nearest, CMC_Eastern_Beach_SST_timeseries_5nearest, CMC_Gansbaai_SST_timeseries_5nearest,
+                  CMC_Gordons_Bay_SST_timeseries_5nearest, CMC_Hamburg_SST_timeseries_5nearest, CMC_Kalk_Bay_SST_timeseries_5nearest,
+                  CMC_Knysna_SST_timeseries_5nearest,CMC_Lamberts_Bay_SST_timeseries_5nearest, CMC_Leisure_Bay_SST_timeseries_5nearest,
+                  CMC_Mossel_Bay_SST_timeseries_5nearest, CMC_Muizenberg_SST_timeseries_5nearest,CMC_Orient_Beach_SST_timeseries_5nearest,
+                  CMC_Port_Edward_SST_timeseries_5nearest, CMC_Port_Nolloth_SST_timeseries_5nearest,CMC_Saldanha_Bay_SST_timeseries_5nearest,
+                  CMC_Sea_Point_SST_timeseries_5nearest,CMC_Stilbaai_SST_timeseries_5nearest,CMC_T_O_Strand_SST_timeseries_5nearest)
+CMC_data <- CMC_data %>% 
+  rename(site = station)
+CMC_data$date <- as.numeric(CMC_data$date)
+CMC_data$date <- (ymd(CMC_data$date))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
