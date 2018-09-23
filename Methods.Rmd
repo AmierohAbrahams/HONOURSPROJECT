@@ -62,7 +62,6 @@ Now to get to the data. The first step involves the loading of the site list. Th
 
 ```{r load_files1, include=TRUE}
 load("data/site_list_v4.2.RData")
-load("data/sa_coast.Rdata")
 ```
 
 ### Clustering
@@ -110,6 +109,7 @@ Creating a map of cluster six......To be added into the methods
 load("data/southern_africa_coast.Rdata")
 load("data/africa_coast.RData")
 load("data/sa_provinces_new.RData")
+load("data/sa_coast.Rdata")
 
 clust_i <- function(i) {
   set.seed(10)
@@ -480,6 +480,35 @@ SACTN_clust_5_matched <- clust_matched(df = SACTN_clust_5_match)
 SACTN_clust_6_matched <- clust_matched(df = SACTN_clust_6_match)
 ```
 
+#### ANOVA
+
+Anova analysis: This allows me to compare one variable in two or more groups taking into account the variability of other variables. This analysis of covariance is used to test the main effect of variables on a continuous variable. In this case we specifically analyse the 
+- relationship between index pair, year and season as a function of the mean temperature per year for each of the months. 
+- The results shows a significant difference between each pair of sites within each of the cluster.
+
+```{r define_fun6, include=TRUE}
+anova_func <- function(df){
+  sites_aov <- aov(temp_mean_month_year ~ index_pair * year * season, data = df)
+return(sites_aov)
+}
+```
+
+```{r run_fun6, include=TRUE}
+anova_clus_1_func1 <- anova_func(df = SACTN_clust_1_matched)
+summary(anova_clus_1_func1)
+anova_clus_2_func1 <- anova_func(df = SACTN_clust_2_matched)
+summary(anova_clus_2_func1)
+anova_clus_3_func1 <- anova_func(df = SACTN_clust_3_matched)
+summary(anova_clus_3_func1)
+anova_clus_4_func1 <- anova_func(df = SACTN_clust_4_matched)
+summary(anova_clus_4_func1)
+anova_clus_5_func1 <- anova_func(df = SACTN_clust_5_matched)
+summary(anova_clus_5_func1)
+anova_clus_6_func1 <- anova_func(df = SACTN_clust_6_matched)
+summary(anova_clus_6_func1)
+
+```
+
 ### Comparing sites
 
 The code below lets us visualise the temperatures for each of the sites.  This box plot allows me to observe whether or not a variation exist between the sites found within the same cluster. The values represent the distance "km" between the sites Temperature 1 represents a site and temperature 2 represents a second site. The boxplot shows the temperature variation of two sites within the same cluster (along the same coast) being compared to eachother. To conclude, temperatures were not uniformly distributed with each set of sites having a unique temperature variation. 
@@ -556,35 +585,6 @@ Converse to the first cluster, in the cluster containing Kalk Bay, Gordons Bay, 
 In the cluster comprised of Bordjies, Lamberts Bay, Betty's Bay,and Port Nolloth, we found large differences in average temperatures between sites at selected months between 2000 and 2016. During summer months, differences in average temperature between Lamberts Bay and the remaining sites increased throughout the 16 year time period. There were large increases in differences of average temperature between Port Nolloth and Bettys Bay throughout spring months. For the remaining sites, differences in average temperatures were relatively low throughout each month for the same time period.
 
 In the fourth cluster, which was comprised of Antsey's Beach, Glenmore, Port Edward, and Richards Bay, we found small changes in the differences of average temperatures between sites on a monthly basis between 1980 and 2016. Here, the biggest differences in temperatures were observed towards the end of spring and during summer months where we found large differences in average temperatures occurring between Port Edward and the remaining three sites. Some differences were also seen during the autumn months but temperatures were relatively stable throughout the remaining seasons across these four sites.  
-
-#### ANOVA
-
-Anova analysis: This allows me to compare one variable in two or more groups taking into account the variability of other variables. This analysis of covariance is used to test the main effect of variables on a continuous variable. In this case we specifically analyse the 
-- relationship between index pair, year and season as a function of the mean temperature per year for each of the months. 
-- The results shows a significant difference between each pair of sites within each of the cluster.
-
-```{r define_fun6, include=TRUE}
-anova_func <- function(df){
-  sites_aov <- aov(temp_mean_month_year ~ index_pair * year * season, data = df)
-return(sites_aov)
-}
-```
-
-```{r run_fun6, include=TRUE}
-anova_clus_1_func1 <- anova_func(df = SACTN_clust_1_matched)
-summary(anova_clus_1_func1)
-anova_clus_2_func1 <- anova_func(df = SACTN_clust_2_matched)
-summary(anova_clus_2_func1)
-anova_clus_3_func1 <- anova_func(df = SACTN_clust_3_matched)
-summary(anova_clus_3_func1)
-anova_clus_4_func1 <- anova_func(df = SACTN_clust_4_matched)
-summary(anova_clus_4_func1)
-anova_clus_5_func1 <- anova_func(df = SACTN_clust_5_matched)
-summary(anova_clus_5_func1)
-anova_clus_6_func1 <- anova_func(df = SACTN_clust_6_matched)
-summary(anova_clus_6_func1)
-
-```
 
 Now I make a visualisation to reveal the relationship between the sd of the temperatures for each month of each year for each of the sites in the clusters. This further shows changes in temperature between sites within the same clusters.
 
@@ -823,6 +823,8 @@ Insitu_hs_circ_15 <- plot_compare_hs(df = SACTN_daily_clusters_15a)
 Insitu_tp_circ_15 <- plot_compare_tp(df = SACTN_daily_clusters_15a)
 Insitu_dir_circ_15 <- plot_compare_dir(df = SACTN_daily_clusters_15a)
 Insitu_dirw_circ_15 <- plot_compare_dirw(df = SACTN_daily_clusters_15a)
+
+ggsave(plot = Insitu_spw_circ, filename = "figures/Insitu_spw_circ.pdf")
 ```
 
 Histogram: Plotting dir and dirw
@@ -849,7 +851,6 @@ log transforming the Wave variables
 ```{r}
 SACTN_daily_clusters_7a[, 12:14] <- log(SACTN_daily_clusters_7a[12:14], 2)
 SACTN_daily_clusters_15a[, 12:14] <- log(SACTN_daily_clusters_15a[12:14], 2)
-
 ```
 
 Temperature and wave comparison
@@ -908,6 +909,9 @@ SACTN_15_R2_log_trans <- SACTN_daily_clusters_15a %>%
 ```
 
 
+
+
+
 # AVHRR Satellite data
 
 Various packages in R such as ncdf4, ncdf4.helpers are useful tools for working with netCDF files. The ncdf4 package is used to read netCDF files into R. Here i load the standard packages used in R as well as the ncdf4 package to help run the data.
@@ -928,10 +932,6 @@ The next step is to open the netCDF file. This requires the pathway in which the
 ```{r}
 # nc.dir <- "/home/amieroh/Documents/spatial/test/netCDF"
 # csv.dir <- "/home/amieroh/Documents/spatial/test/csv"
-```
-
-
-```{r}
 #          1         2
 # 1234567890123456789012345
 # avhrr-only-v2.19810901.nc
@@ -981,10 +981,10 @@ The next step is to open the netCDF file. This requires the pathway in which the
 I now load in the csv dataset created above.
 
 ```{r load_files1, include=TRUE}
-# OISST_SAcoast <- read_csv("data/csvavhrr-only-v2-19810901-20180630.csv")
+# AVHRR_SAcoast <- read_csv("data/csvavhrr-only-v2-19810901-20180630.csv")
 ```
 
-## Load subsetted OISST data
+## Load subsetted AVHRR data
 
 Below we load only the first two subsetted dataframes.
 
@@ -1183,6 +1183,24 @@ AVHRR_temp_15[, 15:17] <- log(AVHRR_temp_15[15:17], 2)
 Calculating the R2 value of each of the variables
 
 ```{r}
+temp_wave_R2 <- function(df){
+  results <- df %>% 
+    select(-index, -src, -date, -length, -c(num:depth), -temp, -lon, -lat, -combi) %>%
+    gather(key = variable, 
+           value = value,
+           -cluster, -site, -temp_flat) %>%
+    group_by(cluster, site, variable) %>%
+    na.omit() %>% 
+    nest() %>%
+    mutate(model = purrr::map(data, ~lm(temp_flat ~ value, data = .))) %>%
+    unnest(model %>% purrr::map(glance)) %>%
+    select(cluster:variable, adj.r.squared, p.value) %>% 
+    arrange(cluster, site) %>% 
+    mutate(adj.r.squared = round(adj.r.squared, 2),
+           p.value = round(p.value, 4))
+  return(results)
+}
+
 AVHRR_temp_7_R2 <- AVHRR_temp_7 %>% 
   temp_wave_R2()
 AVHRR_temp_15_R2 <- AVHRR_temp_15 %>% 
