@@ -1387,7 +1387,7 @@ CMC_15_R2 <- CMC_7 %>%
   temp_wave_R2_try2()
 ```
 
-#K10 data
+# K10 data
 
 ```{r}
 K10_Bordjies_SST_timeseries_5nearest <- read_csv("data/K10/K10_Bordjies_SST_timeseries_5nearest.csv")
