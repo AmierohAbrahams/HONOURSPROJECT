@@ -909,9 +909,6 @@ SACTN_15_R2_log_trans <- SACTN_daily_clusters_15a %>%
 ```
 
 
-
-
-
 # AVHRR Satellite data
 
 Various packages in R such as ncdf4, ncdf4.helpers are useful tools for working with netCDF files. The ncdf4 package is used to read netCDF files into R. Here i load the standard packages used in R as well as the ncdf4 package to help run the data.
@@ -1093,7 +1090,7 @@ save(combined_OISST_sites, file = "data/combined_OISST_sites.RData")
 The next step is to now match the insitu temperature data with the SST data
 
 ```{r}
-insitu_satellite <- SACTN_daily_clusters_sub_1  %>% 
+insitu_AVHRR<- SACTN_daily_clusters_sub_1  %>% 
   left_join(combined_OISST_sites, by = c("site", "date")) %>% 
   na.trim()
 ```
@@ -1101,11 +1098,11 @@ insitu_satellite <- SACTN_daily_clusters_sub_1  %>%
 Plotting satellite and insitu temperature
 
 ```{r}
-insitu_temp <- ggplot(data = insitu_satellite, aes(x = date, y = temp.x)) +
+insitu_temp <- ggplot(data = insitu_AVHRR, aes(x = date, y = temp.x)) +
   geom_line() +
   facet_wrap(~site)
 
-Satellite_temp <- ggplot(data = insitu_satellite, aes(x = date, y = temp.y)) +
+Satellite_temp <- ggplot(data = insitu_AVHRR, aes(x = date, y = temp.y)) +
   geom_line() +
   facet_wrap(~site)
 ```
@@ -1113,7 +1110,7 @@ Satellite_temp <- ggplot(data = insitu_satellite, aes(x = date, y = temp.y)) +
 Time series of insitu data
 
 ```{r}
-insitu_plot <- ggplot(insitu_satellite, aes(x = date, y = temp.x)) +
+insitu_plot <- ggplot(insitu_AVHRR, aes(x = date, y = temp.x)) +
   geom_line() +
   facet_wrap(~site, scales = "free_x", ncol = 2) +
   labs(x = "Year", y = "Null") +
@@ -1122,7 +1119,7 @@ insitu_plot <- ggplot(insitu_satellite, aes(x = date, y = temp.x)) +
         panel.grid.major = element_line(color = "#cfcfcf", size = 0.4))
 ggsave(plot = insitu_plot, filename = "figures/insitu_plot.pdf")
 
-satellite_plot <- ggplot(insitu_satellite, aes(x = date, y = temp.y)) +
+satellite_plot <- ggplot(insitu_AVHRR, aes(x = date, y = temp.y)) +
   geom_line() +
   facet_wrap(~site, scales = "free_x", ncol = 2) +
   labs(x = "Year", y = "Null") +
@@ -1135,7 +1132,7 @@ ggsave(plot = satellite_plot, filename = "figures/satellite_plot.pdf")
 Matching wave data with the AVHRR temperature data
 
 ```{r}
-AVHRR_wave <- insitu_satellite %>% 
+AVHRR_wave <- insitu_AVHRR %>% 
   separate(index, into = c("site", "src"), sep = "/", remove = FALSE)
 
 # Combine the temperature and 7 m depth wave data
@@ -1205,7 +1202,7 @@ AVHRR_temp_7_R2 <- AVHRR_temp_7 %>%
   temp_wave_R2()
 AVHRR_temp_15_R2 <- AVHRR_temp_15 %>% 
   temp_wave_R2()
-```
+``` 
 
 # MUR satellite data
 
@@ -1224,7 +1221,7 @@ MUR_Muizenberg_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_Muizenberg_SST_
 MUR_Orient_Beach_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_Orient Beach_SST_timeseries_5nearest.csv")
 MUR_Port_Edward_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_Port Edward_SST_timeseries_5nearest.csv")
 MUR_Saldanha_Bay_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_Saldanha Bay_SST_timeseries_5nearest.csv")
-MUR_Sea_Point_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_Sea Point_SST_timeseries_5nearest.csv")
+# MUR_Sea_Point_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_Sea Point_SST_timeseries_5nearest.csv")
 MUR_Stilbaai_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_Stilbaai_SST_timeseries_5nearest.csv")
 MUR_T_O_Strand_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_T.O. Strand_SST_timeseries_5nearest.csv")
 MUR_Port_Nolloth_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_Port Nolloth_SST_timeseries_5nearest.csv")
@@ -1234,19 +1231,21 @@ MUR_data <- rbind(MUR_Orient_Beach_SST_timeseries_5nearest, MUR_Bordjies_SST_tim
                   MUR_Kalk_Bay_SST_timeseries_5nearest, MUR_Knysna_SST_timeseries_5nearest, MUR_Lamberts_Bay_SST_timeseries_5nearest,
                   MUR_Leisure_Bay_SST_timeseries_5nearest, MUR_Mossel_Bay_SST_timeseries_5nearest, MUR_Muizenberg_SST_timeseries_5nearest,
                   MUR_Port_Edward_SST_timeseries_5nearest, MUR_Port_Nolloth_SST_timeseries_5nearest,
-                  MUR_Saldanha_Bay_SST_timeseries_5nearest,MUR_Sea_Point_SST_timeseries_5nearest, MUR_Stilbaai_SST_timeseries_5nearest, 
+                  MUR_Saldanha_Bay_SST_timeseries_5nearest, MUR_Stilbaai_SST_timeseries_5nearest, 
                   MUR_T_O_Strand_SST_timeseries_5nearest)
 rm(MUR_Orient_Beach_SST_timeseries_5nearest, MUR_Bordjies_SST_timeseries_5nearest, MUR_Eastern_Beach_SST_timeseries_5nearest,
                   MUR_Gansbaai_SST_timeseries_5nearest, MUR_Gordons_Bay_SST_timeseries_5nearest, MUR_Hamburg_SST_timeseries_5nearest,
                   MUR_Kalk_Bay_SST_timeseries_5nearest, MUR_Knysna_SST_timeseries_5nearest, MUR_Lamberts_Bay_SST_timeseries_5nearest,
                   MUR_Leisure_Bay_SST_timeseries_5nearest, MUR_Mossel_Bay_SST_timeseries_5nearest, MUR_Muizenberg_SST_timeseries_5nearest,
                   MUR_Port_Edward_SST_timeseries_5nearest, MUR_Port_Nolloth_SST_timeseries_5nearest,
-                  MUR_Saldanha_Bay_SST_timeseries_5nearest,MUR_Sea_Point_SST_timeseries_5nearest, MUR_Stilbaai_SST_timeseries_5nearest, 
+                  MUR_Saldanha_Bay_SST_timeseries_5nearest, MUR_Stilbaai_SST_timeseries_5nearest, 
                   MUR_T_O_Strand_SST_timeseries_5nearest)
 
 MUR_data <- MUR_data %>% 
   dplyr::rename(site = station) # Rename station name to site. This is done to match the wave data
 MUR_data$date <- (ymd(MUR_data$date))
+MUR_data <- MUR_data %>% 
+  rename(temp = med05)
 ```
 
 Matching in situ sites with the MUR data sites
@@ -1265,13 +1264,44 @@ MUR_wave <- insitu_MUR %>%
 # Combine the temperature and 7 m depth wave data
 MUR_7 <- MUR_wave %>% 
   left_join(sites_complete_7a, by = c("site", "date")) %>% 
+  select(-temp.x) %>% # Temp.x is the insitu collected data
+  dplyr::rename(temp = temp.y) %>%
   na.trim() %>% 
   group_by(site)
 
 MUR_15 <- MUR_wave %>% 
   left_join(sites_complete_15a, by = c("site", "date")) %>% 
+  select(-temp.x) %>% # Temp.x is the insitu collected data
+  dplyr::rename(temp = temp.y) %>%
   na.trim() %>% 
   group_by(site) 
+```
+
+Calculate the R2 value
+
+```{r}
+temp_wave_R2_try1 <- function(df){
+  results <- df %>% 
+    select(-index, -src, -date, -length, -c(num:depth), -lat, -lon, -c(nearest1:dist2), -c(std05:std2)) %>%
+    gather(key = variable, 
+           value = value,
+           -cluster, -site, -temp) %>%
+    group_by(cluster, site, variable) %>%
+    na.omit() %>% 
+    nest() %>%
+    mutate(model = purrr::map(data, ~lm(temp ~ value, data = .))) %>%
+    unnest(model %>% purrr::map(glance)) %>%
+    select(cluster:variable, adj.r.squared, p.value) %>% 
+    arrange(cluster, site) %>% 
+    mutate(adj.r.squared = round(adj.r.squared, 2),
+           p.value = round(p.value, 4))
+  return(results)
+  }
+
+MUR_7_R2 <- MUR_7 %>% 
+  temp_wave_R2_try1()
+MUR_5_R2 <- MUR_15 %>% 
+  temp_wave_R2_try1()
 ```
 
 # CMC data
@@ -1292,7 +1322,7 @@ CMC_Orient_Beach_SST_timeseries_5nearest <- read_csv("data/CMC/CMC_Orient Beach_
 CMC_Port_Edward_SST_timeseries_5nearest <- read_csv("data/CMC/CMC_Port Edward_SST_timeseries_5nearest.csv")
 CMC_Port_Nolloth_SST_timeseries_5nearest <- read_csv("data/CMC/CMC_Port Nolloth_SST_timeseries_5nearest.csv")
 CMC_Saldanha_Bay_SST_timeseries_5nearest <- read_csv("data/CMC/CMC_Saldanha Bay_SST_timeseries_5nearest.csv")
-CMC_Sea_Point_SST_timeseries_5nearest <- read_csv("data/CMC/CMC_Sea Point_SST_timeseries_5nearest.csv")
+# CMC_Sea_Point_SST_timeseries_5nearest <- read_csv("data/CMC/CMC_Sea Point_SST_timeseries_5nearest.csv")
 CMC_Stilbaai_SST_timeseries_5nearest <- read_csv("data/CMC/CMC_Stilbaai_SST_timeseries_5nearest.csv")
 CMC_T_O_Strand_SST_timeseries_5nearest <- read_csv("data/CMC/CMC_T.O. Strand_SST_timeseries_5nearest.csv")
 
@@ -1301,17 +1331,76 @@ CMC_data <- rbind(CMC_Bordjies_SST_timeseries_5nearest, CMC_Eastern_Beach_SST_ti
                   CMC_Knysna_SST_timeseries_5nearest,CMC_Lamberts_Bay_SST_timeseries_5nearest, CMC_Leisure_Bay_SST_timeseries_5nearest,
                   CMC_Mossel_Bay_SST_timeseries_5nearest, CMC_Muizenberg_SST_timeseries_5nearest,CMC_Orient_Beach_SST_timeseries_5nearest,
                   CMC_Port_Edward_SST_timeseries_5nearest, CMC_Port_Nolloth_SST_timeseries_5nearest,CMC_Saldanha_Bay_SST_timeseries_5nearest,
-                  CMC_Sea_Point_SST_timeseries_5nearest,CMC_Stilbaai_SST_timeseries_5nearest,CMC_T_O_Strand_SST_timeseries_5nearest)
+                  CMC_Stilbaai_SST_timeseries_5nearest,CMC_T_O_Strand_SST_timeseries_5nearest)
 rm(CMC_Bordjies_SST_timeseries_5nearest, CMC_Eastern_Beach_SST_timeseries_5nearest, CMC_Gansbaai_SST_timeseries_5nearest,
                   CMC_Gordons_Bay_SST_timeseries_5nearest, CMC_Hamburg_SST_timeseries_5nearest, CMC_Kalk_Bay_SST_timeseries_5nearest,
                   CMC_Knysna_SST_timeseries_5nearest,CMC_Lamberts_Bay_SST_timeseries_5nearest, CMC_Leisure_Bay_SST_timeseries_5nearest,
                   CMC_Mossel_Bay_SST_timeseries_5nearest, CMC_Muizenberg_SST_timeseries_5nearest,CMC_Orient_Beach_SST_timeseries_5nearest,
                   CMC_Port_Edward_SST_timeseries_5nearest, CMC_Port_Nolloth_SST_timeseries_5nearest,CMC_Saldanha_Bay_SST_timeseries_5nearest,
-                  CMC_Sea_Point_SST_timeseries_5nearest,CMC_Stilbaai_SST_timeseries_5nearest,CMC_T_O_Strand_SST_timeseries_5nearest)
+                  CMC_Stilbaai_SST_timeseries_5nearest,CMC_T_O_Strand_SST_timeseries_5nearest)
 CMC_data <- CMC_data %>% 
   rename(site = station)
 CMC_data$date <- as.numeric(CMC_data$date)
 CMC_data$date <- (ymd(CMC_data$date))
+
+CMC_data <- CMC_data %>% 
+  rename(temp = med05)
+```
+
+Matching in situ sites with the CMC  data sites
+
+```{r}
+insitu_CMC <- SACTN_daily_clusters_sub_1  %>% 
+  left_join(CMC_data, by = c("site", "date")) %>% 
+  na.trim()
+```
+
+Matching the MUR data with the wave data
+
+```{r}
+CMC_wave <- insitu_CMC %>% 
+  separate(index, into = c("site", "src"), sep = "/", remove = FALSE)
+
+# Combine the temperature and 7 m depth wave data
+CMC_7 <- CMC_wave %>% 
+  left_join(sites_complete_7a, by = c("site", "date")) %>% 
+  select(-temp.x) %>% # Temp.x is the insitu collected data
+  dplyr::rename(temp = temp.y) %>%
+  na.trim()
+
+CMC_15 <- MUR_wave %>% 
+  left_join(sites_complete_15a, by = c("site", "date")) %>% 
+  select(-temp.x) %>% # Temp.x is the insitu collected data
+  dplyr::rename(temp = temp.y) %>%
+  na.trim() 
+```
+
+Calculate the R2 value
+
+```{r}
+# A function that runs a linear model on each metric of the combined data and get the R^2 value
+temp_wave_R2_try1 <- function(df){
+  results <- df %>% 
+    select(-index, -src, -date, -length, -c(num:depth), -c(nearest1:climnear2), -lat, -lon, -c(std05:clim2)) %>%
+    gather(key = variable, 
+           value = value,
+           -cluster, -site, -temp) %>%
+    group_by(cluster, site, variable) %>%
+    na.omit() %>% 
+    nest() %>%
+    mutate(model = purrr::map(data, ~lm(temp ~ value, data = .))) %>%
+    unnest(model %>% purrr::map(glance)) %>%
+    select(cluster:variable, adj.r.squared, p.value) %>% 
+    arrange(cluster, site) %>% 
+    mutate(adj.r.squared = round(adj.r.squared, 2),
+           p.value = round(p.value, 4))
+  return(results)
+  }
+
+CMC_7_R2 <- CMC_7 %>% 
+  temp_wave_R2_try1()
+CMC_15_R2 <- CMC_7 %>% 
+  temp_wave_R2_try1()
 ```
 
 
