@@ -732,16 +732,14 @@ try1 <- function(df) {
   func1 <- df %>% 
     left_join(sites_complete_7a, by = c("site", "date")) %>% 
     na.trim() %>% 
-    group_by(site) %>% 
-    mutate(temp_flat = stlplus(x = temp, n.p = 365, s.window = "periodic")[[1]]$remainder)
+    group_by(site)
     return(func1)
 }
 try2 <- function(df) {
   func2 <- df %>% 
     left_join(sites_complete_15a, by = c("site", "date")) %>% 
     na.trim() %>% 
-    group_by(site) %>% 
-    mutate(temp_flat = stlplus(x = temp, n.p = 365, s.window = "periodic")[[1]]$remainder)
+    group_by(site)
     return(func2)
 }
 
@@ -883,29 +881,28 @@ temp_wave_compare(SACTN_daily_clusters_15a)
 Calculating the R2 value of each of the variables
 
 ```{r}
-temp_wave_R2 <- function(df){
+temp_wave_R2_ <- function(df){
   results <- df %>% 
-    select(-index, -src, -date, -length, -c(num:depth), -temp) %>%
+    select(-index, -src, -date, -length, -c(num:depth)) %>%
     gather(key = variable, 
            value = value,
-           -cluster, -site, -temp_flat) %>%
+           -cluster, -site, -temp) %>%
     group_by(cluster, site, variable) %>%
     na.omit() %>% 
     nest() %>%
-    mutate(model = purrr::map(data, ~lm(temp_flat ~ value, data = .))) %>%
+    mutate(model = purrr::map(data, ~lm(temp ~ value, data = .))) %>%
     unnest(model %>% purrr::map(glance)) %>%
     select(cluster:variable, adj.r.squared, p.value) %>% 
     arrange(cluster, site) %>% 
     mutate(adj.r.squared = round(adj.r.squared, 2),
            p.value = round(p.value, 4))
   return(results)
-}
+  }
 
 SACTN_7_R2_log_trans <- SACTN_daily_clusters_7a %>% 
-  temp_wave_R2()
-
+ temp_wave_R2_()
 SACTN_15_R2_log_trans <- SACTN_daily_clusters_15a %>% 
-  temp_wave_R2()
+  temp_wave_R2_()
 ```
 
 
@@ -1135,22 +1132,26 @@ Matching wave data with the AVHRR temperature data
 AVHRR_wave <- insitu_AVHRR %>% 
   separate(index, into = c("site", "src"), sep = "/", remove = FALSE)
 
-# Combine the temperature and 7 m depth wave data
-AVHRR_temp_7 <- AVHRR_wave %>% 
+combine_temp_wave_7m <- function(df){
+  outcome_7 <- df %>% 
   left_join(sites_complete_7a, by = c("site", "date")) %>% 
   select(-temp.x) %>% # Temp.x is the insitu collected data
   dplyr::rename(temp = temp.y) %>%
-  na.trim() %>% 
-  group_by(site) %>% 
-  mutate(temp_flat = stlplus(x = temp, n.p = 365, s.window = "periodic")[[1]]$remainder)
+  na.trim()
+  return(outcome_7)
+}
 
-AVHRR_temp_15 <- AVHRR_wave %>% 
+combine_temp_wave_15m <- function(df){ 
+  outcome_15 <- df %>% 
   left_join(sites_complete_15a, by = c("site", "date")) %>% 
   select(-temp.x) %>% # Temp.x is the insitu collected data
   dplyr::rename(temp = temp.y) %>%
-  na.trim() %>% 
-  group_by(site) %>% 
-  mutate(temp_flat = stlplus(x = temp, n.p = 365, s.window = "periodic")[[1]]$remainder)
+  na.trim() 
+  return(outcome_15)
+}
+
+AVHRR_temp_7 <- combine_temp_wave_7m(df = AVHRR_wave)
+AVHRR_temp_15 <- combine_temp_wave_15m(df = AVHRR_wave)
 ```
 
 # Plotting graphs
@@ -1180,28 +1181,28 @@ AVHRR_temp_15[, 15:17] <- log(AVHRR_temp_15[15:17], 2)
 Calculating the R2 value of each of the variables
 
 ```{r}
-temp_wave_R2 <- function(df){
+temp_wave_R2_try1 <- function(df){
   results <- df %>% 
-    select(-index, -src, -date, -length, -c(num:depth), -temp, -lon, -lat, -combi) %>%
+    select(-index, -src, -date, -length, -c(num:depth), -lon, -lat, -combi) %>%
     gather(key = variable, 
            value = value,
-           -cluster, -site, -temp_flat) %>%
+           -cluster, -site, -temp) %>%
     group_by(cluster, site, variable) %>%
     na.omit() %>% 
     nest() %>%
-    mutate(model = purrr::map(data, ~lm(temp_flat ~ value, data = .))) %>%
+    mutate(model = purrr::map(data, ~lm(temp ~ value, data = .))) %>%
     unnest(model %>% purrr::map(glance)) %>%
     select(cluster:variable, adj.r.squared, p.value) %>% 
     arrange(cluster, site) %>% 
     mutate(adj.r.squared = round(adj.r.squared, 2),
            p.value = round(p.value, 4))
   return(results)
-}
+  }
 
-AVHRR_temp_7_R2 <- AVHRR_temp_7 %>% 
-  temp_wave_R2()
-AVHRR_temp_15_R2 <- AVHRR_temp_15 %>% 
-  temp_wave_R2()
+AVHRR_temp_7_R2 <- AVHRR_temp_7%>% 
+  temp_wave_R2_try1()
+AVHRR_temp_7_R2 <- AVHRR_temp_15 %>% 
+  temp_wave_R2_try1()
 ``` 
 
 # MUR satellite data
@@ -1250,9 +1251,14 @@ MUR_data <- MUR_data %>%
 
 Matching in situ sites with the MUR data sites
 ```{r}
-insitu_MUR <- SACTN_daily_clusters_sub_1  %>% 
-  left_join(MUR_data, by = c("site", "date")) %>% 
+match_func <- function(df){
+  match <- SACTN_daily_clusters_sub_1  %>% 
+  left_join(df, by = c("site", "date")) %>% 
   na.trim()
+  return(match)
+}
+
+insitu_MUR <- match_func(df = MUR_data)
 ```
 
 Matching the MUR data with the wave data
@@ -1261,20 +1267,8 @@ Matching the MUR data with the wave data
 MUR_wave <- insitu_MUR %>% 
   separate(index, into = c("site", "src"), sep = "/", remove = FALSE)
 
-# Combine the temperature and 7 m depth wave data
-MUR_7 <- MUR_wave %>% 
-  left_join(sites_complete_7a, by = c("site", "date")) %>% 
-  select(-temp.x) %>% # Temp.x is the insitu collected data
-  dplyr::rename(temp = temp.y) %>%
-  na.trim() %>% 
-  group_by(site)
-
-MUR_15 <- MUR_wave %>% 
-  left_join(sites_complete_15a, by = c("site", "date")) %>% 
-  select(-temp.x) %>% # Temp.x is the insitu collected data
-  dplyr::rename(temp = temp.y) %>%
-  na.trim() %>% 
-  group_by(site) 
+MUR_7 <- combine_temp_wave_7m(df = MUR_wave)
+MUR_15 <- combine_temp_wave_15m(df = MUR_wave)
 ```
 
 Calculate the R2 value
@@ -1350,9 +1344,7 @@ CMC_data <- CMC_data %>%
 Matching in situ sites with the CMC  data sites
 
 ```{r}
-insitu_CMC <- SACTN_daily_clusters_sub_1  %>% 
-  left_join(CMC_data, by = c("site", "date")) %>% 
-  na.trim()
+insitu_CMC <- match_func(df = CMC_data)
 ```
 
 Matching the MUR data with the wave data
@@ -1362,24 +1354,16 @@ CMC_wave <- insitu_CMC %>%
   separate(index, into = c("site", "src"), sep = "/", remove = FALSE)
 
 # Combine the temperature and 7 m depth wave data
-CMC_7 <- CMC_wave %>% 
-  left_join(sites_complete_7a, by = c("site", "date")) %>% 
-  select(-temp.x) %>% # Temp.x is the insitu collected data
-  dplyr::rename(temp = temp.y) %>%
-  na.trim()
 
-CMC_15 <- MUR_wave %>% 
-  left_join(sites_complete_15a, by = c("site", "date")) %>% 
-  select(-temp.x) %>% # Temp.x is the insitu collected data
-  dplyr::rename(temp = temp.y) %>%
-  na.trim() 
+CMC_7 <- combine_temp_wave_7m(df = CMC_wave)
+CMC_15 <- combine_temp_wave_15m(df = CMC_wave)
 ```
 
 Calculate the R2 value
 
 ```{r}
 # A function that runs a linear model on each metric of the combined data and get the R^2 value
-temp_wave_R2_try1 <- function(df){
+temp_wave_R2_try2 <- function(df){
   results <- df %>% 
     select(-index, -src, -date, -length, -c(num:depth), -c(nearest1:climnear2), -lat, -lon, -c(std05:clim2)) %>%
     gather(key = variable, 
@@ -1398,11 +1382,79 @@ temp_wave_R2_try1 <- function(df){
   }
 
 CMC_7_R2 <- CMC_7 %>% 
-  temp_wave_R2_try1()
+  temp_wave_R2_try2()
 CMC_15_R2 <- CMC_7 %>% 
-  temp_wave_R2_try1()
+  temp_wave_R2_try2()
 ```
 
+#K10 data
+
+```{r}
+K10_Bordjies_SST_timeseries_5nearest <- read_csv("data/K10/K10_Bordjies_SST_timeseries_5nearest.csv")
+K10_Eastern_Beach_SST_timeseries_5nearest <- read_csv("data/K10/K10_Eastern Beach_SST_timeseries_5nearest.csv")
+K10_Gansbaai_SST_timeseries_5nearest <- read_csv("data/K10/K10_Gansbaai_SST_timeseries_5nearest.csv")
+K10_Gordons_Bay_SST_timeseries_5nearest <- read_csv("data/K10/K10_Gordons Bay_SST_timeseries_5nearest.csv")
+K10_Hamburg_SST_timeseries_5nearest <- read_csv("data/K10/K10_Hamburg_SST_timeseries_5nearest.csv")
+K10_Kalk_Bay_SST_timeseries_5nearest <- read_csv("data/K10/K10_Kalk Bay_SST_timeseries_5nearest.csv")
+K10_Knysna_SST_timeseries_5nearest <- read_csv("data/K10/K10_Knysna_SST_timeseries_5nearest.csv")
+K10_Lamberts_Bay_SST_timeseries_5nearest <- read_csv("data/K10/K10_Lamberts Bay_SST_timeseries_5nearest.csv")
+K10_Leisure_Bay_SST_timeseries_5nearest <- read_csv("data/K10/K10_Leisure Bay_SST_timeseries_5nearest.csv")
+K10_Mossel_Bay_SST_timeseries_5nearest <- read_csv("data/K10/K10_Mossel Bay_SST_timeseries_5nearest.csv")
+K10_Muizenberg_SST_timeseries_5nearest <- read_csv("data/K10/K10_Muizenberg_SST_timeseries_5nearest.csv")
+K10_Orient_Beach_SST_timeseries_5nearest <- read_csv("data/K10/K10_Orient Beach_SST_timeseries_5nearest.csv")
+K10_Port_Edward_SST_timeseries_5nearest <- read_csv("data/K10/K10_Port Edward_SST_timeseries_5nearest.csv")
+K10_Port_Nolloth_SST_timeseries_5nearest <- read_csv("data/K10/K10_Port Nolloth_SST_timeseries_5nearest.csv")
+K10_Saldanha_Bay_SST_timeseries_5nearest <- read_csv("data/K10/K10_Saldanha Bay_SST_timeseries_5nearest.csv")
+# K10_Sea_Point_SST_timeseries_5nearest <- read_csv("data/K10/K10_Sea Point_SST_timeseries_5nearest.csv")
+K10_Stilbaai_SST_timeseries_5nearest <- read_csv("data/K10/K10_Stilbaai_SST_timeseries_5nearest.csv")
+K10_T_O_Strand_SST_timeseries_5nearest <- read_csv("data/K10/K10_T.O. Strand_SST_timeseries_5nearest.csv")
+
+K10_data <- rbind(K10_Bordjies_SST_timeseries_5nearest, K10_Eastern_Beach_SST_timeseries_5nearest,K10_Gansbaai_SST_timeseries_5nearest,
+                  K10_Gordons_Bay_SST_timeseries_5nearest,K10_Hamburg_SST_timeseries_5nearest,K10_Kalk_Bay_SST_timeseries_5nearest,
+                  K10_Knysna_SST_timeseries_5nearest, K10_Lamberts_Bay_SST_timeseries_5nearest,K10_Leisure_Bay_SST_timeseries_5nearest,
+                  K10_Mossel_Bay_SST_timeseries_5nearest,K10_Muizenberg_SST_timeseries_5nearest,K10_Orient_Beach_SST_timeseries_5nearest,
+                  K10_Port_Edward_SST_timeseries_5nearest,K10_Port_Nolloth_SST_timeseries_5nearest,K10_Saldanha_Bay_SST_timeseries_5nearest,
+                  K10_Stilbaai_SST_timeseries_5nearest,K10_T_O_Strand_SST_timeseries_5nearest)
+rm(K10_Bordjies_SST_timeseries_5nearest, K10_Eastern_Beach_SST_timeseries_5nearest,K10_Gansbaai_SST_timeseries_5nearest,
+                  K10_Gordons_Bay_SST_timeseries_5nearest,K10_Hamburg_SST_timeseries_5nearest,K10_Kalk_Bay_SST_timeseries_5nearest,
+                  K10_Knysna_SST_timeseries_5nearest, K10_Lamberts_Bay_SST_timeseries_5nearest,K10_Leisure_Bay_SST_timeseries_5nearest,
+                  K10_Mossel_Bay_SST_timeseries_5nearest,K10_Muizenberg_SST_timeseries_5nearest,K10_Orient_Beach_SST_timeseries_5nearest,
+                  K10_Port_Edward_SST_timeseries_5nearest,K10_Port_Nolloth_SST_timeseries_5nearest,K10_Saldanha_Bay_SST_timeseries_5nearest,
+                  K10_Stilbaai_SST_timeseries_5nearest,K10_T_O_Strand_SST_timeseries_5nearest)
+
+K10_data <- K10_data %>% 
+  rename(site = station)
+K10_data$date <- as.numeric(K10_data$date)
+K10_data$date <- (ymd(K10_data$date))
+
+K10_data <- K10_data %>% 
+  rename(temp = med05)
+```
+
+```{r}
+insitu_K10 <- match_func(df = K10_data)
+```
+
+```{r}
+K10_wave <- insitu_K10 %>% 
+  separate(index, into = c("site", "src"), sep = "/", remove = FALSE)
+
+# Combine the temperature and 7 m depth wave data
+
+K10_7 <- combine_temp_wave_7m(df = K10_wave)
+K10_15 <- combine_temp_wave_15m(df = K10_wave)
+```
+
+Calculate the R2 value
+
+```{r}
+# A function that runs a linear model on each metric of the combined data and get the R^2 value
+
+K10_7_R2 <- K10_7 %>% 
+  temp_wave_R2_try1()
+K10_15_R2 <- K10_15 %>% 
+  temp_wave_R2_try1()
+```
 
 ##########################################################################################################################################
 
