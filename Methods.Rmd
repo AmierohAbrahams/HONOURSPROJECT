@@ -1173,9 +1173,8 @@ AVHRR_dirw_circ_15 <- plot_compare_dirw(df = AVHRR_temp_7)
 log transforming the Wave variables
 
 ```{r}
-AVHRR_temp_7[, 15:17] <- log(AVHRR_temp_7[15:17], 2)
-AVHRR_temp_15[, 15:17] <- log(AVHRR_temp_15[15:17], 2)
-
+# AVHRR_temp_7[, 15:17] <- log(AVHRR_temp_7[15:17], 2)
+# AVHRR_temp_15[, 15:17] <- log(AVHRR_temp_15[15:17], 2)
 ```
 
 Calculating the R2 value of each of the variables
@@ -1271,6 +1270,28 @@ MUR_7 <- combine_temp_wave_7m(df = MUR_wave)
 MUR_15 <- combine_temp_wave_15m(df = MUR_wave)
 ```
 
+Log transform the MUR data
+
+```{r}
+# MUR_7[, 23:25] <- log(MUR_7[23:25], 2)
+# MUR_15[, 23:25] <- log(MUR_15[23:25], 2)
+```
+
+Scatter plot for the MUR data
+
+```{r}
+MUR_spw_circ <- plot_compare_spw(df = MUR_7)
+MUR_hs_circ <- plot_compare_hs(df = MUR_7)
+MUR_tp_circ <- plot_compare_tp(df = MUR_7)
+MUR_dir_circ <- plot_compare_dir(df = MUR_7)
+MUR_dirw_circ <- plot_compare_dirw(df = MUR_7)
+MUR_spw_circ_15 <- plot_compare_spw(df = MUR_15)
+MUR_hs_circ_15 <- plot_compare_hs(df = MUR_15)
+MUR_tp_circ_15 <- plot_compare_tp(df = MUR_15)
+MUR_dir_circ_15 <- plot_compare_dir(df = MUR_15)
+MUR_dirw_circ_15 <- plot_compare_dirw(df = MUR_15)
+```
+
 Calculate the R2 value
 
 ```{r}
@@ -1359,6 +1380,28 @@ CMC_7 <- combine_temp_wave_7m(df = CMC_wave)
 CMC_15 <- combine_temp_wave_15m(df = CMC_wave)
 ```
 
+Log transform the CMC data
+
+```{r}
+# CMC_7[, 28:30] <- log(CMC_7[28:30], 2)
+# CMC_15[, 28:30] <- log(CMC_15[28:30], 2)
+```
+
+Scatter plot for the CMC data
+
+```{r}
+CMC_spw_circ <- plot_compare_spw(df = CMC_7)
+CMC_hs_circ <- plot_compare_hs(df = CMC_7)
+CMC_tp_circ <- plot_compare_tp(df = CMC_7)
+CMC_dir_circ <- plot_compare_dir(df = CMC_7)
+CMC_dirw_circ <- plot_compare_dirw(df = CMC_7)
+CMC_spw_circ_15 <- plot_compare_spw(df = CMC_15)
+CMC_hs_circ_15 <- plot_compare_hs(df = CMC_15)
+CMC_tp_circ_15 <- plot_compare_tp(df = CMC_15)
+CMC_dir_circ_15 <- plot_compare_dir(df = CMC_15)
+CMC_dirw_circ_15 <- plot_compare_dirw(df = CMC_15)
+```
+
 Calculate the R2 value
 
 ```{r}
@@ -1443,6 +1486,28 @@ K10_wave <- insitu_K10 %>%
 
 K10_7 <- combine_temp_wave_7m(df = K10_wave)
 K10_15 <- combine_temp_wave_15m(df = K10_wave)
+```
+
+Log transform the K10 data
+
+```{r}
+# K10_7[, 23:25] <- log(K10_7[23:25], 2)
+# K10_15[, 23:25] <- log(K10_15[23:25], 2)
+```
+
+Scatter plot for the K10 data
+
+```{r}
+K10_spw_circ <- plot_compare_spw(df = K10_7)
+K10_hs_circ <- plot_compare_hs(df = K10_7)
+K10_tp_circ <- plot_compare_tp(df = K10_7)
+K10_dir_circ <- plot_compare_dir(df = K10_7)
+K10_dirw_circ <- plot_compare_dirw(df = K10_7)
+K10_spw_circ_15 <- plot_compare_spw(df = CMC_15)
+K10_hs_circ_15 <- plot_compare_hs(df = K10_15)
+K10_tp_circ_15 <- plot_compare_tp(df = K10_15)
+K10_dir_circ_15 <- plot_compare_dir(df = K10_15)
+K10_dirw_circ_15 <- plot_compare_dirw(df = K10_15)
 ```
 
 Calculate the R2 value
