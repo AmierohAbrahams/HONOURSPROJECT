@@ -899,9 +899,9 @@ temp_wave_R2_ <- function(df){
   return(results)
   }
 
-SACTN_7_R2_log_trans <- SACTN_daily_clusters_7a %>% 
+SACTN_7_R2 <- SACTN_daily_clusters_7a %>% 
  temp_wave_R2_()
-SACTN_15_R2_log_trans <- SACTN_daily_clusters_15a %>% 
+SACTN_15_R2 <- SACTN_daily_clusters_15a %>% 
   temp_wave_R2_()
 ```
 
@@ -1173,8 +1173,8 @@ AVHRR_dirw_circ_15 <- plot_compare_dirw(df = AVHRR_temp_7)
 log transforming the Wave variables
 
 ```{r}
-# AVHRR_temp_7[, 15:17] <- log(AVHRR_temp_7[15:17], 2)
-# AVHRR_temp_15[, 15:17] <- log(AVHRR_temp_15[15:17], 2)
+AVHRR_temp_7[, 15:17] <- log(AVHRR_temp_7[15:17], 2)
+AVHRR_temp_15[, 15:17] <- log(AVHRR_temp_15[15:17], 2)
 ```
 
 Calculating the R2 value of each of the variables
@@ -1200,7 +1200,7 @@ temp_wave_R2_try1 <- function(df){
 
 AVHRR_temp_7_R2 <- AVHRR_temp_7%>% 
   temp_wave_R2_try1()
-AVHRR_temp_7_R2 <- AVHRR_temp_15 %>% 
+AVHRR_temp_15_R2 <- AVHRR_temp_15 %>% 
   temp_wave_R2_try1()
 ``` 
 
@@ -1273,8 +1273,8 @@ MUR_15 <- combine_temp_wave_15m(df = MUR_wave)
 Log transform the MUR data
 
 ```{r}
-# MUR_7[, 23:25] <- log(MUR_7[23:25], 2)
-# MUR_15[, 23:25] <- log(MUR_15[23:25], 2)
+MUR_7[, 23:25] <- log(MUR_7[23:25], 2)
+MUR_15[, 23:25] <- log(MUR_15[23:25], 2)
 ```
 
 Scatter plot for the MUR data
@@ -1383,8 +1383,8 @@ CMC_15 <- combine_temp_wave_15m(df = CMC_wave)
 Log transform the CMC data
 
 ```{r}
-# CMC_7[, 28:30] <- log(CMC_7[28:30], 2)
-# CMC_15[, 28:30] <- log(CMC_15[28:30], 2)
+CMC_7[, 28:30] <- log(CMC_7[28:30], 2)
+CMC_15[, 28:30] <- log(CMC_15[28:30], 2)
 ```
 
 Scatter plot for the CMC data
@@ -1491,8 +1491,8 @@ K10_15 <- combine_temp_wave_15m(df = K10_wave)
 Log transform the K10 data
 
 ```{r}
-# K10_7[, 23:25] <- log(K10_7[23:25], 2)
-# K10_15[, 23:25] <- log(K10_15[23:25], 2)
+K10_7[, 23:25] <- log(K10_7[23:25], 2)
+K10_15[, 23:25] <- log(K10_15[23:25], 2)
 ```
 
 Scatter plot for the K10 data
@@ -1519,6 +1519,78 @@ K10_7_R2 <- K10_7 %>%
   temp_wave_R2_try1()
 K10_15_R2 <- K10_15 %>% 
   temp_wave_R2_try1()
+```
+
+Wave and Wind rose diagram:
+- Aim is to select the time series with the most dominant direction where wind and wave occurs using the wind and rose diagram
+- Then do a correlation between the two
+
+```{r}
+library(circular)
+# Need to add direction categories
+# CHOOSE(1+ABS(ROUND(A1/22.5,0)),"N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW","N")
+wave_daily_dir <- wave_data %>%
+  mutate(date = as.Date(date)) %>%
+  group_by(site, num, depth, date) %>%
+  summarise(dir_circ = mean.circular(circular(dir, units = "degrees")),
+            dirw_circ = mean.circular(circular(dirw, units = "degrees"))) 
+
+wave_daily <- wave_data %>%
+  mutate(date = as.Date(date)) %>%
+  group_by(site, num, depth, date) %>%
+  summarise_all(funs(mean = mean, sd = sd), na.rm = T) %>%
+  ungroup() %>% 
+  left_join(wave_daily_dir)
+
+# The wind rose diagram gives an accurate representation of how wind speed and direction is distributed at a particular location. 
+# This is presented in a circular format. The length of each "spoke" around the circle is related to the frequency of time that the wind flows in a particular direction.
+# Each concentric circle represents a different frequency, with zero starting at the center and increasing frequencies in the outer circles
+
+test_PN <- wave_daily %>% 
+ filter(site == "Port Nolloth")
+windrose(x = test_PN$dir_circ, y = test_PN$hs_mean, main = "Port Nolloth\nWave Rose")
+windrose(x = test_PN$dirw_circ, y = test_PN$spw_mean, main = "Port Nolloth\nWind Rose")
+
+test_MB <- wave_daily %>% 
+ filter(site == "Muizenberg")
+windrose(x = test_MB$dir_circ, y = test_MB$hs_mean, main = "Muizenberg\nWave Rose")
+windrose(x = test_MB$dirw_circ, y = test_MB$spw_mean, main = "Muizenberg\nWind Rose")
+
+test_KB <- wave_daily %>% 
+ filter(site == "Kalk Bay")
+windrose(x = test_KB$dir_circ, y = test_KB$hs_mean, main = "Kalk Bay\nWave Rose")
+windrose(x = test_KB$dirw_circ, y = test_KB$spw_mean, main = "Kalk Bay\nWind Rose")
+
+test_G <- wave_daily %>% 
+ filter(site == "Gansbaai")
+windrose(x = test_G$dir_circ, y = test_G$hs_mean, main = "Gansbaai\nWave Rose")
+windrose(x = test_G$dirw_circ, y = test_G$spw_mean, main = "Gansbaai\nWind Rose")
+
+test_GB <- wave_daily %>% 
+ filter(site == "Gordons Bay")
+windrose(x = test_GB$dir_circ, y = test_GB$hs_mean, main = "Gordons Bay \nWave Rose")
+windrose(x = test_GB$dirw_circ, y = test_GB$spw_mean, main = "Gordons Bay\nWind Rose")
+
+test_LB <- wave_daily %>% 
+ filter(site == "Lamberts Bay")
+windrose(x = test_LB$dir_circ, y = test_LB$hs_mean, main = "Lamberts Bay\nWave Rose")
+windrose(x = test_LB$dirw_circ, y = test_LB$spw_mean, main = "Lamberts Bay\nWind Rose")
+
+test_PE <- wave_daily %>% 
+ filter(site == "Port Edward")
+windrose(x = test_PE$dir_circ, y = test_PE$hs_mean, main = "Port Edward\nWave Rose")
+windrose(x = test_PE$dirw_circ, y = test_PE$spw_mean, main = "Port Edward\nWind Rose")
+
+test_B <- wave_daily %>% 
+ filter(site == "Bordjies")
+windrose(x = test_B$dir_circ, y = test_B$hs_mean, main = "Bordjies\nWave Rose")
+windrose(x = test_B$dirw_circ, y = test_B$spw_mean, main = "Bordjies\nWind Rose")
+```
+
+R2 correlation
+
+```{r}
+
 ```
 
 ##########################################################################################################################################
