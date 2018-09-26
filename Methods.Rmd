@@ -1587,12 +1587,6 @@ windrose(x = test_B$dir_circ, y = test_B$hs_mean, main = "Bordjies\nWave Rose")
 windrose(x = test_B$dirw_circ, y = test_B$spw_mean, main = "Bordjies\nWind Rose")
 ```
 
-R2 correlation
-
-```{r}
-
-```
-
 ##########################################################################################################################################
 
 Calculating the mean and sd of each of the variables. Then calculating anomalies
