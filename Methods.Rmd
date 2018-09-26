@@ -1530,8 +1530,8 @@ wave_daily <- wave_data %>%
   mutate(date = as.Date(date)) %>%
   group_by(site, num, depth, date) %>%
   summarise_all(funs(mean = mean, sd = sd), na.rm = T) %>%
-  ungroup() %>% 
-  left_join(wave_daily_dir)
+  ungroup() #%>% 
+  # left_join(wave_daily_dir)
 
 # The wind rose diagram gives an accurate representation of how wind speed and direction is distributed at a particular location. 
 # This is presented in a circular format. The length of each "spoke" around the circle is related to the frequency of time that the wind flows in a particular direction.
@@ -1708,4 +1708,69 @@ SACTN_15_R2_anom <- SACTN_daily_clusters_15_anom %>%
 ```
 
 As we may see from these results, the R^2 values between temperatures and wave data are rather low. With R^2 = 0.07 the highest value.
+
+#### Comparisons during only predominant wind/wave directions
+
+Due to the rather low R^2 values found above, the follow up is to ascertain waht the potential relationship is at each site only during the prevailing wind/wave directions.
+
+```{r compare-predom-fun}
+# A function that runs a linear model on each metric of the combined data and get the R^2 value
+temp_wave_predom_R2 <- function(df){
+  # Find predominant wave direction
+  predom_dir <- df %>% 
+    mutate(dir_round = round(dir_mean, -1)) %>%
+    group_by(cluster, site, dir_round) %>% 
+    summarise(dir_mean_n = n()) %>% 
+    na.omit() %>% 
+    filter(dir_mean_n == max(dir_mean_n)) %>% 
+    select(-dir_mean_n)
+  # Find predominant wind direction
+  predom_dirw <- df %>% 
+    mutate(dirw_round = round(dirw_mean, -1)) %>%
+    group_by(cluster, site, dirw_round) %>% 
+    summarise(dirw_mean_n = n()) %>% 
+    na.omit() %>% 
+    filter(dirw_mean_n == max(dirw_mean_n))%>% 
+    select(-dirw_mean_n)
+  
+  # Extract just those values
+  ## waves
+  df_dir <- df %>% 
+    mutate(dir_round = round(dir_mean, -1)) %>% 
+    right_join(predom_dir, by = c("site", "cluster", "dir_round")) %>%
+    select(-dir_round) %>%
+    temp_wave_R2() %>% 
+    right_join(predom_dir, by = c("site", "cluster")) %>% 
+    dplyr::rename(predom = dir_round) %>% 
+    mutate(predom_var = "dir")
+  ## wind
+  df_dirw <- df %>% 
+    mutate(dirw_round = round(dirw_mean, -1)) %>% 
+    right_join(predom_dirw, by = c("site", "cluster", "dirw_round")) %>%
+    select(-dirw_round) %>% 
+    temp_wave_R2() %>% 
+    right_join(predom_dirw, by = c("site", "cluster")) %>% 
+    dplyr::rename(predom = dirw_round) %>% 
+    mutate(predom_var = "dirw")
+  
+  # Wrap it up
+  results <- rbind(df_dir, df_dirw)
+  return(results)
+}
+```
+
+
+```{r compare-predom}
+SACTN_7_predom_R2 <- SACTN_daily_clusters_7 %>% 
+  temp_wave_predom_R2()
+
+SACTN_15_predom_R2 <- SACTN_daily_clusters_15 %>% 
+  temp_wave_predom_R2()
+
+SACTN_7_predom_R2_anom <- SACTN_daily_clusters_7_anom %>% 
+  temp_wave_predom_R2()
+
+SACTN_15_predom_R2_predom_anom <- SACTN_daily_clusters_15_anom %>% 
+  temp_wave_predom_R2()
+```
 
