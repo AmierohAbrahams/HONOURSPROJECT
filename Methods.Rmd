@@ -103,7 +103,7 @@ clusters <- ggarrange(clust_8, clust_7, clust_6, clust_5, clust_4, clust_3, comm
 clusters
 ```
 
-Creating a map of cluster six......To be added into the methods
+Mapping the sixth cluster - To be added into the methods section
 
 ```{r}
 load("data/southern_africa_coast.Rdata")
@@ -182,7 +182,7 @@ print(africa_map, vp = vp1)
 dev.off()
 ```
 
-It is now necessary to load the daily SACTN temperature dataset. The SACTN dataset comprise of 129 *in situ* coastal seawater temperatures derived from daily measurements over up to 40 years. The SACTN temperature dataset was compiled by measuring coastal temperatures at 135 sites along the coast of South Africa, daily from 1972 until 2017. 
+It is now necessary to load the daily SACTN temperature dataset. The SACTN dataset comprise of 129 *in situ* coastal seawater temperatures derived from daily measurements over up to 40 years. The SACTN temperature dataset was compiled by measuring coastal temperatures at 129 sites along the coast of South Africa, daily from 1972 until 2017. 
 
 ```{r load_files2, include=TRUE}
 load("SACTN_data/SACTN_daily_v4.2.RData")
@@ -205,8 +205,6 @@ SACTN_daily_clusters <- SACTN_daily_v4.2 %>%
 ### Site selection
 
 With the sites now split into six clusters, the next step is to reduce the number of sites per cluster down to a manageable, but still representative, sub-sample of the whole. This is done primarily for two reasons. The first, simply, is to allow for the comparisons to be more readily interpretable by humans. The second more objective reason is to allow for an equal amount of sampling per cluster. The East coast is much more heavily sampled than the rest and so this imbalance must be addressed. The criteria that must be considered for the sub-samples are that both instrument types (UTR and thermometer) are present, and as many sources are included as are possible. The statistical characteristics of the seawater temperature dataset was used as to guide analyses into the suitability of the time series which allows us to produce an accurate assessment of temperature variation between sites located within the same cluster. The precision, length and decadal trend of the time series for each of the sites were adjusted systematically.
-
-The next step is to divide up the site list by each of the clusters present in cluster 6. Hereafter, the sites being grouped by the different sources and the longest time series for each of the sites is selected. This generates a subset of four sites per cluster.
 
 ```{r site_sub_samples, include=TRUE}
 # First simply divide up the site list by cluster
@@ -385,7 +383,7 @@ sa_coast_dist <- as.data.frame(round(PairsDists(sa_coast_prep), 2)) %>%
 
 ### Matching sites
 
-Creating a function matching the sites: This function allows me to match sites within the same cluster based on the date that temperature was collected. This allows me to compare whether or not a temperature variation exist between sites within the same cluster and to examine the various reasons for this variation. Here we consider distance between sites. In this function the cumulative distance between sites were also calculated for each of the matching or paired sites.
+Creating a function to match the sites with in a cluster: This function allows me to match sites within the same cluster based on the date that temperature was collected. This allows me to compare whether or not a temperature variation exist between sites within the same cluster and to examine various reasons for this variation. Here we consider distance between sites.
 
 ```{r define_fun3, include=TRUE}
 ## testing...
@@ -478,12 +476,14 @@ SACTN_clust_3_matched <- clust_matched(df = SACTN_clust_3_match)
 SACTN_clust_4_matched <- clust_matched(df = SACTN_clust_4_match)
 SACTN_clust_5_matched <- clust_matched(df = SACTN_clust_5_match)
 SACTN_clust_6_matched <- clust_matched(df = SACTN_clust_6_match)
+
+
 ```
 
 #### ANOVA
 
 Anova analysis: This allows me to compare one variable in two or more groups taking into account the variability of other variables. This analysis of covariance is used to test the main effect of variables on a continuous variable. In this case we specifically analyse the 
-- relationship between index pair, year and season as a function of the mean temperature per year for each of the months. 
+- Relationship between index pair, year and season as a function of the mean temperature per year for each of the months. 
 - The results shows a significant difference between each pair of sites within each of the cluster.
 
 ```{r define_fun6, include=TRUE}
@@ -629,7 +629,7 @@ The cluster containing Antsey’s Beach, Glenmore, Port Edward, and Richards Bay
 
 ### Load wave data
 
-Creating a function allowing me to load the wave data:
+Creating a function which allows me to load the wave data:
 
 ```{r define_fun8, include=TRUE}
 load_wave <- function(wave_files) {
@@ -692,7 +692,7 @@ wave_data <- rbind(betties_bay, bordjies, gansbaai, gordons_bay, hermanus, kalk_
 rm(betties_bay, bordjies, gansbaai, gordons_bay, hermanus, kalk_bay, lamberts_bay, muizenberg, port_nolloth, antseys_beach, glenmore, mostertshoek, port_edward, richards_bay, ystervarkpunt)
 ```
 
-Converting the 3-hour resolution wave data into daily data. The funs function, funs(), is used here as it provides a flexible way to generate a named list of functions for input to other functions such as the mean and sd: https://cran.r-project.org/web/packages/circular/circular.pdf (Pg 130). The circular function creates circular objects around the wind and wave direction. The wave and wind direction was collected every three hours and by using the circular function we calcuated the daily mean wave and wind direction. There is a numerically large gap between 360 and 2 where as in degrees its not as large. The circular mean function returns the mean direction of a vector of circular data.
+Converting the 3-hour resolution wave data into daily data. https://cran.r-project.org/web/packages/circular/circular.pdf (Pg 130). The circular function creates circular objects around the wind and wave direction. The wave and wind direction was collected every three hours and by using the circular function we calcuated the daily mean wave and wind direction. There is a numerically large gap between 360 and 2 where as in degrees its not as large. The circular mean function returns the mean direction of a vector of circular data.
 
 ```{r}
 # test <- circular::circular(wave_data$dir, units = "degrees")
@@ -712,7 +712,7 @@ wave_daily <- wave_data %>%
   #        dirw_head = )
 ```
 
-Splitting the dataset into depths of 7m and 15m
+Here we are splitting the daily wave data into depths of 7m and 15m respectivley
 
 ```{r}
 sites_complete_7a <- wave_daily %>%
@@ -722,7 +722,7 @@ sites_complete_15a <- wave_daily %>%
   filter(depth == "15m")
 ```
 
-Matching temp wth wave 
+Now i match the SACTN seawater temperature data with the wave data
 
 ```{r}
 SACTN_daily_clusters_sub_1 <- SACTN_daily_clusters_sub %>% 
@@ -825,7 +825,7 @@ Insitu_dirw_circ_15 <- plot_compare_dirw(df = SACTN_daily_clusters_15a)
 ggsave(plot = Insitu_spw_circ, filename = "figures/Insitu_spw_circ.pdf")
 ```
 
-Histogram: Plotting dir and dirw
+Histogram: Plotting dir and dirw. This was done to determine whether or not the wave variables needed to be log transformed.
 
 ```{r}
 histogram_1 <- ggplot(data = SACTN_daily_clusters_7a, aes(x = dir_circ)) +
@@ -844,7 +844,7 @@ facet_wrap(~site, scales = "free_x", ncol = 2)
 histogram_3
 ```
 
-log transforming the Wave variables
+Here i now log transform each of the Wave variables
 
 ```{r}
 SACTN_daily_clusters_7a[, 12:14] <- log(SACTN_daily_clusters_7a[12:14], 2)
@@ -903,6 +903,27 @@ SACTN_7_R2 <- SACTN_daily_clusters_7a %>%
  temp_wave_R2_()
 SACTN_15_R2 <- SACTN_daily_clusters_15a %>% 
   temp_wave_R2_()
+
+# These data are best represented with a table
+knitr::kable(SACTN_7_R2, digits = 3, caption = "R^2 and p-values for the relationship between wave/wind variables and SACTN temperature at 7m.")
+
+# These data are best represented with a table
+knitr::kable(SACTN_15_R2, digits = 3, caption = "R^2 and p-values for the relationship between wave/wind variables and SACTN temperature at 15m.")
+
+box_scatter_7m <- ggplot(data = SACTN_7_R2, aes(x = variable, y = adj.r.squared)) +
+  geom_boxplot(outlier.colour = NA) +
+  geom_point(colour = "red", alpha = 0.6, position = "jitter") +
+  ggtitle("SACTN_7m") +
+  theme_bw()
+
+box_scatter_15m <-  ggplot(data = SACTN_15_R2, aes(x = variable, y = adj.r.squared)) +
+  geom_boxplot(outlier.colour = NA) +
+  geom_point(colour = "red", alpha = 0.6, position = "jitter") +
+  ggtitle("SACTN_15m") +
+  theme_bw()
+
+box_scatter <- ggarrange(box_scatter_7m, box_scatter_15m)
+box_scatter
 ```
 
 
@@ -980,8 +1001,6 @@ I now load in the csv dataset created above.
 
 ## Load subsetted AVHRR data
 
-Below we load only the first two subsetted dataframes.
-
 ```{r}
 xaa <- read_csv("data/xaa.csv",  col_names = c("lon", "lat", "temp", "date"))
 xab <- read_csv("data/xab.csv",  col_names = c("lon", "lat", "temp", "date"))
@@ -991,7 +1010,7 @@ combined_OISST <- rbind(xaa, xab)
 rm(xaa, xab)
 ```
 
-Now we create a plot which allows me to visualise the temperatures variation along the South African coastline based on the maximum and minumum dates at which temperature was collected. This is done in order to visualise the data.
+Now we create a plot which allows me to visualise the temperatures variation along the South African coastline based on the maximum and minumum dates at which temperature was collected. This is done to visualise the data.
 
 ```{r}
 # Quick visualisation of the data
@@ -1007,7 +1026,8 @@ combined_OISST %>%
 ```
 
 ## Find nearest SST pixels
-Now we apply the FNN (Fast Nearest Neighbor) package to determine the nearesr SST pixel to the insitu collected sites. In some cases however our sites are located close to eachother and as such more than one sites may have the same SST record. Here we use a pixe l of 1. 
+
+Now we apply the FNN (Fast Nearest Neighbor) package to determine the nearesr SST pixel to the insitu collected sites. In some cases however our sites are located close to eachother and as such more than one sites may have the same SST record. Here we use a pixel of 1. 
 
 ```{r}
 unique_pixel <- combined_OISST %>% 
@@ -1040,6 +1060,7 @@ pixel_match <- unique_pixel[match_index,] %>%
 ```
 
 ## Subset OISST to match in situ
+
 I now subset the SST data to match the insitu collected seawater temperature data.
 
 ```{r}
@@ -1104,7 +1125,7 @@ Satellite_temp <- ggplot(data = insitu_AVHRR, aes(x = date, y = temp.y)) +
   facet_wrap(~site)
 ```
 
-Time series of insitu data
+Creating a visualisation of the insitu collected temperature data and the AVHRR temperature data
 
 ```{r}
 insitu_plot <- ggplot(insitu_AVHRR, aes(x = date, y = temp.x)) +
@@ -1206,6 +1227,8 @@ AVHRR_temp_15_R2 <- AVHRR_temp_15 %>%
 
 # MUR satellite data
 
+Here i load the MUR SST data
+
 ```{r}
 MUR_Bordjies_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_Bordjies_SST_timeseries_5nearest.csv") 
 MUR_Eastern_Beach_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_Eastern Beach_SST_timeseries_5nearest.csv")
@@ -1246,9 +1269,13 @@ MUR_data <- MUR_data %>%
 MUR_data$date <- (ymd(MUR_data$date))
 MUR_data <- MUR_data %>% 
   rename(temp = med05)
+
+
+list.file(path = "data/MUR", pattern = "csv")
 ```
 
 Matching in situ sites with the MUR data sites
+
 ```{r}
 match_func <- function(df){
   match <- SACTN_daily_clusters_sub_1  %>% 
@@ -1321,6 +1348,8 @@ MUR_5_R2 <- MUR_15 %>%
 
 # CMC data
 
+Here i load the CMC dataset
+
 ```{r}
 CMC_Bordjies_SST_timeseries_5nearest <- read_csv("data/CMC/CMC_Bordjies_SST_timeseries_5nearest.csv")
 CMC_Eastern_Beach_SST_timeseries_5nearest <- read_csv("data/CMC/CMC_Eastern Beach_SST_timeseries_5nearest.csv")
@@ -1362,13 +1391,13 @@ CMC_data <- CMC_data %>%
   rename(temp = med05)
 ```
 
-Matching in situ sites with the CMC  data sites
+Matching in situ collected data with the CMC data sites
 
 ```{r}
 insitu_CMC <- match_func(df = CMC_data)
 ```
 
-Matching the MUR data with the wave data
+Matching the CMC SST data with the wave data
 
 ```{r}
 CMC_wave <- insitu_CMC %>% 
@@ -1431,6 +1460,8 @@ CMC_15_R2 <- CMC_7 %>%
 ```
 
 # K10 data
+
+Here i load the K10 SST dataset
 
 ```{r}
 K10_Bordjies_SST_timeseries_5nearest <- read_csv("data/K10/K10_Bordjies_SST_timeseries_5nearest.csv")
@@ -1521,9 +1552,8 @@ K10_15_R2 <- K10_15 %>%
   temp_wave_R2_try1()
 ```
 
-Wave and Wind rose diagram:
+## Wave and Wind rose diagram:
 - Aim is to select the time series with the most dominant direction where wind and wave occurs using the wind and rose diagram
-- Then do a correlation between the two
 
 ```{r}
 library(circular)
@@ -1587,9 +1617,7 @@ windrose(x = test_B$dir_circ, y = test_B$hs_mean, main = "Bordjies\nWave Rose")
 windrose(x = test_B$dirw_circ, y = test_B$spw_mean, main = "Bordjies\nWind Rose")
 ```
 
-##########################################################################################################################################
-
-Calculating the mean and sd of each of the variables. Then calculating anomalies
+Calculating the mean and sd of each of the variables. Then calculating anomalies. The funs function, funs(), is used here as it provides a flexible way to generate a named list of functions for input to other functions such as the mean and sd:
 
 ```{r}
 wave_daily <- wave_data %>%
@@ -1811,7 +1839,7 @@ temp_wave_predom_R2 <- function(df){
     mutate(predom_var = "dir")
   ## wind
   df_dirw <- df %>% 
-    mutate(dirw_round = round(dirw_mean, -1)) %>% 
+    mutate(dirw_round = round(dirw_mean, -1)) %>%
     right_join(predom_dirw, by = c("site", "cluster", "dirw_round")) %>%
     select(-dirw_round) %>% 
     temp_wave_R2() %>% 
