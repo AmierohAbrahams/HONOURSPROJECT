@@ -239,6 +239,52 @@ Sea Surface temperature measurements used in this study were obtained from four 
 
 A series of ANOVA tests were used to compare the main effects of the chosen variables on a continuous variable. In this analysis the relationship between matched sites based on the year and season as a function of the mean temperature were analysed, these analyses were used to test if significant differences occured between each pair of sites within each of the clusters. To compare whether temperature variation exist between sites found within the same clusters along the coast, boxplots were constructed. These plots enabled the visual identification of variations in temperature.
 
+## Results
+
+![box plot](figures/combined_plot.png)
+
+![Caption for the picture.](/path/to/image.png)
+
+
+Temperatures were not uniformly distributed across our four clusters produced, with each set of sites having unique patterns of temperature variation. In cluster 1, which includes Humburg, Eastern  Beach and Orient Beach, we found that temperature varied from approximately 13 ºC to 22  ºC. Within this cluster of sites, we found that Hamburg had the highest maximum temperatures and the lowest minimum temperatures between the three sites. Orient  Beach had the lowest range of temperature variability and it produced a comparatively short box plot. Orient Beach and Eastern Beach had relatively similar ranges and distributions of temperatures as evident by their bixplots nearly overlapping completely. 
+
+In the cluster comprising of Mossel Bay, Stilbaai and Knysna, temperatures ranged from approximately 12 ºC to 27  ºC, with most box plots being relatively long. Stilbaai had the widest range of temperature variation of the three sites. Despite the apparent differences in temperature ranges between these sites, the average temperatures across these were relatively similar and near completely identical, with very few outliers present within the temperatures of these sites.
+
+Sites within the third cluster had slightly lower temperatures than the previous two clusters. This cluster comprise of Bordjies, Saldanha and Gansbaai, Temperatures within this cluster ranged from approximately 11 ºC to 21  ºC, with an average median temperature being close to 15  ºC across all three of the sites. Gansbaai had relatively low variation in temperature as it had a comparatively short box plot. Conversely, Saldanha had relatively long box plots representing high variation and relatively evenly distributed temperatures. These sites were relatively similar in terms of temperature variances, as their box plots were largely overlapping with few differences between them. There were however several outliers present within the temperatures of these sites.
+The fourth cluster comprised of Port Edward, Leisure Baay and T.O. Strand. Overall, the temperatures of these sites were higher than those of the sites within the other clusters, with a range of between 15 ºC  to 25 ºC, which is considerably much higher than that of the others.  The box plots were all relatively long representing a low variation, and had very little skewness. Temperature did not differ between these three sites with each box plot overlapping very well. The median temperature for each of the sites within this cluster is 20.5  ºC. 
+
+Sites within the fifth cluster had overall lower temperatures than those within the remaining clusters. This cluster comprised of Port Nolloth, Lamberts Bay and Sea Point, and here we found sharp declines in average temperatures throughout. The temperature range within this cluster was approximately 8 ºC to 18 ºC, with an average median temperature being close to 13 ºC. Port Nolloth had relatively low variation in temperature as it had a comparatively short box plot with relatively evenly distributed temperatures. Lamberts Bay and Sea Point were relatively similar in terms of temperature variances, as their box plots were largely overlapping with little differences between them. Several outliers are present within the temperatures of these sites.
+
+In the cluster comprising of Kalk Bay, Muizenberg and Gordons Bay temperature ranged from  approximately 8 ºC to 24  ºC, with most box plots being relativley short. Muizenberg had the widest range of temperature variation of the three sites.  Gordons Bay and Kalk Bay, had identical temperature ranges. Despite the apparent differences in temperature ranges between these sites, the average temperatures across these were relatively similar and near completely identical.
+****Still need to add in some things on the distances between sites****
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Some discussion points
 

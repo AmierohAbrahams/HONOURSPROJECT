@@ -103,14 +103,19 @@ clusters <- ggarrange(clust_8, clust_7, clust_6, clust_5, clust_4, clust_3, comm
 clusters
 ```
 
-Mapping the sixth cluster - To be added into the methods section
+Load in the data: For creating the map
 
 ```{r}
 load("data/southern_africa_coast.Rdata")
 load("data/africa_coast.RData")
 load("data/sa_provinces_new.RData")
 load("data/sa_coast.Rdata")
+```
 
+
+Mapping the sixth cluster - To be added into the methods section
+
+```{r}
 clust_i <- function(i) {
   set.seed(10)
 ggplot(data = southern_africa_coast, aes(x = long, y = lat)) +
@@ -476,8 +481,6 @@ SACTN_clust_3_matched <- clust_matched(df = SACTN_clust_3_match)
 SACTN_clust_4_matched <- clust_matched(df = SACTN_clust_4_match)
 SACTN_clust_5_matched <- clust_matched(df = SACTN_clust_5_match)
 SACTN_clust_6_matched <- clust_matched(df = SACTN_clust_6_match)
-
-
 ```
 
 #### ANOVA
@@ -538,15 +541,21 @@ combined_plot <- ggarrange(SACTN_clust_1_plot1, SACTN_clust_2_plot1,
                            SACTN_clust_3_plot1, SACTN_clust_4_plot1, 
                            SACTN_clust_5_plot1, SACTN_clust_6_plot1)
 combined_plot
+
+ggsave(plot = combined_plot, filename = "figures/combined_plot.pdf")
+ggsave(plot = combined_plot, filename = "figures/combined_plot_1.png")
 ```
 
-Temperatures were not uniformly distributed across our four clusters produced, with each set of sites having unique patterns of temperature variation. In cluster 1, which includes Cape Aghulus, Gansbaai, Mosterts Hoek, and Ystervarkpunt, we found that temperature varied from approximately 11 ºC to 23 ºC. Within this cluster of sites, we found that Cape Agulhas had the highest maximum temperatures and Mosterts Hoek had the lowest minimum temperatures between the four sites. Gansbaai had the lowest range of temperature variability as it produced a comparatively short box plot. Cape Aghulus and Ystervarkpunt had relatively similar ranges and distributions of temperatures as evident by their plots nearly overlapping completely. For each of these sites, temperature distribution was always skewed towards higher temperatures than lower than average temperatures.
+Temperatures were not uniformly distributed across our four clusters produced, with each set of sites having unique patterns of temperature variation. In cluster 1, which includes Humburg, Eastern  Beach and Orient Beach, we found that temperature varied from approximately 13 ºC to 22  ºC. Within this cluster of sites, we found that Hamburg had the highest maximum temperatures and the lowest minimum temperatures between the three sites. Orient  Beach had the lowest range of temperature variability and it produced a comparatively short box plot. Orient Beach and Eastern Beach had relatively similar ranges and distributions of temperatures as evident by their bixplots nearly overlapping completely. 
 
-In the cluster comprised of Gordons Bay, Kalk Bay, Muizenberg, and Hermanus, temperatures ranged from approximately 8 ºC to 25 ºC, with most box plots being relatively short. Muizenberg had the widest range of temperature variation of the four sites, and Hermanus had the narrowest range. The remaining two sites, Gordons Bay and Kalk Bay, had identical temperature ranges. Despite the apparent differences in temperature ranges between these sites, the average temperatures across these were relatively similar and near completely identical.
+In the cluster comprising of Mossel Bay, Stilbaai and Knysna, temperatures ranged from approximately 12 ºC to 27  ºC, with most box plots being relatively long. Stilbaai had the widest range of temperature variation of the three sites. Despite the apparent differences in temperature ranges between these sites, the average temperatures across these were relatively similar and near completely identical, with very few outliers present within the temperatures of these sites.
 
-Sites within the third cluster had overall lower temperatures than those within the remaining clusters. This cluster consisted of Lamberts Bay, Bordjies, Betty’s Bay, and Port Nolloth, and here we found sharp declines in average temperatures throughout. Temperatures within this cluster ranged from approximately 8 ºC to 21 ºC, with the average median temperature being close to 14 ºC across all four sites. Bordjies and Betty’s Bay had the largest variation of temperature across sites. Conversely, Lamberts Bay had relatively low variation in temperature as it had a comparatively short box plot with relatively evenly distributed temperatures. Bordjies and Betty’s Bay were relatively similar in terms of temperature variances, as their box plots were largely overlapping with little differences between them. There were however several outliers present within the temperatures of these sites.
+Sites within the third cluster had slightly lower temperatures than the previous two clusters. This cluster comprise of Bordjies, Saldanha and Gansbaai, Temperatures within this cluster ranged from approximately 11 ºC to 21  ºC, with an average median temperature being close to 15  ºC across all three of the sites. Gansbaai had relatively low variation in temperature as it had a comparatively short box plot. Conversely, Saldanha had relatively long box plots representing high variation and relatively evenly distributed temperatures. These sites were relatively similar in terms of temperature variances, as their box plots were largely overlapping with few differences between them. There were however several outliers present within the temperatures of these sites.
+The fourth cluster comprised of Port Edward, Leisure Baay and T.O. Strand. Overall, the temperatures of these sites were higher than those of the sites within the other clusters, with a range of between 15 ºC  to 25 ºC, which is considerably much higher than that of the others.  The box plots were all relatively long representing a low variation, and had very little skewness. Temperature did not differ between these three sites with each box plot overlapping very well. The median temperature for each of the sites within this cluster is 20.5  ºC. 
 
-The fourth cluster comprised of Richards Bay, Antsey’s Beach, Glenmore, and Port Edward. Overall, the temperatures of these sites were higher than those of the sites within the other clusters, with a range of between 16.5 ºC to 27.5 ºC, which is considerably higher than that of the others. Box plots were all relatively short, and had little skewness. Temperatures differed greatly between these four sites however, with most of the box plots not overlapping very well. Richards Bay and Antsey’s Beach had considerably more high temperatures than that of Port Edward and Glenmore. Median temperatures thus greatly differed amongst these four sites. 
+Sites within the fifth cluster had overall lower temperatures than those within the remaining clusters. This cluster comprised of Port Nolloth, Lamberts Bay and Sea Point, and here we found sharp declines in average temperatures throughout. The temperature range within this cluster was approximately 8 ºC to 18 ºC, with an average median temperature being close to 13 ºC. Port Nolloth had relatively low variation in temperature as it had a comparatively short box plot with relatively evenly distributed temperatures. Lamberts Bay and Sea Point were relatively similar in terms of temperature variances, as their box plots were largely overlapping with little differences between them. Several outliers are present within the temperatures of these sites.
+
+In the cluster comprising of Kalk Bay, Muizenberg and Gordons Bay temperature ranged from  approximately 8 ºC to 24  ºC, with most box plots being relativley short. Muizenberg had the widest range of temperature variation of the three sites.  Gordons Bay and Kalk Bay, had identical temperature ranges. Despite the apparent differences in temperature ranges between these sites, the average temperatures across these were relatively similar and near completely identical.
 
 ### Comparing time series
 
@@ -688,8 +697,40 @@ richards_bay <- map_dfr(dir("data/wave_data/Richards Bay",
                             full.names = TRUE, pattern = "*.txt"), load_wave)
 ystervarkpunt <- map_dfr(dir("data/wave_data/Ystervarkpunt", 
                             full.names = TRUE, pattern = "*.txt"), load_wave)
-wave_data <- rbind(betties_bay, bordjies, gansbaai, gordons_bay, hermanus, kalk_bay, lamberts_bay, muizenberg, port_nolloth, antseys_beach, glenmore, mostertshoek, port_edward, richards_bay, ystervarkpunt)
-rm(betties_bay, bordjies, gansbaai, gordons_bay, hermanus, kalk_bay, lamberts_bay, muizenberg, port_nolloth, antseys_beach, glenmore, mostertshoek, port_edward, richards_bay, ystervarkpunt)
+
+eastern_beach <- map_dfr(dir("data/wave_data/Eastern Beach", 
+                            full.names = TRUE, pattern = "*.txt"), load_wave)
+
+hamburg <- map_dfr(dir("data/wave_data/Hamburg", 
+                            full.names = TRUE, pattern = "*.txt"), load_wave)
+
+orient_beach <- map_dfr(dir("data/wave_data/Orient Beach", 
+                            full.names = TRUE, pattern = "*.txt"), load_wave)
+
+stilbaai <- map_dfr(dir("data/wave_data/Stilbaai", 
+                            full.names = TRUE, pattern = "*.txt"), load_wave)
+
+mossel_bay <- map_dfr(dir("data/wave_data/Mossel Bay", 
+                            full.names = TRUE, pattern = "*.txt"), load_wave)
+
+knysna <- map_dfr(dir("data/wave_data/Knysna", 
+                            full.names = TRUE, pattern = "*.txt"), load_wave)
+
+port_edward <- map_dfr(dir("data/wave_data/Port Edward", 
+                            full.names = TRUE, pattern = "*.txt"), load_wave)
+
+to_strand <- map_dfr(dir("data/wave_data/T.O. Strand", 
+                            full.names = TRUE, pattern = "*.txt"), load_wave)
+
+leisure_bay <- map_dfr(dir("data/wave_data/Leisure Bay", 
+                            full.names = TRUE, pattern = "*.txt"), load_wave)
+
+sea_point <- map_dfr(dir("data/wave_data/Sea Point", 
+                            full.names = TRUE, pattern = "*.txt"), load_wave)
+
+wave_data <- rbind(betties_bay, bordjies, gansbaai, gordons_bay, hermanus, kalk_bay, lamberts_bay, muizenberg, port_nolloth, antseys_beach, glenmore, mostertshoek, port_edward, richards_bay, ystervarkpunt, eastern_beach, hamburg, orient_beach, stilbaai, mossel_bay, knysna, to_strand, leisure_bay, sea_point)
+
+rm(betties_bay, bordjies, gansbaai, gordons_bay, hermanus, kalk_bay, lamberts_bay, muizenberg, port_nolloth, antseys_beach, glenmore, mostertshoek, port_edward, richards_bay, ystervarkpunt, eastern_beach, hamburg, orient_beach, stilbaai, mossel_bay, knysna, to_strand, leisure_bay, sea_point)
 ```
 
 Converting the 3-hour resolution wave data into daily data. https://cran.r-project.org/web/packages/circular/circular.pdf (Pg 130). The circular function creates circular objects around the wind and wave direction. The wave and wind direction was collected every three hours and by using the circular function we calcuated the daily mean wave and wind direction. There is a numerically large gap between 360 and 2 where as in degrees its not as large. The circular mean function returns the mean direction of a vector of circular data.
@@ -822,7 +863,7 @@ Insitu_tp_circ_15 <- plot_compare_tp(df = SACTN_daily_clusters_15a)
 Insitu_dir_circ_15 <- plot_compare_dir(df = SACTN_daily_clusters_15a)
 Insitu_dirw_circ_15 <- plot_compare_dirw(df = SACTN_daily_clusters_15a)
 
-ggsave(plot = Insitu_spw_circ, filename = "figures/Insitu_spw_circ.pdf")
+# ggsave(plot = Insitu_spw_circ, filename = "figures/Insitu_spw_circ.pdf")
 ```
 
 Histogram: Plotting dir and dirw. This was done to determine whether or not the wave variables needed to be log transformed.
@@ -830,17 +871,17 @@ Histogram: Plotting dir and dirw. This was done to determine whether or not the 
 ```{r}
 histogram_1 <- ggplot(data = SACTN_daily_clusters_7a, aes(x = dir_circ)) +
 geom_histogram() +
-facet_wrap(~site, scales = "free_x", ncol = 2) 
+facet_wrap(~site, scales = "free_x", ncol = 2)
 histogram_1
 
 histogram_2 <- ggplot(data = SACTN_daily_clusters_7a, aes(x = dirw_circ)) +
 geom_histogram() +
-facet_wrap(~site, scales = "free_x", ncol = 2) 
+facet_wrap(~site, scales = "free_x", ncol = 2)
 histogram_2
 
 histogram_3 <- ggplot(data = SACTN_daily_clusters_7a, aes(x = spw_circ)) +
 geom_histogram() +
-facet_wrap(~site, scales = "free_x", ncol = 2) 
+facet_wrap(~site, scales = "free_x", ncol = 2)
 histogram_3
 ```
 
@@ -925,7 +966,6 @@ box_scatter_15m <-  ggplot(data = SACTN_15_R2, aes(x = variable, y = adj.r.squar
 box_scatter <- ggarrange(box_scatter_7m, box_scatter_15m)
 box_scatter
 ```
-
 
 # AVHRR Satellite data
 
@@ -1271,7 +1311,7 @@ MUR_data <- MUR_data %>%
   rename(temp = med05)
 
 
-list.file(path = "data/MUR", pattern = "csv")
+# list.file(path = "data/MUR", pattern = "csv")
 ```
 
 Matching in situ sites with the MUR data sites
