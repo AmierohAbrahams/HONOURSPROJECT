@@ -509,7 +509,6 @@ anova_clus_5_func1 <- anova_func(df = SACTN_clust_5_matched)
 summary(anova_clus_5_func1)
 anova_clus_6_func1 <- anova_func(df = SACTN_clust_6_matched)
 summary(anova_clus_6_func1)
-
 ```
 
 ### Comparing sites
@@ -524,7 +523,7 @@ clust_plot <- function(df) {
     ggplot(aes(x = index_pair)) +
     geom_boxplot(aes(y = temp, fill = temp_grp), alpha = 0.3) +
     scale_fill_manual(values = c("khaki4", "chartreuse3")) +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+    theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
       return(plot1)
 }
 ```
@@ -574,15 +573,21 @@ clust_plot2 <- function(df){
 ```
 
 ```{r run_fun5, fig.cap = "Line graphs representing the monthly average temperatures between two sites (° Celsius). Each graphic showing a different month overtime from 1990 to 2016. These site locations are coloured by the temperature statistic relative to the legends provided. The linear lines are the linear models in their respective colours ", fig.height = 8, fig.width = 12}
-SACTN_clust_1_plot2 <- clust_plot2(df = SACTN_clust_1_matched)
-SACTN_clust_2_plot2 <- clust_plot2(df = SACTN_clust_2_matched)
-SACTN_clust_3_plot2 <- clust_plot2(df = SACTN_clust_3_matched)
-SACTN_clust_4_plot2 <- clust_plot2(df = SACTN_clust_4_matched)
-SACTN_clust_5_plot2 <- clust_plot2(df = SACTN_clust_5_matched)
-SACTN_clust_6_plot2 <- clust_plot2(df = SACTN_clust_6_matched)
+(SACTN_clust_1_plot2 <- clust_plot2(df = SACTN_clust_1_matched))
+(SACTN_clust_2_plot2 <- clust_plot2(df = SACTN_clust_2_matched))
+(SACTN_clust_3_plot2 <- clust_plot2(df = SACTN_clust_3_matched))
+(SACTN_clust_4_plot2 <- clust_plot2(df = SACTN_clust_4_matched))
+(SACTN_clust_5_plot2 <- clust_plot2(df = SACTN_clust_5_matched))
+(SACTN_clust_6_plot2 <- clust_plot2(df = SACTN_clust_6_matched))
 
-plot2_final <- ggarrange(SACTN_clust_1_plot2,SACTN_clust_2_plot2,SACTN_clust_3_plot2,SACTN_clust_4_plot2, SACTN_clust_5_plot2, SACTN_clust_6_plot2)
+plot2_final <- ggarrange(SACTN_clust_1_plot2,SACTN_clust_2_plot2,SACTN_clust_3_plot2)
 plot2_final
+
+plo2_final_B <- ggarrange(SACTN_clust_4_plot2, SACTN_clust_5_plot2, SACTN_clust_6_plot2)
+plo2_final_B
+
+ggsave(plot = plot2_final, filename = "figures/plot2_final.pdf")
+
 ```
 
 ### Monthly comparisons
@@ -1145,6 +1150,10 @@ ggplot(data = combined_OISST_sites, aes(x = date, y = temp)) +
 save(combined_OISST_sites, file = "data/combined_OISST_sites.RData")
 ```
 
+```{r}
+load("~/Documents/HONOURSPROJECT/data/combined_OISST_sites.RData")
+```
+
 The next step is to now match the insitu temperature data with the SST data
 
 ```{r}
@@ -1263,6 +1272,12 @@ AVHRR_temp_7_R2 <- AVHRR_temp_7%>%
   temp_wave_R2_try1()
 AVHRR_temp_15_R2 <- AVHRR_temp_15 %>% 
   temp_wave_R2_try1()
+
+# These data are best represented with a table
+knitr::kable(AVHRR_temp_7_R2, digits = 3, caption = "R^2 and p-values for the relationship between wave/wind variables and AVHRR temperature at 7m.")
+
+# These data are best represented with a table
+knitr::kable(AVHRR_temp_15_R2, digits = 3, caption = "R^2 and p-values for the relationship between wave/wind variables and AVHRR temperature at 15m.")
 ``` 
 
 # MUR satellite data
@@ -1327,6 +1342,18 @@ match_func <- function(df){
 insitu_MUR <- match_func(df = MUR_data)
 ```
 
+```{r}
+insitu_temp <- ggplot(data = insitu_AVHRR, aes(x = date, y = temp.x)) +
+  geom_line() +
+  facet_wrap(~site)
+insitu_temp
+
+Satellite_temp <- ggplot(data = insitu_MUR, aes(x = date, y = temp.y)) +
+  geom_line() +
+  facet_wrap(~site)
+Satellite_temp
+```
+
 Matching the MUR data with the wave data
 
 ```{r}
@@ -1382,8 +1409,14 @@ temp_wave_R2_try1 <- function(df){
 
 MUR_7_R2 <- MUR_7 %>% 
   temp_wave_R2_try1()
-MUR_5_R2 <- MUR_15 %>% 
+MUR_15_R2 <- MUR_15 %>% 
   temp_wave_R2_try1()
+
+# These data are best represented with a table
+knitr::kable(MUR_7_R2, digits = 3, caption = "R^2 and p-values for the relationship between wave/wind variables and MUR temperature at 7m.")
+
+# These data are best represented with a table
+knitr::kable(MUR_15_R2, digits = 3, caption = "R^2 and p-values for the relationship between wave/wind variables and MUR temperature at 15m.")
 ```
 
 # CMC data
@@ -1435,6 +1468,18 @@ Matching in situ collected data with the CMC data sites
 
 ```{r}
 insitu_CMC <- match_func(df = CMC_data)
+```
+
+```{r}
+insitu_temp <- ggplot(data = insitu_AVHRR, aes(x = date, y = temp.x)) +
+  geom_line() +
+  facet_wrap(~site)
+insitu_temp
+
+Satellite_temp <- ggplot(data = insitu_CMC, aes(x = date, y = temp.y)) +
+  geom_line() +
+  facet_wrap(~site)
+Satellite_temp
 ```
 
 Matching the CMC SST data with the wave data
@@ -1497,6 +1542,12 @@ CMC_7_R2 <- CMC_7 %>%
   temp_wave_R2_try2()
 CMC_15_R2 <- CMC_7 %>% 
   temp_wave_R2_try2()
+
+# These data are best represented with a table
+knitr::kable(CMC_7_R2, digits = 3, caption = "R^2 and p-values for the relationship between wave/wind variables and CMC temperature at 7m.")
+
+# These data are best represented with a table
+knitr::kable(CMC_15_R2, digits = 3, caption = "R^2 and p-values for the relationship between wave/wind variables and CMC temperature at 15m.")
 ```
 
 # K10 data
@@ -1550,6 +1601,18 @@ insitu_K10 <- match_func(df = K10_data)
 ```
 
 ```{r}
+insitu_temp <- ggplot(data = insitu_AVHRR, aes(x = date, y = temp.x)) +
+  geom_line() +
+  facet_wrap(~site)
+insitu_temp
+
+Satellite_temp <- ggplot(data = insitu_K10, aes(x = date, y = temp.y)) +
+  geom_line() +
+  facet_wrap(~site)
+Satellite_temp
+```
+
+```{r}
 K10_wave <- insitu_K10 %>% 
   separate(index, into = c("site", "src"), sep = "/", remove = FALSE)
 
@@ -1590,6 +1653,13 @@ K10_7_R2 <- K10_7 %>%
   temp_wave_R2_try1()
 K10_15_R2 <- K10_15 %>% 
   temp_wave_R2_try1()
+
+
+# These data are best represented with a table
+knitr::kable(K10_7_R2, digits = 3, caption = "R^2 and p-values for the relationship between wave/wind variables and K10 temperature at 7m.")
+
+# These data are best represented with a table
+knitr::kable(K10_15_R2, digits = 3, caption = "R^2 and p-values for the relationship between wave/wind variables and K10 temperature at 15m.")
 ```
 
 ## Wave and Wind rose diagram:
