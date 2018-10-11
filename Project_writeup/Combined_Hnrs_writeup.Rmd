@@ -7,14 +7,12 @@ output: html_document
 \newpage
 ## Plagiarism Declaration
 
-
 \newpage
 ## Declaration
 
 
 \newpage
 ## Abstract
-
 
 \newpage
 ## Acknowledgments
@@ -72,6 +70,11 @@ This study made use of four satellite derived SST datasets in comparison with th
 In order to compare temperatures along the South African coastline at a localized scale, appropriate sites from each of the major coastal regions needed to be selected. Since temperature data was not evenly recorded for each of the 129 sites representing South Africa’s coastline, the first step was to narrow down available sites that could be adequately compared. To do this a clustering analysis was perfomed using the `kmeans` function in R software with multiple random seeds to identify a number of clustering solutions that grouped sites together based on their available temperature data. The mean, minimum, and maximum temperature values were used within the clustering to group sites with similar temperatures along each coastal region. The clustering analysis represented the most accurate and distinct site groupings based on temperature distributions and yielded distinct east, south, and west coast groupings. Six clustering solutions along the South African coastline were also shown (Figure 1). With the data now divided into six distinct coastal regions, a time series was selected of at least one decade of data for each of the sites, excluding those with temperature data collected deeper than five meters. The length, decadal trend and precision of the time series were adjusted in a systematic manner to allow for meaningful comparisons to be made.
  
 ```{r}
+## Libraries
+library(tidyverse)
+library(viridis)
+library(gridExtra)
+
 load("data/southern_africa_coast.Rdata")
 load("data/africa_coast.RData")
 load("data/sa_provinces_new.RData")
@@ -147,7 +150,6 @@ print(clust_6, vp = vp2)
 print(africa_map, vp = vp1)
 dev.off()
 ```
-
 
 Once sites were grouped together, the next step was to reduce the number of sites down to a manageable, but still representative, sub-sample of the whole. This was done primarily for two reasons. The first, simply, was to allow for the comparisons to be more readily interpretable by humans.  Secondly it was to allow for equal amount of sampling per coast. The east coast has previously been more heavily sampled than the rest and such an imbalance should be addressed. The criteria considered for the sub-samples included selecting the longest time series within the  region and including data from as many different organizations as possible. This process yielded three sites for each of the clusters along the South African coastline (Figure 2). The statistical characteristics of the temperature were used to guide analysis of the time series to produce an accurate assessment of temperature variation between sites that were grouped together.
 
@@ -248,22 +250,19 @@ combined_plot <- ggarrange(SACTN_clust_1_plot1, SACTN_clust_2_plot1,
 combined_plot
 ```
 
+Temperatures were not uniformly distributed across the six clusters produced, with each set of sites having unique patterns of temperature variation. In cluster 1, which includes Humburg, Eastern  Beach and Orient Beach, we found that temperature varied from approximately 13 ºC to 22  ºC. Within this cluster of sites, we found that Hamburg had the highest maximum temperatures and the lowest minimum temperatures between the three sites. Orient  Beach had the lowest range of temperature variability and it produced a comparatively short box plot. Orient Beach and Eastern Beach had relatively similar ranges and distributions of temperatures as evident by their box plots nearly overlapping completely. 
 
-Temperatures were not uniformly distributed across our four clusters produced, with each set of sites having unique patterns of temperature variation. In cluster 1, which includes Humburg, Eastern  Beach and Orient Beach, we found that temperature varied from approximately 13 ºC to 22  ºC. Within this cluster of sites, we found that Hamburg had the highest maximum temperatures and the lowest minimum temperatures between the three sites. Orient  Beach had the lowest range of temperature variability and it produced a comparatively short box plot. Orient Beach and Eastern Beach had relatively similar ranges and distributions of temperatures as evident by their bixplots nearly overlapping completely. 
-
-In the cluster comprising of Mossel Bay, Stilbaai and Knysna, temperatures ranged from approximately 12 ºC to 27  ºC, with most box plots being relatively long. Stilbaai had the widest range of temperature variation of the three sites. Despite the apparent differences in temperature ranges between these sites, the average temperatures across these were relatively similar and near completely identical, with very few outliers present within the temperatures of these sites.
+In the cluster comprising of Mossel Bay, Stilbaai and Knysna, temperatures ranged from approximately 12 ºC to 27 ºC, with most box plots being relatively long. Stilbaai had the widest range of temperature variation of the three sites. Despite the apparent differences in temperature ranges between these sites, the average temperatures across these were relatively similar and near completely identical, with very few outliers present within the temperatures of these sites.
 
 Sites within the third cluster had slightly lower temperatures than the previous two clusters. This cluster comprise of Bordjies, Saldanha and Gansbaai, Temperatures within this cluster ranged from approximately 11 ºC to 21  ºC, with an average median temperature being close to 15  ºC across all three of the sites. Gansbaai had relatively low variation in temperature as it had a comparatively short box plot. Conversely, Saldanha had relatively long box plots representing high variation and relatively evenly distributed temperatures. These sites were relatively similar in terms of temperature variances, as their box plots were largely overlapping with few differences between them. There were however several outliers present within the temperatures of these sites.
-The fourth cluster comprised of Port Edward, Leisure Baay and T.O. Strand. Overall, the temperatures of these sites were higher than those of the sites within the other clusters, with a range of between 15 ºC  to 25 ºC, which is considerably much higher than that of the others.  The box plots were all relatively long representing a low variation, and had very little skewness. Temperature did not differ between these three sites with each box plot overlapping very well. The median temperature for each of the sites within this cluster is 20.5  ºC. 
+
+The fourth cluster comprised of Port Edward, Leisure Bay and T.O. Strand. Overall, the temperatures of these sites were higher than those of the sites within the other clusters, with a range of between 15 ºC  to 25 ºC, which is considerably much higher than that of the others.  The box plots were all relatively long representing a low variation, and had very little skewness. Temperature did not differ between these three sites with each box plot overlapping very well. The median temperature for each of the sites within this cluster is 20.5  ºC. 
 
 Sites within the fifth cluster had overall lower temperatures than those within the remaining clusters. This cluster comprised of Port Nolloth, Lamberts Bay and Sea Point, and here we found sharp declines in average temperatures throughout. The temperature range within this cluster was approximately 8 ºC to 18 ºC, with an average median temperature being close to 13 ºC. Port Nolloth had relatively low variation in temperature as it had a comparatively short box plot with relatively evenly distributed temperatures. Lamberts Bay and Sea Point were relatively similar in terms of temperature variances, as their box plots were largely overlapping with little differences between them. Several outliers are present within the temperatures of these sites.
 
 In the cluster comprising of Kalk Bay, Muizenberg and Gordons Bay temperature ranged from  approximately 8 ºC to 24  ºC, with most box plots being relativley short. Muizenberg had the widest range of temperature variation of the three sites.  Gordons Bay and Kalk Bay, had identical temperature ranges. Despite the apparent differences in temperature ranges between these sites, the average temperatures across these were relatively similar and near completely identical.
-****Still need to add in some things on the distances between sites, fix boxplot appearance****
+****Still need to add in some things on the distances between sites***
 
-
-
-******Discussing the mean-average_temper_per_month, fix plot appearance*****
 ```{r}
 (SACTN_clust_1_plot2 <- clust_plot2(df = SACTN_clust_1_matched))
 (SACTN_clust_2_plot2 <- clust_plot2(df = SACTN_clust_2_matched))
@@ -288,17 +287,30 @@ In the cluster comprising of Kalk Bay, Gordons Bay and Muizenberg, the largest d
 ## Anova test
 
 ```{r, echo= FALSE, message=FALSE, warning=FALSE}
-library(knitr)
-anova_test_2 <- read_csv("data/anova_test_2.csv")
+# library(knitr)
+# anova_test_2 <- read_csv("data/anova_test_2.csv")
+# colnames(anova_test_2) <- c("Df", "Sum Sq", "F value", "Pr(>F")
+# try1 <- anova_test[(0:47), ]
+# kable(try1, row.names = FALSE, caption = "anova test.")
 
-colnames(anova_test_2) <- c("Df", "Sum Sq", "F value", "Pr(>F")
-
-try1 <- anova_test[(0:47), ]
+anova_clus_1_func1 <- anova_func(df = SACTN_clust_1_matched)
+summary(anova_clus_1_func1)
+anova_clus_2_func1 <- anova_func(df = SACTN_clust_2_matched)
+summary(anova_clus_2_func1)
+anova_clus_3_func1 <- anova_func(df = SACTN_clust_3_matched)
+summary(anova_clus_3_func1)
+anova_clus_4_func1 <- anova_func(df = SACTN_clust_4_matched)
+summary(anova_clus_4_func1)
+anova_clus_5_func1 <- anova_func(df = SACTN_clust_5_matched)
+summary(anova_clus_5_func1)
+anova_clus_6_func1 <- anova_func(df = SACTN_clust_6_matched)
+summary(anova_clus_6_func1)
 ```
-```{r, echo= FALSE, message=FALSE, warning=FALSE}
 
-kable(try1, row.names = FALSE, caption = "anova test.")
-```
+### Average temperature of clustered sites:
+
+In the first cluster of sites, via the results of a one way ANOVA tests it was found that there was a significant differences in average temperatures between paired sites (F2 = 12.07, SS = 15.28, P < 0.001). These differences were present across season (F6 = 3.44, SS = 13.07, P < 0.002) but were not present yearly between individuals and paired sites (F2 = 1.38, SS = 1.75, P = 0.25). Similarly, paired sites within the second cluster also a significantly differed in average temperature (F2 = 166.84, SS = 418.6, P < 0.001). Conversely to first cluster however these differences were present yearly (F1 = 33.21, SS = 41.7, P < 0.001) and seasonally (F6 = 16.72, SS = 125.9, P < 0.02,) between individual and paired sites. In the third cluster of sites, ANOVA tests revealed that there were no significant differences in average temperatures between paired sites (F2 = 1.17, SS = 2.9, P = 0.31), but temperatures varied seasonally and yearly between individual sites (. In the fourth cluster there were again no significant difference of average temperatures between paired sites (F2 = 0.73, SS = 2.9, P = 0.48). Differences were also absent across seasons (F3 = 0.75, SS = 0.0042, P = 0.52) and years (F1 = 0.495, SS = 0.0009, P = 0.48) between both individual and paired sites.
+Sites within the fifth cluster were significantly different in average temperatures between paired sites (F2 = 77.10, SS = 196.7, P < 0.002), with these differences being present yearly (F1 = 172.80, SS = 220.4, P < 0.001) and seasonally (F3 = 77.10, SS = 29.92, P < 0.002) for both paired and individual sites. Finally, sites within the sixth cluster also significantly difference in average temperatures between paired sites, yearly and seasonally (F2 = 132.044, SS = 419.7, P <0.01).
 
 ## R2 value representing the influence of each of the wave variables on the insitu collected temperature data 
 
@@ -359,6 +371,19 @@ knitr::kable(K10_15_R2, digits = 3, caption = "R^2 and p-values for the relation
 
 ## r2 value representing a comparison between the most predominant wind and wave direction and temperature
 
+```{r}
+SACTN_7_predom_R2 <- SACTN_daily_clusters_7 %>% 
+  temp_wave_predom_R2()
+
+SACTN_15_predom_R2 <- SACTN_daily_clusters_15 %>% 
+  temp_wave_predom_R2()
+
+# These data are best represented with a table
+knitr::kable(SACTN_7_predom_R2, digits = 3, caption = "R^2 and p-values for the relationship between predominant wind and waves at 7m.")
+
+# These data are best represented with a table
+knitr::kable(SACTN_15_predom_R2, digits = 3, caption = "R^2 and p-values for the relationship between temperature and wave/wind variables and K10 temperature at 15m.")
+```
 
 
 
@@ -371,9 +396,9 @@ knitr::kable(K10_15_R2, digits = 3, caption = "R^2 and p-values for the relation
 
 ## Some discussion points
 
-This study aimed to investigate how environmental factors wind and wave action influenced coastal seawater temperature variation along the South African coastline. Since seawater temperature is known to have large influences on species distributions (Bolton 2010, Smit et al. 2013), it is important to understand not only the variation across the coastline, but the factors driving variations as well. Here, I found that there were statistically significant differences in SST between the three coasts of South Africa, and that temperatures along these individual coasts varied at differing degrees. I found that the east coast of South Africa had overall little variation in temperatures between sites, whereas the south coast varied more frequently (Schlegel and Smit 2016). 
+This study aimed to investigate how environmental factors wind and wave action influenced coastal seawater temperature variation along the South African coastline. Since seawater temperature is known to have large influences on species distributions (Bolton 2010, Smit et al. 2013), it is important to understand not only the variation across the coastline, but the factors driving variations as well. Here, I confiirmed that there were statistically significant differences in SST between the three coasts of South Africa, and that temperatures along these individual coasts varied at differing degrees. I found that the east coast of South Africa had overall little variation in temperatures between sites, whereas the south coast varied more frequently (Schlegel and Smit 2016). 
 
-Previous studies suggest that a longer time series containing more data would be more effective in detecting subtle changes in temperature changes obtained from highly variable coastal regions Schlegel and Smit 2016). Schlegel and Smit (2016) suggested that having a time series of greater than 30 years for sites with a low variance results in increased ability to detect significant changes (Schlegel and Smit 2016). They showed that high quality time series datasets typically have frequent measurements with minimal missing (NA) values present. Furthermore, low quality dataset (i.e. those with more than 5% of NA values), has an increased chance of detecting variation where none exists.
+Previous studies suggest that a longer time series containing more data would be more effective in detecting subtle changes in temperature changes obtained from highly variable coastal regions (Schlegel and Smit 2016). Schlegel and Smit (2016) suggested that having a time series of greater than 30 years for sites with a low variance results in increased ability to detect significant changes (Schlegel and Smit 2016). They showed that high quality time series datasets typically have frequent measurements with minimal missing (NA) values present. Furthermore, low quality dataset (i.e. those with more than 5% of NA values), has an increased chance of detecting variation where none exists.
 
 Because temperature collection along the South African coastline started in the 1970s, and data collection was inconsistent in terms of instruments used, modifications to styles and methods used for data collection, calibration, and the locations where data were collected the metadata for older seawater temperature records within the SACTN dataset may have been lost or are unreliable. This metadata is essential as its absence prevents us from fully understanding the influence that instruments had on the temperature recordings. We do however have an accurate indication of which recordings were measured with thermometers and which were with UTR.
 
