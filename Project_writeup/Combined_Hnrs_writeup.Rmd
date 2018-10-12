@@ -266,7 +266,6 @@ The fourth cluster comprised of Port Edward, Leisure Bay, and T.O. Strand. Overa
 Sites within the fifth cluster had overall lower temperatures than those within the remaining clusters. This cluster comprised of Port Nolloth, Lamberts Bay, and Sea Point, here sharp declines in average temperatures were observed throughout. Temperatures within this cluster ranges between 8 ºC and 18 ºC, with an average median temperature being close to 13 ºC. Port Nolloth had low variation in temperature as it had a comparatively short box plot with relatively evenly distributed temperatures. Lamberts Bay and Sea Point were similar in terms of temperature variances, as their box plots were largely overlapping with little differences between them. Several outliers were present within the temperatures of these sites.
 
 In the cluster comprising of Kalk Bay, Muizenberg, and Gordons Bay the temperatures of these sites ranged from 8 ºC to 24 ºC, with most box plots being short. Muizenberg had the widest range of temperature variation of the three sites. Gordons Bay and Kalk Bay had identical temperature ranges. Similarly to the second cluster, despite the apparent differences in temperature ranges between these sites, the average temperatures across them were relatively similar and nearly identical.
-****Still need to add in some things on the distances between sites***
 
 ```{r}
 (SACTN_clust_1_plot2 <- clust_plot2(df = SACTN_clust_1_matched))
