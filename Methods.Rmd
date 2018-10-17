@@ -1176,7 +1176,7 @@ Creating a visualisation of the insitu collected temperature data and the AVHRR 
 ```{r}
 insitu_plot <- ggplot(insitu_AVHRR, aes(x = date, y = temp.x)) +
   geom_line() +
-  facet_wrap(~year, scales = "free_x", ncol = 2) +
+  facet_wrap(~site, scales = "free_x", ncol = 2) +
   labs(x = "Year", y = "Null") +
   theme_bw() +
   theme(panel.grid.minor = element_blank(),
@@ -1373,16 +1373,16 @@ MUR_15[, 23:25] <- log(MUR_15[23:25], 2)
 Scatter plot for the MUR data
 
 ```{r}
-MUR_spw_circ <- plot_compare_spw(df = MUR_7)
-MUR_hs_circ <- plot_compare_hs(df = MUR_7)
-MUR_tp_circ <- plot_compare_tp(df = MUR_7)
-MUR_dir_circ <- plot_compare_dir(df = MUR_7)
-MUR_dirw_circ <- plot_compare_dirw(df = MUR_7)
-MUR_spw_circ_15 <- plot_compare_spw(df = MUR_15)
-MUR_hs_circ_15 <- plot_compare_hs(df = MUR_15)
-MUR_tp_circ_15 <- plot_compare_tp(df = MUR_15)
-MUR_dir_circ_15 <- plot_compare_dir(df = MUR_15)
-MUR_dirw_circ_15 <- plot_compare_dirw(df = MUR_15)
+# MUR_spw_circ <- plot_compare_spw(df = MUR_7)
+# MUR_hs_circ <- plot_compare_hs(df = MUR_7)
+# MUR_tp_circ <- plot_compare_tp(df = MUR_7)
+# MUR_dir_circ <- plot_compare_dir(df = MUR_7)
+# MUR_dirw_circ <- plot_compare_dirw(df = MUR_7)
+# MUR_spw_circ_15 <- plot_compare_spw(df = MUR_15)
+# MUR_hs_circ_15 <- plot_compare_hs(df = MUR_15)
+# MUR_tp_circ_15 <- plot_compare_tp(df = MUR_15)
+# MUR_dir_circ_15 <- plot_compare_dir(df = MUR_15)
+# MUR_dirw_circ_15 <- plot_compare_dirw(df = MUR_15)
 ```
 
 Calculate the R2 value
@@ -1503,16 +1503,16 @@ CMC_15[, 28:30] <- log(CMC_15[28:30], 2)
 Scatter plot for the CMC data
 
 ```{r}
-CMC_spw_circ <- plot_compare_spw(df = CMC_7)
-CMC_hs_circ <- plot_compare_hs(df = CMC_7)
-CMC_tp_circ <- plot_compare_tp(df = CMC_7)
-CMC_dir_circ <- plot_compare_dir(df = CMC_7)
-CMC_dirw_circ <- plot_compare_dirw(df = CMC_7)
-CMC_spw_circ_15 <- plot_compare_spw(df = CMC_15)
-CMC_hs_circ_15 <- plot_compare_hs(df = CMC_15)
-CMC_tp_circ_15 <- plot_compare_tp(df = CMC_15)
-CMC_dir_circ_15 <- plot_compare_dir(df = CMC_15)
-CMC_dirw_circ_15 <- plot_compare_dirw(df = CMC_15)
+# CMC_spw_circ <- plot_compare_spw(df = CMC_7)
+# CMC_hs_circ <- plot_compare_hs(df = CMC_7)
+# CMC_tp_circ <- plot_compare_tp(df = CMC_7)
+# CMC_dir_circ <- plot_compare_dir(df = CMC_7)
+# CMC_dirw_circ <- plot_compare_dirw(df = CMC_7)
+# CMC_spw_circ_15 <- plot_compare_spw(df = CMC_15)
+# CMC_hs_circ_15 <- plot_compare_hs(df = CMC_15)
+# CMC_tp_circ_15 <- plot_compare_tp(df = CMC_15)
+# CMC_dir_circ_15 <- plot_compare_dir(df = CMC_15)
+# CMC_dirw_circ_15 <- plot_compare_dirw(df = CMC_15)
 ```
 
 Calculate the R2 value
@@ -1631,16 +1631,16 @@ K10_15[, 23:25] <- log(K10_15[23:25], 2)
 Scatter plot for the K10 data
 
 ```{r}
-K10_spw_circ <- plot_compare_spw(df = K10_7)
-K10_hs_circ <- plot_compare_hs(df = K10_7)
-K10_tp_circ <- plot_compare_tp(df = K10_7)
-K10_dir_circ <- plot_compare_dir(df = K10_7)
-K10_dirw_circ <- plot_compare_dirw(df = K10_7)
-K10_spw_circ_15 <- plot_compare_spw(df = CMC_15)
-K10_hs_circ_15 <- plot_compare_hs(df = K10_15)
-K10_tp_circ_15 <- plot_compare_tp(df = K10_15)
-K10_dir_circ_15 <- plot_compare_dir(df = K10_15)
-K10_dirw_circ_15 <- plot_compare_dirw(df = K10_15)
+# K10_spw_circ <- plot_compare_spw(df = K10_7)
+# K10_hs_circ <- plot_compare_hs(df = K10_7)
+# K10_tp_circ <- plot_compare_tp(df = K10_7)
+# K10_dir_circ <- plot_compare_dir(df = K10_7)
+# K10_dirw_circ <- plot_compare_dirw(df = K10_7)
+# K10_spw_circ_15 <- plot_compare_spw(df = CMC_15)
+# K10_hs_circ_15 <- plot_compare_hs(df = K10_15)
+# K10_tp_circ_15 <- plot_compare_tp(df = K10_15)
+# K10_dir_circ_15 <- plot_compare_dir(df = K10_15)
+# K10_dirw_circ_15 <- plot_compare_dirw(df = K10_15)
 ```
 
 Calculate the R2 value

@@ -37,7 +37,7 @@ fontsize: 12pt
 
 The South African coastline is comprised of distinct coastal regions, each varying in temperature. Seawater temperature is an important driver affecting marine biodiversity, and so understanding the factors affecting the variations of this is important. Here, I analysed temperature time series data for 18 different sites distributed along the South African coastline. These data were collected using underwater temperature recorders (UTRs), alcohol thermometers, and satellites, with the precision of the instruments varying from between 0.5 ºC to 0.001ºC. Using the minimum, maximum and mean temperatures I systematically grouped sites together in their distinct coastal regions and compared temperatures between regions. I further assessed the effects of wind and wave exposure on the variations of temperatures using coefficient of determination analyses. My results showed that wind and wave action per site were not significantly affecting temperature, achieving low adjusted R2 values, indicating that wave and wind action were not the predominant factors influencing coastal seawater temperature. Large scale oceanic processes such as coastal upwelling and the presence of major ocean currents, as well as anthropogenically induced factors were more likely to be the main drivers affecting temperature. This suggests that human interreference may be indirectly influencing marine biodiversity via affecting ocean temperatures, and this insight could prove useful in aiding in conservation.
 
-Keywords: Seawater temperature, climate change, coastal regions, code: R, variability
+*Keywords*: Seawater temperature, climate change, coastal regions, code: R, variability
 
 \newpage
 ## Acknowledgments
@@ -284,7 +284,9 @@ Here I have shown that wind and wave action are not directly affecting seawater 
 ## References
 
 Pearce, A., Faskel, F., & Hyndes, G. (2006). Nearshore sea temperature variability off Rottnest Island (Western Australia) derived from satellite data. International Journal of Remote Sensing, 27(12), 2503-2518.
+
 Reason, C. J. C., & Mulenga, H. (1999). Relationships between South African rainfall and SST anomalies in the southwest Indian Ocean. International Journal of Climatology: A Journal of the Royal Meteorological Society, 19(15), 1651-1673.
+
 Walker, N. D. (1990). Links between South African summer rainfall and temperature variability of the Agulhas and Benguela Current systems. Journal of Geophysical Research: Oceans, 95(C3), 3297-3319.
 
 
