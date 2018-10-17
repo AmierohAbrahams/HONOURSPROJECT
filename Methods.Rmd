@@ -595,12 +595,12 @@ clust_plot2 <- function(df){
 (SACTN_clust_5_plot2 <- clust_plot2(df = SACTN_clust_5_matched))
 (SACTN_clust_6_plot2 <- clust_plot2(df = SACTN_clust_6_matched))
 
-# plot2_final <- ggarrange(SACTN_clust_1_plot2,SACTN_clust_2_plot2,SACTN_clust_3_plot2)
-# plot2_final
-# plo2_final_B <- ggarrange(SACTN_clust_4_plot2, SACTN_clust_5_plot2, SACTN_clust_6_plot2)
-# plo2_final_B
-
-# ggsave(plot = plot2_final, filename = "figures/plot2_final.pdf")
+ggsave(plot = SACTN_clust_1_plot2, filename = "figures/SACTN_clust_1_plot2.pdf")
+ggsave(plot = SACTN_clust_2_plot2, filename = "figures/SACTN_clust_2_plot2.pdf")
+ggsave(plot = SACTN_clust_3_plot2, filename = "figures/SACTN_clust_3_plot2.pdf")
+ggsave(plot = SACTN_clust_4_plot2, filename = "figures/SACTN_clust_4_plot2.pdf")
+ggsave(plot = SACTN_clust_5_plot2, filename = "figures/SACTN_clust_5_plot2.pdf")
+ggsave(plot = SACTN_clust_6_plot2, filename = "figures/SACTN_clust_6_plot2.pdf")
 ```
 
 ### Monthly comparisons

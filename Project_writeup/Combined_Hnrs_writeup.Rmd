@@ -157,34 +157,21 @@ In the cluster containing Lamberts Bay, Port Nolloth and Sea Point, large differ
 In the cluster comprising of Kalk Bay, Gordons Bay and Muizenberg, the largest differences in average temperatures were observed during mid autumn and winter months. In this cluster large differences in average temperatures were seen between Muizenberg and the remaining sites, with the differences increasing annually throughout 1972 and 2016 during winter. Similarly, differences of average temperatures also increased between Kalk Bay and Muizenberg during these same months. In the summer and spring months little differences in average temperatures between sites, with minimal differences in the rates of these changes. These rates increased during spring.
 
 ```{r,  echo= FALSE, message=FALSE, warning=FALSE, fig.cap="Figure 4: Line graph representing the variation in average seawater temperature for each of the month and year for paired sites along the South African coastline.", fig.height=8, fig.width=12, fig.pos="H"}
-(SACTN_clust_1_plot2 <- clust_plot2(df = SACTN_clust_1_matched))
-(SACTN_clust_2_plot2 <- clust_plot2(df = SACTN_clust_2_matched))
-(SACTN_clust_3_plot2 <- clust_plot2(df = SACTN_clust_3_matched))
-(SACTN_clust_4_plot2 <- clust_plot2(df = SACTN_clust_4_matched))
-(SACTN_clust_5_plot2 <- clust_plot2(df = SACTN_clust_5_matched))
-(SACTN_clust_6_plot2 <- clust_plot2(df = SACTN_clust_6_matched))
+
+
+
+knitr::include_graphics("figures/SACTN_clust_1_plot2.pdf")
+knitr::include_graphics("figures/SACTN_clust_2_plot2.pdf")
+knitr::include_graphics("figures/SACTN_clust_3_plot2.pdf")
+knitr::include_graphics("figures/SACTN_clust_4_plot2.pdf")
+knitr::include_graphics("figures/SACTN_clust_5_plot2.pdf")
+knitr::include_graphics("figures/SACTN_clust_6_plot2.pdf")
+
 ```
 
 ### Average temperature of clustered sites
 
 In the first cluster of sites, via the results of a one way ANOVA tests it was found that there was a significant differences in average temperatures between paired sites (F2 = 12.07, SS = 15.28, P < 0.001). These differences were present across season (F6 = 3.44, SS = 13.07, P < 0.002) but were not present yearly between individuals and paired sites (F2 = 1.38, SS = 1.75, P = 0.25). Similarly, paired sites within the second cluster also a significantly differed in average temperature (F2 = 166.84, SS = 418.6, P < 0.001). Conversely to first cluster however these differences were present yearly (F1 = 33.21, SS = 41.7, P < 0.001) and seasonally (F6 = 16.72, SS = 125.9, P < 0.02,) between individual and paired sites. In the third cluster of sites, ANOVA tests revealed that there were no significant differences in average temperatures between paired sites (F2 = 1.17, SS = 2.9, P = 0.31), but temperatures varied seasonally and yearly between individual sites (. In the fourth cluster there were again no significant difference of average temperatures between paired sites (F2 = 0.73, SS = 2.9, P = 0.48). Differences were also absent across seasons (F3 = 0.75, SS = 0.0042, P = 0.52) and years (F1 = 0.495, SS = 0.0009, P = 0.48) between both individual and paired sites. Sites within the fifth cluster were significantly different in average temperatures between paired sites (F2 = 77.10, SS = 196.7, P < 0.002), with these differences being present yearly (F1 = 172.80, SS = 220.4, P < 0.001) and seasonally (F3 = 77.10, SS = 29.92, P < 0.002) for both paired and individual sites. Finally, sites within the sixth cluster also significantly difference in average temperatures between paired sites, yearly and seasonally (F2 = 132.044, SS = 419.7, P <0.01).
-
-## Anova test
-
-```{r, echo= FALSE, message=FALSE, warning=FALSE, include = FALSE}
-anova_clus_1_func1 <- anova_func(df = SACTN_clust_1_matched)
-summary(anova_clus_1_func1)
-anova_clus_2_func1 <- anova_func(df = SACTN_clust_2_matched)
-summary(anova_clus_2_func1)
-anova_clus_3_func1 <- anova_func(df = SACTN_clust_3_matched)
-summary(anova_clus_3_func1)
-anova_clus_4_func1 <- anova_func(df = SACTN_clust_4_matched)
-summary(anova_clus_4_func1)
-anova_clus_5_func1 <- anova_func(df = SACTN_clust_5_matched)
-summary(anova_clus_5_func1)
-anova_clus_6_func1 <- anova_func(df = SACTN_clust_6_matched)
-summary(anova_clus_6_func1)
-```
 
 ## The coefficient of determination which represents the influence of each of the wave variables on the insitu collected temperature data 
 
