@@ -3,9 +3,28 @@ title: "Complete"
 author: "Amieroh Abrahams"
 date: "11 August 2018"
 output:
-  bookdown::pdf_book:
+  word_document:
     toc: yes
+  html_document:
     fig_caption: yes
+    fig_height: 5
+    fig_width: 5
+    highlight: default
+    number_sections: yes
+    theme: paper
+    toc: yes
+    toc_float: yes
+  pdf_document:
+    fig_caption: yes
+    fig_height: 6
+    fig_width: 6
+    highlight: zenburn
+    latex_engine: xelatex
+mainfont: PT Serif
+monofont: PT Mono
+language: Australian
+sansfont: PT Sans
+fontsize: 12pt
 ---
 \newpage
 ## Plagiarism Declaration
@@ -13,9 +32,12 @@ output:
 \newpage
 ## Declaration
 
-
 \newpage
 ## Abstract
+
+The South African coastline is comprised of distinct coastal regions, each varying in temperature. Seawater temperature is an important driver affecting marine biodiversity, and so understanding the factors affecting the variations of this is important. Here, I analysed temperature time series data for 18 different sites distributed along the South African coastline. These data were collected using underwater temperature recorders (UTRs), alcohol thermometers, and satellites, with the precision of the instruments varying from between 0.5 ºC to 0.001ºC. Using the minimum, maximum and mean temperatures I systematically grouped sites together in their distinct coastal regions and compared temperatures between regions. I further assessed the effects of wind and wave exposure on the variations of temperatures using coefficient of determination analyses. My results showed that wind and wave action per site were not significantly affecting temperature, achieving low adjusted R2 values, indicating that wave and wind action were not the predominant factors influencing coastal seawater temperature. Large scale oceanic processes such as coastal upwelling and the presence of major ocean currents, as well as anthropogenically induced factors were more likely to be the main drivers affecting temperature. This suggests that human interreference may be indirectly influencing marine biodiversity via affecting ocean temperatures, and this insight could prove useful in aiding in conservation.
+
+Keywords: Seawater temperature, climate change, coastal regions, code: R, variability
 
 \newpage
 ## Acknowledgments
@@ -27,9 +49,9 @@ Special thanks go to my supervisor, AJ Smit, for the continuous motivation and g
 
 Temperature is the main determinant of biogeographical patterns and ecosystem processes, having observable effects on an organism’s survival and reproductive patterns (Smit et al. 2013; Pearce et al. 2006; Smale and Wernberg, 2009). The temperatures of seawater are a key indicator of environmental changes in marine ecosystems (Pearce et al. 2006). Despite the controlling effects that temperature plays on the growth, survival, and distribution of marine organisms, little is known regarding temperatures within coastal zones. Within coastal zones, seawater temperature varies as it is affected by a range of nearshore processes such as wave action, winds, tides, and turbidity. Additionally, the thermal properties of the substratum may also affect temperature variation (Smale and Wernberg 2009), allowing for a large range in variation at a localized scale. Given the significance of the impacts of temperature, it is imperative to understand how marine organisms may respond to temperature variation at coastal regions on both a global and local scale.
 
-The coastal region of South Africa, spanning approximately 3113 km in length (Smit et al. 2013), has not yet been studied in great detail at highly localized scales. Upon looking on a broad scale, this region exhibits a large variation in seawater temperatures across its coastline (Mead et al. 2013; Smit et al. 2013) and is divided into three distinct coastal regions, each with contrasting temperatures. These include the cold temperate west coast, warm temperate south coast, and the subtropical east coast. These regions display noticeable differences in seawater temperatures in comparison to each other, primarily due to the influences of the neighbouring ocean currents (Bolton et al. 2004; Mead et al. 2013; Schlegel and Smit 2016).
+The coastal region of South Africa, spanning approximately 3113 km in length (Smit et al. 2013), has not yet been studied in great detail at highly localized scales. Upon looking on a broad scale, this region exhibits a large variation in seawater temperatures across its coastline (Mead et al. 2013; Smit et al. 2013) and is divided into three distinct coastal regions, each with contrasting temperatures. These include the cold temperate west coast, warm temperate south coast, and the subtropical east coast. These regions display noticeable differences in seawater temperatures in comparison to each other, primarily due to the influences of the neighbouring ocean currents (Bolton et al. 2004; Mead et al. 2013; Schlegel and Smit 2016). Existing temperature gradients are also associated with a difference in ecosystem physiology, species distribution and habitat structure (Smale and Wernberg, 2009 ; Wernberg et al 2011; Wernberg et al 2010). As a result of the diverse habitats along the coastline, species diversity is not uniformly distributed. The east and south coast has much higher diversity compared to the west coast (Mead et al 2013)
 
-The South African coastline is bordered by the Benguela and Agulhas Currents on the west and east coasts respectively. The Benguela Current assists in transporting cold water northwards from the Southern Ocean (Hutchings et al. 2009; Schlegel et al. 2017), whereas the Agulhas, western boundary current, transports sub-tropical, warm water towards the tip of Africa (Smit et al. 2017). Together these two currents are responsible for the presence of a strong West-East thermal gradient occurring along the coastline of South Africa, with the west coast having significantly colder waters than the east coast. (Smit et al. 2013). The south coast is unique as it affected by both the Benguela and Agulhas currents. In this way, the south coast region differs from the other two coastal regions as it experiences greater variations within its localized thermal gradient due to the influences of two contrasting ocean currents (Lutjeharms and Ballegooyen 1988). These currents can vary up to as much as 10°C (Schlegel et al 2017) within a 24-hour period thus creating fluctuations in seawater temperatures around the Western Cape region. The Agulhas Current is driven by a wind stress curl between the southeast trade winds and the Southern Hemisphere westerlies (Beal et al. 2011). The Agulhas current retroreflects after making contact with the Benguela current and may often interact with the South Atlantic ( Hutchings et al., 2009), resulting in warm Indian Ocean water moving into the Atlantic at depths exceeding 2000m (Beal et al., 2011; Schlegel et al. 2017). These currents strongly affect the seawater temperatures around South Africa, and recent studies have shown that the temperatures have been changing. 
+The South African coastline is bordered by the Benguela and Agulhas Currents on the west and east coasts respectively. The Benguela Current assists in transporting cold water northwards from the Southern Ocean (Hutchings et al. 2009; Schlegel et al. 2017), whereas the Agulhas, western boundary current, transports sub-tropical, warm water towards the tip of Africa (Smit et al. 2017). Together these two currents are responsible for the presence of a strong West-East thermal gradient occurring along the coastline of South Africa, with the west coast having significantly colder waters than the east coast. (Smit et al. 2013; Mead et al 2013). The south coast is unique as it affected by both the Benguela and Agulhas currents. In this way, the south coast region differs from the other two coastal regions as it experiences greater variations within its localized thermal gradient due to the influences of two contrasting ocean currents (Lutjeharms and Ballegooyen 1988). These currents can vary up to as much as 10°C (Schlegel et al 2017) within a 24-hour period thus creating fluctuations in seawater temperatures around the Western Cape region. The Agulhas Current is driven by a wind stress curl between the southeast trade winds and the Southern Hemisphere westerlies (Beal et al. 2011). The Agulhas current retroreflects after making contact with the Benguela current and may often interact with the South Atlantic ( Hutchings et al., 2009), resulting in warm Indian Ocean water moving into the Atlantic at depths exceeding 2000m (Beal et al., 2011; Schlegel et al. 2017). These currents strongly affect the seawater temperatures around South Africa, and recent studies have shown that the temperatures have been changing. 
 
 The statistical properties such as the mean, minimum, and maximum temperatures of *in situ* coastal seawater temperature time series representing the entire South African coastline, shows distinct coastal variations as a result of the Agulhas and Benguela currents (Schlegel and Smit 2016). Due to the small range of ambient temperatures experienced on the West coast, fluctuations are able to occur over a short period of time. Research has found that the seawater temperatures of the Benguela Current has been decreasing at a rate of approximately 0.5 °C per decade whilst the Agulhas Current has been increasing by between 0.55 °C - 0.7 °C per decade (Rouault et al. 2009; 2010). Overall, sea surface temperatures (SST) around South Africa have increased by approximately 0.25 °C between 1903 and 2013 (DEA, 2013) and are still increasing at a rate of 0.12 °C per decade (Schlegel and Smit, pers. comm.). The exact causes of these changes are not fully understood, however human activities are known to influence on coastal seawater temperature (Rouault et al. 2009; 2010).
 
@@ -41,9 +63,7 @@ Satellite-derived temperature measurements often differ from *in situ* measureme
 
 Developments of *in situ* collected coastal temperature data products over the last three decades provide a more reliable source of accurate coastal seawater temperature data (Smit et al. 2013). The South African Coastal Temperature Network (SACTN) has collected SST data for the South African coastline from as early as 1972, with contributions from various organisations and governmental departments. This data was obtained via a combination of different instruments and methods, including hand held alcohol thermometers and underwater temperature recorders, and as a result of this inconsistency, the coastal seawater temperature data has been recorded at differing levels of precision (0.5°C and 0.001°C respectively) but are likely more reliable than satellite derived data.
 
-It is important to understand the characteristics of the data sources which aid in yielding accurate and reliable measurements when comparing temperature variation along the coast. This led to the examination of the 129 *in situ* collected sites which makes up the SACTN dataset. The length of the time series and statistical characteristics of the dataset were used to guide a series of analysis. The length of the time series for each of the sites were adjusted systematically hence forming the core of the analysis. The variation of each of the time series differ as expected, by the Agulhas and Benguela Currents. The purpose of this study was to examine variations in temperature between selected sites along the South African coastline using seawater temperature data to better understand patterns of coastal temperature at a localized scale. Additionally, this study also examined the influence of environmental factors, namely, wave and wind action on coastal seawater temperatures. The aims of this study were to: i) examine whether there is homogeneity between the various sites sampled, ii) examine whether or not wind and wave action may cause a variation in seawater temperatures along the South African coastline and iii) to examine whether or not SST data collected via satellite 
-
-if different SST datasets collected via satellite 
+It is important to understand the characteristics of the data sources which aid in yielding accurate and reliable measurements when comparing temperature variation along the coast. This led to the examination of the 129 *in situ* collected sites which makes up the SACTN dataset. The length of the time series and statistical characteristics of the dataset were used to guide a series of analysis. The length of the time series for each of the sites were adjusted systematically hence forming the core of the analysis. The variation of each of the time series differ as expected, by the Agulhas and Benguela Currents. The purpose of this study was to examine variations in temperature between selected sites along the South African coastline using seawater temperature data to better understand patterns of coastal temperature at a localized scale. Additionally, this study also examined the influence of environmental factors, namely, wave and wind action on coastal seawater temperatures. The aims of this study were to: i) examine whether there is homogeneity between the various sites sampled, ii) examine whether or not wind and wave action may cause a variation in seawater temperatures along the South African coastline and iii) to examine whether or not SST data collected via satellite may be affected by wind and wave action.
 
 \newpage
 # Methods
@@ -68,168 +88,24 @@ Data collection protocols varied amongst the seven sources contributing to the S
 
 ## Satellite derived SST data
 
-This study made use of four satellite derived SST datasets in comparison with the SACTN *in situ* derived coastal seawater temperature dataset. The AVHRR- Only Optimum Interpolated Sea Surface Temperature (OISST) was used to determine SST within the study region. The AVHRR datasets have provided global SST’s for more than three decades (Reynolds and Smith, 1994; Pearce et al 2006). OISST is a global 1/4 ◦ gridded daily SST product that assimilates both remotely sensed and *in situ* sources of data to create a level-4 gap free product (Banzon et al., 2016; Schlegel et al., 2017). The Multi-scale Ultra-high Resolution (MUR) Sea Surface Temperature Analysis, the second dataset, has been observed using satellite instruments with datasets spanning from 1st June 2002 to present times. MUR provides SST data at a spatial resolution of 0.01 degrees in longitude-latitude coordinates, at 1 km intervals; and is currently among the highest resolution SST available. The third dataset, a Group for High Resolution Sea Surface Temperature (GHRSST) Level 4 sea surface temperature analysis, known as the K10 dataset, is produced at the Naval Oceanographic Office (NAVOCEANO) on a 0.1 degree grid, globally. This analysis makes use of SST observations from the AVHRR, the Geostationary Operational Environmental Satellite (GOES) Imager and the Advanced Microwave Scanning Radiometer for EOS (AMSR-E). The CMC dataset constitutes the forth dataset and is a version 3.0 Group for High Resolution Sea Surface Temperature (GHRSST) Level 4 dataset with a 0.1 degree spatial resolution constructed by the Canadian Meteorological Center (CMC). This young dataset is available from the 1st January 2016. The CMC dataset combined infrared satellite SST at numerous points in the time series from the AVHRR, the European Meteorological Operational-A (METOP-A) and Operational-B (METOP-B) platforms, and microwave SST data from the Advanced Microwave Scanning Radiometer 2 in conjunction with *in situ* observations of SST from ships and buoys from the ICOADS program. For the statistical interpolation used to assimilate the satellite and *in situ* observations, the CMC incorporated the previous days’ analysis as the background field.
+This study made use of four satellite derived SST datasets in comparison with the SACTN *in situ* derived coastal seawater temperature dataset. The AVHRR- Only Optimum Interpolated Sea Surface Temperature (OISST) was used to determine SST within the study region. The AVHRR datasets have provided global SST’s for more than three decades (Reynolds and Smith, 1994; Pearce et al 2006). OISST is a global 1/4 ◦ gridded daily SST product that assimilates both remotely sensed and *in situ* sources of data to create a level-4 gap free product (Banzon et al., 2016; Schlegel et al., 2017). The Multi-scale Ultra-high Resolution (MUR) Sea Surface Temperature Analysis, the second dataset, has been observed using satellite instruments with datasets spanning from 1st June 2002 to present times. MUR provides SST data at a spatial resolution of 0.01 degrees in longitude-latitude coordinates, at 1 km intervals; and is currently among the highest resolution SST available. The third dataset, a Group for High Resolution Sea Surface Temperature (GHRSST) Level 4 sea surface temperature analysis, known as the K10 dataset, is produced at the Naval Oceanographic Office (NAVOCEANO) on a 0.1 degree grid, globally. This analysis makes use of SST observations from the AVHRR, the Geostationary Operational Environmental Satellite (GOES) Imager and the Advanced Microwave Scanning Radiometer for EOS (AMSR-E). The CMC dataset constitutes the forth dataset and is a version 3.0 Group for High Resolution Sea Surface Temperature (GHRSST) Level 4 dataset with a 0.1 degree spatial resolution constructed by the Canadian Meteorological Center (CMC). This young dataset is available from the 1st January 2016. The CMC dataset combined infrared satellite SST at numerous points in the time series from the AVHRR, the European Meteorological Operational-A (METOP-A) and Operational-B (METOP-B) platforms, and microwave SST data from the Advanced Microwave Scanning Radiometer 2 in conjunction with *in situ* observations of SST from ships and buoys from the ICOADS program. For the statistical interpolation used to assimilate the satellite and *in situ* observations, the CMC incorporated the previous days’ analysis as the background field. The SST data used in this study were downloaded at a daily resolution within the latitude/longitude of the study region (Figure 1).
 
 ## Site selection
 
 In order to compare temperatures along the South African coastline at a localized scale, appropriate sites from each of the major coastal regions needed to be selected. Since temperature data was not evenly recorded for each of the 129 sites representing South Africa’s coastline, the first step was to narrow down available sites that could be adequately compared. To do this a clustering analysis was perfomed using the `kmeans` function in R software with multiple random seeds to identify a number of clustering solutions that grouped sites together based on their available temperature data. The mean, minimum, and maximum temperature values were used within the clustering to group sites with similar temperatures along each coastal region. The clustering analysis represented the most accurate and distinct site groupings based on temperature distributions and yielded distinct east, south, and west coast groupings. Six clustering solutions along the South African coastline were also shown (Figure 1). With the data now divided into six distinct coastal regions, a time series was selected of at least one decade of data for each of the sites, excluding those with temperature data collected deeper than five meters. The length, decadal trend and precision of the time series were adjusted in a systematic manner to allow for meaningful comparisons to be made.
  
-```{r}
-## Libraries
-library(tidyverse)
-library(viridis)
-library(gridExtra)
+```{r , echo= FALSE, message=FALSE, warning=FALSE, fig.cap=" Figure 1: A map of the study area representing the 129 sites where *in situ* coastal seawater temperature was collected. These sites were grouped based on similar mean, minimum and maximum temperatures and as such each groups represents a unique colour variation.", fig.height=8, fig.width=12, fig.pos="H"}
 
-load("data/southern_africa_coast.Rdata")
-load("data/africa_coast.RData")
-load("data/sa_provinces_new.RData")
-load("data/sa_coast.Rdata")
+knitr::include_graphics("figures/map_fixed.pdf")
 
-clust_i <- function(i) {
-  set.seed(10)
-ggplot(data = southern_africa_coast, aes(x = long, y = lat)) +
-  geom_polygon(aes(group = group), fill = "grey70") +
-    borders() +
-    geom_point(data = site_list,
-         aes(x = lon, y = lat,
-             colour = as.factor(kmeans(clust_columns, i)$cluster))) +
-    labs(colour = "cluster")  +
-    coord_equal(xlim = c(15, 35), ylim = c(-37, -27)) +
-  annotate("text", label = "INDIAN\nOCEAN", x = 32.00, y = -34.0, size = 3.0, angle = 0, colour = "black") +
-  annotate("text", label = "ATLANTIC\nOCEAN", x = 16.00, y = -34.0, size = 3.0, angle = 0, colour = "black") +
-  geom_segment(aes(x = 17.2, y = -32.6, xend = 15.2, yend = -29.5),
-                arrow = arrow(length = unit(0.3, "cm")), size = 0.1, colour = "black") +
-    annotate("text", label = "Benguela", x = 16.0, y = -31.8, size = 3.5, angle = 298, colour = "black") +
-    geom_segment(aes(x = 33, y = -29.5, xend = 29.8, yend = -33.0),
-                arrow = arrow(length = unit(0.3, "cm")), size = 0.1, colour = "black") +
-    annotate("text", label = "Agulhas", x = 31.7, y = -31.7, size = 3.5, angle = 53, colour = "black") +
-  scale_x_continuous(breaks = seq(15, 35, 5),
-                       labels = scales::unit_format("°E", sep = ""),
-                       position = "bottom") +
-    scale_y_continuous(breaks = seq(-35, -30, 5),
-                       labels = c("35°S", "30°S")) +
-    labs(x = NULL, y = NULL) +
-    coord_cartesian(xlim = c(10.5, 39.5), ylim = c(-39.5, -25.5), expand = F) +
-  scaleBar(lon = 32.0, lat = -38.7, distanceLon = 200, distanceLat = 50, 
-           distanceLegend = 90, dist.unit = "km", arrow.length = 100,
-           arrow.distance = 130, arrow.North.size = 3) +
-  theme_bw() +
-    theme(panel.border = element_rect(fill = NA, colour = "black", size = 1),
-          axis.text = element_text(colour = "black"),
-          axis.ticks = element_line(colour = "black"))
-}
-
-clust_6 <- clust_i(6)
-clust_6
-
-africa_map <- ggplot(africa_coast, aes(x = lon, y = lat)) + 
-  theme_bw() + 
-  coord_equal() + 
-  geom_polygon(aes(group = group), colour = "black", fill = "grey80") + 
-  geom_polygon(data = sa_provinces_new, (aes(group = group))) +
-  annotate("text", label = "Africa", x = 16.0, y = 15.0, size = 3) + 
-  theme(panel.border = element_rect(colour = "black", size = 0.4), 
-        plot.background = element_blank(), 
-        axis.ticks = element_blank(), 
-        axis.text = element_blank(), 
-        axis.title = element_blank(), 
-        panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank()) +
-  coord_map(xlim = c(-20, 53), ylim = c(-36, 38), projection = "mercator") 
-africa_map
-
-# png(file="mrdq.png",w=1800,h=1800, res=300)
-# grid.newpage()
-# v1<-viewport(width = 1, height = 1, x = 0.5, y = 0.5) #plot area for the main map
-# v2<-viewport(width = 0.3, height = 0.3, x = 0.86, y = 0.28) #plot area for the inset map
-# print(clust_6,vp=v1) 
-# print(africa_map,vp=v2)
-# dev.off()
-
-# More mapping - http://r-nold.blogspot.com/2014/06/creating-inset-map-with-ggplot2.html
-
-pdf("figures/map_complete.pdf", width = 8, height = 5, pointsize = 6) # Set PDF dimensions
-vp1 <- viewport(x = -0.00, y = 0.05, w = 0.25, h = 0.25, just = c("left", "bottom")) # Africa
-vp2 <- viewport(x = 1.0, y = 1.0, w = 1.00, h = 1.00, just = c("right", "top"))  # South Africa
-print(clust_6, vp = vp2)
-print(africa_map, vp = vp1)
-dev.off()
 ```
 
-Once sites were grouped together, the next step was to reduce the number of sites down to a manageable, but still representative, sub-sample of the whole. This was done primarily for two reasons. The first, simply, was to allow for the comparisons to be more readily interpretable by humans.  Secondly it was to allow for equal amount of sampling per coast. The east coast has previously been more heavily sampled than the rest and such an imbalance should be addressed. The criteria considered for the sub-samples included selecting the longest time series within the  region and including data from as many different organizations as possible. This process yielded three sites for each of the clusters along the South African coastline (Figure 2). The statistical characteristics of the temperature were used to guide analysis of the time series to produce an accurate assessment of temperature variation between sites that were grouped together.
+Once sites were grouped together, the next step was to reduce the number of sites down to a manageable, but still representative, sub-sample of the whole. This was done primarily for two reasons. The first, simply, was to allow for the comparisons to be more readily interpretable by humans.  Secondly it was to allow for equal amount of sampling per coast. The east coast has previously been more heavily sampled than the rest and such an imbalance should be addressed. The criteria considered for the sub-samples included selecting the longest time series within the region and including data from as many different organizations as possible. This process yielded three sites for each of the clusters along the South African coastline (Figure 2). The statistical characteristics of the temperature were used to guide analysis of the time series to produce an accurate assessment of temperature variation between sites that were grouped together.
 
-```{r load_files3, include=TRUE}
-load("Mapping/sa_provinces.RData")
-load("Mapping/south_africa_coast.RData")
-```
+```{r run_fun2, echo= FALSE, message=FALSE, warning=FALSE, fig.cap="Figure 2: A map representing the three sites chosen within each of the six cluster along the South African coastline.", fig.height=8, fig.width=12, fig.pos="H"}
 
-```{r define_fun2, include=TRUE}
-site_coordinates1 <- filter(site_list_sub, cluster == 1) %>% 
-  select(site, lon, lat)
+knitr::include_graphics("figures/final_combined_plot.pdf")
 
-site_coordinates2 <- filter(site_list_sub, cluster == 2) %>% 
-  select(site, lon, lat)
-
-site_coordinates3 <- filter(site_list_sub, cluster == 3) %>% 
-   select(site, lon, lat)
-
-site_coordinates4 <- filter(site_list_sub, cluster == 4) %>% 
-  select(site, lon, lat)
-
-site_coordinates5 <- filter(site_list_sub, cluster == 5) %>% 
-  select(site, lon, lat)
-
-site_coordinates6 <- filter(site_list_sub, cluster == 6) %>% 
-  select(site, lon, lat)
-
-mapping_plot <- function(df, xy = "salmon"){
-  mapping <- df %>% 
-ggplot(aes(x = lon, y = lat)) +
-  geom_polygon(data = south_africa_coast, aes(group = group), fill = "grey70") +
-  coord_cartesian(xlim = c(12, 36), ylim = c(-38, -26)) +
-  geom_path(data = sa_provinces, aes(group = group)) +
-  geom_point(data = df, colour = xy)  +
-  geom_label_repel(data =df, aes(x = lon, y = lat, label = site), 
-                   size = 3, box.padding = 2, nudge_x = -0.5, nudge_y = 0.2, 
-                   segment.alpha = 0.4, force = 0.1) +
-  coord_equal(xlim = c(15, 35), ylim = c(-37, -27)) +
-  annotate("text", label = "INDIAN\nOCEAN", x = 35.00, y = -34.0, size = 3.0, angle = 0, colour = "black") +
-  annotate("text", label = "ATLANTIC\nOCEAN", x = 12.00, y = -34.0, size = 3.0, angle = 0, colour = "black") +
-  # geom_segment(aes(x = 17.2, y = -32.6, xend = 15.2, yend = -29.5),
-  #               arrow = arrow(length = unit(0.3, "cm")), size = 0.1, colour = "black") +
-  #   annotate("text", label = "Benguela", x = 14.0, y = -31.8, size = 3.5, angle = 298, colour = "black") +
-  #   geom_segment(aes(x = 33, y = -29.5, xend = 29.8, yend = -33.0),
-  #               arrow = arrow(length = unit(0.3, "cm")), size = 0.1, colour = "black") +
-  #   annotate("text", label = "Agulhas", x = 31.7, y = -31.7, size = 3.5, angle = 53, colour = "black") +
-  scale_x_continuous(breaks = seq(15, 35, 5),
-                       labels = scales::unit_format("°E", sep = ""),
-                       position = "bottom") +
-    scale_y_continuous(breaks = seq(-35, -30, 5),
-                       labels = c("35°S", "30°S")) +
-    labs(x = NULL, y = NULL) +
-    coord_cartesian(xlim = c(10.5, 39.5), ylim = c(-39.5, -25.5), expand = F) +
-     scaleBar(lon = 32.0, lat = -38.7, distanceLon = 200, distanceLat = 50, 
-           distanceLegend = 90, dist.unit = "km", arrow.length = 100,
-           arrow.distance = 130, arrow.North.size = 3) +
-  theme_bw() +
-    theme(panel.border = element_rect(fill = NA, colour = "black", size = 1),
-          axis.text = element_text(colour = "black"),
-          axis.ticks = element_line(colour = "black"))
-  return(mapping)
-}
-```
-
-```{r run_fun2, include=TRUE}
-map_clus1 <- mapping_plot(df = site_coordinates1, xy = "salmon")
-map_clus2 <- mapping_plot(df = site_coordinates2, xy = "darkgoldenrod4")
-map_clus3 <- mapping_plot(df = site_coordinates3, xy = "springgreen4")
-map_clus4 <- mapping_plot(df = site_coordinates4, xy= "lightskyblue")
-map_clus5 <- mapping_plot(df = site_coordinates5, xy= "steelblue3") 
-map_clus6 <- mapping_plot(df = site_coordinates6, xy= "mediumorchid1") 
-
-final_map_combined_A <- ggarrange(map_clus1, map_clus2, map_clus3, map_clus4, map_clus5, map_clus6,
-          ncol = 2, nrow = 2)
-final_map_combined_A
 ```
 
 With three sites per cluster, the haversine formula was used to calculate the geodesic distance between points specified by radians. Using this formula, the distances (km) between each of the sites along the coastline were determined. Thereafter, sites within the same cluster were matched based on the date that temperature was collected. This allowed for a comparison to test whether or not temperature variation exists between sites within the same cluster. Once the sites were matched, the means and standard deviations of temperatures between sites and clusters were determined. This highlighted the temperature variation between matched sites and allowed for seasonal comparisons within the same cluster.
@@ -244,18 +120,13 @@ Sea Surface temperature measurements used in this study were obtained from four 
 
 ## Statistical analyses
 
-A series of ANOVA tests were used to compare the main effects of the chosen variables on a continuous variable. In this analysis the relationship between matched sites based on the year and season as a function of the mean temperature were analysed, these analyses were used to test if significant differences occured between each pair of sites within each of the clusters. To compare whether temperature variation exist between sites found within the same clusters along the coast, boxplots were constructed. These plots enabled the visual identification of variations in temperature.
+A series of ANOVA tests were used to compare the main effects of the chosen variables on a continuous variable. In this analysis the relationship between matched sites based on the year and season as a function of the mean temperature were analysed, these analyses were used to test if significant differences occured between each pair of sites within each of the clusters. To compare whether temperature variation exist between sites found within the same clusters along the coast, boxplots were constructed. These plots enabled the visual identification of variations in temperature by summarising the descriptice statistics. To furthur analyse the temperature variation between sites line graphs were constucted. This plot allowed for visual identification of the variation in average temperature for each of the month and year for paired sites.
 
 ## Results
 
-```{r}
-combined_plot <- ggarrange(SACTN_clust_1_plot1, SACTN_clust_2_plot1,
-                           SACTN_clust_3_plot1, SACTN_clust_4_plot1, 
-                           SACTN_clust_5_plot1, SACTN_clust_6_plot1)
-combined_plot
-```
+### Temperature variation
 
-Temperatures were not uniformly distributed across the six clusters produced, with each set of sites having unique patterns of temperature variation. In cluster 1, which included Humburg, Eastern Beach and Orient Beach, it was found that temperature varied from approximately 13 ºC to 22 ºC. Within this cluster of sites, Hamburg had the highest maximum temperatures and the lowest minimum temperatures of the three sites. Conversely, Orient Beach had the lowest range of temperature variability, producing a comparatively short box plot. Orient Beach and Eastern Beach had relatively similar ranges and distributions of temperatures, as evident by their box plots nearly overlapping completely.
+Temperatures were not uniformly distributed across the six clusters produced (Figure 3), with each set of sites having unique patterns of temperature variation. In cluster 1, which included Humburg, Eastern Beach and Orient Beach, it was found that temperature varied from approximately 13 ºC to 22 ºC. Within this cluster of sites, Hamburg had the highest maximum temperatures and the lowest minimum temperatures of the three sites. Conversely, Orient Beach had the lowest range of temperature variability, producing a comparatively short box plot. Orient Beach and Eastern Beach had relatively similar ranges and distributions of temperatures, as evident by their box plots nearly overlapping completely.
 
 Within the cluster comprised of Mossel Bay, Stilbaai, and Knysna, temperatures ranged from approximately 12 ºC to 27 ºC, with most box plots being relatively long. Stilbaai had the widest range of temperature variation among the three sites but despite the apparent differences in temperature ranges between these sites, the average temperatures were relatively similar. Average temperatures were nearly completely identical within this cluster, with very few outliers present within the temperatures ranges of these sites.
 
@@ -267,13 +138,10 @@ Sites within the fifth cluster had overall lower temperatures than those within 
 
 In the cluster comprising of Kalk Bay, Muizenberg, and Gordons Bay the temperatures of these sites ranged from 8 ºC to 24 ºC, with most box plots being short. Muizenberg had the widest range of temperature variation of the three sites. Gordons Bay and Kalk Bay had identical temperature ranges. Similarly to the second cluster, despite the apparent differences in temperature ranges between these sites, the average temperatures across them were relatively similar and nearly identical.
 
-```{r}
-(SACTN_clust_1_plot2 <- clust_plot2(df = SACTN_clust_1_matched))
-(SACTN_clust_2_plot2 <- clust_plot2(df = SACTN_clust_2_matched))
-(SACTN_clust_3_plot2 <- clust_plot2(df = SACTN_clust_3_matched))
-(SACTN_clust_4_plot2 <- clust_plot2(df = SACTN_clust_4_matched))
-(SACTN_clust_5_plot2 <- clust_plot2(df = SACTN_clust_5_matched))
-(SACTN_clust_6_plot2 <- clust_plot2(df = SACTN_clust_6_matched))
+```{r , echo= FALSE, message=FALSE, warning=FALSE, fig.cap="Figure 3: Boxplots representing the difference in seawater temperature of paired sites within each cluster along the South African coast.", fig.height=8, fig.width=12, fig.pos="H"}
+
+knitr::include_graphics("figures/combined_plot.pdf")
+
 ```
 
 On a monthly basis, the differences of average temperatures between sites within cluster 1, Eastern Beach, Orient Beach and Humburg,a large average temperature variation between Hamburg and Eastern Beach were seen during the summer and spring months of 1995 to 1997. For the remaining sites however, differences in average temperatures were low during Autumn. It was also evident that the average temperature between Hamburg and Orient Beach varied largely on an apparent seasonal basis. Slight average temperature variation existed between Eastern Beach and Orient Beach throughout the different seasons.
@@ -288,15 +156,22 @@ In the cluster containing Lamberts Bay, Port Nolloth and Sea Point, large differ
 
 In the cluster comprising of Kalk Bay, Gordons Bay and Muizenberg, the largest differences in average temperatures were observed during mid autumn and winter months. In this cluster large differences in average temperatures were seen between Muizenberg and the remaining sites, with the differences increasing annually throughout 1972 and 2016 during winter. Similarly, differences of average temperatures also increased between Kalk Bay and Muizenberg during these same months. In the summer and spring months little differences in average temperatures between sites, with minimal differences in the rates of these changes. These rates increased during spring.
 
+```{r,  echo= FALSE, message=FALSE, warning=FALSE, fig.cap="Figure 4: Line graph representing the variation in average seawater temperature for each of the month and year for paired sites along the South African coastline.", fig.height=8, fig.width=12, fig.pos="H"}
+(SACTN_clust_1_plot2 <- clust_plot2(df = SACTN_clust_1_matched))
+(SACTN_clust_2_plot2 <- clust_plot2(df = SACTN_clust_2_matched))
+(SACTN_clust_3_plot2 <- clust_plot2(df = SACTN_clust_3_matched))
+(SACTN_clust_4_plot2 <- clust_plot2(df = SACTN_clust_4_matched))
+(SACTN_clust_5_plot2 <- clust_plot2(df = SACTN_clust_5_matched))
+(SACTN_clust_6_plot2 <- clust_plot2(df = SACTN_clust_6_matched))
+```
+
+### Average temperature of clustered sites
+
+In the first cluster of sites, via the results of a one way ANOVA tests it was found that there was a significant differences in average temperatures between paired sites (F2 = 12.07, SS = 15.28, P < 0.001). These differences were present across season (F6 = 3.44, SS = 13.07, P < 0.002) but were not present yearly between individuals and paired sites (F2 = 1.38, SS = 1.75, P = 0.25). Similarly, paired sites within the second cluster also a significantly differed in average temperature (F2 = 166.84, SS = 418.6, P < 0.001). Conversely to first cluster however these differences were present yearly (F1 = 33.21, SS = 41.7, P < 0.001) and seasonally (F6 = 16.72, SS = 125.9, P < 0.02,) between individual and paired sites. In the third cluster of sites, ANOVA tests revealed that there were no significant differences in average temperatures between paired sites (F2 = 1.17, SS = 2.9, P = 0.31), but temperatures varied seasonally and yearly between individual sites (. In the fourth cluster there were again no significant difference of average temperatures between paired sites (F2 = 0.73, SS = 2.9, P = 0.48). Differences were also absent across seasons (F3 = 0.75, SS = 0.0042, P = 0.52) and years (F1 = 0.495, SS = 0.0009, P = 0.48) between both individual and paired sites. Sites within the fifth cluster were significantly different in average temperatures between paired sites (F2 = 77.10, SS = 196.7, P < 0.002), with these differences being present yearly (F1 = 172.80, SS = 220.4, P < 0.001) and seasonally (F3 = 77.10, SS = 29.92, P < 0.002) for both paired and individual sites. Finally, sites within the sixth cluster also significantly difference in average temperatures between paired sites, yearly and seasonally (F2 = 132.044, SS = 419.7, P <0.01).
+
 ## Anova test
 
-```{r, echo= FALSE, message=FALSE, warning=FALSE}
-# library(knitr)
-# anova_test_2 <- read_csv("data/anova_test_2.csv")
-# colnames(anova_test_2) <- c("Df", "Sum Sq", "F value", "Pr(>F")
-# try1 <- anova_test[(0:47), ]
-# kable(try1, row.names = FALSE, caption = "anova test.")
-
+```{r, echo= FALSE, message=FALSE, warning=FALSE, include = FALSE}
 anova_clus_1_func1 <- anova_func(df = SACTN_clust_1_matched)
 summary(anova_clus_1_func1)
 anova_clus_2_func1 <- anova_func(df = SACTN_clust_2_matched)
@@ -311,11 +186,7 @@ anova_clus_6_func1 <- anova_func(df = SACTN_clust_6_matched)
 summary(anova_clus_6_func1)
 ```
 
-### Average temperature of clustered sites:
-
-In the first cluster of sites, via the results of a one way ANOVA tests it was found that there was a significant differences in average temperatures between paired sites (F2 = 12.07, SS = 15.28, P < 0.001). These differences were present across season (F6 = 3.44, SS = 13.07, P < 0.002) but were not present yearly between individuals and paired sites (F2 = 1.38, SS = 1.75, P = 0.25). Similarly, paired sites within the second cluster also a significantly differed in average temperature (F2 = 166.84, SS = 418.6, P < 0.001). Conversely to first cluster however these differences were present yearly (F1 = 33.21, SS = 41.7, P < 0.001) and seasonally (F6 = 16.72, SS = 125.9, P < 0.02,) between individual and paired sites. In the third cluster of sites, ANOVA tests revealed that there were no significant differences in average temperatures between paired sites (F2 = 1.17, SS = 2.9, P = 0.31), but temperatures varied seasonally and yearly between individual sites (. In the fourth cluster there were again no significant difference of average temperatures between paired sites (F2 = 0.73, SS = 2.9, P = 0.48). Differences were also absent across seasons (F3 = 0.75, SS = 0.0042, P = 0.52) and years (F1 = 0.495, SS = 0.0009, P = 0.48) between both individual and paired sites. Sites within the fifth cluster were significantly different in average temperatures between paired sites (F2 = 77.10, SS = 196.7, P < 0.002), with these differences being present yearly (F1 = 172.80, SS = 220.4, P < 0.001) and seasonally (F3 = 77.10, SS = 29.92, P < 0.002) for both paired and individual sites. Finally, sites within the sixth cluster also significantly difference in average temperatures between paired sites, yearly and seasonally (F2 = 132.044, SS = 419.7, P <0.01).
-
-## R2 value representing the influence of each of the wave variables on the insitu collected temperature data 
+## The coefficient of determination which represents the influence of each of the wave variables on the insitu collected temperature data 
 
 ```{r}
 # These data are best represented with a table
@@ -388,29 +259,33 @@ knitr::kable(SACTN_7_predom_R2, digits = 3, caption = "R^2 and p-values for the 
 knitr::kable(SACTN_15_predom_R2, digits = 3, caption = "R^2 and p-values for the relationship between temperature and wave/wind variables and K10 temperature at 15m.")
 ```
 
+## Discussion
 
+This study aimed to investigate how environmental factors wind and wave action influenced coastal seawater temperature variation along the South African coastline. Because seawater temperature is known to have large influences on species distributions (Bolton 2010; Smit et al. 2013), it is important to understand not only how temperatures vary across the coastline, but the factors driving these variations as well. Here, I confirmed that there were statistically significant differences in SSTs between 18 sites along the coastline of South Africa, with temperatures differing between coasts, and across sites along the same coasts. Overall, sites along the west coast had lower temperatures than those along the south and east coasts. I found that the east coast had overall little variation in temperatures between sites, whereas the south coast varied more frequently (Schlegel and Smit 2016).
 
+My results confirmed that there were significant differences in temperatures between sites along the coastline, annually and seasonally, but did not provide evidence for which factors were driving these. Across each of the 18 sites that I assessed, I found that wind and wave action did not significantly influence SST. Variances in temperature between sites at different locations along the coastline were therefore not caused by variations in wind or wave action, suggesting that other factors were responsible for the observed patterns of temperature variation. These findings were consistent across six different datasets from various sources, with each of these providing no evidence of a relationship between wind or wave action and the SST of a site. However, these consisted of a combination of satellite and thermometer data, which varied in their measurements and time series.
 
+Previous studies suggest that a longer time series containing more data would have greater accuracy in detecting subtle changes in temperature differences obtained from variable coastal regions such as the South African coastline. Schlegel and Smit (2016) suggested that having a time series of greater than 30 years for sites with a low variance results in increased ability to detect changes. They showed that high quality time series datasets have frequent measurements with minimal missing (NA) values present. Furthermore, low quality datasets (i.e. those with more than 5% of NA values) have a higher chance of detecting variation where none exists.
 
+Datasets containing temperature information are inconsistent. Temperature collection along the South African coastline started in the 1970s, and has been inconsistent in terms of instruments used, modifications to styles and methods, calibration, and site locations (Smit et al. 2013; Schlegel and Smit 2016). Additionally, older records within some datasets, such as the SACTN dataset, may have been lost or are unreliable since the metadata for these are unavailable. These metadata are essential as their absence prevents us from fully understanding the influence that instruments had on temperature recordings. Some measurements may therefore not represent accurate temperatures due to the instrumentation used but we do however have an accurate indication of which recordings were measured with thermometers and which were with UTR.
 
+The UTRs used to collect data in the SACTN dataset appeared to express a lower number of NA values compared to the data collected with hand thermometers. As such, this may have influenced the overall time series dataset (Smit and Schlegel 2016). The level of precision at which data was collected also influenced the length of the time series needed. Time series in which temperature were collected at a precision of 0.5 degrees C may require another 24 months of recordings to precisely detect long term variation (Smit and Schlegel 2016). The average length of the thermometer time series component of the SACTN dataset was 346 months whereas the average length of UTR time series was less than half of that. With the extent of these differences in length being so severe, even once correcting for potential negative effects on the measurement precision of the thermometer collected time series, it was clear that thermometer data were more useful than that of UTRS.
 
+Satellite acquired SST records are useful to modern marine scientists. This data is often used to model and predict a wide range of oceanic and biological processes in the open ocean but have only recently been used to study temperature variations influencing benthic organisms (Pearce et al. 2006). Here, both Satellite SST data, and in situ thermometer data were significantly correlated with wind and wave data along the coastal environment at a depth of seven and 15 meters respectively. SST data acquired by satellites are obtained from a thin boundary layer at the air-sea interface (Smale and Wernberg 2009) and thus deviated from coastal in situ collected seawater temperatures. These deviations may have affected the outcomes of my analyses thereby inhibiting by findings. However, when assessing the impacts of wind and wave action on satellite and in situ collected seawater temperature data I found the same trend of wind and wave action having insignificant impacts on the temperature variation along the South African coastline.
 
+My findings were surprising but not unexpected. Along the coastline of South Africa, there is a known east-west thermal temperature gradient (Smit et al. 2013). This is caused by major oceanic processes such as coastal upwelling, thermohaline circulation, and the presence of major ocean currents, which cumulatively influences the temperatures along this coastline (Walker 1990; Smit and Schlegel 2016). While it was reasonable to assume that surface level environmental factors like wind and wave action would affect sea surface temperatures, it is not completely unexpected that they would have little effect given the prevalence of the major processes mentioned above. Those processes are undoubtedly the largest drivers behind coastal temperature variation and may simply be overpowering the effects of other environmental factors. 
 
+Alternatively, it is possible that factors other than wind and wave action are influencing temperatures across the South African coastline. For example, we know that rainfall can have large influences on coastal SST (Reason et al. 1999) but other, non-climatic, factors could be playing a greater role. Coastal regions are highly impacted by human mediated pressures (Mead et al. 2013). These pressures are predicted to drive change over a spatial and temporal scale and is often a cause of temperature variation (Mead and Robinson 2011). Additionally, evidence indicates that human driven climate change on both a local and global scale largely influence seawater temperatures, wind regimes, and wave action (Rouault et al. 2009a, 2009b, 2010, 2011; Mead et al. 2013). These pressures are present along the South African coastline in the form of pollution, coastal runoff, invasive species, resource exploitation, and coastal mining, which directly and indirectly influences air temperature, wind, seawater temperature, and rainfall (Rouault and Mead 2011; Mead et al. 2013). These anthropogenic factors may be cumulatively playing an important role in affecting SST along the coastline, but the full extents of these are unknown. 
 
-## Some discussion points
+Within marine environments, coastal temperature variation allows for a variation in the spatial arrangements of marine biodiversity. Whilst wind and wave action may not be directly affecting ocean temperatures, Blamey and Branch (2008) have found that wave action has a profound influence on species distributions along the coastline. The presence or absence of marine species are determined by a variety of factors and whilst those factors may not be influencing each other as was the case here, they collectively play important roles in affecting the marine life of the South African coastline and identifying those roles can aid in improving our understanding of nearshore dynamics, thereby providing greater knowledge to be used for conservation. 
 
-This study aimed to investigate how environmental factors wind and wave action influenced coastal seawater temperature variation along the South African coastline. Since seawater temperature is known to have large influences on species distributions (Bolton 2010, Smit et al. 2013), it is important to understand not only the variation across the coastline, but the factors driving variations as well. Here, I confiirmed that there were statistically significant differences in SST between the three coasts of South Africa, and that temperatures along these individual coasts varied at differing degrees. I found that the east coast of South Africa had overall little variation in temperatures between sites, whereas the south coast varied more frequently (Schlegel and Smit 2016). 
+Here I have shown that wind and wave action are not directly affecting seawater temperature variation along the South African coastline, but that other factors may be. Future research could aim to examine the effects of air temperature and rainfall on the coastal seawater temperature for the 18 sites being assessed. Additionally, other factors such as the amount of sunlight penetrating the ocean or site exposure could also be tested, as well as assessing the optimal locations for data collection. Further studies should also consider examining how chlorophyll concentrations and salinity varies with temperature to assess the effects of seawater temperature on marine plant life. Homogenous coastlines with distinct temperature gradients such as in South Africa provide a model environment for temperature analyses at fine-resolutions. These data could provide critically important information that can be used to assist in conserving marine biodiversity within these waters and should be given greater focus within marine research in the near future.
 
-Previous studies suggest that a longer time series containing more data would be more effective in detecting subtle changes in temperature changes obtained from highly variable coastal regions (Schlegel and Smit 2016). Schlegel and Smit (2016) suggested that having a time series of greater than 30 years for sites with a low variance results in increased ability to detect significant changes (Schlegel and Smit 2016). They showed that high quality time series datasets typically have frequent measurements with minimal missing (NA) values present. Furthermore, low quality dataset (i.e. those with more than 5% of NA values), has an increased chance of detecting variation where none exists.
+## References
 
-Because temperature collection along the South African coastline started in the 1970s, and data collection was inconsistent in terms of instruments used, modifications to styles and methods used for data collection, calibration, and the locations where data were collected the metadata for older seawater temperature records within the SACTN dataset may have been lost or are unreliable. This metadata is essential as its absence prevents us from fully understanding the influence that instruments had on the temperature recordings. We do however have an accurate indication of which recordings were measured with thermometers and which were with UTR.
-
-The UTRs used to collect data in the SACTN dataset appear to express a lower number of NA values compared to the data collected with hand thermometers. As such, this may influenced the overall time series dataset (Smit and Schlegel, 2016). The level of precision at which data was collected also influenced the length of the time series needed. Time series in which temperature was collected at a precision of 0.5 degrees C may require another of data of another 24 months to precisely detect long term variation (Smit and Schlegel 2016).The average length of the thermometer time series component of the SACTN dataset was 346 whereas the average length of UTR time series was only 167 months. Knowing this difference in time series lengths, even once correcting for negative effects on the measurement precision of the thermometer collected time series, are essentially more useful compared to UTRs.
-
-Satellite derived SST data are undoubtedly useful. Globally, these data are used in numerous marine focussed studies and are critical in furthering our understanding of coastal systems. Satellite data are often used to model a range of oceanic processes, but only recently have these data been used to study benthic organisms. Here, I found that satellite data were significantly correlated with *in situ* collected temperature data. One potential drawback of this is that SST data derived from satellites are significantly different compared to actual coastal seawater temperatures. This is due to the fact that satellite derived SST data are collected from a thin boundary layer at the air-sea interface and collection is only reliable 10 km from the coast. These data should therefore be interpreted with caution.
-
-
-
+Pearce, A., Faskel, F., & Hyndes, G. (2006). Nearshore sea temperature variability off Rottnest Island (Western Australia) derived from satellite data. International Journal of Remote Sensing, 27(12), 2503-2518.
+Reason, C. J. C., & Mulenga, H. (1999). Relationships between South African rainfall and SST anomalies in the southwest Indian Ocean. International Journal of Climatology: A Journal of the Royal Meteorological Society, 19(15), 1651-1673.
+Walker, N. D. (1990). Links between South African summer rainfall and temperature variability of the Agulhas and Benguela Current systems. Journal of Geophysical Research: Oceans, 95(C3), 3297-3319.
 
 
 

@@ -120,6 +120,10 @@ load("data/africa_coast.RData")
 load("data/sa_provinces_new.RData")
 load("data/sa_coast.Rdata")
 
+library(tidyverse)
+library(viridis)
+library(gridExtra)
+
 clust_i <- function(i) {
   set.seed(10)
 ggplot(data = southern_africa_coast, aes(x = long, y = lat)) +
@@ -137,12 +141,13 @@ ggplot(data = southern_africa_coast, aes(x = long, y = lat)) +
     geom_segment(aes(x = 33, y = -29.5, xend = 29.8, yend = -33.0),
                 arrow = arrow(length = unit(0.3, "cm")), size = 0.1, colour = "black") +
     annotate("text", label = "Agulhas", x = 31.7, y = -31.7, size = 3.5, angle = 53, colour = "black") +
-  scale_x_continuous(breaks = seq(15, 35, 5),
-                       labels = scales::unit_format("°E", sep = ""),
-                       position = "bottom") +
-    scale_y_continuous(breaks = seq(-35, -30, 5),
-                       labels = c("35°S", "30°S")) +
-    labs(x = NULL, y = NULL) +
+  # # Improve on the x and y axis labels
+  #   scale_x_continuous(breaks = seq(15, 35, 5),
+  #                      labels = scales::unit_format("°E", sep = ""),
+  #                      position = "top") +
+  #   scale_y_continuous(breaks = seq(-35, -30, 5),
+  #                      labels = c("35°S", "30°S")) +
+  labs(x = NULL, y = NULL) +
     coord_cartesian(xlim = c(10.5, 39.5), ylim = c(-39.5, -25.5), expand = F) +
   scaleBar(lon = 32.0, lat = -38.7, distanceLon = 200, distanceLat = 50, 
            distanceLegend = 90, dist.unit = "km", arrow.length = 100,
@@ -182,7 +187,7 @@ africa_map
 
 # More mapping - http://r-nold.blogspot.com/2014/06/creating-inset-map-with-ggplot2.html
 
-pdf("figures/map_complete.pdf", width = 8, height = 5, pointsize = 6) # Set PDF dimensions
+pdf("figures/map_fixed.pdf", width = 8, height = 5, pointsize = 6) # Set PDF dimensions
 vp1 <- viewport(x = -0.00, y = 0.05, w = 0.25, h = 0.25, just = c("left", "bottom")) # Africa
 vp2 <- viewport(x = 1.0, y = 1.0, w = 1.00, h = 1.00, just = c("right", "top"))  # South Africa
 print(clust_6, vp = vp2)
@@ -326,11 +331,11 @@ ggplot(aes(x = lon, y = lat)) +
   #   geom_segment(aes(x = 33, y = -29.5, xend = 29.8, yend = -33.0),
   #               arrow = arrow(length = unit(0.3, "cm")), size = 0.1, colour = "black") +
   #   annotate("text", label = "Agulhas", x = 31.7, y = -31.7, size = 3.5, angle = 53, colour = "black") +
-  scale_x_continuous(breaks = seq(15, 35, 5),
-                       labels = scales::unit_format("°E", sep = ""),
-                       position = "bottom") +
-    scale_y_continuous(breaks = seq(-35, -30, 5),
-                       labels = c("35°S", "30°S")) +
+  # scale_x_continuous(breaks = seq(15, 35, 5),
+  #                      labels = scales::unit_format("°E", sep = ""),
+  #                      position = "bottom") +
+  #   scale_y_continuous(breaks = seq(-35, -30, 5),
+  #                      labels = c("35°S", "30°S")) +
     labs(x = NULL, y = NULL) +
     coord_cartesian(xlim = c(10.5, 39.5), ylim = c(-39.5, -25.5), expand = F) +
      scaleBar(lon = 32.0, lat = -38.7, distanceLon = 200, distanceLat = 50, 
@@ -352,9 +357,13 @@ map_clus4 <- mapping_plot(df = site_coordinates4, xy= "lightskyblue")
 map_clus5 <- mapping_plot(df = site_coordinates5, xy= "steelblue3") 
 map_clus6 <- mapping_plot(df = site_coordinates6, xy= "mediumorchid1") 
 
-final_map_combined_A <- ggarrange(map_clus1, map_clus2, map_clus3, map_clus4, map_clus5, map_clus6,
-          ncol = 2, nrow = 2)
+final_map_combined_A <- ggarrange(map_clus1, map_clus2, map_clus3, map_clus4, map_clus5, map_clus6)
 final_map_combined_A
+
+# pdf("figures/final_map_combined_A_new.pdf", width = 8, height = 5, pointsize = 6) # Set PDF dimensions
+
+ggsave(plot = final_map_combined_A, filename = "figures/final_combined_plot.pdf")
+
 ```
 
 The function droplevels is used here to drop unused levels from the factor such as the length column. The unique function is then used to determine the amount sites found within this cluster:
@@ -546,8 +555,8 @@ combined_plot <- ggarrange(SACTN_clust_1_plot1, SACTN_clust_2_plot1,
                            SACTN_clust_5_plot1, SACTN_clust_6_plot1)
 combined_plot
 
-# ggsave(plot = combined_plot, filename = "figures/combined_plot.pdf")
-# ggsave(plot = combined_plot, filename = "figures/combined_plot_1.png")
+ggsave(plot = combined_plot, filename = "figures/combined_plot.pdf")
+ggsave(plot = combined_plot, filename = "figures/combined_plot_1.png")
 ```
 
 Temperatures were not uniformly distributed across our four clusters produced, with each set of sites having unique patterns of temperature variation. In cluster 1, which includes Humburg, Eastern  Beach and Orient Beach, we found that temperature varied from approximately 13 ºC to 22  ºC. Within this cluster of sites, we found that Hamburg had the highest maximum temperatures and the lowest minimum temperatures between the three sites. Orient  Beach had the lowest range of temperature variability and it produced a comparatively short box plot. Orient Beach and Eastern Beach had relatively similar ranges and distributions of temperatures as evident by their bixplots nearly overlapping completely. 
@@ -800,56 +809,56 @@ SACTN_daily_clusters_15a <- try2(df = SACTN_daily_clusters_sub_1)
 Creating scatter plot where I compare wave dir,dirw,spw for the insitu datasets
 
 ```{r}
-plot_compare_spw <- function(df) {
-  plot_temp_wave <- df %>% 
-    ggplot(aes(x = temp, y = spw_circ )) +
-plot_compare_tp<- function(df) {
-  plot_temp_wave <- df %>% 
-    ggplot(aes(x = temp, y = tp_circ )) +
-    geom_point() +
-  facet_wrap(~site, scales = "free_x", ncol = 2) +
-  # labs(x = "Year", y = "Null") +
-  theme_bw() +
-  theme(panel.grid.minor = element_blank(),
-        panel.grid.major = element_line(color = "#cfcfcf", size = 0.4))
-  return(plot_temp_wave)
-}
-
-plot_compare_dir<- function(df) {
-  plot_temp_wave <- df %>% 
-    ggplot(aes(x = temp, y = dir_circ )) +
-    geom_point() +
-  facet_wrap(~site, scales = "free_x", ncol = 2) +
-  # labs(x = "Year", y = "Null") +
-  theme_bw() +
-  theme(panel.grid.minor = element_blank(),
-        panel.grid.major = element_line(color = "#cfcfcf", size = 0.4))
-  return(plot_temp_wave)
-}
-
-plot_compare_dirw<- function(df) {
-  plot_temp_wave <- df %>% 
-    ggplot(aes(x = temp, y = dirw_circ )) +
-    geom_point() +
-  facet_wrap(~site, scales = "free_x", ncol = 2) +
-  # labs(x = "Year", y = "Null") +
-  theme_bw() +
-  theme(panel.grid.minor = element_blank(),
-        panel.grid.major = element_line(color = "#cfcfcf", size = 0.4))
-  return(plot_temp_wave)
-}
-
-# For insitu data
-Insitu_spw_circ <- plot_compare_spw(df = SACTN_daily_clusters_7a)
-Insitu_hs_circ <- plot_compare_hs(df = SACTN_daily_clusters_7a)
-Insitu_tp_circ <- plot_compare_tp(df = SACTN_daily_clusters_7a)
-Insitu_dir_circ <- plot_compare_dir(df = SACTN_daily_clusters_7a)
-Insitu_dirw_circ <- plot_compare_dirw(df = SACTN_daily_clusters_7a)
-Insitu_spw_circ_15 <- plot_compare_spw(df = SACTN_daily_clusters_15a)
-Insitu_hs_circ_15 <- plot_compare_hs(df = SACTN_daily_clusters_15a)
-Insitu_tp_circ_15 <- plot_compare_tp(df = SACTN_daily_clusters_15a)
-Insitu_dir_circ_15 <- plot_compare_dir(df = SACTN_daily_clusters_15a)
-Insitu_dirw_circ_15 <- plot_compare_dirw(df = SACTN_daily_clusters_15a)
+# plot_compare_spw <- function(df) {
+#   plot_temp_wave <- df %>% 
+#     ggplot(aes(x = temp, y = spw_circ )) +
+# plot_compare_tp<- function(df) {
+#   plot_temp_wave <- df %>% 
+#     ggplot(aes(x = temp, y = tp_circ )) +
+#     geom_point() +
+#   facet_wrap(~site, scales = "free_x", ncol = 2) +
+#   # labs(x = "Year", y = "Null") +
+#   theme_bw() +
+#   theme(panel.grid.minor = element_blank(),
+#         panel.grid.major = element_line(color = "#cfcfcf", size = 0.4))
+#   return(plot_temp_wave)
+# }
+# 
+# plot_compare_dir<- function(df) {
+#   plot_temp_wave <- df %>% 
+#     ggplot(aes(x = temp, y = dir_circ )) +
+#     geom_point() +
+#   facet_wrap(~site, scales = "free_x", ncol = 2) +
+#   # labs(x = "Year", y = "Null") +
+#   theme_bw() +
+#   theme(panel.grid.minor = element_blank(),
+#         panel.grid.major = element_line(color = "#cfcfcf", size = 0.4))
+#   return(plot_temp_wave)
+# }
+# 
+# plot_compare_dirw<- function(df) {
+#   plot_temp_wave <- df %>% 
+#     ggplot(aes(x = temp, y = dirw_circ )) +
+#     geom_point() +
+#   facet_wrap(~site, scales = "free_x", ncol = 2) +
+#   # labs(x = "Year", y = "Null") +
+#   theme_bw() +
+#   theme(panel.grid.minor = element_blank(),
+#         panel.grid.major = element_line(color = "#cfcfcf", size = 0.4))
+#   return(plot_temp_wave)
+# }
+# 
+# # For insitu data
+# Insitu_spw_circ <- plot_compare_spw(df = SACTN_daily_clusters_7a)
+# Insitu_hs_circ <- plot_compare_hs(df = SACTN_daily_clusters_7a)
+# Insitu_tp_circ <- plot_compare_tp(df = SACTN_daily_clusters_7a)
+# Insitu_dir_circ <- plot_compare_dir(df = SACTN_daily_clusters_7a)
+# Insitu_dirw_circ <- plot_compare_dirw(df = SACTN_daily_clusters_7a)
+# Insitu_spw_circ_15 <- plot_compare_spw(df = SACTN_daily_clusters_15a)
+# Insitu_hs_circ_15 <- plot_compare_hs(df = SACTN_daily_clusters_15a)
+# Insitu_tp_circ_15 <- plot_compare_tp(df = SACTN_daily_clusters_15a)
+# Insitu_dir_circ_15 <- plot_compare_dir(df = SACTN_daily_clusters_15a)
+# Insitu_dirw_circ_15 <- plot_compare_dirw(df = SACTN_daily_clusters_15a)
 
 # ggsave(plot = Insitu_spw_circ, filename = "figures/Insitu_spw_circ.pdf")
 ```
@@ -857,20 +866,20 @@ Insitu_dirw_circ_15 <- plot_compare_dirw(df = SACTN_daily_clusters_15a)
 Histogram: Plotting dir and dirw. This was done to determine whether or not the wave variables needed to be log transformed.
 
 ```{r}
-histogram_1 <- ggplot(data = SACTN_daily_clusters_7a, aes(x = dir_circ)) +
-geom_histogram() +
-facet_wrap(~site, scales = "free_x", ncol = 2)
-histogram_1
-
-histogram_2 <- ggplot(data = SACTN_daily_clusters_7a, aes(x = dirw_circ)) +
-geom_histogram() +
-facet_wrap(~site, scales = "free_x", ncol = 2)
-histogram_2
-
-histogram_3 <- ggplot(data = SACTN_daily_clusters_7a, aes(x = spw_circ)) +
-geom_histogram() +
-facet_wrap(~site, scales = "free_x", ncol = 2)
-histogram_3
+# histogram_1 <- ggplot(data = SACTN_daily_clusters_7a, aes(x = dir_circ)) +
+# geom_histogram() +
+# facet_wrap(~site, scales = "free_x", ncol = 2)
+# histogram_1
+# 
+# histogram_2 <- ggplot(data = SACTN_daily_clusters_7a, aes(x = dirw_circ)) +
+# geom_histogram() +
+# facet_wrap(~site, scales = "free_x", ncol = 2)
+# histogram_2
+# 
+# histogram_3 <- ggplot(data = SACTN_daily_clusters_7a, aes(x = spw_circ)) +
+# geom_histogram() +
+# facet_wrap(~site, scales = "free_x", ncol = 2)
+# histogram_3
 ```
 
 Here i now log transform each of the Wave variables
@@ -924,7 +933,12 @@ temp_wave_R2_ <- function(df){
     select(cluster:variable, adj.r.squared, p.value) %>% 
     arrange(cluster, site) %>% 
     mutate(adj.r.squared = round(adj.r.squared, 2),
-           p.value = round(p.value, 4))
+           p.value = round(p.value, 4)) %>% 
+        dplyr::rename("R^2" = adj.r.squared) %>% 
+    dplyr::rename(P = p.value) %>% 
+    dplyr::rename(Cluster = cluster) %>% 
+    dplyr::rename(Site = site) %>% 
+    dplyr::rename(Variable = variable) 
   return(results)
   }
 
@@ -939,13 +953,13 @@ knitr::kable(SACTN_7_R2, digits = 3, caption = "R^2 and p-values for the relatio
 # These data are best represented with a table
 knitr::kable(SACTN_15_R2, digits = 3, caption = "R^2 and p-values for the relationship between wave/wind variables and SACTN temperature at 15m.")
 
-box_scatter_7m <- ggplot(data = SACTN_7_R2, aes(x = variable, y = adj.r.squared)) +
+box_scatter_7m <- ggplot(data = SACTN_7_R2, aes(x = Variable, y = "R^2")) +
   geom_boxplot(outlier.colour = NA) +
   geom_point(colour = "red", alpha = 0.6, position = "jitter") +
   ggtitle("SACTN_7m") +
   theme_bw()
 
-box_scatter_15m <-  ggplot(data = SACTN_15_R2, aes(x = variable, y = adj.r.squared)) +
+box_scatter_15m <-  ggplot(data = SACTN_15_R2, aes(x = Variable, y = "R^2")) +
   geom_boxplot(outlier.colour = NA) +
   geom_point(colour = "red", alpha = 0.6, position = "jitter") +
   ggtitle("SACTN_15m") +
@@ -984,13 +998,13 @@ The next step is to open the netCDF file. This requires the pathway in which the
 # 
 # ncRead <- function(nc.dir = nc.dir, csv.dir = csv.dir) {
 #   nc.files <- list.files(path = nc.dir, pattern = "*.nc", full.names = TRUE, include.dirs = TRUE)
-#   #nc.files <- nc.files[1:10]
-#   strt.date <- str_sub(basename(nc.files[1]), start = 15, end = 22)
-#   end.date <- str_sub(basename(nc.files[length(nc.files)]), start = 15, end = 22)
-#   nc.init <- nc_open(nc.files[1])
-#   LatIdx <- which(nc.init$dim$lat$vals > coords[1] & nc.init$dim$lat$vals < coords[2])
-#   LonIdx <- which(nc.init$dim$lon$vals > coords[3] & nc.init$dim$lon$vals < coords[4])
-#   nc_close(nc.init)
+  # #nc.files <- nc.files[1:10]
+  # strt.date <- str_sub(basename(nc.files[1]), start = 15, end = 22)
+  # end.date <- str_sub(basename(nc.files[length(nc.files)]), start = 15, end = 22)
+  # nc.init <- nc_open(nc.files[1])
+  # LatIdx <- which(nc.init$dim$lat$vals > coords[1] & nc.init$dim$lat$vals < coords[2])
+  # LonIdx <- which(nc.init$dim$lon$vals > coords[3] & nc.init$dim$lon$vals < coords[4])
+  # nc_close(nc.init)
 #   
 #   # nc.file <- nc.files[1]
 #   
@@ -1160,18 +1174,6 @@ Satellite_temp <- ggplot(data = insitu_AVHRR, aes(x = date, y = temp.y)) +
 Creating a visualisation of the insitu collected temperature data and the AVHRR temperature data
 
 ```{r}
-insitu_year_season <-insitu_AVHRR %>% 
-  mutate(month = month(date, abbr = T, label = T),
-         year = year(date)) %>% 
-  mutate(season = ifelse(month %in% c("Jan", "Feb", "Mar"), "Summer",        
-                           ifelse(month %in% c("Apr", "May", "Jun"), "Autumn",
-                                ifelse(month %in% c("Jul", "Aug", "Sep"), "Winter",
-                                       ifelse(month %in% c("Oct", "Nov", "Dec"), "Spring","Error")))))
-  
-  
-
-
-
 insitu_plot <- ggplot(insitu_AVHRR, aes(x = date, y = temp.x)) +
   geom_line() +
   facet_wrap(~year, scales = "free_x", ncol = 2) +
@@ -1259,7 +1261,12 @@ temp_wave_R2_try1 <- function(df){
     select(cluster:variable, adj.r.squared, p.value) %>% 
     arrange(cluster, site) %>% 
     mutate(adj.r.squared = round(adj.r.squared, 2),
-           p.value = round(p.value, 4))
+           p.value = round(p.value, 4)) %>% 
+    dplyr::rename("R^2" = adj.r.squared) %>% 
+    dplyr::rename(P = p.value) %>% 
+    dplyr::rename(Cluster = cluster) %>% 
+    dplyr::rename(Site = site) %>% 
+    dplyr::rename(Variable = variable) 
   return(results)
   }
 
@@ -1267,7 +1274,6 @@ AVHRR_temp_7_R2 <- AVHRR_temp_7%>%
   temp_wave_R2_try1()
 AVHRR_temp_15_R2 <- AVHRR_temp_15 %>% 
   temp_wave_R2_try1()
-
 # These data are best represented with a table
 knitr::kable(AVHRR_temp_7_R2, digits = 3, caption = "R^2 and p-values for the relationship between wave/wind variables and AVHRR temperature at 7m.")
 
@@ -1319,8 +1325,6 @@ MUR_data <- MUR_data %>%
 MUR_data$date <- (ymd(MUR_data$date))
 MUR_data <- MUR_data %>% 
   rename(temp = med05)
-
-
 # list.file(path = "data/MUR", pattern = "csv")
 ```
 
