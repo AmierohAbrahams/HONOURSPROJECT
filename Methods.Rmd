@@ -885,8 +885,8 @@ Histogram: Plotting dir and dirw. This was done to determine whether or not the 
 Here i now log transform each of the Wave variables
 
 ```{r}
-SACTN_daily_clusters_7a[, 12:14] <- log(SACTN_daily_clusters_7a[12:14], 2)
-SACTN_daily_clusters_15a[, 12:14] <- log(SACTN_daily_clusters_15a[12:14], 2)
+# SACTN_daily_clusters_7a[, 12:14] <- log(SACTN_daily_clusters_7a[12:14], 2)
+# SACTN_daily_clusters_15a[, 12:14] <- log(SACTN_daily_clusters_15a[12:14], 2)
 ```
 
 Temperature and wave comparison
@@ -953,20 +953,20 @@ knitr::kable(SACTN_7_R2, digits = 3, caption = "R^2 and p-values for the relatio
 # These data are best represented with a table
 knitr::kable(SACTN_15_R2, digits = 3, caption = "R^2 and p-values for the relationship between wave/wind variables and SACTN temperature at 15m.")
 
-box_scatter_7m <- ggplot(data = SACTN_7_R2, aes(x = Variable, y = "R^2")) +
-  geom_boxplot(outlier.colour = NA) +
-  geom_point(colour = "red", alpha = 0.6, position = "jitter") +
-  ggtitle("SACTN_7m") +
-  theme_bw()
-
-box_scatter_15m <-  ggplot(data = SACTN_15_R2, aes(x = Variable, y = "R^2")) +
-  geom_boxplot(outlier.colour = NA) +
-  geom_point(colour = "red", alpha = 0.6, position = "jitter") +
-  ggtitle("SACTN_15m") +
-  theme_bw()
-
-box_scatter <- ggarrange(box_scatter_7m, box_scatter_15m)
-box_scatter
+# box_scatter_7m <- ggplot(data = SACTN_7_R2, aes(x = Variable, y = "R^2")) +
+#   geom_boxplot(outlier.colour = NA) +
+#   geom_point(colour = "red", alpha = 0.6, position = "jitter") +
+#   ggtitle("SACTN_7m") +
+#   theme_bw()
+# 
+# box_scatter_15m <-  ggplot(data = SACTN_15_R2, aes(x = Variable, y = "R^2")) +
+#   geom_boxplot(outlier.colour = NA) +
+#   geom_point(colour = "red", alpha = 0.6, position = "jitter") +
+#   ggtitle("SACTN_15m") +
+#   theme_bw()
+# 
+# box_scatter <- ggarrange(box_scatter_7m, box_scatter_15m)
+# box_scatter
 ```
 
 # AVHRR Satellite data
@@ -1181,7 +1181,7 @@ insitu_plot <- ggplot(insitu_AVHRR, aes(x = date, y = temp.x)) +
   theme_bw() +
   theme(panel.grid.minor = element_blank(),
         panel.grid.major = element_line(color = "#cfcfcf", size = 0.4))
-ggsave(plot = insitu_plot, filename = "figures/insitu_plot.pdf")
+# ggsave(plot = insitu_plot, filename = "figures/insitu_plot.pdf")
 
 satellite_plot <- ggplot(insitu_AVHRR, aes(x = date, y = temp.y)) +
   geom_line() +
@@ -1190,7 +1190,7 @@ satellite_plot <- ggplot(insitu_AVHRR, aes(x = date, y = temp.y)) +
   theme_bw() +
   theme(panel.grid.minor = element_blank(),
         panel.grid.major = element_line(color = "#cfcfcf", size = 0.4))
-ggsave(plot = satellite_plot, filename = "figures/satellite_plot.pdf")
+# ggsave(plot = satellite_plot, filename = "figures/satellite_plot.pdf")
 ```
 
 Matching wave data with the AVHRR temperature data
@@ -1240,8 +1240,8 @@ Scatter plot: Plotting dir and dirw
 log transforming the Wave variables
 
 ```{r}
-AVHRR_temp_7[, 15:17] <- log(AVHRR_temp_7[15:17], 2)
-AVHRR_temp_15[, 15:17] <- log(AVHRR_temp_15[15:17], 2)
+# AVHRR_temp_7[, 15:17] <- log(AVHRR_temp_7[15:17], 2)
+# AVHRR_temp_15[, 15:17] <- log(AVHRR_temp_15[15:17], 2)
 ```
 
 Calculating the R2 value of each of the variables
@@ -1366,8 +1366,8 @@ MUR_15 <- combine_temp_wave_15m(df = MUR_wave)
 Log transform the MUR data
 
 ```{r}
-MUR_7[, 23:25] <- log(MUR_7[23:25], 2)
-MUR_15[, 23:25] <- log(MUR_15[23:25], 2)
+# MUR_7[, 23:25] <- log(MUR_7[23:25], 2)
+# MUR_15[, 23:25] <- log(MUR_15[23:25], 2)
 ```
 
 Scatter plot for the MUR data
@@ -1402,7 +1402,12 @@ temp_wave_R2_try1 <- function(df){
     select(cluster:variable, adj.r.squared, p.value) %>% 
     arrange(cluster, site) %>% 
     mutate(adj.r.squared = round(adj.r.squared, 2),
-           p.value = round(p.value, 4))
+           p.value = round(p.value, 4)) %>% 
+        dplyr::rename("R^2" = adj.r.squared) %>% 
+    dplyr::rename(P = p.value) %>% 
+    dplyr::rename(Cluster = cluster) %>% 
+    dplyr::rename(Site = site) %>% 
+    dplyr::rename(Variable = variable) 
   return(results)
   }
 
@@ -1496,8 +1501,8 @@ CMC_15 <- combine_temp_wave_15m(df = CMC_wave)
 Log transform the CMC data
 
 ```{r}
-CMC_7[, 28:30] <- log(CMC_7[28:30], 2)
-CMC_15[, 28:30] <- log(CMC_15[28:30], 2)
+# CMC_7[, 28:30] <- log(CMC_7[28:30], 2)
+# CMC_15[, 28:30] <- log(CMC_15[28:30], 2)
 ```
 
 Scatter plot for the CMC data
@@ -1533,7 +1538,12 @@ temp_wave_R2_try2 <- function(df){
     select(cluster:variable, adj.r.squared, p.value) %>% 
     arrange(cluster, site) %>% 
     mutate(adj.r.squared = round(adj.r.squared, 2),
-           p.value = round(p.value, 4))
+           p.value = round(p.value, 4)) %>% 
+        dplyr::rename("R^2" = adj.r.squared) %>% 
+    dplyr::rename(P = p.value) %>% 
+    dplyr::rename(Cluster = cluster) %>% 
+    dplyr::rename(Site = site) %>% 
+    dplyr::rename(Variable = variable) 
   return(results)
   }
 
@@ -1624,8 +1634,8 @@ K10_15 <- combine_temp_wave_15m(df = K10_wave)
 Log transform the K10 data
 
 ```{r}
-K10_7[, 23:25] <- log(K10_7[23:25], 2)
-K10_15[, 23:25] <- log(K10_15[23:25], 2)
+# K10_7[, 23:25] <- log(K10_7[23:25], 2)
+# K10_15[, 23:25] <- log(K10_15[23:25], 2)
 ```
 
 Scatter plot for the K10 data
@@ -1975,6 +1985,12 @@ SACTN_7_predom_R2_anom <- SACTN_daily_clusters_7_anom %>%
 
 SACTN_15_predom_R2_predom_anom <- SACTN_daily_clusters_15_anom %>% 
   temp_wave_predom_R2()
+
+# These data are best represented with a table
+knitr::kable(SACTN_7_predom_R2, digits = 3, caption = "R^2 and p-values for the relationship between wave/wind variables and SACTN temperature at 7m.")
+
+# These data are best represented with a table
+knitr::kable(SACTN_15_predom_R2, digits = 3, caption = "R^2 and p-values for the relationship between wave/wind variables and SACTN temperature at 15m.")
 ```
 
 
