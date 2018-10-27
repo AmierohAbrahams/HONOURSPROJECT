@@ -3,23 +3,30 @@ title: "Complete"
 author: "Amieroh Abrahams"
 date: "11 August 2018"
 output:
-  word_document:
-    toc: yes
-  html_document:
-    fig_caption: yes
-    fig_height: 5
-    fig_width: 5
-    highlight: default
-    number_sections: yes
-    theme: paper
-    toc: yes
-    toc_float: yes
   pdf_document:
     fig_caption: yes
-    fig_height: 6
-    fig_width: 6
-    highlight: zenburn
+    fig_height: 6.5
+    fig_width: 6.5
+    highlight: default
+    keep_tex: yes
     latex_engine: xelatex
+    template: LaTeX/template-article_ajs.tex
+  html_document:
+    fig_caption: yes
+    fig_height: 7
+    fig_retina: 2
+    fig_width: 7
+    highlight: espresso
+    theme: cerulean
+    toc_float: no
+  md_document:
+    variant: markdown_github
+  word_document:
+    fig_caption: yes
+    fig_height: 7
+    fig_width: 7
+    highlight: zenburn
+toc: yes
 mainfont: PT Serif
 monofont: PT Mono
 language: Australian
@@ -265,11 +272,6 @@ In the CMC SST dataset it was seen that wave height was the main factor influenc
 ## K10:
 
 When comparing the relationship between SST of the K10 dataset and the environmental variables it was evident that Gaansbaai represented the largest R^2 value indicating a 7% influence of wave height on temperature. Wind direction exhibited the largest impact of variation, representing AN R^2 value ranging from 0 – 4%.
-
-
-
-
-
 
 ## Wind Rose diagram
 
