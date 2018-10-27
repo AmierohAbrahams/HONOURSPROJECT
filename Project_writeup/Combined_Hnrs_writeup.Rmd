@@ -10,7 +10,6 @@ output:
     highlight: default
     keep_tex: yes
     latex_engine: xelatex
-    template: LaTeX/template-article_ajs.tex
   html_document:
     fig_caption: yes
     fig_height: 7
