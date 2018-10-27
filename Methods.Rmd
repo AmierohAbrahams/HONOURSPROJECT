@@ -1279,6 +1279,10 @@ knitr::kable(AVHRR_temp_7_R2, digits = 3, caption = "R^2 and p-values for the re
 
 # These data are best represented with a table
 knitr::kable(AVHRR_temp_15_R2, digits = 3, caption = "R^2 and p-values for the relationship between wave/wind variables and AVHRR temperature at 15m.")
+
+save(AVHRR_temp_7_R2, file = "data/AVHRR_temp_7_R2.RData")
+save(AVHRR_temp_15_R2, file = "data/AVHRR_temp_15_R2.RData")
+
 ``` 
 
 # MUR satellite data
@@ -1326,6 +1330,8 @@ MUR_data$date <- (ymd(MUR_data$date))
 MUR_data <- MUR_data %>% 
   rename(temp = med05)
 # list.file(path = "data/MUR", pattern = "csv")
+
+
 ```
 
 Matching in situ sites with the MUR data sites
@@ -1421,6 +1427,9 @@ knitr::kable(MUR_7_R2, digits = 3, caption = "R^2 and p-values for the relations
 
 # These data are best represented with a table
 knitr::kable(MUR_15_R2, digits = 3, caption = "R^2 and p-values for the relationship between wave/wind variables and MUR temperature at 15m.")
+
+save(MUR_7_R2, file = "data/MUR_7_R2.RData")
+save(MUR_15_R2, file = "data/MUR_15_R2.RData")
 ```
 
 # CMC data
@@ -1557,6 +1566,9 @@ knitr::kable(CMC_7_R2, digits = 3, caption = "R^2 and p-values for the relations
 
 # These data are best represented with a table
 knitr::kable(CMC_15_R2, digits = 3, caption = "R^2 and p-values for the relationship between wave/wind variables and CMC temperature at 15m.")
+
+save(CMC_7_R2, file = "data/CMC_7_R2.RData")
+save(CMC_15_R2, file = "data/CMC_15_R2.RData")
 ```
 
 # K10 data
@@ -1669,6 +1681,9 @@ knitr::kable(K10_7_R2, digits = 3, caption = "R^2 and p-values for the relations
 
 # These data are best represented with a table
 knitr::kable(K10_15_R2, digits = 3, caption = "R^2 and p-values for the relationship between wave/wind variables and K10 temperature at 15m.")
+
+save(K10_7_R2, file = "data/K10_7_R2.RData")
+save(K10_15_R2, file = "data/K10_15_R2.RData")
 ```
 
 ## Wave and Wind rose diagram:

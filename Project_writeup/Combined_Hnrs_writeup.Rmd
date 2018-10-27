@@ -158,8 +158,6 @@ In the cluster comprising of Kalk Bay, Gordons Bay and Muizenberg, the largest d
 
 ```{r,  echo= FALSE, message=FALSE, warning=FALSE, fig.cap="Figure 4: Line graph representing the variation in average seawater temperature for each of the month and year for paired sites along the South African coastline.", fig.height=8, fig.width=12, fig.pos="H"}
 
-
-
 knitr::include_graphics("figures/SACTN_clust_1_plot2.pdf")
 knitr::include_graphics("figures/SACTN_clust_2_plot2.pdf")
 knitr::include_graphics("figures/SACTN_clust_3_plot2.pdf")
@@ -224,6 +222,55 @@ knitr::kable(K10_7_R2, digits = 3, caption = "R^2 and p-values for the relations
 knitr::kable(K10_15_R2, digits = 3, caption = "R^2 and p-values for the relationship between wave/wind variables and K10 temperature at 15m.")
 ```
 
+# The impact of wind and wave action on temperature at a depth of 7m
+
+## SACTN:
+The coeffcient of determination was calculated to determine the relationship between temperature and several variables including wind direction and speed as well as wave  height, period, direction and speed, for all 18 sites.  The results showed little variation in environmental factors and temperature for each of the sites. Wind and wave direction influenced temperature at 0 – 3%. 
+The most significant relationships were found in Muizenberg, Kalk Bay and Mossel Bay where the R^2 values indicated that wave period had a 6-7% influence on temperature.
+
+## AVHRR:
+
+Upon examining the impact of wind and wave action on seawater temperature, it was seen that wave and wind direction had a minimal effect on temperature variation with its R^2 values ranging between 0-3%. The results also indicated that wave height influenced temperature at some of the sites. This was evident in Gaansbaai and Lamberts Bay where wave height had a 9% impact on temperature variation.
+
+## MUR:
+
+The results continued to show little variation in regards to the influence of wind and wave action on temperature. At many of the sites, both wind and wave direction had a 0% impact on the temperature. However, it was seen that wave height and wave period had the greatest impact on temperature at some of the sites, with Gordons Bay and Gaansbaai indicating an 8% and 10% impact of wave height on temperature variation respectively.
+
+## CMC:
+
+The results indicated that wave as well as wind direction and wind speed showed the least significant impact on temperature variation with r^2 values ranging between 0-3%. Wave height continued to show the largest impact on temperature variation at some of the sites. Here, Gaansbaai and Gordons Bay indicated the highest R^2 values of 12% and 9% respectively.
+
+## K10:
+
+When comparing the impact of various environmental factors on temperature variation for the K10 data, the results indicated that the each of the above-mentioned variables had no impact on the temperature variation at Hamburg.  The impact of wind direction on temperature is highest at Gansbaai, representing an R^2 value of 4%. Wave height still repersented the greatest influence on temperature occurring at these sites
+
+# The impact of wind and wave action on temperature at a depth of 15m
+
+## SACTN:
+
+The coefficient of determination was calculated to determine the relationship between temperature and several variables including wind direction and speed as well as wave  height, period, direction and speed, for all 18 sites. The analyses indicated that there was no relationship present between the above-mentioned factors at Eastern Beach. Wave direction was seen to have no influence on temperature at any of the sites analysed as the R^2 values were at a constant 0%. Wind direction exhibited relationships between 0-4% across all sites, indicating that that factor did not significantly influence coastal temperature. The most significant relationships were found at the Muizenberg and Kalk Bay sites where the R^2 values indicated that wave period had an 8% and 7% influence on temperature respectively.  
+
+## AVHRR:
+
+The analyses indicated that a relationship existed between each of the environmental variables at Stilbaai with the intensity of these variables on temperature being extremely low. Wave period and wave height at Port Nolloth and Lamberts Bay represented the largest influence on temperature variation. This was still low with R^2 values between 6% - 8%.  In Gaansbaai wave height had a 9% influence on temperature, this being the largest value recorded.
+
+## MUR:
+
+Upon examining the relationship between the MUR SST dataset and each of the environmental factors it was found that wave height and wave period of each of the sites had the greatest influence on temperature variation compared to any of the other variables. Similarly to the AVHRR dataset,  Gaansbaai is largely influenced by wave height as indicated by R^2 value of 10%. Stillbaai and Seapoint also indicated that wave height had a 7% and 6% influence on temperature respectively. Muizenberg however, was the only site present where wave height had a 0% influence on temperature.
+
+## CMC:
+
+In the CMC SST dataset it was seen that wave height was the main factor influencing temperature at these sites. Gansbaai represented a R^2 value of 12% which was the highest value for each of the variables within this dataset. Each of the other environmental variables appeared to have a minor influence on the temperature for each of the sites ranging between 0% - 4%
+
+## K10:
+
+When comparing the relationship between SST of the K10 dataset and the environmental variables it was evident that Gaansbaai represented the largest R^2 value indicating a 7% influence of wave height on temperature. Wind direction exhibited the largest impact of variation, representing AN R^2 value ranging from 0 – 4%.
+
+
+
+
+
+
 ## Wind Rose diagram
 
 
@@ -248,7 +295,7 @@ knitr::kable(SACTN_15_predom_R2, digits = 3, caption = "R^2 and p-values for the
 
 ## Discussion
 
-This study aimed to investigate how environmental factors wind and wave action influenced coastal seawater temperature variation along the South African coastline. Because seawater temperature is known to have large influences on species distributions (Bolton 2010; Smit et al. 2013), it is important to understand not only how temperatures vary across the coastline, but the factors driving these variations as well. Here, I confirmed that there were statistically significant differences in SSTs between 18 sites along the coastline of South Africa, with temperatures differing between coasts, and across sites along the same coasts. Overall, sites along the west coast had lower temperatures than those along the south and east coasts. I found that the east coast had overall little variation in temperatures between sites, whereas the south coast varied more frequently (Schlegel and Smit 2016).
+This study aimed to investigate how environmental factors such as wind and wave action influenced coastal seawater temperature variation along the South African coastline. Because seawater temperature is known to have large influences on species distributions (Bolton 2010; Smit et al. 2013), it is important to understand not only how temperatures vary across the coastline, but the factors driving these variations as well. Here, I confirmed that there were statistically significant differences in SSTs between 18 sites along the coastline of South Africa, with temperatures differing between coasts, and across sites along the same coasts. Overall, sites along the west coast had lower temperatures than those along the south and east coasts. I found that the east coast had overall little variation in temperatures between sites, whereas the south coast varied more frequently (Schlegel and Smit 2016).
 
 My results confirmed that there were significant differences in temperatures between sites along the coastline, annually and seasonally, but did not provide evidence for which factors were driving these. Across each of the 18 sites that I assessed, I found that wind and wave action did not significantly influence SST. Variances in temperature between sites at different locations along the coastline were therefore not caused by variations in wind or wave action, suggesting that other factors were responsible for the observed patterns of temperature variation. These findings were consistent across six different datasets from various sources, with each of these providing no evidence of a relationship between wind or wave action and the SST of a site. However, these consisted of a combination of satellite and thermometer data, which varied in their measurements and time series.
 
@@ -299,7 +346,6 @@ Müller, R., Laepple, T., Bartsch, I., & Wiencke, C. (2009). Impact of oceanic w
 Pearce, A., Faskel, F., & Hyndes, G. (2006). Nearshore sea temperature variability off Rottnest Island (Western Australia) derived from satellite data. International Journal of Remote Sensing, 27(12), 2503-2518.
 
 Reason, C. J. C., & Mulenga, H. (1999). Relationships between South African rainfall and SST anomalies in the southwest Indian Ocean. International Journal of Climatology: A Journal of the Royal Meteorological Society, 19(15), 1651-1673.
-
 
 Rouault M, Mead A. 2011. Trends in nearshore sea surface temperature and circulatory systems. In: James N, Hermes J (eds), Insights into impacts of climate change on the South African marine and coastal environment. Pretoria: South African Environmental Observation Network (SAEON). Pp 69–76.
 
