@@ -362,8 +362,7 @@ final_map_combined_A
 
 # pdf("figures/final_map_combined_A_new.pdf", width = 8, height = 5, pointsize = 6) # Set PDF dimensions
 
-ggsave(plot = final_map_combined_A, filename = "figures/final_combined_plot.pdf")
-
+# ggsave(plot = final_map_combined_A, filename = "figures/final_combined_plot.pdf")
 ```
 
 The function droplevels is used here to drop unused levels from the factor such as the length column. The unique function is then used to determine the amount sites found within this cluster:
@@ -555,8 +554,8 @@ combined_plot <- ggarrange(SACTN_clust_1_plot1, SACTN_clust_2_plot1,
                            SACTN_clust_5_plot1, SACTN_clust_6_plot1)
 combined_plot
 
-ggsave(plot = combined_plot, filename = "figures/combined_plot.pdf")
-ggsave(plot = combined_plot, filename = "figures/combined_plot_1.png")
+# ggsave(plot = combined_plot, filename = "figures/combined_plot.pdf")
+# ggsave(plot = combined_plot, filename = "figures/combined_plot_1.png")
 ```
 
 Temperatures were not uniformly distributed across our four clusters produced, with each set of sites having unique patterns of temperature variation. In cluster 1, which includes Humburg, Eastern  Beach and Orient Beach, we found that temperature varied from approximately 13 ºC to 22  ºC. Within this cluster of sites, we found that Hamburg had the highest maximum temperatures and the lowest minimum temperatures between the three sites. Orient  Beach had the lowest range of temperature variability and it produced a comparatively short box plot. Orient Beach and Eastern Beach had relatively similar ranges and distributions of temperatures as evident by their bixplots nearly overlapping completely. 
@@ -598,8 +597,8 @@ clust_plot2 <- function(df){
 ggsave(plot = SACTN_clust_1_plot2, filename = "figures/SACTN_clust_1_plot2.pdf")
 ggsave(plot = SACTN_clust_2_plot2, filename = "figures/SACTN_clust_2_plot2.pdf")
 ggsave(plot = SACTN_clust_3_plot2, filename = "figures/SACTN_clust_3_plot2.pdf")
-ggsave(plot = SACTN_clust_4_plot2, filename = "figures/SACTN_clust_4_plot2.pdf")
-ggsave(plot = SACTN_clust_5_plot2, filename = "figures/SACTN_clust_5_plot2.pdf")
+ggsave(plot = SACTN_clust_4_plot2, filename= "figures/SACTN_clust_4_plot2.pdf")
+ggsave(plot = SACTN_clust_5_plot2, filename = "figures/SACTN_clust_5_plot2.pdf") 
 ggsave(plot = SACTN_clust_6_plot2, filename = "figures/SACTN_clust_6_plot2.pdf")
 ```
 
@@ -768,7 +767,7 @@ wave_daily <- wave_data %>%
             hs_circ = mean.circular(circular(hs, units = "degrees")),
             tp_circ = mean.circular(circular(tp, units = "degrees"))) #%>% 
   # mutate(dir_head = ,
-  #        dirw_head = )
+  #        dirw_head = )g
 ```
 
 Here we are splitting the daily wave data into depths of 7m and 15m respectivley
@@ -947,11 +946,11 @@ SACTN_7_R2 <- SACTN_daily_clusters_7a %>%
 SACTN_15_R2 <- SACTN_daily_clusters_15a %>% 
   temp_wave_R2_()
 
-# These data are best represented with a table
-knitr::kable(SACTN_7_R2, digits = 3, caption = "R^2 and p-values for the relationship between wave/wind variables and SACTN temperature at 7m.")
+save(SACTN_7_R2, file = "data/SACTN_7_R2.RData")
+save(SACTN_15_R2, file = "data/SACTN_15_R2.RData")
 
-# These data are best represented with a table
-knitr::kable(SACTN_15_R2, digits = 3, caption = "R^2 and p-values for the relationship between wave/wind variables and SACTN temperature at 15m.")
+# write.csv(SACTN_7_R2,file = "data/SACTN_7_R2.csv")
+# write.csv(SACTN_15_R2,file = "data/SACTN_15_R2.csv")
 
 # box_scatter_7m <- ggplot(data = SACTN_7_R2, aes(x = Variable, y = "R^2")) +
 #   geom_boxplot(outlier.colour = NA) +
@@ -1274,15 +1273,13 @@ AVHRR_temp_7_R2 <- AVHRR_temp_7%>%
   temp_wave_R2_try1()
 AVHRR_temp_15_R2 <- AVHRR_temp_15 %>% 
   temp_wave_R2_try1()
-# These data are best represented with a table
-knitr::kable(AVHRR_temp_7_R2, digits = 3, caption = "R^2 and p-values for the relationship between wave/wind variables and AVHRR temperature at 7m.")
 
-# These data are best represented with a table
-knitr::kable(AVHRR_temp_15_R2, digits = 3, caption = "R^2 and p-values for the relationship between wave/wind variables and AVHRR temperature at 15m.")
 
 save(AVHRR_temp_7_R2, file = "data/AVHRR_temp_7_R2.RData")
 save(AVHRR_temp_15_R2, file = "data/AVHRR_temp_15_R2.RData")
 
+# write.csv(AVHRR_temp_7_R2,file = "data/AVHRR_temp_7_R2.csv")
+# write.csv(AVHRR_temp_15_R2,file = "data/AVHRR_temp_15_R2.csv")
 ``` 
 
 # MUR satellite data
@@ -1330,8 +1327,6 @@ MUR_data$date <- (ymd(MUR_data$date))
 MUR_data <- MUR_data %>% 
   rename(temp = med05)
 # list.file(path = "data/MUR", pattern = "csv")
-
-
 ```
 
 Matching in situ sites with the MUR data sites
@@ -1422,14 +1417,17 @@ MUR_7_R2 <- MUR_7 %>%
 MUR_15_R2 <- MUR_15 %>% 
   temp_wave_R2_try1()
 
-# These data are best represented with a table
-knitr::kable(MUR_7_R2, digits = 3, caption = "R^2 and p-values for the relationship between wave/wind variables and MUR temperature at 7m.")
-
-# These data are best represented with a table
-knitr::kable(MUR_15_R2, digits = 3, caption = "R^2 and p-values for the relationship between wave/wind variables and MUR temperature at 15m.")
-
 save(MUR_7_R2, file = "data/MUR_7_R2.RData")
 save(MUR_15_R2, file = "data/MUR_15_R2.RData")
+
+# # These data are best represented with a table
+# knitr::kable(MUR_7_R2, digits = 3, caption = "R^2 and p-values for the relationship between wave/wind variables and MUR temperature at 7m.")
+# 
+# # These data are best represented with a table
+# knitr::kable(MUR_15_R2, digits = 3, caption = "R^2 and p-values for the relationship between wave/wind variables and MUR temperature at 15m.")
+# 
+# write.csv(MUR_7_R2,file = "data/MUR_7_R2.csv")
+# write.csv(MUR_15_R2,file = "data/MUR_15_R2.csv")
 ```
 
 # CMC data
@@ -1561,14 +1559,17 @@ CMC_7_R2 <- CMC_7 %>%
 CMC_15_R2 <- CMC_7 %>% 
   temp_wave_R2_try2()
 
-# These data are best represented with a table
-knitr::kable(CMC_7_R2, digits = 3, caption = "R^2 and p-values for the relationship between wave/wind variables and CMC temperature at 7m.")
-
-# These data are best represented with a table
-knitr::kable(CMC_15_R2, digits = 3, caption = "R^2 and p-values for the relationship between wave/wind variables and CMC temperature at 15m.")
-
 save(CMC_7_R2, file = "data/CMC_7_R2.RData")
 save(CMC_15_R2, file = "data/CMC_15_R2.RData")
+
+# # These data are best represented with a table
+# knitr::kable(CMC_7_R2, digits = 3, caption = "R^2 and p-values for the relationship between wave/wind variables and CMC temperature at 7m.")
+# 
+# # These data are best represented with a table
+# knitr::kable(CMC_15_R2, digits = 3, caption = "R^2 and p-values for the relationship between wave/wind variables and CMC temperature at 15m.")
+# 
+# write.csv(CMC_7_R2,file = "data/CMC_7_R2.csv")
+# write.csv(CMC_15_R2,file = "data/CMC_15_R2.csv")
 ```
 
 # K10 data
@@ -1675,15 +1676,17 @@ K10_7_R2 <- K10_7 %>%
 K10_15_R2 <- K10_15 %>% 
   temp_wave_R2_try1()
 
-
-# These data are best represented with a table
-knitr::kable(K10_7_R2, digits = 3, caption = "R^2 and p-values for the relationship between wave/wind variables and K10 temperature at 7m.")
-
-# These data are best represented with a table
-knitr::kable(K10_15_R2, digits = 3, caption = "R^2 and p-values for the relationship between wave/wind variables and K10 temperature at 15m.")
-
 save(K10_7_R2, file = "data/K10_7_R2.RData")
 save(K10_15_R2, file = "data/K10_15_R2.RData")
+
+# These data are best represented with a table
+# knitr::kable(K10_7_R2, digits = 3, caption = "R^2 and p-values for the relationship between wave/wind variables and K10 temperature at 7m.")
+# 
+# # These data are best represented with a table
+# knitr::kable(K10_15_R2, digits = 3, caption = "R^2 and p-values for the relationship between wave/wind variables and K10 temperature at 15m.")
+# 
+# write.csv(K10_7_R2,file = "data/K10_7_R2.csv")
+# write.csv(K10_15_R2,file = "data/K10_15_R2.csv")
 ```
 
 ## Wave and Wind rose diagram:
