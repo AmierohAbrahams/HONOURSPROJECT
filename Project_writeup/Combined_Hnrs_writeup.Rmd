@@ -175,35 +175,8 @@ knitr::include_graphics("figures/SACTN_clust_6_plot2.pdf")
 
 In the first cluster of sites, via the results of a one way ANOVA tests it was found that there was a significant differences in average temperatures between paired sites (F2 = 12.07, SS = 15.28, P < 0.001). These differences were present across season (F6 = 3.44, SS = 13.07, P < 0.002) but were not present yearly between individuals and paired sites (F2 = 1.38, SS = 1.75, P = 0.25). Similarly, paired sites within the second cluster also a significantly differed in average temperature (F2 = 166.84, SS = 418.6, P < 0.001). Conversely to first cluster however these differences were present yearly (F1 = 33.21, SS = 41.7, P < 0.001) and seasonally (F6 = 16.72, SS = 125.9, P < 0.02,) between individual and paired sites. In the third cluster of sites, ANOVA tests revealed that there were no significant differences in average temperatures between paired sites (F2 = 1.17, SS = 2.9, P = 0.31), but temperatures varied seasonally and yearly between individual sites (. In the fourth cluster there were again no significant difference of average temperatures between paired sites (F2 = 0.73, SS = 2.9, P = 0.48). Differences were also absent across seasons (F3 = 0.75, SS = 0.0042, P = 0.52) and years (F1 = 0.495, SS = 0.0009, P = 0.48) between both individual and paired sites. Sites within the fifth cluster were significantly different in average temperatures between paired sites (F2 = 77.10, SS = 196.7, P < 0.002), with these differences being present yearly (F1 = 172.80, SS = 220.4, P < 0.001) and seasonally (F3 = 77.10, SS = 29.92, P < 0.002) for both paired and individual sites. Finally, sites within the sixth cluster also significantly difference in average temperatures between paired sites, yearly and seasonally (F2 = 132.044, SS = 419.7, P <0.01).
 
-## The coefficient of determination 
-
-```{r, echo= FALSE, message=FALSE, warning=FALSE}
-library(knitr)
-
-SACTN_7_R2 <- load("~/Documents/HONOURSPROJECT/data/SACTN_15_R2.RData")
-SACTN_15_R2 <- load("~/Documents/HONOURSPROJECT/data/SACTN_15_R2.RData")
-AVHRR_temp_15_R2 <- load("~/Documents/HONOURSPROJECT/data/AVHRR_temp_15_R2.RData")
-AVHRR_temp_7_R2 <- load("~/Documents/HONOURSPROJECT/data/AVHRR_temp_7_R2.RData")
-MUR_7_R2 <- load("~/Documents/HONOURSPROJECT/data/MUR_7_R2.RData")
-MUR_15_R2 <- load("~/Documents/HONOURSPROJECT/data/MUR_15_R2.RData")
-CMC_7_R2 <- load("~/Documents/HONOURSPROJECT/data/CMC_7_R2.RData")
-CMC_15_R2 <- load("~/Documents/HONOURSPROJECT/data/CMC_15_R2.RData")
-K10_7_R2 <- load("~/Documents/HONOURSPROJECT/data/K10_7_R2.RData")
-K10_15_R2 <- load("~/Documents/HONOURSPROJECT/data/K10_15_R2.RData")
-
-kable(SACTN_7_R2, digits = 3, caption = "A table showing the impact of wind and wave action at a depth of 7 meters for the SACTN temperature dataset")
-kable(SACTN_15_R2, digits = 3, caption = "A table showing the impact of wind and wave action at a depth of 15 meters for the SACTN temperature dataset")
-knitr::kable(AVHRR_temp_7_R2, digits = 3, caption = "A table showing the impact of wind and wave action at a depth of 7 meters for the AVHRR temperature dataset")
-knitr::kable(AVHRR_temp_15_R2, digits = 3, caption = "A table showing the impact of wind and wave action at a depth of 15 meters for the AVHRR temperature dataset")
-knitr::kable(MUR_7_R2, digits = 3, caption = "A table showing the impact of wind and wave action at a depth of 7 meters for the MUR temperature dataset")
-knitr::kable(MUR_15_R2, digits = 3, caption = "A table showing the impact of wind and wave action at a depth of 15 meters for the MUR temperature dataset")
-knitr::kable(CMC_7_R2, digits = 3, caption = "A table showing the impact of wind and wave action at a depth of 7 meters for the CMC temperature dataset")
-knitr::kable(CMC_15_R2, digits = 3, caption = "A table showing the impact of wind and wave action at a depth of 15 meters for the CMC temperature dataset")
-knitr::kable(K10_7_R2, digits = 3, caption = "A table showing the impact of wind and wave action at a depth of 7 meters for the K10 temperature dataset")
-knitr::kable(K10_15_R2, digits = 3, caption = "A table showing the impact of wind and wave action at a depth of 15 meters for the K10 temperature dataset")
-```
-
-# The impact of wind and wave action on temperature at a depth of 7meters
+# The coefficient of determination 
+## The impact of wind and wave action on temperature at a depth of 7meters
 
 ## SACTN:
 The coeffcient of determination was calculated to determine the relationship between temperature and several variables including wind direction and speed as well as wave  height, period, direction and speed, for all 18 sites.  The results showed little variation in environmental factors and temperature for each of the sites. Wind and wave direction influenced temperature at 0 – 3%.  The most significant relationships were found in Muizenberg, Kalk Bay and Mossel Bay where the R^2 values indicated that wave period had a 6-7% influence on temperature.
@@ -254,6 +227,9 @@ When comparing the relationship between SST of the K10 dataset and the environme
 
 ## The impact of predominant wind and wave action on seawater temperature
 
+```{r}
+knitr::include_graphics("figures/predominant_ww.pdf")
+```
 
 
 ## Discussion
@@ -334,10 +310,3 @@ Wernberg, T., Russell, B. D., Moore, P. J., Ling, S. D., Smale, D. A., Campbell,
 Wethey, D. S., Woodin, S. A., Hilbish, T. J., Jones, S. J., Lima, F. P., & Brannock, P. M. (2011). Response of intertidal populations to climate: effects of extreme events versus long term change. Journal of Experimental Marine Biology and Ecology, 400(1-2), 132-144.
 
 Zainuddin, M., Kiyofuji, H., Saitoh, K., & Saitoh, S. I. (2006). Using multi-sensor satellite remote sensing and catch data to detect ocean hot spots for albacore (Thunnus alalunga) in the northwestern North Pacific. Deep Sea Research Part II: Topical Studies in Oceanography, 53(3-4), 419-431.
-
-
-
-
-
-
-

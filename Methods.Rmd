@@ -1807,6 +1807,11 @@ test_SP <- wave_daily %>%
  filter(site == "Sea Point")
 windrose(x = test_SP$dir_circ, y = test_SP$hs_mean, main = "Leisure Bay\nWave Rose")
 windrose(x = test_SP$dirw_circ, y = test_SP$spw_mean, main = "Leisure Bay\nWind Rose")
+
+combined_plot_wind <- ggarrange(SACTN_clust_1_plot1, SACTN_clust_2_plot1,
+                           SACTN_clust_3_plot1, SACTN_clust_4_plot1, 
+                           SACTN_clust_5_plot1, SACTN_clust_6_plot1)
+combined_plot
 ```
 
 Calculating the mean and sd of each of the variables. Then calculating anomalies. The funs function, funs(), is used here as it provides a flexible way to generate a named list of functions for input to other functions such as the mean and sd:
@@ -1815,7 +1820,7 @@ Calculating the mean and sd of each of the variables. Then calculating anomalies
 wave_daily <- wave_data %>%
   mutate(date = as.Date(date)) %>%
   group_by(site, num, depth, date) %>%
-  summarise_all(funs(mean = mean, sd = sd), na.rm = T) %>%
+  summarise_all(funs(mean = mean), na.rm = T) %>%
   ungroup() #%>% 
   # left_join(wave_daily_dir)
 
@@ -1853,7 +1858,7 @@ wave_annually_dir <- wave_data %>%
 wave_annually <- wave_data %>%
   mutate(date = lubridate::year(date)) %>%
   group_by(site, num, depth, date) %>%
-  summarise_all(funs(mean = mean, sd = sd), na.rm = TRUE) %>%
+  summarise_all(funs(mean = mean), na.rm = TRUE) %>%
   ungroup() %>%
   left_join(wave_annually_dir) %>% 
   filter(date != 2000)
@@ -1949,8 +1954,8 @@ temp_wave_compare <- function(df){
     facet_grid(variable~index, scales = "free_y")
 }
 
-temp_wave_compare(SACTN_daily_clusters_7)
-temp_wave_compare(SACTN_daily_clusters_15)
+# temp_wave_compare(SACTN_daily_clusters_7)
+# temp_wave_compare(SACTN_daily_clusters_15)
 ```
 
 ### Comparing waves and temperatures
@@ -2051,23 +2056,27 @@ SACTN_7_predom_R2 <- SACTN_daily_clusters_7 %>%
 SACTN_15_predom_R2 <- SACTN_daily_clusters_15 %>% 
   temp_wave_predom_R2()
 
-SACTN_7_predom_R2_anom <- SACTN_daily_clusters_7_anom %>% 
-  temp_wave_predom_R2()
-
-SACTN_15_predom_R2_predom_anom <- SACTN_daily_clusters_15_anom %>% 
-  temp_wave_predom_R2()
-
-# These data are best represented with a table
-knitr::kable(SACTN_7_predom_R2, digits = 3, caption = "R^2 and p-values for the relationship between wave/wind variables and SACTN temperature at 7m.")
-
-# These data are best represented with a table
-knitr::kable(SACTN_15_predom_R2, digits = 3, caption = "R^2 and p-values for the relationship between wave/wind variables and SACTN temperature at 15m.")
+# SACTN_7_predom_R2_anom <- SACTN_daily_clusters_7_anom %>% 
+#   temp_wave_predom_R2()
+# 
+# SACTN_15_predom_R2_predom_anom <- SACTN_daily_clusters_15_anom %>% 
+#   temp_wave_predom_R2()
 ```
 
+# Plotting the impact of predominant wind and wave direction on temperature.
 
 
+```{r}
+predominant_ww <- ggplot(data = SACTN_7_predom_R2, aes(x = variable, y = adj.r.squared)) +
+  geom_boxplot(aes(colour = variable)) +
+  facet_wrap(~site) +
+  labs(y = "R^2") +
+  theme(axis.text.x = element_text(angle = 15)) +
+  theme_bw()
+predominant_ww
 
-
+ggsave(plot = predominant_ww, filename = "figures/predominant_ww.pdf")
+```
 
 
 
