@@ -1720,98 +1720,98 @@ wave_daily <- wave_data %>%
 
 test_H <- wave_daily %>% 
  filter(site == "Hamburg")
-windrose(x = test_H$dir_circ, y = test_H$hs_mean, main = "Hamburg\nWave Rose")
-windrose(x = test_H$dirw_circ, y = test_H$spw_mean, main = "Hamburg\nWind Rose")
+test_H_wave <- windrose(x = test_H$dir_circ, y = test_H$hs_mean, main = "Hamburg\nWave Rose")
+test_H_wind <- windrose(x = test_H$dirw_circ, y = test_H$spw_mean, main = "Hamburg\nWind Rose")
 
 test_EB <- wave_daily %>% 
  filter(site == "Eastern Beach")
-windrose(x = test_EB$dir_circ, y = test_EB$hs_mean, main = "Eastern Beach\nWave Rose")
-windrose(x = test_EB$dirw_circ, y = test_EB$spw_mean, main = "Eastern Beach\nWind Rose")
+test_EB_wave <- windrose(x = test_EB$dir_circ, y = test_EB$hs_mean, main = "Eastern Beach\nWave Rose")
+test_EB_wind <- windrose(x = test_EB$dirw_circ, y = test_EB$spw_mean, main = "Eastern Beach\nWind Rose")
 
 test_OB <- wave_daily %>% 
  filter(site == "Orient Beach")
-windrose(x = test_OB$dir_circ, y = test_OB$hs_mean, main = "Orient Beach\nWave Rose")
-windrose(x = test_OB$dirw_circ, y = test_OB$spw_mean, main = "Orient Beach\nWind Rose")
+test_OB_wave <- windrose(x = test_OB$dir_circ, y = test_OB$hs_mean, main = "Orient Beach\nWave Rose")
+test_OB_wind <- windrose(x = test_OB$dirw_circ, y = test_OB$spw_mean, main = "Orient Beach\nWind Rose")
 
 test_S <- wave_daily %>% 
  filter(site == "Stilbaai")
-windrose(x = test_S$dir_circ, y = test_S$hs_mean, main = "Stilbaai\nWave Rose")
-windrose(x = test_S$dirw_circ, y = test_S$spw_mean, main = "Stilbaai\nWind Rose")
+test_S_wave <- windrose(x = test_S$dir_circ, y = test_S$hs_mean, main = "Stilbaai\nWave Rose")
+test_S_wind <- windrose(x = test_S$dirw_circ, y = test_S$spw_mean, main = "Stilbaai\nWind Rose")
 
 test_PN <- wave_daily %>% 
  filter(site == "Port Nolloth")
-windrose(x = test_PN$dir_circ, y = test_PN$hs_mean, main = "Port Nolloth\nWave Rose")
-windrose(x = test_PN$dirw_circ, y = test_PN$spw_mean, main = "Port Nolloth\nWind Rose")
+test_PN_wave <- windrose(x = test_PN$dir_circ, y = test_PN$hs_mean, main = "Port Nolloth\nWave Rose")
+test_PN_wind <- windrose(x = test_PN$dirw_circ, y = test_PN$spw_mean, main = "Port Nolloth\nWind Rose")
 
 test_M <- wave_daily %>% 
  filter(site == "Muizenberg")
-windrose(x = test_M$dir_circ, y = test_M$hs_mean, main = "Muizenberg\nWave Rose")
-windrose(x = test_M$dirw_circ, y = test_M$spw_mean, main = "Muizenberg\nWind Rose")
+test_M_wave <- windrose(x = test_M$dir_circ, y = test_M$hs_mean, main = "Muizenberg\nWave Rose")
+test_M_wind <- windrose(x = test_M$dirw_circ, y = test_M$spw_mean, main = "Muizenberg\nWind Rose")
 
 test_KB <- wave_daily %>% 
  filter(site == "Kalk Bay")
-windrose(x = test_KB$dir_circ, y = test_KB$hs_mean, main = "Kalk Bay\nWave Rose")
-windrose(x = test_KB$dirw_circ, y = test_KB$spw_mean, main = "Kalk Bay\nWind Rose")
+test_KB_wave <- windrose(x = test_KB$dir_circ, y = test_KB$hs_mean, main = "Kalk Bay\nWave Rose")
+test_KB_wind <- windrose(x = test_KB$dirw_circ, y = test_KB$spw_mean, main = "Kalk Bay\nWind Rose")
 
 test_G <- wave_daily %>% 
  filter(site == "Gansbaai")
-windrose(x = test_G$dir_circ, y = test_G$hs_mean, main = "Gansbaai\nWave Rose")
-windrose(x = test_G$dirw_circ, y = test_G$spw_mean, main = "Gansbaai\nWind Rose")
+test_G_wave <- windrose(x = test_G$dir_circ, y = test_G$hs_mean, main = "Gansbaai\nWave Rose")
+test_G_wind <- windrose(x = test_G$dirw_circ, y = test_G$spw_mean, main = "Gansbaai\nWind Rose")
 
 test_GB <- wave_daily %>% 
  filter(site == "Gordons Bay")
-windrose(x = test_GB$dir_circ, y = test_GB$hs_mean, main = "Gordons Bay \nWave Rose")
-windrose(x = test_GB$dirw_circ, y = test_GB$spw_mean, main = "Gordons Bay\nWind Rose")
+test_GB_wave <- windrose(x = test_GB$dir_circ, y = test_GB$hs_mean, main = "Gordons Bay \nWave Rose")
+test_GB_wind <- windrose(x = test_GB$dirw_circ, y = test_GB$spw_mean, main = "Gordons Bay\nWind Rose")
 
 test_LsB <- wave_daily %>% 
  filter(site == "Lamberts Bay")
-windrose(x = test_LsB$dir_circ, y = test_LsB$hs_mean, main = "Lamberts Bay\nWave Rose")
-windrose(x = test_LsB$dirw_circ, y = test_LsB$spw_mean, main = "Lamberts Bay\nWind Rose")
+test_LsB_wave <- windrose(x = test_LsB$dir_circ, y = test_LsB$hs_mean, main = "Lamberts Bay\nWave Rose")
+test_LsB_wind <- windrose(x = test_LsB$dirw_circ, y = test_LsB$spw_mean, main = "Lamberts Bay\nWind Rose")
 
 test_PE <- wave_daily %>% 
  filter(site == "Port Edward")
-windrose(x = test_PE$dir_circ, y = test_PE$hs_mean, main = "Port Edward\nWave Rose")
-windrose(x = test_PE$dirw_circ, y = test_PE$spw_mean, main = "Port Edward\nWind Rose")
+test_PE_wave <- windrose(x = test_PE$dir_circ, y = test_PE$hs_mean, main = "Port Edward\nWave Rose")
+test_PE_wind <- windrose(x = test_PE$dirw_circ, y = test_PE$spw_mean, main = "Port Edward\nWind Rose")
 
 test_B <- wave_daily %>% 
  filter(site == "Bordjies")
-windrose(x = test_B$dir_circ, y = test_B$hs_mean, main = "Bordjies\nWave Rose")
-windrose(x = test_B$dirw_circ, y = test_B$spw_mean, main = "Bordjies\nWind Rose")
+test_B_wave <- windrose(x = test_B$dir_circ, y = test_B$hs_mean, main = "Bordjies\nWave Rose")
+test_B_wind <- windrose(x = test_B$dirw_circ, y = test_B$spw_mean, main = "Bordjies\nWind Rose")
 
 test_MB <- wave_daily %>% 
  filter(site == "Mossel Bay")
-windrose(x = test_MB$dir_circ, y = test_MB$hs_mean, main = "Mossel Bay\nWave Rose")
-windrose(x = test_MB$dirw_circ, y = test_MB$spw_mean, main = "Mossel Bay\nWind Rose")
+test_MB_wave <- windrose(x = test_MB$dir_circ, y = test_MB$hs_mean, main = "Mossel Bay\nWave Rose")
+test_MB_wind <- windrose(x = test_MB$dirw_circ, y = test_MB$spw_mean, main = "Mossel Bay\nWind Rose")
 
 test_K <- wave_daily %>% 
  filter(site == "Knysna")
-windrose(x = test_K$dir_circ, y = test_K$hs_mean, main = "Knysna\nWave Rose")
-windrose(x = test_K$dirw_circ, y = test_K$spw_mean, main = "Knysna\nWind Rose")
+test_K_wave <- windrose(x = test_K$dir_circ, y = test_K$hs_mean, main = "Knysna\nWave Rose")
+test_K_wind <- windrose(x = test_K$dirw_circ, y = test_K$spw_mean, main = "Knysna\nWind Rose")
 
 test_SB <- wave_daily %>% 
  filter(site == "Saldanha Bay")
-windrose(x = test_SB$dir_circ, y = test_SB$hs_mean, main = "Saldanha Bay\nWave Rose")
-windrose(x = test_SB$dirw_circ, y = test_SB$spw_mean, main = "Saldanha Bay\nWind Rose")
+test_SB_wave <- windrose(x = test_SB$dir_circ, y = test_SB$hs_mean, main = "Saldanha Bay\nWave Rose")
+test_SB_wind <- windrose(x = test_SB$dirw_circ, y = test_SB$spw_mean, main = "Saldanha Bay\nWind Rose")
 
 test_TS <- wave_daily %>% 
  filter(site == "T.O. Strand")
-windrose(x = test_TS$dir_circ, y = test_TS$hs_mean, main = "T.O. Strand\nWave Rose")
-windrose(x = test_TS$dirw_circ, y = test_TS$spw_mean, main = "T.O. Strand\nWind Rose")
+test_TS_wave <- windrose(x = test_TS$dir_circ, y = test_TS$hs_mean, main = "T.O. Strand\nWave Rose")
+test_TS_wind <- windrose(x = test_TS$dirw_circ, y = test_TS$spw_mean, main = "T.O. Strand\nWind Rose")
 
 test_LB <- wave_daily %>% 
  filter(site == "Leisure Bay")
-windrose(x = test_LB$dir_circ, y = test_LB$hs_mean, main = "Leisure Bay\nWave Rose")
-windrose(x = test_LB$dirw_circ, y = test_LB$spw_mean, main = "Leisure Bay\nWind Rose")
+test_LB_wave <- windrose(x = test_LB$dir_circ, y = test_LB$hs_mean, main = "Leisure Bay\nWave Rose")
+test_LB_wind <- windrose(x = test_LB$dirw_circ, y = test_LB$spw_mean, main = "Leisure Bay\nWind Rose")
 
 test_SP <- wave_daily %>% 
  filter(site == "Sea Point")
-windrose(x = test_SP$dir_circ, y = test_SP$hs_mean, main = "Leisure Bay\nWave Rose")
-windrose(x = test_SP$dirw_circ, y = test_SP$spw_mean, main = "Leisure Bay\nWind Rose")
+test_SP_wave <- windrose(x = test_SP$dir_circ, y = test_SP$hs_mean, main = "Leisure Bay\nWave Rose")
+test_SP_wind <- windrose(x = test_SP$dirw_circ, y = test_SP$spw_mean, main = "Leisure Bay\nWind Rose")
 
-combined_plot_wind <- ggarrange(SACTN_clust_1_plot1, SACTN_clust_2_plot1,
-                           SACTN_clust_3_plot1, SACTN_clust_4_plot1, 
-                           SACTN_clust_5_plot1, SACTN_clust_6_plot1)
-combined_plot
+combined_plot_wind <- ggarrange(test_SP_wind,test_LB_wind,test_TS_wind, test_SB_wind, test_K_wind, test_MB_wind,
+                                test_B_wind, test_PE_wind, test_LsB_wind, test_GB_wind, test_G_wind, test_KB_wind,
+                                test_M_wind, test_PN_wind, test_S_wind, test_OB_wind, test_EB_wind, test_H_wind)
+combined_plot_wind
 ```
 
 Calculating the mean and sd of each of the variables. Then calculating anomalies. The funs function, funs(), is used here as it provides a flexible way to generate a named list of functions for input to other functions such as the mean and sd:
