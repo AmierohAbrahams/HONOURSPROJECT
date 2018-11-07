@@ -205,11 +205,11 @@ When comparing the impact of various environmental factors on temperature variat
 
 ## The impact of predominant wind and wave action on seawater temperature
 
-```{r}
-knitr::include_graphics("figures/predominant_ww.pdf")
-knitr::include_graphics("figures/predominant15_ww.pdf")
-```
+The results indicate that wind speed, wind height, wind and wave direction as well as wave period had no significant impact on temperature variation at the various sites along the coastline. Eastern Beach however shows that wave period and wave height appear to have the largest effect on temperature variation. Hamburg and Gordons show that wave direction have a 4% influence on temperature variation. Muizenberg, representing the largest value of 5% influence of wave height on temperature variation. Predominant wind and wave direction have no significant impact on the seawater temperature variation along the coast.
 
+```{r  echo= FALSE, message=FALSE, warning=FALSE, fig.cap="Figure 5: Boxplot representing the adjusted r^2 value each of the environmental variables at the most predominant wave and wind direction for each of the sites.", fig.height=8, fig.width=12, fig.pos="H"}
+knitr::include_graphics("figures/predominant_ww.pdf")
+```
 
 ## Discussion
 
