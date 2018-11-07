@@ -4,32 +4,31 @@ author: "Amieroh Abrahams"
 date: "11 August 2018"
 output:
   pdf_document:
-    toc: yes
-    toc_depth: 4
+    fig_caption: yes
+    fig_height: 6.5
+    fig_width: 6.5
     highlight: default
-    keep_tex: yes
-    latex_engine: xelatex
   html_document:
     fig_caption: yes
+    fig_height: 7
     fig_retina: 2
     fig_width: 7
     highlight: espresso
-    theme: sandstone
+    theme: cerulean
     toc_float: no
+  md_document:
+    variant: markdown_github
   word_document:
     fig_caption: yes
     fig_height: 7
     fig_width: 7
     highlight: zenburn
-    toc: no
-fontsize: 12pt
-geometry: margin=1in
-language: Australian
+toc: yes
 mainfont: PT Serif
 monofont: PT Mono
-papersize: A4
+language: Australian
 sansfont: PT Sans
-tables: yes
+fontsize: 12pt
 ---
 \newpage
 ## Plagiarism Declaration
@@ -177,7 +176,7 @@ knitr::include_graphics("figures/SACTN_clust_6_plot2.pdf")
 In the first cluster of sites, via the results of a one way ANOVA tests it was found that there was a significant differences in average temperatures between paired sites (F2 = 12.07, SS = 15.28, P < 0.001). These differences were present across season (F6 = 3.44, SS = 13.07, P < 0.002) but were not present yearly between individuals and paired sites (F2 = 1.38, SS = 1.75, P = 0.25). Similarly, paired sites within the second cluster also a significantly differed in average temperature (F2 = 166.84, SS = 418.6, P < 0.001). Conversely to first cluster however these differences were present yearly (F1 = 33.21, SS = 41.7, P < 0.001) and seasonally (F6 = 16.72, SS = 125.9, P < 0.02,) between individual and paired sites. In the third cluster of sites, ANOVA tests revealed that there were no significant differences in average temperatures between paired sites (F2 = 1.17, SS = 2.9, P = 0.31), but temperatures varied seasonally and yearly between individual sites (. In the fourth cluster there were again no significant difference of average temperatures between paired sites (F2 = 0.73, SS = 2.9, P = 0.48). Differences were also absent across seasons (F3 = 0.75, SS = 0.0042, P = 0.52) and years (F1 = 0.495, SS = 0.0009, P = 0.48) between both individual and paired sites. Sites within the fifth cluster were significantly different in average temperatures between paired sites (F2 = 77.10, SS = 196.7, P < 0.002), with these differences being present yearly (F1 = 172.80, SS = 220.4, P < 0.001) and seasonally (F3 = 77.10, SS = 29.92, P < 0.002) for both paired and individual sites. Finally, sites within the sixth cluster also significantly difference in average temperatures between paired sites, yearly and seasonally (F2 = 132.044, SS = 419.7, P <0.01).
 
 # The coefficient of determination 
-## The impact of wind and wave action on temperature variation
+## The impact of wind and wave action on temperature
 
 ## SACTN:
 The coeffcient of determination was calculated to determine the relationship between temperature and several variables including wind direction and speed as well as wave  height, period, direction and speed, for all 18 sites.  The results showed little variation in environmental factors and temperature for each of the sites. Wind and wave direction influenced temperature at 0 – 3%.  The most significant relationships were found in Muizenberg, Kalk Bay and Mossel Bay where the R^2 values indicated that wave period had a 6-7% influence on temperature.
@@ -208,6 +207,7 @@ When comparing the impact of various environmental factors on temperature variat
 
 ```{r}
 knitr::include_graphics("figures/predominant_ww.pdf")
+knitr::include_graphics("figures/predominant15_ww.pdf")
 ```
 
 

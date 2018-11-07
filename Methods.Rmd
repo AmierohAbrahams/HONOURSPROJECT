@@ -2083,7 +2083,7 @@ predominant15_ww <- ggplot(data = SACTN_15_predom_R2, aes(x = variable, y = adj.
   theme_bw()
 predominant15_ww
 # ggsave(plot = predominant_ww, filename = "figures/predominant_ww.pdf")
- ggsave(plot = predominant15_ww, filename = "figures/predominant15_ww.pdf")
+# ggsave(plot = predominant15_ww, filename = "figures/predominant15_ww.pdf")
 ```
 
 
