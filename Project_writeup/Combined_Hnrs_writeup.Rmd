@@ -4,31 +4,32 @@ author: "Amieroh Abrahams"
 date: "11 August 2018"
 output:
   pdf_document:
-    fig_caption: yes
-    fig_height: 6.5
-    fig_width: 6.5
+    toc: yes
+    toc_depth: 4
     highlight: default
+    keep_tex: yes
+    latex_engine: xelatex
   html_document:
     fig_caption: yes
-    fig_height: 7
     fig_retina: 2
     fig_width: 7
     highlight: espresso
-    theme: cerulean
+    theme: sandstone
     toc_float: no
-  md_document:
-    variant: markdown_github
   word_document:
     fig_caption: yes
     fig_height: 7
     fig_width: 7
     highlight: zenburn
-toc: yes
+    toc: no
+fontsize: 12pt
+geometry: margin=1in
+language: Australian
 mainfont: PT Serif
 monofont: PT Mono
-language: Australian
+papersize: A4
 sansfont: PT Sans
-fontsize: 12pt
+tables: yes
 ---
 \newpage
 ## Plagiarism Declaration
@@ -176,7 +177,7 @@ knitr::include_graphics("figures/SACTN_clust_6_plot2.pdf")
 In the first cluster of sites, via the results of a one way ANOVA tests it was found that there was a significant differences in average temperatures between paired sites (F2 = 12.07, SS = 15.28, P < 0.001). These differences were present across season (F6 = 3.44, SS = 13.07, P < 0.002) but were not present yearly between individuals and paired sites (F2 = 1.38, SS = 1.75, P = 0.25). Similarly, paired sites within the second cluster also a significantly differed in average temperature (F2 = 166.84, SS = 418.6, P < 0.001). Conversely to first cluster however these differences were present yearly (F1 = 33.21, SS = 41.7, P < 0.001) and seasonally (F6 = 16.72, SS = 125.9, P < 0.02,) between individual and paired sites. In the third cluster of sites, ANOVA tests revealed that there were no significant differences in average temperatures between paired sites (F2 = 1.17, SS = 2.9, P = 0.31), but temperatures varied seasonally and yearly between individual sites (. In the fourth cluster there were again no significant difference of average temperatures between paired sites (F2 = 0.73, SS = 2.9, P = 0.48). Differences were also absent across seasons (F3 = 0.75, SS = 0.0042, P = 0.52) and years (F1 = 0.495, SS = 0.0009, P = 0.48) between both individual and paired sites. Sites within the fifth cluster were significantly different in average temperatures between paired sites (F2 = 77.10, SS = 196.7, P < 0.002), with these differences being present yearly (F1 = 172.80, SS = 220.4, P < 0.001) and seasonally (F3 = 77.10, SS = 29.92, P < 0.002) for both paired and individual sites. Finally, sites within the sixth cluster also significantly difference in average temperatures between paired sites, yearly and seasonally (F2 = 132.044, SS = 419.7, P <0.01).
 
 # The coefficient of determination 
-## The impact of wind and wave action on temperature at a depth of 7meters
+## The impact of wind and wave action on temperature variation
 
 ## SACTN:
 The coeffcient of determination was calculated to determine the relationship between temperature and several variables including wind direction and speed as well as wave  height, period, direction and speed, for all 18 sites.  The results showed little variation in environmental factors and temperature for each of the sites. Wind and wave direction influenced temperature at 0 – 3%.  The most significant relationships were found in Muizenberg, Kalk Bay and Mossel Bay where the R^2 values indicated that wave period had a 6-7% influence on temperature.
@@ -195,29 +196,7 @@ The results indicated that wave as well as wind direction and wind speed showed 
 
 ## K10:
 
-When comparing the impact of various environmental factors on temperature variation for the K10 data, the results indicated that the each of the above-mentioned variables had no impact on the temperature variation at Hamburg.  The impact of wind direction on temperature is highest at Gansbaai, representing an R^2 value of 4%. Wave height still repersented the greatest influence on temperature occurring at these sites
-
-# The impact of wind and wave action on temperature at a depth of 15meters
-
-## SACTN:
-
-The coefficient of determination was calculated to determine the relationship between temperature and several variables including wind direction and speed as well as wave  height, period, direction and speed, for all 18 sites. The analyses indicated that there was no relationship present between the above-mentioned factors at Eastern Beach. Wave direction was seen to have no influence on temperature at any of the sites analysed as the R^2 values were at a constant 0%. Wind direction exhibited relationships between 0-4% across all sites, indicating that that factor did not significantly influence coastal temperature. The most significant relationships were found at the Muizenberg and Kalk Bay sites where the R^2 values indicated that wave period had an 8% and 7% influence on temperature respectively.  
-
-## AVHRR:
-
-The analyses indicated that a relationship existed between each of the environmental variables at Stilbaai with the intensity of these variables on temperature being extremely low. Wave period and wave height at Port Nolloth and Lamberts Bay represented the largest influence on temperature variation. This was still low with R^2 values between 6% - 8%.  In Gaansbaai wave height had a 9% influence on temperature, this being the largest value recorded.
-
-## MUR:
-
-Upon examining the relationship between the MUR SST dataset and each of the environmental factors it was found that wave height and wave period of each of the sites had the greatest influence on temperature variation compared to any of the other variables. Similarly to the AVHRR dataset,  Gaansbaai is largely influenced by wave height as indicated by R^2 value of 10%. Stillbaai and Seapoint also indicated that wave height had a 7% and 6% influence on temperature respectively. Muizenberg however, was the only site present where wave height had a 0% influence on temperature.
-
-## CMC:
-
-In the CMC SST dataset it was seen that wave height was the main factor influencing temperature at these sites. Gansbaai represented a R^2 value of 12% which was the highest value for each of the variables within this dataset. Each of the other environmental variables appeared to have a minor influence on the temperature for each of the sites ranging between 0% - 4%
-
-## K10:
-
-When comparing the relationship between SST of the K10 dataset and the environmental variables it was evident that Gaansbaai represented the largest R^2 value indicating a 7% influence of wave height on temperature. Wind direction exhibited the largest impact of variation, representing AN R^2 value ranging from 0 – 4%.
+When comparing the impact of various environmental factors on temperature variation for the K10 data, the results indicated that the each of the above-mentioned variables had no impact on the temperature variation at Hamburg.  The impact of wind direction on temperature is highest at Gansbaai, representing an R^2 value of 4%. Wave height still repersented the greatest influence on temperature occurring at these sites.
 
 ## Wind Rose diagram
 
