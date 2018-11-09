@@ -316,7 +316,7 @@ mapping_plot <- function(df, xy = "salmon"){
   mapping <- df %>% 
 ggplot(aes(x = lon, y = lat)) +
   geom_polygon(data = south_africa_coast, aes(group = group), fill = "grey70") +
-  coord_cartesian(xlim = c(12, 36), ylim = c(-38, -26)) +
+  coord_cartesian(xlim = c(12, 36), ylim = c(-32, -20)) +
   geom_path(data = sa_provinces, aes(group = group)) +
   geom_point(data = df, colour = xy)  +
   geom_label_repel(data =df, aes(x = lon, y = lat, label = site), 
@@ -349,7 +349,7 @@ ggplot(aes(x = lon, y = lat)) +
 }
 ```
 
-```{r run_fun2, include=TRUE}
+```{r run_fun2, fig.cap = "Maps showing closely related sites based on temperature variation at different regions along the coastline.", fig.height = , fig.width = 25}
 map_clus1 <- mapping_plot(df = site_coordinates1, xy = "salmon")
 map_clus2 <- mapping_plot(df = site_coordinates2, xy = "darkgoldenrod4")
 map_clus3 <- mapping_plot(df = site_coordinates3, xy = "springgreen4")
@@ -357,12 +357,10 @@ map_clus4 <- mapping_plot(df = site_coordinates4, xy= "lightskyblue")
 map_clus5 <- mapping_plot(df = site_coordinates5, xy= "steelblue3") 
 map_clus6 <- mapping_plot(df = site_coordinates6, xy= "mediumorchid1") 
 
-final_map_combined_A <- ggarrange(map_clus1, map_clus2, map_clus3, map_clus4, map_clus5, map_clus6)
+final_map_combined_A <- ggarrange(map_clus1, map_clus2, map_clus3, map_clus4, map_clus5, map_clus6, ncol = 2, nrow = 3)
 final_map_combined_A
 
-# pdf("figures/final_map_combined_A_new.pdf", width = 8, height = 5, pointsize = 6) # Set PDF dimensions
-
-# ggsave(plot = final_map_combined_A, filename = "figures/final_combined_plot.pdf")
+ggsave(plot = final_map_combined_A, filename = "figures/final_combined_plot.pdf")
 ```
 
 The function droplevels is used here to drop unused levels from the factor such as the length column. The unique function is then used to determine the amount sites found within this cluster:
@@ -534,14 +532,15 @@ clust_plot <- function(df) {
     ggplot(aes(x = index_pair)) +
     geom_boxplot(aes(y = temp, fill = temp_grp), alpha = 0.3) +
     scale_fill_manual(values = c("khaki4", "chartreuse3")) +
-    labs(x = "Paired Sites", y = "Temperature °C") +
+    labs(x = "Paired Sites", y = "Temperature (°C") +
     theme(legend.position="none") +
+    theme_bw()+
     theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
       return(plot1)
 }
 ```
 
-```{r run_fun4,  fig.cap = "Boxplots representing the different site locations along the South African coast represented by various temperature parameters. Temperature parameters include minimum, maximum and mean temperatures (°C). The Boxplots represent the minimum, 25th percentile, median and 75th percentile of the temperatures measured. The interquartile can be dedudced by the difference between the percentiles with the dots representing the outliers in the data.", fig.height = 8, fig.width = 12}
+```{r run_fun4,  fig.cap = "Boxplots representing the different site locations along the South African coast represented by various temperature parameters. Temperature parameters include minimum, maximum and mean temperatures (°C). The Boxplots represent the minimum, 25th percentile, median and 75th percentile of the temperatures measured. The interquartile can be dedudced by the difference between the percentiles with the dots representing the outliers in the data.", fig.height = , fig.width = 25}
 SACTN_clust_1_plot1 <- clust_plot(df = SACTN_clust_1_match)
 SACTN_clust_2_plot1 <- clust_plot(df = SACTN_clust_2_match)
 SACTN_clust_3_plot1 <- clust_plot(df = SACTN_clust_3_match)
@@ -554,7 +553,7 @@ combined_plot <- ggarrange(SACTN_clust_1_plot1, SACTN_clust_2_plot1,
                            SACTN_clust_5_plot1, SACTN_clust_6_plot1)
 combined_plot
 
-# ggsave(plot = combined_plot, filename = "figures/combined_plot.pdf")
+ggsave(plot = combined_plot, filename = "figures/combined_plot.pdf")
 # ggsave(plot = combined_plot, filename = "figures/combined_plot_1.png")
 ```
 
@@ -579,7 +578,7 @@ clust_plot2 <- function(df){
     ggplot(aes(x = year, y = temp_mean_month_year)) +
     geom_line(aes(group = index_pair, colour = index_pair), alpha = 0.7, show.legend = F) +
     geom_smooth(method = "gam", se = F, aes(colour = index_pair), show.legend = T)  +
-    labs(x = "Year", y = "Average temperature °C") +
+    labs(x = "Year", y = "Average temperature (°C)") +
     facet_wrap(~month) +
     theme_bw()
   return(plot2)
@@ -1720,7 +1719,7 @@ wave_daily <- wave_data %>%
 
 test_H <- wave_daily %>%
  filter(site == "Hamburg")
-windrose(x = test_H$dir_circ, y = test_H$hs_mean, main = "Hamburg\nWave Rose")
+windrose(x = test_H$dir_circ, y = test_H$hs_mean, main = "Hamburg\nWave Rose", bins = 12, cir.ind =  0.05, breaks = NULL, fill.col = "blue", rotation = 180)
 windrose(x = test_H$dirw_circ, y = test_H$spw_mean, main = "Hamburg\nWind Rose")
 # 
 test_EB <- wave_daily %>%
