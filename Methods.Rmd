@@ -682,17 +682,17 @@ Loading the wave data for the sites along the South African coast:
 
 ```{r run_fun8 load_files3, include = TRUE}
 # Wave sites are renamed as necesary to match SACTN site names
-betties_bay <- map_dfr(dir("data/wave_data/Betties Bay", 
-                           full.names = TRUE, pattern = "*.txt"), load_wave) %>% 
-  mutate(site = "Betty's Bay")
-bordjies <- map_dfr(dir("data/wave_data/Bordjies", 
+# betties_bay <- map_dfr(dir("data/wave_data/Betties Bay", 
+#                            full.names = TRUE, pattern = "*.txt"), load_wave) %>% 
+#   mutate(site = "Betty's Bay")
+bordjies <- map_dfr(dir("data/wave_data/Bordjies",
                         full.names = TRUE, pattern = "*.txt"), load_wave)
 gansbaai <- map_dfr(dir("data/wave_data/Gansbaai", 
                            full.names = TRUE, pattern = "*.txt"), load_wave)
 gordons_bay <- map_dfr(dir("data/wave_data/Gordons Bay", 
                            full.names = TRUE, pattern = "*.txt"), load_wave)
-hermanus <- map_dfr(dir("data/wave_data/Hermanus", 
-                        full.names = TRUE, pattern = "*.txt"), load_wave)
+# hermanus <- map_dfr(dir("data/wave_data/Hermanus", 
+#                         full.names = TRUE, pattern = "*.txt"), load_wave)
 kalk_bay <- map_dfr(dir("data/wave_data/Kalk Bay", 
                         full.names = TRUE, pattern = "*.txt"), load_wave)
 muizenberg <- map_dfr(dir("data/wave_data/Muizenberg", 
@@ -701,18 +701,18 @@ lamberts_bay <- map_dfr(dir("data/wave_data/Lamberts Bay",
                           full.names = TRUE, pattern = "*.txt"), load_wave)
 port_nolloth <- map_dfr(dir("data/wave_data/Port Nolloth", 
                             full.names = TRUE, pattern = "*.txt"), load_wave)
-antseys_beach <- map_dfr(dir("data/wave_data/Antsey's Beach", 
-                            full.names = TRUE, pattern = "*.txt"), load_wave)
-glenmore <-  map_dfr(dir("data/wave_data/Glenmore", 
-                            full.names = TRUE, pattern = "*.txt"), load_wave)
-mostertshoek <-  map_dfr(dir("data/wave_data/Mostertshoek", 
-                            full.names = TRUE, pattern = "*.txt"), load_wave)
+# antseys_beach <- map_dfr(dir("data/wave_data/Antsey's Beach", 
+#                             full.names = TRUE, pattern = "*.txt"), load_wave)
+# glenmore <-  map_dfr(dir("data/wave_data/Glenmore", 
+#                             full.names = TRUE, pattern = "*.txt"), load_wave)
+# mostertshoek <-  map_dfr(dir("data/wave_data/Mostertshoek", 
+#                             full.names = TRUE, pattern = "*.txt"), load_wave)
 port_edward <- map_dfr(dir("data/wave_data/Port Edward", 
                             full.names = TRUE, pattern = "*.txt"), load_wave)
-richards_bay <- map_dfr(dir("data/wave_data/Richards Bay", 
-                            full.names = TRUE, pattern = "*.txt"), load_wave)
-ystervarkpunt <- map_dfr(dir("data/wave_data/Ystervarkpunt", 
-                            full.names = TRUE, pattern = "*.txt"), load_wave)
+# richards_bay <- map_dfr(dir("data/wave_data/Richards Bay", 
+#                             full.names = TRUE, pattern = "*.txt"), load_wave)
+# ystervarkpunt <- map_dfr(dir("data/wave_data/Ystervarkpunt", 
+#                             full.names = TRUE, pattern = "*.txt"), load_wave)
 
 eastern_beach <- map_dfr(dir("data/wave_data/Eastern Beach", 
                             full.names = TRUE, pattern = "*.txt"), load_wave)
@@ -744,12 +744,12 @@ leisure_bay <- map_dfr(dir("data/wave_data/Leisure Bay",
 sea_point <- map_dfr(dir("data/wave_data/Sea Point", 
                             full.names = TRUE, pattern = "*.txt"), load_wave)
 saldanha_bay <- map_dfr(dir("data/wave_data/Saldanha Bay", 
-                           full.names = TRUE, pattern = "*.txt"), load_wave) %>% 
+                           fulls.names = TRUE, pattern = "*.txt"), load_wave) %>% 
   mutate(site = "Saldanha Bay")
 
-wave_data <- rbind(betties_bay, bordjies, gansbaai, gordons_bay, hermanus, kalk_bay, lamberts_bay, muizenberg, port_nolloth, antseys_beach, glenmore, mostertshoek, port_edward, richards_bay, ystervarkpunt, eastern_beach, hamburg, orient_beach, stilbaai, mossel_bay, knysna, to_strand, leisure_bay, sea_point, saldanha_bay)
+wave_data <- rbind(bordjies, gansbaai, gordons_bay, kalk_bay, lamberts_bay, muizenberg, port_nolloth, port_edward,eastern_beach, hamburg, orient_beach, stilbaai, mossel_bay, knysna, to_strand, leisure_bay, sea_point, saldanha_bay)
 
-rm(betties_bay, bordjies, gansbaai, gordons_bay, hermanus, kalk_bay, lamberts_bay, muizenberg, port_nolloth, antseys_beach, glenmore, mostertshoek, port_edward, richards_bay, ystervarkpunt, eastern_beach, hamburg, orient_beach, stilbaai, mossel_bay, knysna, to_strand, leisure_bay, sea_point, saldanha_bay)
+rm(bordjies, gansbaai, gordons_bay, kalk_bay, lamberts_bay, muizenberg, port_nolloth, port_edward,eastern_beach, hamburg, orient_beach, stilbaai, mossel_bay, knysna, to_strand, leisure_bay, sea_point, saldanha_bay)
 ```
 
 Converting the 3-hour resolution wave data into daily data. https://cran.r-project.org/web/packages/circular/circular.pdf (Pg 130). The circular function creates circular objects around the wind and wave direction. The wave and wind direction was collected every three hours and by using the circular function we calcuated the daily mean wave and wind direction. There is a numerically large gap between 360 and 2 where as in degrees its not as large. The circular mean function returns the mean direction of a vector of circular data.
@@ -1717,15 +1717,15 @@ wave_daily <- wave_data %>%
 # This is presented in a circular format. The length of each "spoke" around the circle is related to the frequency of time that the wind flows in a particular direction.
 # Each concentric circle represents a different frequency, with zero starting at the center and increasing frequencies in the outer circles
 
-test_H <- wave_daily %>%
- filter(site == "Hamburg")
-windrose(x = test_H$dir_circ, y = test_H$hs_mean, main = "Hamburg\nWave Rose", bins = 12, cir.ind =  0.05, breaks = NULL, fill.col = "blue", rotation = 180)
-windrose(x = test_H$dirw_circ, y = test_H$spw_mean, main = "Hamburg\nWind Rose")
-# 
-test_EB <- wave_daily %>%
- filter(site == "Eastern Beach")
-(test_EB_wave <- windrose(x = test_EB$dir_circ, y = test_EB$hs_mean, main = "Eastern Beach\nWave Rose"))
-(test_EB_wind <- windrose(x = test_EB$dirw_circ, y = test_EB$spw_mean, main = "Eastern Beach\nWind Rose"))
+# test_H <- wave_daily %>%
+#  filter(site == "Hamburg")
+# windrose(x = test_H$dir_circ, y = test_H$hs_mean, main = "Hamburg\nWave Rose", bins = 12, cir.ind =  0.05, breaks = NULL, fill.col = "blue", rotation = 180)
+# windrose(x = test_H$dirw_circ, y = test_H$spw_mean, main = "Hamburg\nWind Rose")
+# # 
+# test_EB <- wave_daily %>%
+#  filter(site == "Eastern Beach")
+# (test_EB_wave <- windrose(x = test_EB$dir_circ, y = test_EB$hs_mean, main = "Eastern Beach\nWave Rose"))
+# (test_EB_wind <- windrose(x = test_EB$dirw_circ, y = test_EB$spw_mean, main = "Eastern Beach\nWind Rose"))
 # 
 # test_OB <- wave_daily %>% 
 #  filter(site == "Orient Beach")
@@ -2065,28 +2065,65 @@ SACTN_15_predom_R2 <- SACTN_daily_clusters_15 %>%
 # Plotting the impact of predominant wind and wave direction on temperature.
 
 
-```{r}
+```{r, fig.cap = "Boxplot representing the adjusted R2 values", fig.height = , fig.width = 25}
 predominant_ww <- ggplot(data = SACTN_7_predom_R2, aes(x = variable, y = adj.r.squared)) +
   geom_boxplot(aes(colour = variable)) +
   facet_wrap(~site) +
-  labs(y = "R^2") +
+  labs(y = "R^2", x = "Average wind and wave variables") +
   theme(axis.text.x = element_text(angle = 15)) +
   theme_bw()
 predominant_ww
 
-predominant15_ww <- ggplot(data = SACTN_15_predom_R2, aes(x = variable, y = adj.r.squared)) +
-  geom_boxplot(aes(colour = variable)) +
-  facet_wrap(~site) +
-  labs(y = "R^2") +
-  theme(axis.text.x = element_text(angle = 15)) +
-  theme_bw()
-predominant15_ww
-# ggsave(plot = predominant_ww, filename = "figures/predominant_ww.pdf")
+# predominant15_ww <- ggplot(data = SACTN_15_predom_R2, aes(x = variable, y = adj.r.squared)) +
+#   geom_boxplot(aes(colour = variable)) +
+#   facet_wrap(~site) +
+#   labs(y = "R^2") +
+#   theme(axis.text.x = element_text(angle = 15)) +
+#   theme_bw()
+# predominant15_ww
+ggsave(plot = predominant_ww, filename = "figures/predominant_ww.pdf")
 # ggsave(plot = predominant15_ww, filename = "figures/predominant15_ww.pdf")
 ```
 
+```{r}
+wave_daily_renamed <- wave_daily %>% 
+  dplyr::rename(spd = spw_mean) %>%
+  dplyr::rename(dir = dirw_circ) 
+  
+```
 
+```{r}
+p.wr2 <- plot.windrose(data = wave_daily_renamed,
+              spd = "spd",
+              dir = "dir")
+```
 
+```{r, fig.cap = "Windrose diagram representing the wind direction and speed for each of the sites", fig.height = , fig.width = 25}
+# now generate the faceting
+p.wr3 <- p.wr2 + facet_wrap(~site,
+                            ncol = 4)
+p.wr3
 
+ggsave(plot = p.wr3, filename = "figures/p.wr3.pdf")
+```
 
+```{r}
+wave_daily_renamed <- wave_daily %>% 
+  dplyr::rename(spd = hs_mean) %>%
+  dplyr::rename(dir = dir_circ) 
+```
 
+```{r}
+p.wr2 <- plot.waverose(data = wave_daily_renamed,
+              spd = "spd",
+              dir = "dir")
+```
+
+```{r, fig.cap = "Windrose diagram representing the wind direction and speed for each of the sites", fig.height = , fig.width = 25}
+# now generate the faceting
+p.wave <- p.wr2 + facet_wrap(~site,
+                            ncol = 4)
+p.wave
+
+ggsave(plot = p.wave, filename = "figures/p.wave.pdf")
+```
