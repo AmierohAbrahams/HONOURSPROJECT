@@ -156,7 +156,6 @@ In the cluster comprising of Kalk Bay, Muizenberg, and Gordons Bay the temperatu
 
 knitr::include_graphics("../figures/combined_plot.pdf")
 ```
-\textcolor{red}{For these paragraphs it will help your comparison to include a table of month mean or seasonal differencs as you cannot accurately deduce this from the figure.}
 
 On a monthly basis, large differences of average temperatures was seen between sites within cluster 1, comprising of Eastern Beach, Orient Beach and Hamburg. These differences largely occured during the summer and spring months of 1995 to 1997 (Figure 4). For the remaining sites however, differences in average temperatures were lower during autumn. It was also evident that the average temperature between Hamburg and Orient Beach varied largely on an apparent seasonal basis. Small monthly average temperature differences existed between Eastern Beach and Orient Beach throughout the different seasons.
 
@@ -178,7 +177,6 @@ knitr::include_graphics("../figures/SACTN_clust_3_plot2.pdf")
 knitr::include_graphics("../figures/SACTN_clust_4_plot2.pdf")
 knitr::include_graphics("../figures/SACTN_clust_5_plot2.pdf")
 knitr::include_graphics("../figures/SACTN_clust_6_plot2.pdf")
-
 ```
 
 ### Average temperature of clustered sites
@@ -187,7 +185,7 @@ In the first cluster of sites, the results of a one way ANOVA tests it was found
 
 \textcolor{red}{So what do these results tell you that prompt the next step of your research? Provide a summary of these results that is relevant.}
 
-# The coefficient of determination 
+# Coefficient of determination 
 ## The impact of wind and wave action on temperature
 
 ## SACTN:
@@ -229,11 +227,15 @@ knitr::include_graphics("../figures/predominant_ww.pdf")
 
 ## Discussion
 
-\textcolor{red}{why was it expected that wind and wave may influece tempeature, What do you know about the accuracy of the wind data and wave model?}
+\textcolor{red}{why was it expected that wind and wave may influece tempeature}
 
 This study aimed to investigate how wind and wave action influenced variation in coastal seawater temperature along the South African coastline. As seawater temperature is known to have large influences on species distributions (Bolton 2010; Smit et al. 2013), it is important to understand not only how temperatures vary along the coastline, but the factors driving these variations as well. Sinnett and Feddesen (2014) proved that various environmental factors such as solar radiation, air temperature, humidity and wave energy is responsible for temperature variation within the coastal region. Here, It was confirmed that there were statistically significant differences in the *in situ* seawater temperature between 18 sites along the coastline of South Africa, with temperatures contrasting between coasts, and among sites along the same coasts. Overall, sites located along the west coast had lower temperatures than those along the south and east coasts. It was discovered that the east coast had overall, little variation in temperatures between sites, whereas the south coast varied more frequently (Schlegel and Smit 2016).
 
 The results in this study confirmed that there were significant differences in temperatures between sites along the coastline, annually and seasonally, but did not provide evidence of which factors were driving these. Across each of the 18 sites that were assessed, it was found that wind and wave action did not significantly influence both satellite and *in situ* SSTs. Differences in temperature between sites at different locations along the coastline were therefore not caused by variations in wind or wave action, suggesting that other factors were responsible for the observed patterns of temperature variation. These findings were consistent across six different datasets from various sources, with each of these providing minimal evidence of a relationship between wind or wave action and the SST of a site. It must be noted however, these analyses consisted of a combination of satellite and thermometer data, which varied in their measurements and time series.
+
+Theron et al. (2014) discusses how the wave data set, from which the current study data was extracted from, was created and validated. However, despite the validation, discrepaancies may arise as a result of the assumptions made in the assumptions of the SWAN model. Quasi-stationary SWAN computation were performed under the assumption that the boundary conditions were fluctuating at a much slower tempo compare to the time it took for those conditions to propagate towards the coastline. This may ultimately result in the wind driven wave components to be overestimated as the duration limited effect of the wind was thus neglected and computed towards a converging wave condition during each quasi-stationary time step.
+
+The SWAN model usually overestimates the energy of developing waves with low frequencies (long periods) for very short distances from the shore. This is because wave conditions are simplified by using an a priori wave spectrum (Booij, Ris & Holthuijsen, 1999; Thomas & Dwarakish, 2015). For most modelled areas, these assumptions are reasonable to make because most of the South African coastline is exposed and agree to the requirements of these assumptions (Joubert & van Niekerk, 2013).
 
 Previous studies suggest that a longer time series containing more data would have greater accuracy in detecting subtle changes in temperature differences obtained from variable coastal regions such as the South African coastline. Schlegel and Smit (2016) suggested that having a time series of greater than 30 years for sites with a low variance results in increased ability to detect changes. They showed that high quality time series datasets have frequent measurements with minimal missing (NA) values present. Furthermore, low quality datasets (i.e. those with more than 5% of NA values) have a higher chance of detecting variation where none exists.
 
