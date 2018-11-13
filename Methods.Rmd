@@ -144,8 +144,7 @@ ggplot(data = southern_africa_coast, aes(x = long, y = lat)) +
     annotate("text", label = "Agulhas", x = 31.7, y = -31.7, size = 3.5, angle = 53, colour = "black") +
   # # Improve on the x and y axis labels
    # scale_x_continuous(breaks = seq(15, 35, 5),
-   #                     labels = scales::unit_format("°E", sep = ""),
-   #                     position = "top") +
+   #                     labels = scales::unit_format("°E", sep = "") +
     scale_y_continuous(breaks = seq(-35, -30, 5),
                        labels = c("35°S", "30°S")) +
   labs(x = NULL, y = NULL) +
@@ -341,8 +340,10 @@ ggplot(aes(x = lon, y = lat)) +
     coord_cartesian(xlim = c(10.5, 39.5), ylim = c(-39.5, -25.5), expand = F) +
      scaleBar(lon = 32.0, lat = -38.7, distanceLon = 200, distanceLat = 50, 
            distanceLegend = 90, dist.unit = "km", arrow.length = 100,
-           arrow.distance = 130, arrow.North.size = 3) +
-  theme_bw() +
+           arrow.distance = 130, arrow.North.size = 3) +  
+    coord_equal() +
+    theme(aspect.ratio = 1)  +
+    theme_bw() +
     theme(panel.border = element_rect(fill = NA, colour = "black", size = 1),
           axis.text = element_text(colour = "black"),
           axis.ticks = element_line(colour = "black"))
@@ -350,7 +351,7 @@ ggplot(aes(x = lon, y = lat)) +
 }
 ```
 
-```{r run_fun2, fig.cap = "Maps showing closely related sites based on temperature variation at different regions along the coastline.", fig.height = 10}
+```{r run_fun2, fig.cap = "Maps showing closely related sites based on temperature variation at different regions along the coastline.", fig.height = 18}
 map_clus1 <- mapping_plot(df = site_coordinates1, xy = "salmon")
 map_clus2 <- mapping_plot(df = site_coordinates2, xy = "darkgoldenrod4")
 map_clus3 <- mapping_plot(df = site_coordinates3, xy = "springgreen4")
@@ -539,12 +540,13 @@ clust_plot <- function(df) {
     guides(fill=guide_legend(title="Site temperatures"))+
     coord_cartesian(ylim = c(0, 30))+
     #legend_title <- "Site temperatures" +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+    theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 15)) +
+    theme(axis.title.y = element_text(size =15))
       return(plot1)
 }
 ```
 
-```{r run_fun4,  fig.cap = "Boxplots representing the different site locations along the South African coast represented by various temperature parameters. Temperature parameters include minimum, maximum and mean temperatures (°C). The Boxplots represent the minimum, 25th percentile, median and 75th percentile of the temperatures measured. The interquartile can be dedudced by the difference between the percentiles with the dots representing the outliers in the data.", fig.height = 20, fig.width= 20}
+```{r run_fun4,  fig.cap = "Boxplots representing the different site locations along the South African coast represented by various temperature parameters. Temperature parameters include minimum, maximum and mean temperatures (°C). The Boxplots represent the minimum, 25th percentile, median and 75th percentile of the temperatures measured. The interquartile can be dedudced by the difference between the percentiles with the dots representing the outliers in the data.", fig.height = 40, fig.width= 40}
 SACTN_clust_1_plot1 <- clust_plot(df = SACTN_clust_1_match)
 SACTN_clust_2_plot1 <- clust_plot(df = SACTN_clust_2_match)
 SACTN_clust_3_plot1 <- clust_plot(df = SACTN_clust_3_match)
@@ -584,12 +586,14 @@ clust_plot2 <- function(df){
     geom_smooth(method = "gam", se = F, aes(colour = index_pair), show.legend = T)  +
     labs(x = "Year", y = "Average temperature (°C)") +
     facet_wrap(~month) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 10)) +
+    theme(axis.title.y = element_text(size =10))
     theme_bw()
   return(plot2)
 }
 ```
 
-```{r run_fun5, fig.cap = "Line graphs representing the monthly average temperatures between two sites (° Celsius). Each graphic showing a different month overtime from 1990 to 2016. These site locations are coloured by the temperature statistic relative to the legends provided. The linear lines are the linear models in their respective colours ", fig.height = 8, fig.width = 12}
+```{r run_fun5, fig.cap = "Line graphs representing the monthly average temperatures between two sites (° Celsius). Each graphic showing a different month overtime from 1990 to 2016. These site locations are coloured by the temperature statistic relative to the legends provided. The linear lines are the linear models in their respective colours ", fig.height = 20, fig.width = 20}
 (SACTN_clust_1_plot2 <- clust_plot2(df = SACTN_clust_1_matched))
 (SACTN_clust_2_plot2 <- clust_plot2(df = SACTN_clust_2_matched))
 (SACTN_clust_3_plot2 <- clust_plot2(df = SACTN_clust_3_matched))
@@ -597,12 +601,19 @@ clust_plot2 <- function(df){
 (SACTN_clust_5_plot2 <- clust_plot2(df = SACTN_clust_5_matched))
 (SACTN_clust_6_plot2 <- clust_plot2(df = SACTN_clust_6_matched))
 
-ggsave(plot = SACTN_clust_1_plot2, filename = "figures/SACTN_clust_1_plot2.pdf")
-ggsave(plot = SACTN_clust_2_plot2, filename = "figures/SACTN_clust_2_plot2.pdf")
-ggsave(plot = SACTN_clust_3_plot2, filename = "figures/SACTN_clust_3_plot2.pdf")
-ggsave(plot = SACTN_clust_4_plot2, filename= "figures/SACTN_clust_4_plot2.pdf")
-ggsave(plot = SACTN_clust_5_plot2, filename = "figures/SACTN_clust_5_plot2.pdf") 
-ggsave(plot = SACTN_clust_6_plot2, filename = "figures/SACTN_clust_6_plot2.pdf")
+combined2_plot <- ggarrange(SACTN_clust_1_plot2, SACTN_clust_2_plot2,
+                           SACTN_clust_3_plot2, SACTN_clust_4_plot2, 
+                           SACTN_clust_5_plot2, SACTN_clust_6_plot2, ncol = 2, nrow = 3)
+combined2_plot
+
+ggsave(plot = combined2_plot, filename = "figures/combined2_plot.pdf")
+
+# ggsave(plot = SACTN_clust_1_plot2, filename = "figures/SACTN_clust_1_plot2.pdf")
+# ggsave(plot = SACTN_clust_2_plot2, filename = "figures/SACTN_clust_2_plot2.pdf")
+# ggsave(plot = SACTN_clust_3_plot2, filename = "figures/SACTN_clust_3_plot2.pdf")
+# ggsave(plot = SACTN_clust_4_plot2, filename= "figures/SACTN_clust_4_plot2.pdf")
+# ggsave(plot = SACTN_clust_5_plot2, filename = "figures/SACTN_clust_5_plot2.pdf") 
+# ggsave(plot = SACTN_clust_6_plot2, filename = "figures/SACTN_clust_6_plot2.pdf")
 ```
 
 ### Monthly comparisons
