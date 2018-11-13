@@ -123,6 +123,7 @@ load("data/sa_coast.Rdata")
 library(tidyverse)
 library(viridis)
 library(gridExtra)
+library(dplyr)
 
 clust_i <- function(i) {
   set.seed(10)
@@ -142,11 +143,11 @@ ggplot(data = southern_africa_coast, aes(x = long, y = lat)) +
                 arrow = arrow(length = unit(0.3, "cm")), size = 0.1, colour = "black") +
     annotate("text", label = "Agulhas", x = 31.7, y = -31.7, size = 3.5, angle = 53, colour = "black") +
   # # Improve on the x and y axis labels
-  #   scale_x_continuous(breaks = seq(15, 35, 5),
-  #                      labels = scales::unit_format("°E", sep = ""),
-  #                      position = "top") +
-  #   scale_y_continuous(breaks = seq(-35, -30, 5),
-  #                      labels = c("35°S", "30°S")) +
+   # scale_x_continuous(breaks = seq(15, 35, 5),
+   #                     labels = scales::unit_format("°E", sep = ""),
+   #                     position = "top") +
+    scale_y_continuous(breaks = seq(-35, -30, 5),
+                       labels = c("35°S", "30°S")) +
   labs(x = NULL, y = NULL) +
     coord_cartesian(xlim = c(10.5, 39.5), ylim = c(-39.5, -25.5), expand = F) +
   scaleBar(lon = 32.0, lat = -38.7, distanceLon = 200, distanceLat = 50, 
@@ -187,12 +188,12 @@ africa_map
 
 # More mapping - http://r-nold.blogspot.com/2014/06/creating-inset-map-with-ggplot2.html
 
-# pdf("figures/map_fixed.pdf", width = 8, height = 5, pointsize = 6) # Set PDF dimensions
-# vp1 <- viewport(x = -0.00, y = 0.05, w = 0.25, h = 0.25, just = c("left", "bottom")) # Africa
-# vp2 <- viewport(x = 1.0, y = 1.0, w = 1.00, h = 1.00, just = c("right", "top"))  # South Africa
-# print(clust_6, vp = vp2)
-# print(africa_map, vp = vp1)
-# dev.off()
+pdf("figures/map_fixed.pdf", width = 8, height = 5, pointsize = 6) # Set PDF dimensions
+vp1 <- viewport(x = -0.00, y = 0.05, w = 0.25, h = 0.25, just = c("left", "bottom")) # Africa
+vp2 <- viewport(x = 1.0, y = 1.0, w = 1.00, h = 1.00, just = c("right", "top"))  # South Africa
+print(clust_6, vp = vp2)
+print(africa_map, vp = vp1)
+dev.off()
 ```
 
 It is now necessary to load the daily SACTN temperature dataset. The SACTN dataset comprise of 129 *in situ* coastal seawater temperatures derived from daily measurements over up to 40 years. The SACTN temperature dataset was compiled by measuring coastal temperatures at 129 sites along the coast of South Africa, daily from 1972 until 2017. 
@@ -330,12 +331,12 @@ ggplot(aes(x = lon, y = lat)) +
   #   annotate("text", label = "Benguela", x = 14.0, y = -31.8, size = 3.5, angle = 298, colour = "black") +
   #   geom_segment(aes(x = 33, y = -29.5, xend = 29.8, yend = -33.0),
   #               arrow = arrow(length = unit(0.3, "cm")), size = 0.1, colour = "black") +
-  #   annotate("text", label = "Agulhas", x = 31.7, y = -31.7, size = 3.5, angle = 53, colour = "black") +
+    annotate("text", label = "Agulhas", x = 31.7, y = -31.7, size = 3.5, angle = 53, colour = "black") +
   # scale_x_continuous(breaks = seq(15, 35, 5),
   #                      labels = scales::unit_format("°E", sep = ""),
   #                      position = "bottom") +
-  #   scale_y_continuous(breaks = seq(-35, -30, 5),
-  #                      labels = c("35°S", "30°S")) +
+    scale_y_continuous(breaks = seq(-35, -30, 5),
+                       labels = c("35°S", "30°S")) +
     labs(x = NULL, y = NULL) +
     coord_cartesian(xlim = c(10.5, 39.5), ylim = c(-39.5, -25.5), expand = F) +
      scaleBar(lon = 32.0, lat = -38.7, distanceLon = 200, distanceLat = 50, 
@@ -349,7 +350,7 @@ ggplot(aes(x = lon, y = lat)) +
 }
 ```
 
-```{r run_fun2, fig.cap = "Maps showing closely related sites based on temperature variation at different regions along the coastline.", fig.height = , fig.width = 25}
+```{r run_fun2, fig.cap = "Maps showing closely related sites based on temperature variation at different regions along the coastline.", fig.height = 10}
 map_clus1 <- mapping_plot(df = site_coordinates1, xy = "salmon")
 map_clus2 <- mapping_plot(df = site_coordinates2, xy = "darkgoldenrod4")
 map_clus3 <- mapping_plot(df = site_coordinates3, xy = "springgreen4")
@@ -438,9 +439,9 @@ clust_match <- function(df, clust) {
                                 query = as.matrix(site_dist_2[,5:6]), k = 1)
       site_dist_2 <- sa_coast_dist$cum_dist[site_dist_2]
       
-      # The distance between the two sites
+      # # The distance between the two sites
       site_dist_3 <- round(abs(site_dist_1-site_dist_2), 0)
-      
+
       SACTN_df_3 <- left_join(SACTN_df_1, SACTN_df_2, by = "date") %>%
         na.trim() %>%
         select(date, index.x, temp.x, index.y, temp.y, -cluster.x, -cluster.y) %>%
@@ -532,9 +533,11 @@ clust_plot <- function(df) {
     ggplot(aes(x = index_pair)) +
     geom_boxplot(aes(y = temp, fill = temp_grp), alpha = 0.3) +
     scale_fill_manual(values = c("khaki4", "chartreuse3")) +
-    labs(x = "Paired Sites", y = "Temperature (°C") +
+    labs(x = "Paired Sites", y = "Temperature (°C)") +
     theme(legend.position="none") +
     theme_bw()+
+    guides(fill=guide_legend(title="Site temperatures"))+
+    #legend_title <- "Site temperatures" +
     theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
       return(plot1)
 }
