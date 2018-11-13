@@ -37,7 +37,7 @@ monofont: PT Mono
 papersize: A4
 sansfont: PT Sans
 tables: yes
-bibliography: bibliography.bib
+bibliography: HONOURSPROJECT/bibliography.bib
 ---
 
 ```{r}
@@ -169,7 +169,7 @@ In the cluster comprising of Lamberts Bay, Port Nolloth and Sea Point, large dif
 
 In the cluster comprising of Kalk Bay, Gordons Bay and Muizenberg, the largest differences in average temperatures were observed during mid autumn and winter months. In this cluster large differences in average temperatures were seen between Muizenberg and the remaining sites, with the differences increasing annually throughout 1972 and 2016 during winter. Similarly, differences of average temperatures also increased between Kalk Bay and Muizenberg during these same months. In the summer and spring months little differences in average temperatures between sites, with minimal differences in the rates of these changes. These rates increased during spring.
 
-```{r,  echo= FALSE, message=FALSE, warning=FALSE, fig.cap="Figure 4: Line graph representing the variation in average seawater temperature for each of the month and year for paired sites along the South African coastline.", fig.height=8, fig.width=12, fig.pos="H"}
+```{r,  echo= FALSE, message=FALSE, warning=FALSE, fig.cap="Figure 4: Line graph representing the variation in average seawater temperature for each of the month and year for paired sites along the South African coastline with the values representing the distance (km) between paired sites.", fig.height=8, fig.width=12, fig.pos="H"}
 
 knitr::include_graphics("../figures/SACTN_clust_1_plot2.pdf")
 knitr::include_graphics("../figures/SACTN_clust_2_plot2.pdf")
@@ -183,15 +183,16 @@ knitr::include_graphics("../figures/SACTN_clust_6_plot2.pdf")
 
 In the first cluster of sites, the results of a one way ANOVA tests it was found that there was a significant (P < 0.05) differences in average temperatures between paired sites (F2 = 12.07, SS = 15.28, P < 0.001). These differences were present across season (F6 = 3.44, SS = 13.07, P < 0.002) but were not present yearly between individual sites and paired sites (F2 = 1.38, SS = 1.75, P = 0.25). Similarly, paired sites within the second cluster also a significantly differed in average temperature (F2 = 166.84, SS = 418.6, P < 0.001). Conversely to first cluster however these differences were present yearly (F1 = 33.21, SS = 41.7, P < 0.001) and seasonally (F6 = 16.72, SS = 125.9, P < 0.02,) between individual and paired sites. In the third cluster of sites, ANOVA tests revealed that there were no significant differences in average temperatures between paired sites (F2 = 1.17, SS = 2.9, P = 0.31), but temperatures varied seasonally and yearly between individual sites. In the fourth cluster there were again no significant difference of average temperatures between paired sites (F2 = 0.73, SS = 2.9, P = 0.48). Significant differences were also absent across seasons (F3 = 0.75, SS = 0.0042, P = 0.52) and years (F1 = 0.495, SS = 0.0009, P = 0.48) between both individual and paired sites. Sites within the fifth cluster were significantly different in average temperatures between paired sites (F2 = 77.10, SS = 196.7, P < 0.002), with these differences being present yearly (F1 = 172.80, SS = 220.4, P < 0.001) and seasonally (F3 = 77.10, SS = 29.92, P < 0.002) for both paired and individual sites. Finally, sites within the sixth cluster also significantly difference in average temperatures between paired sites, yearly and seasonally (F2 = 132.044, SS = 419.7, P <0.01).
 
-\textcolor{red}{So what do these results tell you that prompt the next step of your research? Provide a summary of these results that is relevant.}
+\textcolor{red}{So what do these results tell you that prompt the next step of your research?}
 
-# Coefficient of determination 
 ## The impact of wind and wave action on temperature
 
 ## SACTN:
-The coeffcient of determination was calculated \textcolor{red}{how? show that you understand the what you did} to determine the relationship between temperature and several variables including wind direction and speed as well as wave  height, period, direction and speed, for all 18 sites.  The results (**show the results here**) showed little variation in environmental factors and temperature for each of the sites. Wind and wave direction influenced temperature at 0 – 3% \textcolor{red}{what is the relationship (or coefficient of correlation)? What can you say about wind and wave actions relative to temperatures changes?}.  The most significant relationships were found in Muizenberg, Kalk Bay and Mossel Bay where the R^2 values indicated that wave period had a 6-7% influence on temperature \textcolor{red}{again, longer wave periods drive warmer/cooler temperatures?}.
+
+The coeffcient of determination was calculated to analyse how differences in once variable can be explained by a difference in the second variable. Here, the relationship between temperature and several variables including wind direction and speed as well as wave height, period, direction and speed was determined for all 18 sites. More specifically the outcome of this analyses gives the percentage variation in y explained by the x-variable. The results showed little variation in environmental factors and temperature for each of the sites. Wind and wave direction influenced temperature at 0 – 3%. The most significant relationships were found in Muizenberg, Kalk Bay and Mossel Bay where the R^2 values indicated that wave period had a 6-7% influence on temperature. Overall wind and wave action had no significant impact on temperature differences along the coast. 
 
 
+\textcolor{red}{longer wave periods drive warmer/cooler temperatures?}.
 
 ## AVHRR 
 
@@ -253,59 +254,3 @@ Within marine environments, coastal temperature variation allows for a variation
 
 This study has shown that wind and wave action are not directly affecting seawater temperature variation along the South African coastline, However, other factors may be. Future research could aim to examine the effects of air temperature and rainfall on the coastal seawater temperature for the 18 sites being assessed. Additionally, other factors such as the amount of sunlight penetrating the ocean or site exposure could also be tested, as well as assessing the optimal locations for data collection. Further studies should also consider examining how chlorophyll concentrations and salinity varies with temperature in order to assess the effects of seawater temperature on marine plant life. Homogenous coastlines with distinct temperature gradients such as in South Africa provide a model environment for temperature analyses at fine-resolutions. These data could provide critically important information that can be used to assist in conserving marine biodiversity within these waters and should be given greater priority within marine research in the near future.
 
-## References
-
-Bartsch, I., Wiencke, C., & Laepple, T. (2012). Global seaweed biogeography under a changing climate: the prospected effects of temperature. In Seaweed biology (pp. 383-406). Springer, Berlin, Heidelberg.
-
-Beal, L. M., De Ruijter, W. P., Biastoch, A., Zahn, R., Cronin, M., Hermes, J., ... & Bornman, T. (2011). On the role of the Agulhas system in ocean circulation and climate. Nature, 472(7344), 429.
-
-Bolton, J. J., Leliaert, F., De Clerck, O., Anderson, R. J., Stegenga, H., Engledow, H. E., & Coppejans, E. (2004). Where is the western limit of the tropical Indian Ocean seaweed flora? An analysis of intertidal seaweed biogeography on the east coast of South Africa. Marine biology, 144(1), 51-59.
-
-Bolton, J. J. (2010). The biogeography of kelps (Laminariales, Phaeophyceae): a global analysis with new insights from recent advances in molecular phylogenetics. Helgoland Marine Research, 64(4), 263.
-
-Griffiths, C. L., Van Sittert, L., Best, P. B., Brown, A. C., Clark, B. M., Cook, P. A., ... & Hutchings, K. (2005). Impacts of human activities on marine animal life in the Benguela: a historical overview. Oceanogr. Mar. Biol. Annu. Rev., 42, 303-392.
-
-Griffiths, C. L., Mead, A., & Zietsman, L. (2011). Human activities as drivers of change on South African rocky shores. Observations on Environmental Change in South Africa, Sun Media, Stellenbosch, South Africa, 242-6.
-
-Hutchings, L., Van der Lingen, C. D., Shannon, L. J., Crawford, R. J. M., Verheye, H. M. S., Bartholomae, C. H., ... & Fidel, Q. (2009). The Benguela Current: An ecosystem of four components. Progress in Oceanography, 83(1-4), 15-32.
-
-Kennish M, Elliott M (eds). 2011. Vol. 8. Human-induced problems (uses and abuses). In: Wolanski E, McLusky D (chief eds), Treatise on estuarine and coastal science. Waltham: Academic Press.
-
-Lutjeharms, J. R. E., & Van Ballegooyen, R. C. (1988). Anomalous upstream retroflection in the Agulhas Current. Science, 240(4860), 1770.
-
-Mead, A. (2011). Climate and Bioinvasives drivers of change on South African Rocky shores? (Doctoral dissertation, University of Cape Town).
-
-Mead, A., Griffiths, C. L., Branch, G. M., McQuaid, C. D., Blamey, L. K., Bolton, J. J., ... & Whitfield, A. K. (2013). Human-mediated drivers of change—impacts on coastal ecosystems and marine biota of South Africa. African Journal of Marine Science, 35(3), 403-425.
-
-Mead A, Robinson T. 2011. Rocky shores and kelp beds. In: James N, Hermes J (eds), Insights into impacts of climate change on the South African marine and coastal environment. Pretoria: South African Environmental Observation Network (SAEON). Pp 69–76.
-
-Müller, R., Laepple, T., Bartsch, I., & Wiencke, C. (2009). Impact of oceanic warming on the distribution of seaweeds in polar and cold-temperate waters. Botanica Marina, 52(6), 617-638.
-
-Pearce, A., Faskel, F., & Hyndes, G. (2006). Nearshore sea temperature variability off Rottnest Island (Western Australia) derived from satellite data. International Journal of Remote Sensing, 27(12), 2503-2518.
-
-Reason, C. J. C., & Mulenga, H. (1999). Relationships between South African rainfall and SST anomalies in the southwest Indian Ocean. International Journal of Climatology: A Journal of the Royal Meteorological Society, 19(15), 1651-1673.
-
-Rouault M, Mead A. 2011. Trends in nearshore sea surface temperature and circulatory systems. In: James N, Hermes J (eds), Insights into impacts of climate change on the South African marine and coastal environment. Pretoria: South African Environmental Observation Network (SAEON). Pp 69–76.
-
-Rouault, M., Penven, P., & Pohl, B. (2009). Warming in the Agulhas Current system since the 1980's. Geophysical Research Letters, 36(12).
-
-Rouault, M. J., Mouche, A., Collard, F., Johannessen, J. A., & Chapron, B. (2010). Mapping the Agulhas Current from space: An assessment of ASAR surface current velocities. Journal of Geophysical Research: Oceans, 115(C10).
-
-Schlegel, R. W., Oliver, E. C., Perkins-Kirkpatrick, S., Kruger, A., & Smit, A. J. (2017). Predominant atmospheric and oceanic patterns during coastal marine heatwaves. Frontiers in Marine Science, 4, 323.
-
-Smale, D. A., & Wernberg, T. (2009). Satellite-derived SST data as a proxy for water temperature in nearshore benthic ecology. Marine Ecology Progress Series, 387, 27-37.
-
-Smit, A. J., Roberts, M., Anderson, R. J., Dufois, F., Dudley, S. F., Bornman, T. G., ... & Bolton, J. J. (2013). A coastal seawater temperature dataset for biogeographical studies: large biases between in situ and remotely-sensed data sets around the coast of South Africa. PLoS One, 8(12), e81944. 
-
-Sink K, Holness S, Harris L, Majiedt P, Atkinson L, Robinson T, Kirkman S, Hutchings L, Leslie R, Lamberth S, Kerwath S, von der Heyden S, Lombard A, Attwood C, Branch G, Fairweather
-T, Taljaard S, Weerts S, Cowley P, Awad A, Halpern B, Grantham H, Wolf T. 2012. National Biodiversity Assessment 2011: Technical Report. Vol. 4: Marine and Coastal Component. Pretoria: South African National Biodiversity Institute.
-
-Walker, N. D. (1990). Links between South African summer rainfall and temperature variability of the Agulhas and Benguela Current systems. Journal of Geophysical Research: Oceans, 95(C3), 3297-3319.
-
-Wernberg, T., Thomsen, M. S., Tuya, F., Kendrick, G. A., Staehr, P. A., & Toohey, B. D. (2010). Decreasing resilience of kelp beds along a latitudinal temperature gradient: potential implications for a warmer future. Ecology letters, 13(6), 685-694.
-
-Wernberg, T., Russell, B. D., Moore, P. J., Ling, S. D., Smale, D. A., Campbell, A., ... & Connell, S. D. (2011). Impacts of climate change in a global hotspot for temperate marine biodiversity and ocean warming. Journal of Experimental Marine Biology and Ecology, 400(1-2), 7-16.
-
-Wethey, D. S., Woodin, S. A., Hilbish, T. J., Jones, S. J., Lima, F. P., & Brannock, P. M. (2011). Response of intertidal populations to climate: effects of extreme events versus long term change. Journal of Experimental Marine Biology and Ecology, 400(1-2), 132-144.
-
-Zainuddin, M., Kiyofuji, H., Saitoh, K., & Saitoh, S. I. (2006). Using multi-sensor satellite remote sensing and catch data to detect ocean hot spots for albacore (Thunnus alalunga) in the northwestern North Pacific. Deep Sea Research Part II: Topical Studies in Oceanography, 53(3-4), 419-431.

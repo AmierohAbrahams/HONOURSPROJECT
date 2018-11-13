@@ -689,7 +689,7 @@ Loading the wave data for the sites along the South African coast:
 # betties_bay <- map_dfr(dir("data/wave_data/Betties Bay", 
 #                            full.names = TRUE, pattern = "*.txt"), load_wave) %>% 
 #   mutate(site = "Betty's Bay")
-bordjies <- map_dfr(dir("data/wave_data/Bordjies",
+saldanha_bay <- map_dfr(dir("data/wave_data/Saldanha Bay",
                         full.names = TRUE, pattern = "*.txt"), load_wave)
 gansbaai <- map_dfr(dir("data/wave_data/Gansbaai", 
                            full.names = TRUE, pattern = "*.txt"), load_wave)
@@ -747,9 +747,8 @@ leisure_bay <- map_dfr(dir("data/wave_data/Leisure Bay",
 
 sea_point <- map_dfr(dir("data/wave_data/Sea Point", 
                             full.names = TRUE, pattern = "*.txt"), load_wave)
-saldanha_bay <- map_dfr(dir("data/wave_data/Saldanha Bay", 
-                           fulls.names = TRUE, pattern = "*.txt"), load_wave) %>% 
-  mutate(site = "Saldanha Bay")
+borjies <- map_dfr(dir("data/wave_data/Bordjies", 
+                            full.names = TRUE, pattern = "*.txt"), load_wave)
 
 wave_data <- rbind(bordjies, gansbaai, gordons_bay, kalk_bay, lamberts_bay, muizenberg, port_nolloth, port_edward,eastern_beach, hamburg, orient_beach, stilbaai, mossel_bay, knysna, to_strand, leisure_bay, sea_point, saldanha_bay)
 
