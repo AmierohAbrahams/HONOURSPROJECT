@@ -106,6 +106,7 @@ In order to compare temperatures along the South African coastline at a localize
 ```{r , echo= FALSE, message=FALSE, warning=FALSE, fig.cap="A map of the study area representing the 129 sites where *in situ* coastal seawater temperature was collected. These sites were grouped based on similar mean, minimum and maximum temperatures and as such each groups represents a unique colour variation.", fig.height=8, fig.width=12, fig.pos="H"}
 
 knitr::include_graphics("../figures/map_fixed.pdf")
+
 ```
 
 Once sites were grouped together, the next step was to reduce the number of sites down to a manageable but still representative sub-sample of the whole. This was done for two reasons. The first was to allow for the comparisons to be more readily interpretable by humans.  Secondly it was to allow for equal amount of sampling per coast. The east coast has previously been more heavily sampled than the rest and such an imbalance should be addressed. The criteria considered for the sub-samples included selecting the longest time series within the region and including data from as many different organizations as possible. This process yielded three sites for each of the clusters along the South African coastline (Figure 2). The statistical characteristics of the temperature were used to guide analysis of the time series to produce an accurate assessment of temperature variation between sites that were grouped together.
@@ -113,6 +114,7 @@ Once sites were grouped together, the next step was to reduce the number of site
 ```{r run_fun2, echo= FALSE, message=FALSE, warning=FALSE, fig.cap="A map representing the three sites chosen within each of the six cluster along the South African coastline.", fig.height=8, fig.width=12, fig.pos="H"}
 
 knitr::include_graphics("../figures/final_combined_plot.pdf")
+
 ```
 
 With three sites per cluster, the haversine formula was used to calculate the geodesic distance between points specified by radians. Using this formula, the distances (km) between each of the sites along the coastline were determined. Thereafter, sites within the same cluster were matched based on the date that temperature was collected. This allowed for a comparison to test whether or not temperature variation exists between sites within the same cluster. Once the sites were matched, the means and standard deviations of temperatures between sites and clusters were determined. This highlighted the temperature variation between matched sites and allowed for seasonal comparisons within the same cluster.
@@ -148,6 +150,7 @@ In the cluster comprising of Kalk Bay, Muizenberg, and Gordons Bay the temperatu
 ```{r , echo= FALSE, message=FALSE, warning=FALSE, fig.cap="Boxplots representing the seawater temperature of paired sites within each cluster along the South African coast with the values representing the distance (km) between paired sites.", fig.height=8, fig.width=12, fig.pos="H"}
 
 knitr::include_graphics("../figures/combined_plot.pdf")
+
 ```
 
 On a monthly basis, large differences of average temperatures was seen between sites within cluster 1, comprising of Eastern Beach, Orient Beach and Hamburg. These differences largely occured during the summer and spring months of 1995 to 1997 (Figure 4). For the remaining sites however, differences in average temperatures were lower during autumn. It was also evident that the average temperature between Hamburg and Orient Beach varied largely on an apparent seasonal basis. Small monthly average temperature differences existed between Eastern Beach and Orient Beach throughout the different seasons.
@@ -165,6 +168,7 @@ In the cluster comprising of Kalk Bay, Gordons Bay and Muizenberg, the largest d
 ```{r,  echo= FALSE, message=FALSE, warning=FALSE, fig.cap="Line graph representing the variation in average seawater temperature for each of the month and year for paired sites along the South African coastline with the values representing the distance (km) between paired sites.", fig.height=8, fig.width=12, fig.pos="H"}
 
 knitr::include_graphics("../figures/figures/combined2_plot.pdf")
+
 ```
 
 ### Average temperature of clustered sites
@@ -175,35 +179,22 @@ In the first cluster of sites, the results of a one way ANOVA tests it was found
 
 ## The impact of wind and wave action on temperature
 
-## SACTN:
+## SACTN dataset:
 
-The coeffcient of determination was calculated to analyse how differences in once variable can be explained by a difference in the second variable. Here, the relationship between temperature and several variables including wind direction and speed as well as wave height, period, direction and speed was determined for all 18 sites. More specifically the outcome of this analyses gives the percentage variation in y explained by the x-variable. The results showed little variation in environmental factors and temperature for each of the sites. Wind and wave direction influenced temperature at 0 – 3%. The most significant relationships were found in Muizenberg, Kalk Bay and Mossel Bay where the R^2 values indicated that wave period had a 6-7% influence on temperature. Overall wind and wave action had no significant impact on temperature differences along the coast. 
+The coeffcient of determination was calculated to analyse how differences in one variable can be explained by a difference in the second variable. Here, the relationship between temperature and several variables including wind direction and speed as well as wave height, period, direction and speed was determined for all 18 sites. The results showed little variation in environmental factors and temperature for each of the sites. Wind and wave direction influenced temperature at 0 – 3%. The most significant relationships were found in Muizenberg, Kalk Bay and Mossel Bay where the R^2 values indicated that wave period had a 6-7% influence on temperature. Overall wind and wave action had no significant impact on temperature differences along the coast. 
 
+## Satellite  dataset
 
-\textcolor{red}{longer wave periods drive warmer/cooler temperatures?}.
-
-## AVHRR 
-
-Upon examining the impact of wind and wave action on seawater temperature of various satellite datasets, it was seen that wave and wind direction had a minimal effect on temperature variation with its R^2 values ranging between 0-3%. The results also indicated that wave height influenced temperature at some of the sites. This was evident in Gaansbaai and Lamberts Bay where wave height had a 9% impact on temperature variation.
-
-## MUR:
-
-The results continued to show little variation in regards to the influence of wind and wave action on temperature. At many of the sites, both wind and wave direction had a 0% impact on the temperature. However, it was seen that wave height and wave period had the greatest impact on temperature at some of the sites, with Gordons Bay and Gaansbaai indicating an 8% and 10% impact of wave height on temperature variation respectively.
-
-## CMC:
-
-The results indicated that wave as well as wind direction and wind speed showed the least significant impact on temperature variation with r^2 values ranging between 0-3%. Wave height continued to show the largest impact on temperature variation at some of the sites. Here, Gaansbaai and Gordons Bay indicated the highest R^2 values of 12% and 9% respectively.
-
-## K10:
-
-When comparing the impact of various environmental factors on temperature variation for the K10 data, the results indicated that the each of the above-mentioned variables had no impact on the temperature variation at Hamburg.  The impact of wind direction on temperature is highest at Gansbaai, representing an R^2 value of 4%. Wave height still repersented the greatest influence on temperature occurring at these sites.
+Upon examining the impact of wind and wave action on seawater temperature of the AVHRR temperature dataset, it was seen that wave and wind direction had a minimal effect on temperature variation with its R^2 values ranging between 0-3%. The results also indicated that wave height influenced temperature at some of the sites. This was evident in Gaansbaai and Lamberts Bay where wave height had a 9% impact on temperature variation. The results obtained from the MUR dataset continued to show little variation in regards to the influence of wind and wave action on temperature. At many of the sites, both wind and wave direction had a 0% impact on the temperature. However, it was seen that wave height and wave period had the greatest impact on temperature at some of the sites, with Gordons Bay and Gaansbaai indicating an 8% and 10% impact of wave height on temperature variation respectively. The results obtained from the CMC temperature dataset indicated that wave as well as wind direction and wind speed showed the least significant impact on temperature variation with r^2 values ranging between 0-3%. Wave height continued to show the largest impact on temperature variation at some of the sites. Here, Gaansbaai and Gordons Bay indicated the highest R^2 values of 12% and 9% respectively. When comparing the impact of various environmental factors on temperature variation for the K10 data, the results indicated that the each of the above-mentioned variables had no impact on the temperature variation at Hamburg.  The impact of wind direction on temperature is highest at Gansbaai, representing an R^2 value of 4%. Wave height still repersented the greatest influence on temperature occurring at these sites.
 
 ## Wind rose diagram
 
 Wind and wave diagrams help visualise the patterns present at a particular site. As you move outward on the radial scale, the frequency associated with wind and waves coming from a partiular direction increases. The predominant wind direction along the south coast 105degrees. The predominant wind direction of sites located along the east coast such as T.O. Strand and Orient Beach occured at 45 degrees. Leisure Bay, also located along the east coast however indicates a predominant wind direction of 15degrees. Port Nolloth, located along the west coast, indicates a predominant wind direction at both 135 degrees and 165 degrees. 
 
 ```{r  echo= FALSE, message=FALSE, warning=FALSE, fig.cap="Wind rose diagrams representing the the most predominant wind direction for each of the sites. Each spoke is divided by color into wind speed ranges. The radial length of each spoke around the circle is the time that the wind and waves comes from that direction", fig.height=8, fig.width=12, fig.pos="H"}
+
 knitr::include_graphics("../figures/p.wr3.pdf")
+
 ```
 
 ## The impact of predominant wind and wave action on seawater temperature
@@ -211,7 +202,9 @@ knitr::include_graphics("../figures/p.wr3.pdf")
 The results indicated that wind speed, wind height, wind and wave direction as well as wave period had no significant impact on *in situ* temperature variation at the various sites along the coastline (Figure 6). Eastern Beach however, showed that wave period and wave height appear to have the largest effect on temperature variation, this however varied between sites. Hamburg and Gordons Bay show that wave direction explained 4% of the temperature variation. Muizenberg, representing the largest value of 5% influence of wave height on temperature variation. Cluster two comprising of Stilbaai, Mossel Bay and Knysna, wind and wave action had very little impact on temperature variation, with all three graphs representing similar results. In the cluster comprising of Port Edward, Leisure Bay and T.O Strand, wave height is seen to have a minor impact on temperature variation with an r-squared value variating between 1-5%. Overall it is seen that predominant wind and wave direction have no significant impact on the seawater temperature variation along the coast.
 
 ```{r  echo= FALSE, message=FALSE, warning=FALSE, fig.cap="Boxplot representing the adjusted r^2 value each of the environmental variables at the most predominant wave and wind direction for each of the sites.", fig.height=8, fig.width=12, fig.pos="H"}
+
 knitr::include_graphics("../figures/predominant_ww.pdf")
+
 ```
 
 ## Discussion
