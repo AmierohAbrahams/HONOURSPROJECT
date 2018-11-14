@@ -588,7 +588,8 @@ clust_plot2 <- function(df){
     facet_wrap(~month) +
     theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 10)) +
     theme(axis.title.y = element_text(size =10)) +
-    theme_bw()
+    theme_bw() +
+    guides(fill=guide_legend(title="Paired sites"))
   return(plot2)
 }
 ```
