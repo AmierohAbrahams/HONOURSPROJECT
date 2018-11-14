@@ -127,8 +127,8 @@ library(dplyr)
 
 clust_i <- function(i) {
   set.seed(10)
-  ggplot(data = southern_africa_coast, aes(x = long, y = lat)) +
-    geom_polygon(aes(group = group), fill = "grey70") +
+  ggplot(data = south_africa_coast, aes(x = lon, y = lat)) +
+    geom_polygon(aes(group = group), fill = "white") +
     borders() +
     geom_point(data = site_list,
                aes(x = lon, y = lat,
@@ -195,7 +195,7 @@ africa_map
 # More mapping - http://r-nold.blogspot.com/2014/06/creating-inset-map-with-ggplot2.html
 
 pdf("figures/map_fixed.pdf", width = 8, height = 5, pointsize = 6) # Set PDF dimensions
-vp1 <- viewport(x = -0.00, y = 0.05, w = 0.25, h = 0.25, just = c("left", "bottom")) # Africa
+vp1 <- viewport(x = -0.00, y = 0.18, w = 0.25, h = 0.25, just = c("left", "bottom")) # Africa
 vp2 <- viewport(x = 1.0, y = 1.0, w = 1.00, h = 1.00, just = c("right", "top"))  # South Africa
 print(clust_6, vp = vp2)
 print(africa_map, vp = vp1)
@@ -338,11 +338,8 @@ ggplot(aes(x = lon, y = lat)) +
   #   geom_segment(aes(x = 33, y = -29.5, xend = 29.8, yend = -33.0),
   #               arrow = arrow(length = unit(0.3, "cm")), size = 0.1, colour = "black") +
     annotate("text", label = "Agulhas", x = 31.7, y = -31.7, size = 3.5, angle = 53, colour = "black") +
-  # scale_x_continuous(breaks = seq(15, 35, 5),
-  #                      labels = scales::unit_format("°E", sep = ""),
-  #                      position = "bottom") +
-    scale_y_continuous(breaks = seq(-35, -30, 5),
-                       labels = c("35°S", "30°S")) +
+    scale_x_continuous(labels = scales::unit_format(unit = "°E", sep = "")) +
+    scale_y_continuous(labels = scales::unit_format(unit = "°S", sep = "")) +
     labs(x = NULL, y = NULL) +
     coord_cartesian(xlim = c(10.5, 39.5), ylim = c(-39.5, -25.5), expand = F) +
      scaleBar(lon = 32.0, lat = -38.7, distanceLon = 200, distanceLat = 50, 
@@ -2091,7 +2088,7 @@ SACTN_15_predom_R2 <- SACTN_daily_clusters_15 %>%
 predominant_ww <- ggplot(data = SACTN_7_predom_R2, aes(x = variable, y = adj.r.squared)) +
   geom_boxplot(aes(colour = variable)) +
   facet_wrap(~site) +
-  labs(y = "R^2", x = "Average wind and wave variables") +
+  labs(y = "coefficient of determination R^2^", x = "Average wind and wave variables") +
   theme(axis.text.x = element_text(angle = 15)) +
   theme_bw()
 predominant_ww
