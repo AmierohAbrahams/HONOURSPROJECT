@@ -149,9 +149,12 @@ clust_i <- function(i) {
     annotate("text", label = "Agulhas", x = 31.7, y = -31.7,
              size = 3.5, angle = 53, colour = "black") +
     # Improve on the x and y axis labels
-    coord_fixed(ratio = 1, xlim = c(10.5, 39.5), ylim = c(-39.5, -25.5), expand = TRUE) +
-    scale_x_continuous(expand = c(0, 0), labels = scales::unit_format(unit = "°E", sep = "")) +
-    scale_y_continuous(expand = c(0, 0), labels = scales::unit_format(unit = "°S", sep = "")) +
+    coord_fixed(ratio = 1, xlim = c(10.5, 39.5), ylim = c(-39.5, -25.5),
+                expand = TRUE) +
+    scale_x_continuous(expand = c(0, 0),
+                       labels = scales::unit_format(unit = "°E", sep = "")) +
+    scale_y_continuous(expand = c(0, 0),
+                       labels = scales::unit_format(unit = "°S", sep = "")) +
     labs(x = NULL, y = NULL) +
     scaleBar(lon = 32.0, lat = -38.7, distanceLon = 200, distanceLat = 50, 
              distanceLegend = 90, dist.unit = "km", arrow.length = 100,
