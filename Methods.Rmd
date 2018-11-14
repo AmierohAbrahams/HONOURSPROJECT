@@ -351,7 +351,7 @@ ggplot(aes(x = lon, y = lat)) +
 }
 ```
 
-```{r run_fun2, fig.cap = "Maps showing closely related sites based on temperature variation at different regions along the coastline.", fig.height = 18}
+```{r run_fun2, fig.cap = "Maps showing closely related sites based on temperature variation at different regions along the coastline.", fig.height = 18, fig.width= 16}
 map_clus1 <- mapping_plot(df = site_coordinates1, xy = "salmon")
 map_clus2 <- mapping_plot(df = site_coordinates2, xy = "darkgoldenrod4")
 map_clus3 <- mapping_plot(df = site_coordinates3, xy = "springgreen4")
