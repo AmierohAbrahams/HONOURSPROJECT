@@ -127,32 +127,39 @@ library(dplyr)
 
 clust_i <- function(i) {
   set.seed(10)
-ggplot(data = southern_africa_coast, aes(x = long, y = lat)) +
-  geom_polygon(aes(group = group), fill = "grey70") +
+  ggplot(data = southern_africa_coast, aes(x = long, y = lat)) +
+    geom_polygon(aes(group = group), fill = "grey70") +
     borders() +
     geom_point(data = site_list,
-         aes(x = lon, y = lat,colour = as.factor(kmeans(clust_columns, i)$cluster))) +
+               aes(x = lon, y = lat,
+                   colour = as.factor(kmeans(clust_columns, i)$cluster))) +
     labs(colour = "cluster")  +
-    coord_equal(xlim = c(15, 35), ylim = c(-37, -27)) +
-  annotate("text", label = "INDIAN\nOCEAN", x = 32.00, y = -34.0, size = 3.0, angle = 0, colour = "black") +
-  annotate("text", label = "ATLANTIC\nOCEAN", x = 16.00, y = -34.0, size = 3.0, angle = 0, colour = "black") +
-  geom_segment(aes(x = 17.2, y = -32.6, xend = 15.2, yend = -29.5),
-                arrow = arrow(length = unit(0.3, "cm")), size = 0.1, colour = "black") +
-    annotate("text", label = "Benguela", x = 16.0, y = -31.8, size = 3.5, angle = 298, colour = "black") +
+    annotate("text", label = "INDIAN\nOCEAN", x = 32.00, y = -34.0,
+             size = 3.0, angle = 0, colour = "black") +
+    annotate("text", label = "ATLANTIC\nOCEAN", x = 16.00, y = -34.0,
+             size = 3.0, angle = 0, colour = "black") +
+    geom_segment(aes(x = 17.2, y = -32.6, xend = 15.2, yend = -29.5),
+                 arrow = arrow(length = unit(0.3, "cm")),
+                 size = 0.1, colour = "black") +
+    annotate("text", label = "Benguela", x = 16.0, y = -31.8,
+             size = 3.5, angle = 298, colour = "black") +
     geom_segment(aes(x = 33, y = -29.5, xend = 29.8, yend = -33.0),
-                arrow = arrow(length = unit(0.3, "cm")), size = 0.1, colour = "black") +
-    annotate("text", label = "Agulhas", x = 31.7, y = -31.7, size = 3.5, angle = 53, colour = "black") +
-  # # Improve on the x and y axis labels
-   # scale_x_continuous(breaks = seq(15, 35, 5),
-   #                     labels = scales::unit_format("°E", sep = "") +
-    scale_y_continuous(breaks = seq(-35, -30, 5),
-                       labels = c("35°S", "30°S")) +
-  labs(x = NULL, y = NULL) +
-    coord_cartesian(xlim = c(10.5, 39.5), ylim = c(-39.5, -25.5), expand = F) +
-  scaleBar(lon = 32.0, lat = -38.7, distanceLon = 200, distanceLat = 50, 
-           distanceLegend = 90, dist.unit = "km", arrow.length = 100,
-           arrow.distance = 130, arrow.North.size = 3) +
-  theme_bw() +
+                arrow = arrow(length = unit(0.3, "cm")),
+                size = 0.1, colour = "black") +
+    annotate("text", label = "Agulhas", x = 31.7, y = -31.7,
+             size = 3.5, angle = 53, colour = "black") +
+    # Improve on the x and y axis labels
+    coord_fixed(ratio = 1, xlim = c(10.5, 39.5), ylim = c(-39.5, -25.5),
+                expand = TRUE) +
+    scale_x_continuous(expand = c(0, 0),
+                       labels = scales::unit_format(unit = "°E", sep = "")) +
+    scale_y_continuous(expand = c(0, 0),
+                       labels = scales::unit_format(unit = "°S", sep = "")) +
+    labs(x = NULL, y = NULL) +
+    scaleBar(lon = 32.0, lat = -38.7, distanceLon = 200, distanceLat = 50, 
+             distanceLegend = 90, dist.unit = "km", arrow.length = 100,
+             arrow.distance = 130, arrow.North.size = 3) +
+    theme_bw() +
     theme(panel.border = element_rect(fill = NA, colour = "black", size = 1),
           axis.text = element_text(colour = "black"),
           axis.ticks = element_line(colour = "black"))
