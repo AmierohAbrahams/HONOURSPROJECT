@@ -1,5 +1,5 @@
 ---
-title: "Complete"
+title: "Determining the impact of wind and wave action on temperature along the South Africa coastline."
 author: "Amieroh Abrahams"
 output:
   pdf_document:
@@ -42,12 +42,24 @@ bibliography: ../bibliography.bib
 ```{r}
 print(getwd())
 ```
+\newpage
+
+
+University of the Western Cape, Department of Biodiversity and Conservation Biology, Private, bag X 17: Bellville, 7535, South Africa.
+	
+A mini-thesis submitted in partial fulfilment of the requirement for the degree Bachelor of Science (Honours) in the Department of Biodiversity and Conservation Biology, Faculty of Science, University of the Western Cape
+
+Supervisor:		Dr. Bryan Maritz
+Co-supervisors: 	Dr. Robin Maritz
+Dr. Adriaan Engelbrecht 
+19 November 2018
+
 
 \newpage
 ## Plagiarism Declaration
 
 \newpage
-## Declaration
+## Turnit in report
 
 \newpage
 ## Abstract

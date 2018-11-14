@@ -27,7 +27,7 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{hyperref}
 \hypersetup{unicode=true,
-            pdftitle={Complete},
+            pdftitle={Determining the impact of wind and wave action on temperature along the South Africa coastline.},
             pdfauthor={Amieroh Abrahams},
             pdfborder={0 0 0},
             breaklinks=true}
@@ -118,16 +118,16 @@
 
 \setlength{\droptitle}{-2em}
 
-  \title{Complete}
+  \title{Determining the impact of wind and wave action on temperature along the
+South Africa coastline.}
     \pretitle{\vspace{\droptitle}\centering\huge}
   \posttitle{\par}
     \author{Amieroh Abrahams}
     \preauthor{\centering\large\emph}
   \postauthor{\par}
-      \predate{\centering\large\emph}
-  \postdate{\par}
-    \date{11 August 2018}
-
+    \date{}
+    \predate{}\postdate{}
+  
 
 \begin{document}
 \maketitle
@@ -143,8 +143,21 @@
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "/Users/ajsmit/Dropbox/R/students/Amieroh/Project_writeup"
+## [1] "/home/amieroh/Documents/HONOURSPROJECT/Project_writeup"
 \end{verbatim}
+
+\newpage
+
+University of the Western Cape, Department of Biodiversity and
+Conservation Biology, Private, bag X 17: Bellville, 7535, South Africa.
+
+A mini-thesis submitted in partial fulfilment of the requirement for the
+degree Bachelor of Science (Honours) in the Department of Biodiversity
+and Conservation Biology, Faculty of Science, University of the Western
+Cape
+
+Supervisor: Dr.~Bryan Maritz Co-supervisors: Dr.~Robin Maritz
+Dr.~Adriaan Engelbrecht 19 November 2018
 
 \newpage
 
@@ -152,7 +165,7 @@
 
 \newpage
 
-\subsection{Declaration}\label{declaration}
+\subsection{Turnit in report}\label{turnit-in-report}
 
 \newpage
 
@@ -211,56 +224,53 @@ project.
 
 \section{Introduction}\label{introduction}
 
-{[}AJS: the refs are inconsistently formatted, i.e.~some places a
-semi-colon between refs, some places a comma; also, they must be
-arranged chronologically{]}
-
 Seawater temperature is a key indicator of environmental change in
-marine ecosystems (Pearce et al., 2006), and yet little is known
-regarding the controlling influences of temperatures within coastal
-zones (with the coastal zone here defined as the region ≤ 400m from the
-shore). {[}AJS: say something about the fact that generally these things
-are better known from oceanic regions, due to data sets from moorings
-and from satellites{]} Nearshore processes, such as wave action, coastal
-winds, and surface radiant heating, and the thermal properties of the
-substratum, are a few of the factors that have been implicated in
-affecting thermal variability across small spatial scales {[}AJS: what
-about the paper that Rob sent the link to last week?{]} (Fewings and
-Lentz, 2011; Davis et al. 2011; Woodson et al. 2007; Smale and Wernberg
-2009). Given the significance of the temperature variation for the
-biogeographical limits of organisms, due to its effects on the
-reproductive, growth and survival limits of species {[}AJS: refs. must
-always be arranged chronologically{]} (Pearce et al. 2006; van den Hoek,
-1982b; Breeman, 1988; Broitman et al., 2008; Byrne et al., 2009; Smale
-and Wernberg, 2009; Smit et al. 2013), it is imperative to understand
-how marine organisms may respond to climatic variation at coastal
-regions on both a global and local scale. Developing an understanding of
-the physical variables present within the coastal zone that are able to
-mediate thermal patterns and processes across small spatial scales and
-short temporal scales that are typically associated with nearshore
-processes will be instrumental in this understanding.
+marine ecosystems (Pearce, Faskel, and Hyndes 2006), and yet little is
+known regarding the controlling influences of temperatures within
+coastal zones (with the coastal zone here defined as the region ≤ 400m
+from the shore). Coastal temperature observations are generally limited
+in their spatial and temporal coverage. Oceanic regions however are
+studied to great extent due to availability of long term datasets from
+moorings and satellites of monitoring ocean surface temperatures (M. J.
+Rouault et al. 2010; Beal et al. 2011; Tapia et al. 2014; Lee et al.
+2018). Nearshore processes, such as wave action, coastal winds, and
+surface radiant heating, and the thermal properties of the substratum,
+are a few of the factors that have been implicated in affecting thermal
+variability across small spatial scales (Woodson et al. 2007; K. Davis
+et al. 2011; Fewings and Lentz 2011; Sinnett and Feddersen 2014). Given
+the significance of the temperature variation for the biogeographical
+limits of organisms, due to its effects on the reproductive, growth and
+survival limits of species (Hoek 1982; Breeman 1988; Pearce, Faskel, and
+Hyndes 2006; Broitman et al. 2008; Byrne et al. 2009; {\textbf{???}};
+Smit et al. 2013), it is imperative to understand how marine organisms
+may respond to climatic variation at coastal regions on both a global
+and local scale. Developing an understanding of the physical variables
+present within the coastal zone that are able to mediate thermal
+patterns and processes across small spatial scales and short temporal
+scales that are typically associated with nearshore processes will be
+instrumental in this understanding.
 
 Temperature variability of the coastal region of South Africa, spanning
 approximately 3,100 km in distance (Smit et al. 2013), has not yet been
 studied in great detail at highly localised scales. At the broad scale,
 this region exhibits a large variation in seawater temperatures along
-its coastline (Mead et al. 2013; Smit et al. 2013) and is divided into
-three distinct coastal regions, each with contrasting temperatures
-{[}AJS: My my paper last year for more detial\ldots{} actually three
-regions plus an overlap; use the terminology used there, e.g.~Benguela
-Marine Province, etc\ldots{}{]}. These include the cold temperate west
-coast, warm temperate south coast, and the subtropical east coast. These
-regions display noticeable differences in seawater temperatures in
-comparison to each other, primarily due to the influences of the
-neighbouring ocean currents (Bolton et al. 2004; Mead et al. 2013;
-Schlegel and Smit 2016). These temperature gradients are associated with
-differences in ecosystem physiology, species distribution, and habitat
-structure (Smale and Wernberg, 2009; Wernberg et al 2010; Wernberg et al
-2011; Smit et al., 2017). As a result of the diverse habitats defined by
-thermal differences and exposure gradients along the coastline, species
-diversity is not uniformly distributed; consequently, the east and south
-coast has much higher species diversity and beta-diversity compared to
-the west coast (Mead et al 2013; Smit et al., 2017).
+its coastline (A Mead et al. 2013; Smit et al. 2013) and is divided into
+four bioregions, each with contrasting temperatures. These bioregions
+are the Benguela Marrine Province (BMP), Benguela-Agulhas Transition
+Zone (B-ATZ), the Agulhas Marine Province (AMP) and the East Coast
+Transition Zone (ECTZ) (Smit, Bolton, and Anderson 2017). These regions
+display noticeable differences in seawater temperatures in comparison to
+each other, primarily due to the influences of the neighbouring ocean
+currents (Bolton et al. 2004; A Mead et al. 2013; Schlegel and Smit
+2016). These temperature gradients are associated with differences in
+ecosystem physiology, species distribution, and habitat structure
+({\textbf{???}}; Wernberg et al. 2010; Wernberg et al. 2011; Smit,
+Bolton, and Anderson 2017). As a result of the diverse habitats defined
+by thermal differences and exposure gradients along the coastline,
+species diversity is not uniformly distributed; consequently, the east
+and south coast has much higher species diversity and beta-diversity
+compared to the west coast (A Mead et al. 2013; Smit, Bolton, and
+Anderson 2017).
 
 On broad scales, the influences due to the the Benguela and Agulhas
 Currents greatly affect the thermal climatologies of the nearshore in
@@ -270,18 +280,19 @@ between the southeast trade winds and the Southern Hemisphere westerlies
 (Beal et al. 2011), while the Benguela Current {[}AJS: add the
 broader-scale drivers of the Benguela here\ldots{}{]}. Regionally, the
 Benguela Current assists in transporting cold water northwards from the
-Southern Ocean to the coast (Hutchings et al. 2009; Lutjeharms et al.,
-2000; Schlegel et al. 2017; Lünning, 1990), whereas the Agulhas Current
-transports sub-tropical, warm water towards the tip of Africa (Schlegel
-et al. 2017). Together these two currents are responsible for the
-presence of a strong west-east thermal gradient occurring along the
-coastline of South Africa, with the west coast having significantly
-colder waters than the east coast (Smit et al. 2013; Smit et al., 2017).
-The south coast is unique as it is affected by both the Benguela and
-Agulhas Currents, with a strong overlap region from Cape Agulhas to Cape
-Point (Smit et al., 2017), and it experiences a greater spatial and
-temporal variation in temperature compared to elsewhere along the coast
-(Lutjeharms and Ballegooyen 1988). At the localised scale, the
+Southern Ocean to the coast (Lüning 1990; J. Lutjeharms, Cooper, and
+Roberts 2000; Hutchings et al. 2009; Schlegel et al. 2017), whereas the
+Agulhas Current transports sub-tropical, warm water towards the tip of
+Africa (Schlegel et al. 2017). Together these two currents are
+responsible for the presence of a strong west-east thermal gradient
+occurring along the coastline of South Africa, with the west coast
+having significantly colder waters than the east coast (Smit et al.
+2013; Smit, Bolton, and Anderson 2017). The south coast is unique as it
+is affected by both the Benguela and Agulhas Currents, with a strong
+overlap region from Cape Agulhas to Cape Point (Smit, Bolton, and
+Anderson 2017), and it experiences a greater spatial and temporal
+variation in temperature compared to elsewhere along the coast (J.
+Lutjeharms and Van Ballegooyen 1988). At the localised scale, the
 statistical properties of temperature climatologies, such as the mean,
 minimum, and maximum of \emph{in situ} coastal seawater temperature time
 series for the South African coastline, show distinct coastal variations
@@ -290,61 +301,70 @@ masses originating from the Benguela and Agulhas Currents can introduce
 thermal variation of up to 10°C within a 24-hour period (Schlegel et al.
 2017), thus creating a highly dynamic nearshore environment.
 
-{[}AJS: maybe write a short para here about how climate change is felt
-along the coast. I know I have deleted a sentence about that, but you
-can do better. Use this: Research has found that the seawater
-temperatures of the Benguela Current has been decreasing at a rate of
-approximately 0.5 °C per decade whilst the Agulhas Current has been
-increasing by between 0.55°C - 0.7°C per decade (Rouault et al. 2009;
-2010). Overall, sea surface temperatures (SST) around South Africa have
-increased by approximately 0.25°C between 1903 and 2013 (DEA, 2013) and
-are still increasing at a rate of 0.12 °C per decade (Schlegel and Smit,
-pers. comm.). The exact causes of these changes are not fully
-understood, however human activities are known to influence coastal
-seawater temperature (Rouault et al. 2009, 2010 ; Mead et al. 2013, Mead
-2011).{]}
+Climate change is often understood as a long-term rise in the global
+mean temperatures and has resulted in an increased mean ocean
+temperatures over the past few decades (Stocker 2014). Research has
+found that the seawater temperatures of the Benguela Current has been
+decreasing at a rate of approximately 0.5 °C per decade whilst the
+Agulhas Current has been increasing by between 0.55°C - 0.7°C per decade
+({\textbf{???}}; M. J. Rouault et al. 2010). Overall, sea surface
+temperatures (SST) around South Africa have increased by approximately
+0.25°C between 1903 and 2013 (DEA, 2013) and are still increasing at a
+rate of 0.12 °C per decade (Schlegel et al. 2017). Research studies also
+show that climate change is leading to an increase in extreme
+atmosphetic heating (Easterling et al. 2000; Perkins and Alexander 2013)
+and a decrease in extreme cold events (Meehl and Tebaldi 2004). The
+exact causes of these changes are not fully understood, however human
+activities are known to influence coastal seawater temperature
+({\textbf{???}}; M. J. Rouault et al. 2010 ; Angela Mead 2011; A Mead et
+al. 2013).
 
 Over the last few decades, improvements in remote sensing technology
 have enabled researchers to map global sea surface temperature with a
-high level of accuracy (Zainuddin et al. 2006; Smale and Wernberg 2009).
-The National Oceanic and Atmospheric Administration's (NOAA) series of
+high level of accuracy (Zainuddin et al. 2006; {\textbf{???}}). The
+National Oceanic and Atmospheric Administration's (NOAA) series of
 satellites have provided global SST datasets from the 1980s on both
-global and local scales (Pearce et al. 2005). The NOAA dataset is
-critically important as satellite temperature datasets are often used to
-monitor changes in oceanic temperatures, and provide valuable
-information on both biological and physical parameters in the ocean
-(Demarcq et al. 2010). Furthermore, satellite-derived SST data play an
-important role in creating projections predicting the potential effects
-of climate change on coastal and oceanic marine biota (Muller et al.
-2009; Wethey et al. 2011; Bartsch et al. 2012). Satellite-derived data
-are not as reliable as \emph{in situ} temperature measurements when used
-near the shoreline (Smit et al., 2013), but are often used as a proxy
-when these measurements are scares or unavailable (Smale and Wernberg
-2009). However, the local availability of \emph{in situ} collected
-coastal temperature data product provides a more reliable source of
-accurate coastal seawater temperature data (Smit et al. 2013). The South
-African Coastal Temperature Network (SACTN) has collected SST data form
-the South African coastline from as early as 1972, with contributions
-from various organisations and governmental departments. This data set,
-used in combination with satellite-derived data that give a broader
-view, provides an opportunity to launch an investigation into the
-mechanistic underpinning for why the thermal \emph{milieu} of the
+global and local scales (Pearce, Faskel, and Hyndes 2006). The NOAA
+dataset is critically important as satellite temperature datasets are
+often used to monitor changes in oceanic temperatures, and provide
+valuable information on both biological and physical parameters in the
+ocean (Demarcq et al. 2010). Furthermore, satellite-derived SST data
+play an important role in creating projections predicting the potential
+effects of climate change on coastal and oceanic marine biota (Müller et
+al. 2009; Wethey et al. 2011; Bartsch, Wiencke, and Laepple 2012).
+Satellite-derived data are not as reliable as \emph{in situ} temperature
+measurements when used near the shoreline (Smit et al. 2013), but are
+often used as a proxy when these measurements are scares or unavailable
+({\textbf{???}}). However, the local availability of \emph{in situ}
+collected coastal temperature data product provides a more reliable
+source of accurate coastal seawater temperature data (Smit et al. 2013).
+The South African Coastal Temperature Network (SACTN) has collected SST
+data form the South African coastline from as early as 1972, with
+contributions from various organisations and governmental departments.
+This data set, used in combination with satellite-derived data that give
+a broader view, provides an opportunity to launch an investigation into
+the mechanistic underpinning for why the thermal \emph{milieu} of the
 nearshore environment is so dynamic across short time scales and over
 short distances along the shore.
 
-{[}AJS: write a short rationale here, \emph{i.e.}, how the nature of the
-two data sets allowed you to develop the study that you ultimately
-did{]} The intention of this study is to examine variations in
-temperature between selected sites along the South African coastline
-using seawater temperature data to better understand patterns of coastal
-temperature at a localised scale. Additionally, this study also examines
-the influence of environmental factors, namely, wave and wind action, on
-coastal seawater temperatures. The aims of this study are to: i) examine
-whether there is homogeneity between the various sites sampled; ii)
-examine whether or not wind and wave action may contribute towards a
-variation in seawater temperatures along the South African coastline;
-and iii) to examine whether or not SST data collected via satellite may
-be affected by wind and wave action.
+The intention of this study is to examine variations in temperature
+between selected sites along the South African coastline using seawater
+temperature data to better understand patterns of coastal temperature at
+a localised scale. The SACTN dataset used in this study consisted of in
+situ collected coastal seawater temperature measurements, allowing for
+comparisions between different sites at different time periods.
+Similarly the various satellite datasets used in this study provided SST
+measurements collected at a global scale. The dataset compising of the
+wind and wave parameters overlap in time with both the \emph{in situ}
+and satellite collected seawater temperature and so allows for research
+on the impact of these variables on temperature. Additionally, this
+study also examines the influence of environmental factors, namely, wave
+and wind action, on coastal seawater temperatures. The aims of this
+study are to: i) examine whether there is homogeneity between the
+various sites sampled; ii) examine whether or not wind and wave action
+may contribute towards a variation in seawater temperatures along the
+South African coastline; and iii) to examine whether or not SST data
+collected via satellite may be affected by wind and wave action.
 
 \newpage
 
@@ -485,11 +505,10 @@ manner to allow for meaningful comparisons to be made.
 \begin{figure}
 \centering
 \includegraphics{../figures/map_fixed.pdf}
-\caption{Figure1: A map of the study area representing the 129 sites
-where \emph{in situ} coastal seawater temperature was collected. These
-sites were grouped based on similar mean, minimum and maximum
-temperatures and as such each groups represents a unique colour
-variation.}
+\caption{A map of the study area representing the 129 sites where
+\emph{in situ} coastal seawater temperature was collected. These sites
+were grouped based on similar mean, minimum and maximum temperatures and
+as such each groups represents a unique colour variation.}
 \end{figure}
 
 Once sites were grouped together, the next step was to reduce the number
@@ -510,8 +529,8 @@ grouped together.
 \begin{figure}
 \centering
 \includegraphics{../figures/final_combined_plot.pdf}
-\caption{Figure 2: A map representing the three sites chosen within each
-of the six cluster along the South African coastline.}
+\caption{A map representing the three sites chosen within each of the
+six cluster along the South African coastline.}
 \end{figure}
 
 With three sites per cluster, the haversine formula was used to
@@ -656,9 +675,9 @@ identical.
 \begin{figure}
 \centering
 \includegraphics{../figures/combined_plot.pdf}
-\caption{Figure 3: Boxplots representing the seawater temperature of
-paired sites within each cluster along the South African coast with the
-values representing the distance (km) between paired sites.}
+\caption{Boxplots representing the seawater temperature of paired sites
+within each cluster along the South African coast with the values
+representing the distance (km) between paired sites.}
 \end{figure}
 
 On a monthly basis, large differences of average temperatures was seen
@@ -716,106 +735,92 @@ and spring months little differences in average temperatures between
 sites, with minimal differences in the rates of these changes. These
 rates increased during spring.
 
-\includegraphics{../figures/SACTN_clust_1_plot2.pdf}
-\includegraphics{../figures/SACTN_clust_2_plot2.pdf}
-\includegraphics{../figures/SACTN_clust_3_plot2.pdf}
-\includegraphics{../figures/SACTN_clust_4_plot2.pdf}
-\includegraphics{../figures/SACTN_clust_5_plot2.pdf}
-\includegraphics{../figures/SACTN_clust_6_plot2.pdf}
+\begin{figure}
+\centering
+\includegraphics{../figures/figures/combined2_plot.pdf}
+\caption{Line graph representing the variation in average seawater
+temperature for each of the month and year for paired sites along the
+South African coastline with the values representing the distance (km)
+between paired sites.}
+\end{figure}
 
 \subsubsection{Average temperature of clustered
 sites}\label{average-temperature-of-clustered-sites}
 
 In the first cluster of sites, the results of a one way ANOVA tests it
-was found that there was a significant (P \textless{} 0.05) differences
-in average temperatures between paired sites (F2 = 12.07, SS = 15.28, P
-\textless{} 0.001). These differences were present across season (F6 =
-3.44, SS = 13.07, P \textless{} 0.002) but were not present yearly
-between individual sites and paired sites (F2 = 1.38, SS = 1.75, P =
+was found that there was a significant (p \textless{} 0.05) differences
+in average temperatures between paired sites (F = 12.07, SS = 15.28, p
+\textless{} 0.001). These differences were present across season (F =
+3.44, SS = 13.07, p \textless{} 0.002) but were not present yearly
+between individual sites and paired sites (F = 1.38, SS = 1.75, p =
 0.25). Similarly, paired sites within the second cluster also a
-significantly differed in average temperature (F2 = 166.84, SS = 418.6,
-P \textless{} 0.001). Conversely to first cluster however these
-differences were present yearly (F1 = 33.21, SS = 41.7, P \textless{}
-0.001) and seasonally (F6 = 16.72, SS = 125.9, P \textless{} 0.02,)
+significantly differed in average temperature (F = 166.84, SS = 418.6, p
+\textless{} 0.001). Conversely to first cluster however these
+differences were present yearly (F = 33.21, SS = 41.7, p \textless{}
+0.001) and seasonally (F = 16.72, SS = 125.9, p \textless{} 0.02,)
 between individual and paired sites. In the third cluster of sites,
 ANOVA tests revealed that there were no significant differences in
-average temperatures between paired sites (F2 = 1.17, SS = 2.9, P =
+average temperatures between paired sites (F = 1.17, SS = 2.9, p =
 0.31), but temperatures varied seasonally and yearly between individual
 sites. In the fourth cluster there were again no significant difference
-of average temperatures between paired sites (F2 = 0.73, SS = 2.9, P =
-0.48). Significant differences were also absent across seasons (F3 =
-0.75, SS = 0.0042, P = 0.52) and years (F1 = 0.495, SS = 0.0009, P =
+of average temperatures between paired sites (F = 0.73, SS = 2.9, p =
+0.48). Significant differences were also absent across seasons (F =
+0.75, SS = 0.0042, p = 0.52) and years (F = 0.495, SS = 0.0009, p =
 0.48) between both individual and paired sites. Sites within the fifth
 cluster were significantly different in average temperatures between
-paired sites (F2 = 77.10, SS = 196.7, P \textless{} 0.002), with these
-differences being present yearly (F1 = 172.80, SS = 220.4, P \textless{}
-0.001) and seasonally (F3 = 77.10, SS = 29.92, P \textless{} 0.002) for
+paired sites (F = 77.10, SS = 196.7, p \textless{} 0.002), with these
+differences being present yearly (F= 172.80, SS = 220.4, p \textless{}
+0.001) and seasonally (F = 77.10, SS = 29.92, p \textless{} 0.002) for
 both paired and individual sites. Finally, sites within the sixth
 cluster also significantly difference in average temperatures between
-paired sites, yearly and seasonally (F2 = 132.044, SS = 419.7, P
+paired sites, yearly and seasonally (F = 132.044, SS = 419.7, p
 \textless{}0.01).
-
-\textcolor{red}{So what do these results tell you that prompt the next step of your research?}
 
 \subsection{The impact of wind and wave action on
 temperature}\label{the-impact-of-wind-and-wave-action-on-temperature}
 
-\subsection{SACTN:}\label{sactn}
+\subsection{SACTN dataset:}\label{sactn-dataset}
 
 The coeffcient of determination was calculated to analyse how
-differences in once variable can be explained by a difference in the
+differences in one variable can be explained by a difference in the
 second variable. Here, the relationship between temperature and several
 variables including wind direction and speed as well as wave height,
-period, direction and speed was determined for all 18 sites. More
-specifically the outcome of this analyses gives the percentage variation
-in y explained by the x-variable. The results showed little variation in
-environmental factors and temperature for each of the sites. Wind and
-wave direction influenced temperature at 0 -- 3\%. The most significant
-relationships were found in Muizenberg, Kalk Bay and Mossel Bay where
-the R\^{}2 values indicated that wave period had a 6-7\% influence on
-temperature. Overall wind and wave action had no significant impact on
-temperature differences along the coast.
+period, direction and speed was determined for all 18 sites. The results
+showed little variation in environmental factors and temperature for
+each of the sites. Wind and wave direction influenced temperature at 0
+-- 3\%. The most significant relationships were found in Muizenberg,
+Kalk Bay and Mossel Bay where the R\^{}2 values indicated that wave
+period had a 6-7\% influence on temperature. Overall wind and wave
+action had no significant impact on temperature differences along the
+coast.
 
-\textcolor{red}{longer wave periods drive warmer/cooler temperatures?}.
-
-\subsection{AVHRR}\label{avhrr}
+\subsection{Satellite dataset}\label{satellite-dataset}
 
 Upon examining the impact of wind and wave action on seawater
-temperature of various satellite datasets, it was seen that wave and
+temperature of the AVHRR temperature dataset, it was seen that wave and
 wind direction had a minimal effect on temperature variation with its
 R\^{}2 values ranging between 0-3\%. The results also indicated that
 wave height influenced temperature at some of the sites. This was
 evident in Gaansbaai and Lamberts Bay where wave height had a 9\% impact
-on temperature variation.
-
-\subsection{MUR:}\label{mur}
-
-The results continued to show little variation in regards to the
-influence of wind and wave action on temperature. At many of the sites,
-both wind and wave direction had a 0\% impact on the temperature.
-However, it was seen that wave height and wave period had the greatest
-impact on temperature at some of the sites, with Gordons Bay and
-Gaansbaai indicating an 8\% and 10\% impact of wave height on
-temperature variation respectively.
-
-\subsection{CMC:}\label{cmc}
-
-The results indicated that wave as well as wind direction and wind speed
-showed the least significant impact on temperature variation with r\^{}2
-values ranging between 0-3\%. Wave height continued to show the largest
-impact on temperature variation at some of the sites. Here, Gaansbaai
-and Gordons Bay indicated the highest R\^{}2 values of 12\% and 9\%
-respectively.
-
-\subsection{K10:}\label{k10}
-
-When comparing the impact of various environmental factors on
-temperature variation for the K10 data, the results indicated that the
-each of the above-mentioned variables had no impact on the temperature
-variation at Hamburg. The impact of wind direction on temperature is
-highest at Gansbaai, representing an R\^{}2 value of 4\%. Wave height
-still repersented the greatest influence on temperature occurring at
-these sites.
+on temperature variation. The results obtained from the MUR dataset
+continued to show little variation in regards to the influence of wind
+and wave action on temperature. At many of the sites, both wind and wave
+direction had a 0\% impact on the temperature, however, it was seen that
+wave height and wave period had the greatest impact on temperature at
+some of the sites, with Gordons Bay and Gaansbaai indicating an 8\% and
+10\% impact of wave height on temperature variation respectively. The
+results obtained from the CMC temperature dataset indicated that wave
+and wind direction as well as wind speed showed the least significant
+impact on temperature variation with r\^{}2 values ranging between
+0-3\%. Wave height continued to show the largest impact on temperature
+variation at some of the sites. Gaansbaai and Gordons Bay indicated the
+highest R\^{}2 values of 12\% and 9\% respectively. Upon comparing the
+impact of various environmental factors on temperature variation for the
+K10 data, the results indicated that the each of the above-mentioned
+variables had no impact on the temperature variation at Hamburg. The
+impact of wind direction on temperature is highest at Gansbaai,
+representing an R\^{}2 value of 4\% while wave height still repersented
+the greatest influence on temperature occurring at these sites.
 
 \subsection{Wind rose diagram}\label{wind-rose-diagram}
 
@@ -833,11 +838,10 @@ and 165 degrees.
 \begin{figure}
 \centering
 \includegraphics{../figures/p.wr3.pdf}
-\caption{Figure 5: Wind rose diagrams representing the the most
-predominant wind direction for each of the sites. Each spoke is divided
-by color into wind speed ranges. The radial length of each spoke around
-the circle is the time that the wind and waves comes from that
-direction}
+\caption{Wind rose diagrams representing the the most predominant wind
+direction for each of the sites. Each spoke is divided by color into
+wind speed ranges. The radial length of each spoke around the circle is
+the time that the wind and waves comes from that direction}
 \end{figure}
 
 \subsection{The impact of predominant wind and wave action on seawater
@@ -863,9 +867,9 @@ seawater temperature variation along the coast.
 \begin{figure}
 \centering
 \includegraphics{../figures/predominant_ww.pdf}
-\caption{Figure 6: Boxplot representing the adjusted r\^{}2 value each
-of the environmental variables at the most predominant wave and wind
-direction for each of the sites.}
+\caption{Boxplot representing the adjusted r\^{}2 value each of the
+environmental variables at the most predominant wave and wind direction
+for each of the sites.}
 \end{figure}
 
 \subsection{Discussion}\label{discussion}
@@ -921,10 +925,10 @@ during each quasi-stationary time step.
 The SWAN model usually overestimates the energy of developing waves with
 low frequencies (long periods) for very short distances from the shore.
 This is because wave conditions are simplified by using an a priori wave
-spectrum (Booij, Ris \& Holthuijsen, 1999; Thomas \& Dwarakish, 2015).
+spectrum (Booij, Ris, and Holthuijsen 1999; Thomas and Dwarakish 2015).
 For most modelled areas, these assumptions are reasonable to make
 because most of the South African coastline is exposed and agree to the
-requirements of these assumptions (Joubert \& van Niekerk, 2013).
+requirements of these assumptions (Joubert et al. 2013).
 
 Previous studies suggest that a longer time series containing more data
 would have greater accuracy in detecting subtle changes in temperature
@@ -954,11 +958,11 @@ available.
 The UTRs used to collect data in the SACTN dataset appeared to express a
 lower number of NA values compared to the data collected with hand
 thermometers. As such, this may have influenced the overall time series
-dataset (Smit and Schlegel 2016). The level of precision at which data
+dataset (Schlegel and Smit 2016). The level of precision at which data
 was collected also influenced the length of the time series needed. Time
 series in which temperature were collected at a precision of 0.5 ºC may
 require another 24 months of recordings to precisely detect long term
-variation (Smit and Schlegel 2016). The average length of the
+variation (Schlegel and Smit 2016). The average length of the
 thermometer time series component of the SACTN dataset was 346 months
 whereas the average length of UTR time series was less than half of
 that. With the extent of these differences in length being so severe,
@@ -970,13 +974,13 @@ Satellite acquired SST records are useful to modern marine scientists.
 These data are often used to model and predict a wide range of oceanic
 and biological processes in the open ocean but have only recently been
 used to study temperature variations influencing benthic organisms
-(Pearce et al. 2006). Here, both satellite SST data, and in situ
-thermometer data were correlated with wind and wave data along the
+(Pearce, Faskel, and Hyndes 2006). Here, both satellite SST data, and in
+situ thermometer data were correlated with wind and wave data along the
 coastal environment at a depth of 7 and 15 meters respectively. SST data
 acquired by satellites are obtained from a thin boundary layer at the
-air-sea interface (Smale and Wernberg 2009) and at different locations
-and thus deviated from coastal in situ collected seawater temperatures.
-These deviations may have affected the outcomes of the analyses thereby
+air-sea interface ({\textbf{???}}) and at different locations and thus
+deviated from coastal in situ collected seawater temperatures. These
+deviations may have affected the outcomes of the analyses thereby
 inhibiting the findings. Upon assessing the impacts of wind and wave
 action on satellite and in situ collected seawater temperature data it
 was found that wind and wave action had insignificant impacts on the
@@ -987,38 +991,39 @@ South Africa, there is a known east-west thermal temperature gradient
 that may have caused some interesting results (Smit et al. 2013). This
 is caused by major oceanic processes such as coastal upwelling,
 thermohaline circulation, solar radiation, atmospheric temperature
-(Sinnet and Feddersen, 2014) and the presence of major ocean currents,
-which cumulatively influences the temperatures along this coastline
-(Walker 1990; Smit and Schlegel 2016). While it was reasonable to assume
-that surface level environmental factors like wind and wave action would
-affect sea surface temperatures, it is not completely unexpected that
-they would have little effect given the prevalence of the major
-processes mentioned above. However, this is unlikely as the `West Coast'
-system is considered wind driven and there are multiple wind driven
-upwelling cells along the south coast. Those processes are of the
-largest drivers behind coastal temperature variation and may simply be
-overpowering the effects of other environmental factors. Other factors
-such as latent heat flux and wave energy flux were also proven to heat
-and cool coastal seawater temperatures (Sinnet and Feddersen, 2014).
+({\textbf{???}}) and the presence of major ocean currents, which
+cumulatively influences the temperatures along this coastline
+({\textbf{???}}; Schlegel and Smit 2016). While it was reasonable to
+assume that surface level environmental factors like wind and wave
+action would affect sea surface temperatures, it is not completely
+unexpected that they would have little effect given the prevalence of
+the major processes mentioned above. However, this is unlikely as the
+`West Coast' system is considered wind driven and there are multiple
+wind driven upwelling cells along the south coast. Those processes are
+of the largest drivers behind coastal temperature variation and may
+simply be overpowering the effects of other environmental factors. Other
+factors such as latent heat flux and wave energy flux were also proven
+to heat and cool coastal seawater temperatures ({\textbf{???}}).
 
 Alternatively, it is possible that factors other than wind and wave
 action are influencing temperatures across the South African coastline.
 For example, whilst rainfall can have large influences on coastal SST
-(Reason et al. 1999) other, non-climatic, factors could be playing a
-greater role. Coastal regions are highly impacted by human mediated
-pressures (Mead et al. 2013). These pressures are predicted to drive
+(Reason and Mulenga 1999) other, non-climatic, factors could be playing
+a greater role. Coastal regions are highly impacted by human mediated
+pressures (A Mead et al. 2013). These pressures are predicted to drive
 change over a spatial and temporal scale and is often a cause of
-temperature variation (Mead and Robinson 2011). Additionally, evidence
-indicates that human driven climate change on both a local and global
-scale largely influence seawater temperatures, wind regimes, and wave
-action (Rouault et al. 2009a, 2009b, 2010, 2011; Mead et al. 2013).
-These pressures are present along the South African coastline in the
-form of pollution, coastal runoff, invasive species, resource
-exploitation, and coastal mining, which directly and indirectly
-influences air temperature, wind, seawater temperature, and rainfall
-(Rouault and Mead 2011; Mead et al. 2013). These anthropogenic factors
-may be cumulatively playing an important role in affecting SST along the
-coastline, but the full extent of these factors are unknown.
+temperature variation (Griffiths, Mead, and Zietsman 2011).
+Additionally, evidence indicates that human driven climate change on
+both a local and global scale largely influence seawater temperatures,
+wind regimes, and wave action ({\textbf{???}}; M. J. Rouault et al.
+2010; A Mead et al. 2013). These pressures are present along the South
+African coastline in the form of pollution, coastal runoff, invasive
+species, resource exploitation, and coastal mining, which directly and
+indirectly influences air temperature, wind, seawater temperature, and
+rainfall ({\textbf{???}}; James and Hermes 2011; A Mead et al. 2013).
+These anthropogenic factors may be cumulatively playing an important
+role in affecting SST along the coastline, but the full extent of these
+factors are unknown.
 
 Within marine environments, coastal temperature variation allows for a
 variation in the spatial arrangements of marine biodiversity. Whilst
@@ -1048,6 +1053,248 @@ temperature analyses at fine-resolutions. These data could provide
 critically important information that can be used to assist in
 conserving marine biodiversity within these waters and should be given
 greater priority within marine research in the near future.
+
+\hypertarget{refs}{}
+\hypertarget{ref-Bartsch2012}{}
+Bartsch, Inka, Christian Wiencke, and Thomas Laepple. 2012. ``Global
+Seaweed Biogeography Under a Changing Climate: The Prospected Effects of
+Temperature.'' In \emph{Seaweed Biology}, 383--406. Springer.
+
+\hypertarget{ref-Beal2011}{}
+Beal, Lisa M, Wilhelmus PM De Ruijter, Arne Biastoch, Rainer Zahn,
+Meghan Cronin, Juliet Hermes, Johann Lutjeharms, et al. 2011. ``On the
+Role of the Agulhas System in Ocean Circulation and Climate.''
+\emph{Nature} 472 (7344). Nature Publishing Group: 429.
+
+\hypertarget{ref-Bolton2004}{}
+Bolton, JJ, Frédérik Leliaert, Olivier De Clerck, RJ Anderson, H
+Stegenga, HE Engledow, and Eric Coppejans. 2004. ``Where Is the Western
+Limit of the Tropical Indian Ocean Seaweed Flora? An Analysis of
+Intertidal Seaweed Biogeography on the East Coast of South Africa.''
+\emph{Marine Biology} 144 (1). Springer: 51--59.
+
+\hypertarget{ref-Bolton2010}{}
+Bolton, John J. 2010. ``The Biogeography of Kelps (Laminariales,
+Phaeophyceae): A Global Analysis with New Insights from Recent Advances
+in Molecular Phylogenetics.'' \emph{Helgoland Marine Research} 64 (4):
+263.
+
+\hypertarget{ref-Booij1999}{}
+Booij, NRRC, RC Ris, and Leo H Holthuijsen. 1999. ``A Third-Generation
+Wave Model for Coastal Regions: 1. Model Description and Validation.''
+\emph{Journal of Geophysical Research: Oceans} 104 (C4). Wiley Online
+Library: 7649--66.
+
+\hypertarget{ref-Breeman1988}{}
+Breeman, AM. 1988. ``Relative Importance of Temperature and Other
+Factors in Determining Geographic Boundaries of Seaweeds: Experimental
+and Phenological Evidence.'' \emph{Helgoländer Meeresuntersuchungen} 42
+(2): 199.
+
+\hypertarget{ref-Broitman2008}{}
+Broitman, BR, CA Blanchette, BA Menge, J Lubchenco, C Krenz, M Foley, PT
+Raimondi, D Lohse, and SD Gaines. 2008. ``Spatial and Temporal Patterns
+of Invertebrate Recruitment Along the West Coast of the United States.''
+\emph{Ecological Monographs} 78 (3). Wiley Online Library: 403--21.
+
+\hypertarget{ref-Byrne2009}{}
+Byrne, Maria, Melanie Ho, Paulina Selvakumaraswamy, Hong D Nguyen, Symon
+A Dworjanyn, and Andy R Davis. 2009. ``Temperature, but Not pH,
+Compromises Sea Urchin Fertilization and Early Development Under
+Near-Future Climate Change Scenarios.'' \emph{Proceedings of the Royal
+Society of London B: Biological Sciences} 276 (1663). The Royal Society:
+1883--8.
+
+\hypertarget{ref-Davis2011}{}
+Davis, KA, SJ Lentz, J Pineda, JT Farrar, VR Starczak, and JH Churchill.
+2011. ``Observations of the Thermal Environment on Red Sea Platform
+Reefs: A Heat Budget Analysis.'' \emph{Coral Reefs} 30 (1). Springer:
+25--36.
+
+\hypertarget{ref-Easterling2000}{}
+Easterling, David R, Gerald A Meehl, Camille Parmesan, Stanley A
+Changnon, Thomas R Karl, and Linda O Mearns. 2000. ``Climate Extremes:
+Observations, Modeling, and Impacts.'' \emph{Science} 289 (5487).
+American Association for the Advancement of Science: 2068--74.
+
+\hypertarget{ref-Fewings2011}{}
+Fewings, Melanie R, and Steven J Lentz. 2011. ``Summertime Cooling of
+the Shallow Continental Shelf.'' \emph{Journal of Geophysical Research:
+Oceans} 116 (C7). Wiley Online Library.
+
+\hypertarget{ref-Griffiths2011}{}
+Griffiths, CL, A Mead, and L Zietsman. 2011. ``Human Activities as
+Drivers of Change on South African Rocky Shores.'' \emph{Observations on
+Environmental Change in South Africa, Sun Media, Stellenbosch, South
+Africa}, 242--6.
+
+\hypertarget{ref-Hoek1982}{}
+Hoek, C van den. 1982. ``The Distribution of Benthic Marine Algae in
+Relation to the Temperature Regulation of Their Life Histories.''
+\emph{Biological Journal of the Linnean Society} 18 (2). Wiley Online
+Library: 81--144.
+
+\hypertarget{ref-Hutchings2009}{}
+Hutchings, L, CD Van der Lingen, LJ Shannon, RJM Crawford, HMS Verheye,
+CH Bartholomae, AK Van der Plas, et al. 2009. ``The Benguela Current: An
+Ecosystem of Four Components.'' \emph{Progress in Oceanography} 83
+(1-4). Elsevier: 15--32.
+
+\hypertarget{ref-James2011}{}
+James, Nicola Caroline, and Juliet Hermes. 2011. \emph{Insights into
+Impacts of Climate Change on the South African Marine and Coastal
+Environment}. SAEON.
+
+\hypertarget{ref-Joubert2013}{}
+Joubert, JR, JL van Niekerk, J Reinecke, and I Meyer. 2013. ``Wave
+Energy Converters (Wecs).'' \emph{Centre for Renewable and Sustainable
+Energy Studies, Centre for Renewable and Sustainable Energy Studies,
+Faculty of Engineering}.
+
+\hypertarget{ref-Lee2018}{}
+Lee, Kate Asha, Moninya Roughan, Hamish Malcolm, and Nicholas Otway.
+2018. ``Assessing the Use of Area-and Time-Averaging Based on Known
+de-Correlation Scales to Provide Satellite Derived Sea Surface
+Temperatures in Coastal Areas.'' \emph{Frontiers in Marine Science} 5.
+Frontiers: 261.
+
+\hypertarget{ref-Lutjeharms1988}{}
+Lutjeharms, JRE, and RC Van Ballegooyen. 1988. ``Anomalous Upstream
+Retroflection in the Agulhas Current.'' \emph{Science} 240 (4860). The
+American Association for the Advancement of Science: 1770.
+
+\hypertarget{ref-Lutjeharms2000}{}
+Lutjeharms, JRE, J Cooper, and M Roberts. 2000. ``Upwelling at the
+Inshore Edge of the Agulhas Current.'' \emph{Continental Shelf Research}
+20 (7). Elsevier: 737--61.
+
+\hypertarget{ref-Luning1990}{}
+Lüning, Klaus. 1990. \emph{Seaweeds: Their Environment, Biogeography,
+and Ecophysiology}. John Wiley \& Sons.
+
+\hypertarget{ref-Mead2013}{}
+Mead, A, CL Griffiths, GM Branch, CD McQuaid, LK Blamey, JJ Bolton, RJ
+Anderson, et al. 2013. ``Human-Mediated Drivers of Change---impacts on
+Coastal Ecosystems and Marine Biota of South Africa.'' \emph{African
+Journal of Marine Science} 35 (3). Taylor \& Francis: 403--25.
+
+\hypertarget{ref-Mead2011}{}
+Mead, Angela. 2011. ``Climate and Bioinvasives Drivers of Change on
+South African Rocky Shores?'' PhD thesis, University of Cape Town.
+
+\hypertarget{ref-Meehl2004}{}
+Meehl, Gerald A, and Claudia Tebaldi. 2004. ``More Intense, More
+Frequent, and Longer Lasting Heat Waves in the 21st Century.''
+\emph{Science} 305 (5686). American Association for the Advancement of
+Science: 994--97.
+
+\hypertarget{ref-Muller2009}{}
+Müller, Ruth, Thomas Laepple, Inka Bartsch, and Christian Wiencke. 2009.
+``Impact of Oceanic Warming on the Distribution of Seaweeds in Polar and
+Cold-Temperate Waters.'' \emph{Botanica Marina} 52 (6). Walter de
+Gruyter: 617--38.
+
+\hypertarget{ref-Pearce2006}{}
+Pearce, Alan, Fabienne Faskel, and Glenn Hyndes. 2006. ``Nearshore Sea
+Temperature Variability Off Rottnest Island (Western Australia) Derived
+from Satellite Data.'' \emph{International Journal of Remote Sensing} 27
+(12). Taylor \& Francis: 2503--18.
+
+\hypertarget{ref-Perkins2013}{}
+Perkins, SE, and LV Alexander. 2013. ``On the Measurement of Heat
+Waves.'' \emph{Journal of Climate} 26 (13): 4500--4517.
+
+\hypertarget{ref-Reason1999}{}
+Reason, CJC, and H Mulenga. 1999. ``Relationships Between South African
+Rainfall and Sst Anomalies in the Southwest Indian Ocean.''
+\emph{International Journal of Climatology: A Journal of the Royal
+Meteorological Society} 19 (15). Wiley Online Library: 1651--73.
+
+\hypertarget{ref-Rouault2010}{}
+Rouault, Marjolaine J, Alexis Mouche, Fabrice Collard, JA Johannessen,
+and Bertrand Chapron. 2010. ``Mapping the Agulhas Current from Space: An
+Assessment of Asar Surface Current Velocities.'' \emph{Journal of
+Geophysical Research: Oceans} 115 (C10). Wiley Online Library.
+
+\hypertarget{ref-Schlegel2016}{}
+Schlegel, Robert W, and Albertus J Smit. 2016. ``Climate Change in
+Coastal Waters: Time Series Properties Affecting Trend Estimation.''
+\emph{Journal of Climate} 29 (24): 9113--24.
+
+\hypertarget{ref-Schlegel2017}{}
+Schlegel, Robert W, Eric CJ Oliver, Sarah Perkins-Kirkpatrick, Andries
+Kruger, and Albertus J Smit. 2017. ``Predominant Atmospheric and Oceanic
+Patterns During Coastal Marine Heatwaves.'' \emph{Frontiers in Marine
+Science} 4. Frontiers: 323.
+
+\hypertarget{ref-Sinnett2014}{}
+Sinnett, Gregory, and Falk Feddersen. 2014. ``The Surf Zone Heat Budget:
+The Effect of Wave Heating.'' \emph{Geophysical Research Letters} 41
+(20). Wiley Online Library: 7217--26.
+
+\hypertarget{ref-Smit2017}{}
+Smit, Albertus J, John J Bolton, and Robert J Anderson. 2017. ``Seaweeds
+in Two Oceans: Beta-Diversity.'' \emph{Frontiers in Marine Science} 4.
+Frontiers: 404.
+
+\hypertarget{ref-Smit2013}{}
+Smit, Albertus J, Michael Roberts, Robert J Anderson, Francois Dufois,
+Sheldon FJ Dudley, Thomas G Bornman, Jennifer Olbers, and John J Bolton.
+2013. ``A Coastal Seawater Temperature Dataset for Biogeographical
+Studies: Large Biases Between in Situ and Remotely-Sensed Data Sets
+Around the Coast of South Africa.'' \emph{PLoS One} 8 (12). Public
+Library of Science: e81944.
+
+\hypertarget{ref-Stocker2014}{}
+Stocker, Thomas. 2014. \emph{Climate Change 2013: The Physical Science
+Basis: Working Group I Contribution to the Fifth Assessment Report of
+the Intergovernmental Panel on Climate Change}. Cambridge University
+Press.
+
+\hypertarget{ref-Tapia2014}{}
+Tapia, Fabian J, John L Largier, Manuel Castillo, Evie A Wieters, and
+Sergio A Navarrete. 2014. ``Latitudinal Discontinuity in Thermal
+Conditions Along the Nearshore of Central-Northern Chile.'' \emph{PLoS
+One} 9 (10). Public Library of Science: e110841.
+
+\hypertarget{ref-Thomas2015}{}
+Thomas, T Justin, and GS Dwarakish. 2015. ``Numerical Wave Modelling--A
+Review.'' \emph{Aquatic Procedia} 4. Elsevier: 443--48.
+
+\hypertarget{ref-Wernberg2011}{}
+Wernberg, Thomas, Bayden D Russell, Pippa J Moore, Scott D Ling, Daniel
+A Smale, Alex Campbell, Melinda A Coleman, Peter D Steinberg, Gary A
+Kendrick, and Sean D Connell. 2011. ``Impacts of Climate Change in a
+Global Hotspot for Temperate Marine Biodiversity and Ocean Warming.''
+\emph{Journal of Experimental Marine Biology and Ecology} 400 (1-2).
+Elsevier: 7--16.
+
+\hypertarget{ref-Wernberg2010}{}
+Wernberg, Thomas, Mads S Thomsen, Fernando Tuya, Gary A Kendrick, Peter
+A Staehr, and Benjamin D Toohey. 2010. ``Decreasing Resilience of Kelp
+Beds Along a Latitudinal Temperature Gradient: Potential Implications
+for a Warmer Future.'' \emph{Ecology Letters} 13 (6). Wiley Online
+Library: 685--94.
+
+\hypertarget{ref-Wethey2011}{}
+Wethey, David S, Sarah A Woodin, Thomas J Hilbish, Sierra J Jones,
+Fernando P Lima, and Pamela M Brannock. 2011. ``Response of Intertidal
+Populations to Climate: Effects of Extreme Events Versus Long Term
+Change.'' \emph{Journal of Experimental Marine Biology and Ecology} 400
+(1-2). Elsevier: 132--44.
+
+\hypertarget{ref-Woodson2007}{}
+Woodson, CB, DI Eerkes-Medrano, A Flores-Morales, MM Foley, SK Henkel, M
+Hessing-Lewis, D Jacinto, et al. 2007. ``Local Diurnal Upwelling Driven
+by Sea Breezes in Northern Monterey Bay.'' \emph{Continental Shelf
+Research} 27 (18). Elsevier: 2289--2302.
+
+\hypertarget{ref-Zainuddin2006}{}
+Zainuddin, Mukti, Hidetada Kiyofuji, Katsuya Saitoh, and Sei-Ichi
+Saitoh. 2006. ``Using Multi-Sensor Satellite Remote Sensing and Catch
+Data to Detect Ocean Hot Spots for Albacore (Thunnus Alalunga) in the
+Northwestern North Pacific.'' \emph{Deep Sea Research Part II: Topical
+Studies in Oceanography} 53 (3-4). Elsevier: 419--31.
 
 
 \end{document}
