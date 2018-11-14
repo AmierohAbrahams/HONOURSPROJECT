@@ -746,7 +746,7 @@ orient_beach <- map_dfr(dir("data/wave_data/Orient Beach",
 stilbaai <- map_dfr(dir("data/wave_data/Stilbaai", 
                             full.names = TRUE, pattern = "*.txt"), load_wave)
 
-mossel_bay <- map_dfr(dir("data/wave_data/Mossel Bay", 
+bordjies <- map_dfr(dir("data/wave_data/Bordjies", 
                             full.names = TRUE, pattern = "*.txt"), load_wave)
 
 knysna <- map_dfr(dir("data/wave_data/Knysna", 
@@ -763,7 +763,7 @@ leisure_bay <- map_dfr(dir("data/wave_data/Leisure Bay",
 
 sea_point <- map_dfr(dir("data/wave_data/Sea Point", 
                             full.names = TRUE, pattern = "*.txt"), load_wave)
-borjies <- map_dfr(dir("data/wave_data/Bordjies", 
+mossel_bay <- map_dfr(dir("data/wave_data/Mossel Bay", 
                             full.names = TRUE, pattern = "*.txt"), load_wave)
 
 wave_data <- rbind(bordjies, gansbaai, gordons_bay, kalk_bay, lamberts_bay, muizenberg, port_nolloth, port_edward,eastern_beach, hamburg, orient_beach, stilbaai, mossel_bay, knysna, to_strand, leisure_bay, sea_point, saldanha_bay)
@@ -2088,7 +2088,7 @@ SACTN_15_predom_R2 <- SACTN_daily_clusters_15 %>%
 predominant_ww <- ggplot(data = SACTN_7_predom_R2, aes(x = variable, y = adj.r.squared)) +
   geom_boxplot(aes(colour = variable)) +
   facet_wrap(~site) +
-  labs(y = "coefficient of determination R^2^", x = "Average wind and wave variables") +
+  labs(y = "Coefficient of determination R^2^", x = "Average wind and wave variables") +
   theme(axis.text.x = element_text(angle = 15)) +
   theme_bw()
 predominant_ww
