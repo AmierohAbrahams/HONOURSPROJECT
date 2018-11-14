@@ -1,0 +1,49 @@
+,Df,Sum Sq,F value,Pr(>F)
+Cluster 1,,,,
+Index pair,2,15.28,12.07,8.76E-06
+Year,1,0.07,0.11,0.73553
+Season,3,9.53,5.02,0.00205
+Index pair: year,2,1.75,1.38,0.25198
+Index pair: season,6,13.07,3.44,0.00261
+Year:season,3,4.01,2.11,0.09844
+Index pair: year: season,6,7.93,2.09,0.05426
+Cluster 2,,,,
+Index pair,2,418.6,166.85,2E-16
+Year,1,41.7,33.21,1.0818789E-08
+Season,3,144.1,38.3,2E-16
+Index pair: year,2,71.4,28.46,9.07E-13
+Index pair: season,6,125.9,16.72,2E-16
+Year:season,3,7.7,2.05,0.105
+Index pair: year: season,6,10.6,1.4,0.21
+Cluster 3,,,,
+Index pair,2,2.9,1.17,0.3127
+Year,1,0.3,0.22,0.6405
+Season,3,598.7,159.87,2E-16
+Index pair: year,2,18.8,7.51,0.0006
+Index pair: season,6,91.6,12.22,5.64E-13
+Year:season,3,3.5,0.94,0.4201
+Index pair: year: season,6,19.7,2.64,0.0157
+Cluster 4,,,,
+Index pair,2,0.0028,0.74,0.479
+Year,1,0.0009,0.5,0.482
+Season,3,0.0042,0.75,0.52
+Index pair: year,2,0.0003,0.09,0.911
+Index pair: season,6,0.0062,0.55,0.772
+Year:season,3,0.0091,1.62,0.183
+Index pair: year: season,6,0.0047,0.42,0.866
+Cluster 5,,,,
+Index pair,2,196.7,77.1,2E-16
+Year,1,220.4,172.8,2E-16
+Season,3,38.15,29.91,2E-16
+Index pair: year,2,17.74,13.91,1.028948E-06
+Index pair: season,6,3.86,3.03,0.00601
+Year:season,3,45.06,35.33,2E-16
+Index pair: year: season,6,11.83,9.27,5.22E-10
+Cluster 6,,,,
+Index pair,2,419.7,132.04,2E-16
+Year,1,0.2,0.12,0.73446
+Season,3,24.8,5.2,0.00144
+Index pair: year,2,347.4,109.31,2E-16
+Index pair: season,6,485.8,50.95,2E-16
+Year:season,3,1.9,0.4,0.75486
+Index pair: year: season,6,7.9,0.82,0.54998
