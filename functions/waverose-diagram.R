@@ -10,7 +10,7 @@ plot.waverose <- function(data,
                           spdmin = 0,
                           spdmax = 2,
                           spdseq = NULL,
-                          palette = "YlGnBu",
+                          palette = "Paired",
                           countmax = NA,
                           debug = 0){
   
@@ -48,7 +48,7 @@ plot.waverose <- function(data,
   # create the color map
   spd.colors <- colorRampPalette(brewer.pal(min(max(0,
                                                     n.colors.in.range),
-                                                min(9,
+                                                min(2,
                                                     n.colors.in.range)),                                               
                                             palette))(n.colors.in.range)
   
@@ -61,7 +61,7 @@ plot.waverose <- function(data,
                     paste(spdmax,
                           "-",
                           max(data[[spd]],na.rm = TRUE)))
-    spd.colors <- c(spd.colors, "blue")
+    spd.colors <- c(spd.colors, "skyblue2")
   } else{
     spd.breaks <- spdseq
     spd.labels <- paste(c(spdseq[1:n.spd.seq-1]),
