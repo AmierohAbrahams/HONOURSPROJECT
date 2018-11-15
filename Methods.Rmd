@@ -535,7 +535,6 @@ The code below lets us visualise the temperatures for each of the sites.  This b
 addline_format <- function(x,...){
   gsub('-', '\n', x)
 }
-
 clust_plot <- function(df) {
   plot1 <- df %>%
     select(-index_1, -index_2) %>% 
@@ -592,15 +591,19 @@ Now I create a visualisation to reveal the relationship between the mean tempera
 ```{r define_fun5, include=TRUE}
 clust_plot2 <- function(df){
   plot2 <- df %>%
+    ungroup() %>% 
+    mutate(index_pair = addline_format(index_pair)) %>% 
     ggplot(aes(x = year, y = temp_mean_month_year)) +
     geom_line(aes(group = index_pair, colour = index_pair), alpha = 0.7, show.legend = F) +
     geom_smooth(method = "gam", se = F, aes(colour = index_pair), show.legend = T)  +
     labs(x = "Year", y = "Average temperature (°C)") +
     facet_wrap(~ month) +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 10)) +
-    theme(axis.title.y = element_text(size =10)) +
     theme_bw() +
-    guides(fill=guide_legend(title = "Paired\nsites"))
+    guides(fill=guide_legend(title = "Paired\nsites")) +
+    theme(axis.text = element_text(size = 18),
+          axis.title = element_text(size = 18),
+          legend.text = element_text(size = 14),
+          legend.title = element_text(size = 16))
   return(plot2)
 }
 ```
@@ -2091,14 +2094,21 @@ SACTN_15_predom_R2 <- SACTN_daily_clusters_15 %>%
 # Plotting the impact of predominant wind and wave direction on temperature.
 
 
-```{r, fig.cap = "Boxplot representing the adjusted R2 values", fig.height = , fig.width = 25}
+```{r, fig.cap = "Boxplot representing the adjusted R2 values", fig.height = 8, fig.width= 10}
 predominant_ww <- ggplot(data = SACTN_7_predom_R2, aes(x = variable, y = adj.r.squared)) +
   geom_boxplot(aes(colour = variable)) +
-  facet_wrap(~site) +
+  facet_wrap(~site, ncol = 6, nrow = 3) +
   labs(y = "Coefficient of determination R^2^", x = "Average wind and wave variables") +
   theme(axis.text.x = element_text(angle = 15)) +
-  theme_bw()
-predominant_ww
+      theme(axis.text = element_text(size = 18),
+          axis.title = element_text(size = 18),
+          legend.text = element_text(size = 14),
+          legend.title = element_text(size = 16)) +
+  theme_bw() 
+
+predominant_ww <- predominant_ww +  
+  guides(fill = guide_legend(title = "Wind and wave\ncharacteristics"))
+
 
 # predominant15_ww <- ggplot(data = SACTN_15_predom_R2, aes(x = variable, y = adj.r.squared)) +
 #   geom_boxplot(aes(colour = variable)) +
@@ -2126,8 +2136,7 @@ p.wr2 <- plot.windrose(data = wave_daily_renamed,
 
 ```{r, fig.cap = "Windrose diagram representing the wind direction and speed for each of the sites", fig.height = , fig.width = 25}
 # now generate the faceting
-p.wr3 <- p.wr2 + facet_wrap(~site,
-                            ncol = 4)
+p.wr3 <- p.wr2 + facet_wrap(~site, ncol = 6, nrow = 3)
 p.wr3
 
 ggsave(plot = p.wr3, filename = "figures/p.wr3.pdf")
