@@ -2099,16 +2099,16 @@ SACTN_15_predom_R2 <- SACTN_daily_clusters_15 %>%
 # Plotting the impact of predominant wind and wave direction on temperature.
 
 ```{r, fig.cap = "Boxplot representing the adjusted R2 values", fig.height = 8, fig.width= 10}
-predominant_ww <- ggplot(data = SACTN_7_predom_R2, aes(x = variable, y = adj.r.squared)) +
+predominant_ww <- ggplot(data = SACTN_7_predom_R2, aes(x = addline_format(variable), y = adj.r.squared)) +
   geom_boxplot(aes(colour = variable)) +
   facet_wrap(~site, ncol = 6, nrow = 3) +
   labs(y = "Coefficient of determination", x = "Average wind and wave variables") +
-  theme(axis.text.x = element_text(angle = 45)) +
-      theme(axis.text = element_text(size = 18),
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 15)) +
+      theme(axis.text = element_text(size = 10),
           axis.title = element_text(size = 18),
           legend.text = element_text(size = 14),
-          legend.title = element_text(size = 16)) +
-  theme_bw() 
+          legend.title = element_text(size = 16)) 
 predominant_ww
 
 # predominant15_ww <- ggplot(data = SACTN_15_predom_R2, aes(x = variable, y = adj.r.squared)) +
