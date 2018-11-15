@@ -114,12 +114,16 @@ load("data/sa_coast.Rdata")
 
 Mapping the sixth cluster - To be added into the methods section
 
-```{r}
+```{r load_files3, include=TRUE}
+load("Mapping/sa_provinces.RData")
+load("Mapping/south_africa_coast.RData")
 load("data/southern_africa_coast.Rdata")
 load("data/africa_coast.RData")
 load("data/sa_provinces_new.RData")
 load("data/sa_coast.Rdata")
+```
 
+```{r}
 library(tidyverse)
 library(viridis)
 library(gridExtra)
@@ -134,20 +138,20 @@ clust_i <- function(i) {
                aes(x = lon, y = lat,
                    colour = as.factor(kmeans(clust_columns, i)$cluster))) +
     labs(colour = "cluster")  +
-    annotate("text", label = "INDIAN\nOCEAN", x = 32.00, y = -34.0,
-             size = 3.0, angle = 0, colour = "black") +
-    annotate("text", label = "ATLANTIC\nOCEAN", x = 16.00, y = -34.0,
-             size = 3.0, angle = 0, colour = "black") +
+    annotate("text", label = "INDIAN\nOCEAN", x = 34.00, y = -35.0,
+             size = 6.0, angle = 0, colour = "black") +
+    annotate("text", label = "ATLANTIC\nOCEAN", x = 14.00, y = -37.0,
+             size = 6.0, angle = 0, colour = "black") +
     geom_segment(aes(x = 17.2, y = -32.6, xend = 15.2, yend = -29.5),
                  arrow = arrow(length = unit(0.3, "cm")),
                  size = 0.1, colour = "black") +
     annotate("text", label = "Benguela", x = 16.0, y = -31.8,
-             size = 3.5, angle = 298, colour = "black") +
+             size = 6.5, angle = 302, colour = "black") +
     geom_segment(aes(x = 33, y = -29.5, xend = 29.8, yend = -33.0),
                 arrow = arrow(length = unit(0.3, "cm")),
                 size = 0.1, colour = "black") +
     annotate("text", label = "Agulhas", x = 31.7, y = -31.7,
-             size = 3.5, angle = 53, colour = "black") +
+             size = 6.5, angle = 50, colour = "black") +
     # Improve on the x and y axis labels
     coord_fixed(ratio = 1, xlim = c(10.5, 39.5), ylim = c(-39.5, -25.5),
                 expand = TRUE) +
@@ -161,7 +165,8 @@ clust_i <- function(i) {
              arrow.distance = 130, arrow.North.size = 3) +
     theme_bw() +
     theme(panel.border = element_rect(fill = NA, colour = "black", size = 1),
-          axis.text = element_text(colour = "black"),
+          axis.text = element_text(colour = "black", size = 18),
+          axis.title = element_text(colour = "black", size = 18),
           axis.ticks = element_line(colour = "black"))
 }
 
@@ -195,7 +200,7 @@ africa_map
 # More mapping - http://r-nold.blogspot.com/2014/06/creating-inset-map-with-ggplot2.html
 
 pdf("figures/map_fixed.pdf", width = 8, height = 5, pointsize = 6) # Set PDF dimensions
-vp1 <- viewport(x = -0.00, y = 0.18, w = 0.25, h = 0.25, just = c("left", "bottom")) # Africa
+vp1 <- viewport(x = 0.70, y = 0.58, w = 0.25, h = 0.25, just = c("left", "bottom")) # Africa
 vp2 <- viewport(x = 1.0, y = 1.0, w = 1.00, h = 1.00, just = c("right", "top"))  # South Africa
 print(clust_6, vp = vp2)
 print(africa_map, vp = vp1)
@@ -295,10 +300,6 @@ SACTN_daily_clusters_sub <- SACTN_daily_clusters %>%
 
 Map showing the location of each site within each of the six clusters
 
-```{r load_files3, include=TRUE}
-load("Mapping/sa_provinces.RData")
-load("Mapping/south_africa_coast.RData")
-```
 
 ```{r define_fun2, include=TRUE}
 site_coordinates1 <- filter(site_list_sub, cluster == 1) %>% 
@@ -321,41 +322,41 @@ site_coordinates6 <- filter(site_list_sub, cluster == 6) %>%
 
 mapping_plot <- function(df, xy = "salmon"){
   mapping <- df %>% 
-ggplot(aes(x = lon, y = lat)) +
-  geom_polygon(data = south_africa_coast, aes(group = group), fill = "white") +
-  coord_cartesian(xlim = c(12, 36), ylim = c(-32, -20)) +
-  geom_path(data = sa_provinces, aes(group = group)) +
-  geom_point(data = df, colour = xy, size = 4)  +
-  geom_label_repel(data =df, aes(x = lon, y = lat, label = site), 
-                   size = 5, box.padding = 2, nudge_x = -0.5, nudge_y = 0.2, 
-                   segment.alpha = 0.4, force = 0.1) +
-  coord_equal(xlim = c(15, 35), ylim = c(-37, -27)) +
-  annotate("text", label = "INDIAN\nOCEAN", x = 35.00, y = -34.0, size = 3.0, angle = 0, colour = "black") +
-  annotate("text", label = "ATLANTIC\nOCEAN", x = 12.00, y = -34.0, size = 3.0, angle = 0, colour = "black") +
-  # geom_segment(aes(x = 17.2, y = -32.6, xend = 15.2, yend = -29.5),
-  #               arrow = arrow(length = unit(0.3, "cm")), size = 0.1, colour = "black") +
-  #   annotate("text", label = "Benguela", x = 14.0, y = -31.8, size = 3.5, angle = 298, colour = "black") +
-  #   geom_segment(aes(x = 33, y = -29.5, xend = 29.8, yend = -33.0),
-  #               arrow = arrow(length = unit(0.3, "cm")), size = 0.1, colour = "black") +
-    annotate("text", label = "Agulhas", x = 31.7, y = -31.7, size = 3.5, angle = 53, colour = "black") +
+    ggplot(aes(x = lon, y = lat)) +
+    geom_polygon(data = south_africa_coast, aes(group = group), fill = "white") +
+    coord_cartesian(xlim = c(12, 36), ylim = c(-32, -20)) +
+    geom_path(data = sa_provinces, aes(group = group)) +
+    geom_point(data = df, colour = xy, size = 4)  +
+    geom_label_repel(data =df, aes(x = lon, y = lat, label = site), 
+                     size = 6, box.padding = 2, nudge_x = -0.5, nudge_y = 0.2, 
+                     segment.alpha = 0.4, force = 0.1) +
+    coord_equal(xlim = c(15, 35), ylim = c(-37, -27)) +
+    annotate("text", label = "INDIAN\nOCEAN", x = 35.00, y = -34.0, size = 6.0, angle = 0, colour = "black") +
+    annotate("text", label = "ATLANTIC\nOCEAN", x = 16.00, y = -37.0, size = 6.0, angle = 0, colour = "black") +
+    # geom_segment(aes(x = 17.2, y = -32.6, xend = 15.2, yend = -29.5),
+    #               arrow = arrow(length = unit(0.3, "cm")), size = 0.1, colour = "black") +
+    #   annotate("text", label = "Benguela", x = 14.0, y = -31.8, size = 3.5, angle = 298, colour = "black") +
+    #   geom_segment(aes(x = 33, y = -29.5, xend = 29.8, yend = -33.0),
+    #               arrow = arrow(length = unit(0.3, "cm")), size = 0.1, colour = "black") +
+    annotate("text", label = "Agulhas", x = 31.7, y = -31.7, size = 7.5, angle = 53, colour = "black") +
     scale_x_continuous(labels = scales::unit_format(unit = "°E", sep = "")) +
     scale_y_continuous(labels = scales::unit_format(unit = "°S", sep = "")) +
     labs(x = NULL, y = NULL) +
     coord_cartesian(xlim = c(10.5, 39.5), ylim = c(-39.5, -25.5), expand = F) +
-     scaleBar(lon = 32.0, lat = -38.7, distanceLon = 200, distanceLat = 50, 
-           distanceLegend = 90, dist.unit = "km", arrow.length = 100,
-           arrow.distance = 130, arrow.North.size = 3) +  
+    scaleBar(lon = 32.0, lat = -38.7, distanceLon = 200, distanceLat = 50, 
+             distanceLegend = 90, dist.unit = "km", arrow.length = 100,
+             arrow.distance = 130, arrow.North.size = 3) +  
     coord_equal() +
     theme(aspect.ratio = 1)  +
     theme_bw() +
     theme(panel.border = element_rect(fill = NA, colour = "black", size = 1),
-          axis.text = element_text(colour = "black"),
-          axis.ticks = element_line(colour = "black"))
+          axis.text = element_text(colour = "black", size = 22),
+          axis.title = element_text(colour = "black", size = 22))
   return(mapping)
 }
 ```
 
-```{r run_fun2, fig.cap = "Maps showing closely related sites based on temperature variation at different regions along the coastline.", fig.height = 18, fig.width= 16}
+```{r run_fun2, fig.cap = "Maps showing closely related sites based on temperature variation at different regions along the coastline.", fig.height = 9, fig.width = 8}
 map_clus1 <- mapping_plot(df = site_coordinates1, xy = "salmon")
 map_clus2 <- mapping_plot(df = site_coordinates2, xy = "darkgoldenrod4")
 map_clus3 <- mapping_plot(df = site_coordinates3, xy = "springgreen4")
@@ -531,9 +532,14 @@ summary(anova_clus_6_func1)
 The code below lets us visualise the temperatures for each of the sites.  This box plot allows me to observe whether or not a variation exist between the sites found within the same cluster. The values represent the distance "km" between the sites Temperature 1 represents a site and temperature 2 represents a second site. The boxplot shows the temperature variation of two sites within the same cluster (along the same coast) being compared to eachother. To conclude, temperatures were not uniformly distributed with each set of sites having a unique temperature variation. 
 
 ```{r define_fun4, include=TRUE}
+addline_format <- function(x,...){
+  gsub('-', '\n', x)
+}
+
 clust_plot <- function(df) {
   plot1 <- df %>%
     select(-index_1, -index_2) %>% 
+    mutate(index_pair = addline_format(index_pair)) %>% 
     gather(key = "temp_grp", val = "temp", -date, -index_pair, - index_dist) %>% 
     ggplot(aes(x = index_pair)) +
     geom_boxplot(aes(y = temp, fill = temp_grp), alpha = 0.3) +
@@ -541,16 +547,17 @@ clust_plot <- function(df) {
     labs(x = "Paired Sites", y = "Temperature (°C)") +
     theme(legend.position="none") +
     theme_bw()+
-    guides(fill=guide_legend(title="Site temperatures"))+
-    coord_cartesian(ylim = c(0, 30))+
-    #legend_title <- "Site temperatures" +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 15)) +
-    theme(axis.title.y = element_text(size =15))
-      return(plot1)
+    guides(fill = guide_legend(title = "Site\ntemperatures"))+
+    coord_cartesian(ylim = c(0, 30)) +
+    theme(axis.text = element_text(size = 18),
+          axis.title = element_text(size = 18),
+          legend.text = element_text(size = 14),
+          legend.title = element_text(size = 16))
+  return(plot1)
 }
 ```
 
-```{r run_fun4,  fig.cap = "Boxplots representing the different site locations along the South African coast represented by various temperature parameters. Temperature parameters include minimum, maximum and mean temperatures (°C). The Boxplots represent the minimum, 25th percentile, median and 75th percentile of the temperatures measured. The interquartile can be dedudced by the difference between the percentiles with the dots representing the outliers in the data.", fig.height = 40, fig.width= 40}
+```{r run_fun4,  fig.cap = "Boxplots representing the different site locations along the South African coast represented by various temperature parameters. Temperature parameters include minimum, maximum and mean temperatures (°C). The Boxplots represent the minimum, 25th percentile, median and 75th percentile of the temperatures measured. The interquartile can be dedudced by the difference between the percentiles with the dots representing the outliers in the data.", fig.height = 8, fig.width= 10}
 SACTN_clust_1_plot1 <- clust_plot(df = SACTN_clust_1_match)
 SACTN_clust_2_plot1 <- clust_plot(df = SACTN_clust_2_match)
 SACTN_clust_3_plot1 <- clust_plot(df = SACTN_clust_3_match)
@@ -589,11 +596,11 @@ clust_plot2 <- function(df){
     geom_line(aes(group = index_pair, colour = index_pair), alpha = 0.7, show.legend = F) +
     geom_smooth(method = "gam", se = F, aes(colour = index_pair), show.legend = T)  +
     labs(x = "Year", y = "Average temperature (°C)") +
-    facet_wrap(~month) +
+    facet_wrap(~ month) +
     theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 10)) +
     theme(axis.title.y = element_text(size =10)) +
     theme_bw() +
-    guides(fill=guide_legend(title="Paired sites"))
+    guides(fill=guide_legend(title = "Paired\nsites"))
   return(plot2)
 }
 ```
