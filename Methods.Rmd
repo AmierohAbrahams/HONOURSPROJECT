@@ -1228,6 +1228,16 @@ satellite_plot <- ggplot(insitu_AVHRR, aes(x = date, y = temp.y)) +
 # ggsave(plot = satellite_plot, filename = "figures/satellite_plot.pdf")
 ```
 
+# Temperature comparison between Satellite and insitu
+
+```{r}
+
+insitu_temp_comparison <- lm(temp.x ~ temp.y, data = insitu_AVHRR)
+summary(insitu_temp_comparison)
+
+```
+
+
 Matching wave data with the AVHRR temperature data
 
 ```{r}
@@ -1379,6 +1389,11 @@ insitu_MUR <- match_func(df = MUR_data)
 ```
 
 ```{r}
+insitu_MUR_comparison <- lm(temp.x ~ temp.y, data = insitu_MUR)
+summary(insitu_MUR_comparison)
+```
+
+```{r}
 # insitu_temp <- ggplot(data = insitu_AVHRR, aes(x = date, y = temp.x)) +
 #   geom_line() +
 #   facet_wrap(~site)
@@ -1515,6 +1530,11 @@ Matching in situ collected data with the CMC data sites
 
 ```{r}
 insitu_CMC <- match_func(df = CMC_data)
+```
+
+```{r}
+insitu_CMC_comparison <- lm(temp.x ~ temp.y, data = insitu_CMC)
+summary(insitu_CMC_comparison)
 ```
 
 ```{r}
@@ -1656,6 +1676,11 @@ K10_data <- K10_data %>%
 
 ```{r}
 insitu_K10 <- match_func(df = K10_data)
+```
+
+```{r}
+insitu_K10_comparison <- lm(temp.x ~ temp.y, data = insitu_K10)
+summary(insitu_K10_comparison)
 ```
 
 ```{r}
