@@ -16,13 +16,13 @@ plot.waverose <- function(data,
   
   
   # Look to see what data was passed in to the function
-  if (is.numeric(spd) & is.numeric(dir)){
+  if (is.numeric(spd) & is.numeric(dir)) {
     # assume that we've been given vectors of the speed and direction vectors
     data <- data.frame(spd = spd,
                        dir = dir)
     spd = "spd"
     dir = "dir"
-  } else if (exists("data")){
+  } else if (exists("data")) {
     # Assume that we've been given a data frame, and the name of the speed 
     # and direction columns. This is the format we want for later use.    
   }  
@@ -37,7 +37,7 @@ plot.waverose <- function(data,
   if (missing(spdseq)){
     spdseq <- seq(spdmin,spdmax,spdres)
   } else {
-    if (debug >0){
+    if (debug >0) {
       cat("Using custom speed bins \n")
     }
   }
@@ -55,17 +55,17 @@ plot.waverose <- function(data,
   if (max(data[[spd]],na.rm = TRUE) > spdmax){    
     spd.breaks <- c(spdseq,
                     max(data[[spd]],na.rm = TRUE))
-    spd.labels <- c(paste(c(spdseq[1:n.spd.seq-1]),
-                          '-',
+    spd.labels <- c(paste0(c(spdseq[1:n.spd.seq-1]),
+                          ':',
                           c(spdseq[2:n.spd.seq])),
-                    paste(spdmax,
-                          "-",
+                    paste0(spdmax,
+                          ":",
                           max(data[[spd]],na.rm = TRUE)))
     spd.colors <- c(spd.colors, "skyblue2")
   } else{
     spd.breaks <- spdseq
-    spd.labels <- paste(c(spdseq[1:n.spd.seq-1]),
-                        '-',
+    spd.labels <- paste0(c(spdseq[1:n.spd.seq-1]),
+                        ':',
                         c(spdseq[2:n.spd.seq]))    
   }
   data$spd.binned <- cut(x = data[[spd]],
@@ -79,11 +79,11 @@ plot.waverose <- function(data,
   dir.breaks <- c(-dirres/2,
                   seq(dirres/2, 360-dirres/2, by = dirres),
                   360+dirres/2)  
-  dir.labels <- c(paste(360-dirres/2,"-",dirres/2),
-                  paste(seq(dirres/2, 360-3*dirres/2, by = dirres),
-                        "-",
+  dir.labels <- c(paste0(360-dirres/2,":",dirres/2),
+                  paste0(seq(dirres/2, 360-3*dirres/2, by = dirres),
+                        ":",
                         seq(3*dirres/2, 360-dirres/2, by = dirres)),
-                  paste(360-dirres/2,"-",dirres/2))
+                  paste0(360-dirres/2,":",dirres/2))
   # assign each wind direction to a bin
   dir.binned <- cut(data[[dir]],
                     breaks = dir.breaks,
@@ -112,8 +112,8 @@ plot.waverose <- function(data,
     geom_bar() + 
     scale_x_discrete(drop = FALSE,
                      labels = waiver()) +
-    coord_polar(start = -((dirres/2)/360) * 2*pi) +
-    scale_fill_manual(name = "Wave Height (m)", 
+    coord_polar(start = -((dirres/2)/360) * 2*pi, clip = "off") +
+    scale_fill_manual(name = "Wave\nHeight (m)", 
                       values = spd.colors,
                       drop = FALSE) +
     theme(axis.title.x = element_blank())

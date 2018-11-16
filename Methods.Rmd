@@ -54,8 +54,8 @@ library(purrr)
 library(stlplus)
 source("functions/earthdist.R") # lies in the folder labeled funtions
 source("functions/scale.bar.func.R")
-source("function/wind.rose.R")
-source("function/waverose.diagram.R")
+source("functions/wind.rose.R")
+source("functions/waverose.diagram.R")
 ```
 
 ### Load SACTN data
@@ -801,7 +801,7 @@ wave_daily <- wave_data %>%
             dirw_circ = mean.circular(circular(dirw, units = "degrees")),
             spw_circ = mean.circular(circular(spw, units = "degrees")),
             hs_circ = mean.circular(circular(hs, units = "degrees")),
-            tp_circ = mean.circular(circular(tp, units = "degrees"))) #%>% 
+            tp_circ = mean.circular(circular(tp, units = "degrees")))
   # mutate(dir_head = ,
   #        dirw_head = )g
 ```
@@ -1722,7 +1722,7 @@ save(K10_15_R2, file = "data/K10_15_R2.RData")
 # knitr::kable(K10_15_R2, digits = 3, caption = "R^2 and p-values for the relationship between wave/wind variables and K10 temperature at 15m.")
 # 
 # write.csv(K10_7_R2,file = "data/K10_7_R2.csv")
-# write.csv(K10_15_R2,file = "data/K10_15_R2.csv")
+# write.csv(K10_15_R2,file  = "data/K10_15_R2.csv")
 ```
 
 ## Wave and Wind rose diagram for the predominant wind and wave direction:
@@ -2123,8 +2123,8 @@ ggsave(plot = predominant_ww, filename = "figures/predominant_ww.pdf")
 ```
 
 ```{r}
-source("function/wind.rose.R")
-source("function/waverose.diagram.R")
+source("functions/wind.rose.R")
+source("functions/waverose.diagram.R")
 ```
 
 
@@ -2140,9 +2140,9 @@ p.wr2 <- plot.windrose(data = wave_daily_renamed,
               dir = "dir")
 ```
 
-```{r, fig.cap = "Windrose diagram representing the wind direction and speed for each of the sites", fig.height = 8, fig.width= 10}
+```{r, fig.cap = "Windrose diagram representing the wind direction and speed for each of the sites", fig.height = 10, fig.width = 8}
 # now generate the faceting
-p.wr3 <- p.wr2 + facet_wrap(~site, ncol = 6, nrow = 3)
+p.wr3 <- p.wr2 + facet_wrap(~ site, ncol = 4, nrow = 5)
 p.wr3
 
 ggsave(plot = p.wr3, filename = "figures/p.wr3.pdf")
@@ -2161,10 +2161,10 @@ p.wr2 <- plot.waverose(data = wave_daily_renamed,
 p.wr2
 ```
 
-```{r, fig.cap = "Windrose diagram representing the wind direction and speed for each of the sites", fig.height = 8, fig.width= 10}
+```{r, fig.cap = "Windrose diagram representing the wind direction and speed for each of the sites", fig.height = 10, fig.width = 8}
 # now generate the faceting
 p.wave <- p.wr2 + facet_wrap(~site,
-                            ncol = 6, nrow = 3)
+                            ncol = 4, nrow = 5)
 p.wave
 
 ggsave(plot = p.wave, filename = "figures/p.wave.pdf")
