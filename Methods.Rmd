@@ -54,6 +54,8 @@ library(purrr)
 library(stlplus)
 source("functions/earthdist.R") # lies in the folder labeled funtions
 source("functions/scale.bar.func.R")
+source("function/wind.rose.R")
+source("function/waverose.diagram.R")
 ```
 
 ### Load SACTN data
@@ -525,6 +527,9 @@ anova_clus_5_func1 <- anova_func(df = SACTN_clust_5_matched)
 summary(anova_clus_5_func1)
 anova_clus_6_func1 <- anova_func(df = SACTN_clust_6_matched)
 summary(anova_clus_6_func1)
+
+save(anova_clus_1_func1, file = "data/anova_clus_1_func1.RData")
+
 ```
 
 ### Comparing sites
@@ -601,9 +606,9 @@ clust_plot2 <- function(df){
     theme_bw() +
     guides(fill=guide_legend(title = "Paired\nsites")) +
     theme(axis.text = element_text(size = 18),
-          axis.title = element_text(size = 18),
-          legend.text = element_text(size = 14),
-          legend.title = element_text(size = 16))
+          axis.title = element_text(size = 20),
+          legend.text = element_text(size = 18),
+          legend.title = element_text(size = 20))
   return(plot2)
 }
 ```
@@ -2093,22 +2098,18 @@ SACTN_15_predom_R2 <- SACTN_daily_clusters_15 %>%
 
 # Plotting the impact of predominant wind and wave direction on temperature.
 
-
 ```{r, fig.cap = "Boxplot representing the adjusted R2 values", fig.height = 8, fig.width= 10}
-predominant_ww <- ggplot(data = SACTN_7_predom_R2, aes(x = variable, y = adj.r.squared)) +
+predominant_ww <- ggplot(data = SACTN_7_predom_R2, aes(x = addline_format(variable), y = adj.r.squared)) +
   geom_boxplot(aes(colour = variable)) +
   facet_wrap(~site, ncol = 6, nrow = 3) +
-  labs(y = "Coefficient of determination R^2^", x = "Average wind and wave variables") +
+  labs(y = "Coefficient of determination", x = "Average wind and wave variables") +
+  theme_bw() +
   theme(axis.text.x = element_text(angle = 15)) +
-      theme(axis.text = element_text(size = 18),
+      theme(axis.text = element_text(size = 10),
           axis.title = element_text(size = 18),
           legend.text = element_text(size = 14),
-          legend.title = element_text(size = 16)) +
-  theme_bw() 
-
-predominant_ww <- predominant_ww +  
-  guides(fill = guide_legend(title = "Wind and wave\ncharacteristics"))
-
+          legend.title = element_text(size = 16)) 
+predominant_ww
 
 # predominant15_ww <- ggplot(data = SACTN_15_predom_R2, aes(x = variable, y = adj.r.squared)) +
 #   geom_boxplot(aes(colour = variable)) +
@@ -2122,10 +2123,15 @@ ggsave(plot = predominant_ww, filename = "figures/predominant_ww.pdf")
 ```
 
 ```{r}
+source("function/wind.rose.R")
+source("function/waverose.diagram.R")
+```
+
+
+```{r}
 wave_daily_renamed <- wave_daily %>% 
   dplyr::rename(spd = spw_mean) %>%
-  dplyr::rename(dir = dirw_circ) 
-  
+  dplyr::rename(dir = dirw_mean) 
 ```
 
 ```{r}
@@ -2134,7 +2140,7 @@ p.wr2 <- plot.windrose(data = wave_daily_renamed,
               dir = "dir")
 ```
 
-```{r, fig.cap = "Windrose diagram representing the wind direction and speed for each of the sites", fig.height = , fig.width = 25}
+```{r, fig.cap = "Windrose diagram representing the wind direction and speed for each of the sites", fig.height = 8, fig.width= 10}
 # now generate the faceting
 p.wr3 <- p.wr2 + facet_wrap(~site, ncol = 6, nrow = 3)
 p.wr3
@@ -2145,19 +2151,20 @@ ggsave(plot = p.wr3, filename = "figures/p.wr3.pdf")
 ```{r}
 wave_daily_renamed <- wave_daily %>% 
   dplyr::rename(spd = hs_mean) %>%
-  dplyr::rename(dir = dir_circ) 
+  dplyr::rename(dir = dir_mean) 
 ```
 
 ```{r}
 p.wr2 <- plot.waverose(data = wave_daily_renamed,
               spd = "spd",
-              dir = "dir")
+              dir = "dir") 
+p.wr2
 ```
 
-```{r, fig.cap = "Windrose diagram representing the wind direction and speed for each of the sites", fig.height = , fig.width = 25}
+```{r, fig.cap = "Windrose diagram representing the wind direction and speed for each of the sites", fig.height = 8, fig.width= 10}
 # now generate the faceting
 p.wave <- p.wr2 + facet_wrap(~site,
-                            ncol = 4)
+                            ncol = 6, nrow = 3)
 p.wave
 
 ggsave(plot = p.wave, filename = "figures/p.wave.pdf")
