@@ -2114,6 +2114,9 @@ SACTN_7_predom_R2 <- SACTN_daily_clusters_7 %>%
 SACTN_15_predom_R2 <- SACTN_daily_clusters_15 %>% 
   temp_wave_predom_R2()
 
+renamed_SACTN_7_predom_R2 <- SACTN_7_predom_R2 %>% 
+  dplyr::rename(Variables = variable)
+
 # SACTN_7_predom_R2_anom <- SACTN_daily_clusters_7_anom %>% 
 #   temp_wave_predom_R2()
 # 
@@ -2124,16 +2127,18 @@ SACTN_15_predom_R2 <- SACTN_daily_clusters_15 %>%
 # Plotting the impact of predominant wind and wave direction on temperature.
 
 ```{r, fig.cap = "Boxplot representing the adjusted R2 values", fig.height = 8, fig.width= 10}
-predominant_ww <- ggplot(data = SACTN_7_predom_R2, aes(x = addline_format(variable), y = adj.r.squared)) +
-  geom_boxplot(aes(colour = variable)) +
+predominant_ww <- ggplot(data = renamed_SACTN_7_predom_R2, aes(x = addline_format(Variables), y = adj.r.squared)) +
+  geom_boxplot(aes(colour = Variables)) +
   facet_wrap(~site, ncol = 6, nrow = 3) +
   labs(y = "Coefficient of determination", x = "Average wind and wave variables") +
+  scale_x_discrete(labels = c('dir','dirw','hs', 'spw', 'tp')) +
+  scale_color_manual(labels = c("dir", "dirw", "hs", "spw","tp"), values = c("firebrick2", "slate gray3","deepskyblue","gold1","darkorchid1")) +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 15)) +
-      theme(axis.text = element_text(size = 10),
-          axis.title = element_text(size = 18),
-          legend.text = element_text(size = 14),
-          legend.title = element_text(size = 16)) 
+      theme(axis.text = element_text(size = 9),
+          axis.title = element_text(size = 12),
+          legend.text = element_text(size = 8),
+          legend.title = element_text(size = 10)) 
 predominant_ww
 
 # predominant15_ww <- ggplot(data = SACTN_15_predom_R2, aes(x = variable, y = adj.r.squared)) +

@@ -32,8 +32,8 @@ library(purrr)
 library(stlplus)
 source("functions/earthdist.R")
 source("functions/scale.bar.func.R")
-source("function/wind.rose.R")
-source("function/waverose.diagram.R")
+source("functions/wind.rose.R")
+source("functions/waverose.diagram.R")
 ```
 
 ### Load SACTN data
@@ -68,7 +68,6 @@ clust_i <- function(i) {
     coord_equal(xlim = c(15, 35), ylim = c(-37, -27)) +
     ggtitle(paste0("clust = ", i))
 }
-
 ```
 
 ```{r run_fun1, include=TRUE}
@@ -565,21 +564,15 @@ clust_plot3 <- function(df){
 
 ```{r run_fun7, include = TRUE, fig.cap = "fig.cap = "Line graph representing the standard deviation of the monthly temperatures (° Celsius). Each graphic shows a different month overtime from 1990 to 2016. These site locations are coloured by the temperature statistic relative to the legends provided.", fig.height = 8, fig.width = 12}
 SACTN_clust_1_plot3 <- clust_plot3(df = SACTN_clust_1_matched)
-# SACTN_clust_1_plot3
 SACTN_clust_2_plot3 <- clust_plot3(df = SACTN_clust_2_matched)
-# SACTN_clust_2_plot3
 SACTN_clust_3_plot3 <- clust_plot3(df = SACTN_clust_3_matched)
-# SACTN_clust_3_plot3
 SACTN_clust_4_plot3 <- clust_plot3(df = SACTN_clust_4_matched)
-# SACTN_clust_4_plot3
 SACTN_clust_5_plot3 <- clust_plot3(df = SACTN_clust_5_matched)
 SACTN_clust_6_plot3 <- clust_plot3(df = SACTN_clust_6_matched)
-
 
 plot3_final <- ggarrange(SACTN_clust_1_plot3,SACTN_clust_2_plot3,
                          SACTN_clust_3_plot3,SACTN_clust_4_plot3,
                          SACTN_clust_5_plot3, SACTN_clust_6_plot3)
-plot3_final
 ```
 
 ### Load wave data
@@ -587,25 +580,7 @@ plot3_final
 Creating a function which allows me to load the wave data:
 
 ```{r define_fun8, include=TRUE}
-load_wave <- function(wave_files) {
-  site_name <- sapply(strsplit(as.character(wave_files), "/"), "[[", 3)
-  site_info <- sapply(strsplit(as.character(wave_files), "/"), "[[", 4)
-  site_info <- sapply(strsplit(site_info, ".txt"), "[[", 1)
-  site_info <- strsplit(site_info, "_")
-  site_depth <- sapply(site_info, "[[", 1)
-  site_num <- sapply(site_info, "[[", 2)
-  
-  wave <- read_table(wave_files, col_types = c("dddddd"),
-                     col_names = c("date", "hs", "tp", "dir", "dirw", "spw")) %>%
-    filter(tp != -999) %>%
-    mutate(date = as.POSIXct(as.character(date), "%Y%m%d%H%M", tz = "Africa/Johannesburg")) %>%
-    mutate(site = site_name,
-           num = site_num,
-           depth = site_depth) %>%
-    select(site, num, depth, everything()) %>% 
-    na.omit()
-  return(wave)
-}
+source("function/loadwave.R")
 ```
 
 Loading the wave data for the sites along the South African coast:
@@ -684,7 +659,7 @@ sites_complete_15a <- wave_daily %>%
 
 ## Matching temperature with the wave data
 
-Here I match the SACTN temperature data with the wave data based on the site and date. 
+Here I create a function which matches the SACTN temperature data with the wave data based on the site and date. 
 
 ```{r}
 SACTN_daily_clusters_sub_1 <- SACTN_daily_clusters_sub %>% 
@@ -709,42 +684,849 @@ SACTN_daily_clusters_7a <- try1(df = SACTN_daily_clusters_sub_1)
 SACTN_daily_clusters_15a <- try2(df = SACTN_daily_clusters_sub_1)
 ```
 
+## Comparring the temperature with each of the wave variables
+
+```{r}
+temp_wave_compare <- function(df){
+  df1 <- df %>% 
+    dplyr::mutate(year = year(date), 
+                  week = week(date)) %>% 
+    dplyr::select(-date) %>% 
+    tidyr::gather(key = variable, value = value, 
+                  -c(index:src, year, week, length:depth)) %>% 
+    na.omit() %>% 
+    ungroup() %>% 
+    group_by(index, year, week, variable) %>% 
+    na.omit() %>% 
+    dplyr::summarise(value = mean(value, na.rm = T)) %>% 
+    arrange(index, year, week) %>% 
+    group_by(index, variable) %>% 
+    mutate(index2 = 1:n())
+  ggplot(data = df1, aes(x = index2)) +
+    geom_line(aes(y = value, colour = variable, group = )) +
+    facet_grid(variable~index, scales = "free_y")
+}
+
+temp_wave_compare(SACTN_daily_clusters_7a)
+temp_wave_compare(SACTN_daily_clusters_15a)
+```
+
+## Calculating the coefficient of determination for each of the vaiables within the wave dataset
+
+```{r}
+temp_wave_R2_ <- function(df){
+  results <- df %>% 
+    select(-index, -src, -date, -length, -c(num:depth)) %>%
+    gather(key = variable, 
+           value = value,
+           -cluster, -site, -temp) %>%
+    group_by(cluster, site, variable) %>%
+    na.omit() %>% 
+    nest() %>%
+    mutate(model = purrr::map(data, ~lm(temp ~ value, data = .))) %>%
+    unnest(model %>% purrr::map(glance)) %>%
+    select(cluster:variable, adj.r.squared, p.value) %>% 
+    arrange(cluster, site) %>% 
+    mutate(adj.r.squared = round(adj.r.squared, 2),
+           p.value = round(p.value, 4)) %>% 
+        dplyr::rename("R^2" = adj.r.squared) %>% 
+    dplyr::rename(P = p.value) %>% 
+    dplyr::rename(Cluster = cluster) %>% 
+    dplyr::rename(Site = site) %>% 
+    dplyr::rename(Variable = variable) 
+  return(results)
+  }
+
+SACTN_7_R2 <- SACTN_daily_clusters_7a %>% 
+ temp_wave_R2_()
+SACTN_15_R2 <- SACTN_daily_clusters_15a %>% 
+  temp_wave_R2_()
+```
+
+# Working with netCDF and Satellite data
+
+# AVHRR Satellite data
+
+Various packages in R such as ncdf4, ncdf4.helpers are useful tools for working with netCDF files. The ncdf4 package is used to read netCDF files into R. Here i load the standard packages used in R as well as the ncdf4 package to help run the data.
+
+```{r loading_libraries, include = TRUE}
+library(ncdf4) # library for processing netCDFs
+library(data.table) # for fast .csv write function, `fwrite()`
+library(tidyverse) # misc. data processing conveniences
+library(reshape2) # for making a long data format
+library(plyr) # for `llply()`
+library(lubridate) # for working with dates
+library(stringr) # for working with strings
+library(doMC); doMC::registerDoMC(cores = 4) # for multicore spead-ups
+```
+
+The next step is to open the netCDF file. This requires the pathway in which the netCDF data is stored. The function nc_open found within the ncdf4 package is used here to open the netCDF file. This function opens the file, but does not read all the data in the file into R. Instead, this function reads into memory some infomation present within this file. By running the name "nc" i am able to view all the metadata within this file. This includes the various variables present within this dataset. The next step is to create a file path which will function as an output directory. Now creating a function to read the netCDF files and convert it to csv files. In this function i am subsetting the AVHRR global dataset to only produce a csv file with data for the South African coastline.
+
+```{r}
+source("function/AVHRR.netCDF2csv.R")
+```
+
+## Loadiing satellite data
+
+```{r}
+load("~/Documents/HONOURSPROJECT/data/combined_OISST_sites.RData")
+```
+
+The next step is to now match the insitu temperature data with the SST data
+
+```{r}
+insitu_AVHRR<- SACTN_daily_clusters_sub_1  %>% 
+  left_join(combined_OISST_sites, by = c("site", "date")) %>% 
+  na.trim()
+```
+
+# Visualisation
+
+Here i create a basic plot to both the satellite and *in situ* collected data
+
+```{r}
+insitu_temp <- ggplot(data = insitu_AVHRR, aes(x = date, y = temp.x)) +
+  geom_line() +
+  facet_wrap(~site)
+
+Satellite_temp <- ggplot(data = insitu_AVHRR, aes(x = date, y = temp.y)) +
+  geom_line() +
+  facet_wrap(~site)
+
+insitu_plot <- ggplot(insitu_AVHRR, aes(x = date, y = temp.x)) +
+  geom_line() +
+  facet_wrap(~site, scales = "free_x", ncol = 2) +
+  labs(x = "Year", y = "Null") +
+  theme_bw() +
+  theme(panel.grid.minor = element_blank(),
+        panel.grid.major = element_line(color = "#cfcfcf", size = 0.4))
+
+satellite_plot <- ggplot(insitu_AVHRR, aes(x = date, y = temp.y)) +
+  geom_line() +
+  facet_wrap(~site, scales = "free_x", ncol = 2) +
+  labs(x = "Year", y = "Null") +
+  theme_bw() +
+  theme(panel.grid.minor = element_blank(),
+        panel.grid.major = element_line(color = "#cfcfcf", size = 0.4))
+```
+
+## Matching the wave data with the satellite collected SST data
+
+Here i create a function which allows me to match the various wave variables with the temperature data based on the time and date that temperature was collected.
+
+```{r}
+AVHRR_wave <- insitu_AVHRR %>% 
+  separate(index, into = c("site", "src"), sep = "/", remove = FALSE)
+
+combine_temp_wave_7m <- function(df){
+  outcome_7 <- df %>% 
+  left_join(sites_complete_7a, by = c("site", "date")) %>% 
+  select(-temp.x) %>% # Temp.x is the insitu collected data
+  dplyr::rename(temp = temp.y) %>%
+  na.trim()
+  return(outcome_7)
+}
+
+combine_temp_wave_15m <- function(df){ 
+  outcome_15 <- df %>% 
+  left_join(sites_complete_15a, by = c("site", "date")) %>% 
+  select(-temp.x) %>% # Temp.x is the insitu collected data
+  dplyr::rename(temp = temp.y) %>%
+  na.trim() 
+  return(outcome_15)
+}
+
+AVHRR_temp_7 <- combine_temp_wave_7m(df = AVHRR_wave)
+AVHRR_temp_15 <- combine_temp_wave_15m(df = AVHRR_wave)
+```
+
+## The coefficient of determination
+
+Calculating the R2 value of each of the variables
+
+```{r}
+temp_wave_R2_try1 <- function(df){
+  results <- df %>% 
+    select(-index, -src, -date, -length, -c(num:depth), -lon, -lat, -combi) %>%
+    gather(key = variable, 
+           value = value,
+           -cluster, -site, -temp) %>%
+    group_by(cluster, site, variable) %>%
+    na.omit() %>% 
+    nest() %>%
+    mutate(model = purrr::map(data, ~lm(temp ~ value, data = .))) %>%
+    unnest(model %>% purrr::map(glance)) %>%
+    select(cluster:variable, adj.r.squared, p.value) %>% 
+    arrange(cluster, site) %>% 
+    mutate(adj.r.squared = round(adj.r.squared, 2),
+           p.value = round(p.value, 4)) %>% 
+    dplyr::rename("R^2" = adj.r.squared) %>% 
+    dplyr::rename(P = p.value) %>% 
+    dplyr::rename(Cluster = cluster) %>% 
+    dplyr::rename(Site = site) %>% 
+    dplyr::rename(Variable = variable) 
+  return(results)
+  }
+
+AVHRR_temp_7_R2 <- AVHRR_temp_7%>% 
+  temp_wave_R2_try1()
+AVHRR_temp_15_R2 <- AVHRR_temp_15 %>% 
+  temp_wave_R2_try1()
+```
+
+## The coefficient of determination between the *in situ* and satellite collected seawater temperature data
+
+```{r}
+insitu_temp_comparison <-function(df){
+  insitu_satellite <- df %>% 
+  lm(temp.x ~ temp.y)
+  return()
+}
+```
+
+```{r}
+insitu_AVHRR_comparison <- insitu_temp_comparison(df = insitu_AVHRR)
+summary(insitu_AVHRR_comparison)
+```
+
+# MUR satellite data
+
+Here i load the MUR SST data
+
+```{r}
+MUR_Bordjies_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_Bordjies_SST_timeseries_5nearest.csv") 
+MUR_Eastern_Beach_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_Eastern Beach_SST_timeseries_5nearest.csv")
+MUR_Gansbaai_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_Gansbaai_SST_timeseries_5nearest.csv")
+MUR_Gordons_Bay_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_Gordons Bay_SST_timeseries_5nearest.csv")
+MUR_Hamburg_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_Hamburg_SST_timeseries_5nearest.csv")
+MUR_Kalk_Bay_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_Kalk Bay_SST_timeseries_5nearest.csv")
+MUR_Knysna_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_Knysna_SST_timeseries_5nearest.csv")
+MUR_Lamberts_Bay_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_Lamberts Bay_SST_timeseries_5nearest.csv")
+MUR_Leisure_Bay_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_Leisure Bay_SST_timeseries_5nearest.csv")
+MUR_Mossel_Bay_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_Mossel Bay_SST_timeseries_5nearest.csv")
+MUR_Muizenberg_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_Muizenberg_SST_timeseries_5nearest.csv")
+MUR_Orient_Beach_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_Orient Beach_SST_timeseries_5nearest.csv")
+MUR_Port_Edward_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_Port Edward_SST_timeseries_5nearest.csv")
+MUR_Saldanha_Bay_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_Saldanha Bay_SST_timeseries_5nearest.csv")
+MUR_Sea_Point_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_Sea Point_SST_timeseries_5nearest.csv")
+MUR_Stilbaai_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_Stilbaai_SST_timeseries_5nearest.csv")
+MUR_T_O_Strand_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_T.O. Strand_SST_timeseries_5nearest.csv")
+MUR_Port_Nolloth_SST_timeseries_5nearest <- read_csv("data/MUR/MUR_Port Nolloth_SST_timeseries_5nearest.csv")
+
+MUR_data <- rbind(MUR_Orient_Beach_SST_timeseries_5nearest, MUR_Bordjies_SST_timeseries_5nearest, MUR_Eastern_Beach_SST_timeseries_5nearest,
+                  MUR_Gansbaai_SST_timeseries_5nearest, MUR_Gordons_Bay_SST_timeseries_5nearest, MUR_Hamburg_SST_timeseries_5nearest,
+                  MUR_Kalk_Bay_SST_timeseries_5nearest, MUR_Knysna_SST_timeseries_5nearest, MUR_Lamberts_Bay_SST_timeseries_5nearest,
+                  MUR_Leisure_Bay_SST_timeseries_5nearest, MUR_Mossel_Bay_SST_timeseries_5nearest, MUR_Muizenberg_SST_timeseries_5nearest,
+                  MUR_Port_Edward_SST_timeseries_5nearest, MUR_Port_Nolloth_SST_timeseries_5nearest,
+                  MUR_Saldanha_Bay_SST_timeseries_5nearest, MUR_Stilbaai_SST_timeseries_5nearest, MUR_Sea_Point_SST_timeseries_5nearest,
+                  MUR_T_O_Strand_SST_timeseries_5nearest)
+rm(MUR_Orient_Beach_SST_timeseries_5nearest, MUR_Bordjies_SST_timeseries_5nearest, MUR_Eastern_Beach_SST_timeseries_5nearest,
+                  MUR_Gansbaai_SST_timeseries_5nearest, MUR_Gordons_Bay_SST_timeseries_5nearest, MUR_Hamburg_SST_timeseries_5nearest,
+                  MUR_Kalk_Bay_SST_timeseries_5nearest, MUR_Knysna_SST_timeseries_5nearest, MUR_Lamberts_Bay_SST_timeseries_5nearest,
+                  MUR_Leisure_Bay_SST_timeseries_5nearest, MUR_Mossel_Bay_SST_timeseries_5nearest, MUR_Muizenberg_SST_timeseries_5nearest,
+                  MUR_Port_Edward_SST_timeseries_5nearest, MUR_Port_Nolloth_SST_timeseries_5nearest,
+                  MUR_Saldanha_Bay_SST_timeseries_5nearest, MUR_Stilbaai_SST_timeseries_5nearest, MUR_Sea_Point_SST_timeseries_5nearest,
+                  MUR_T_O_Strand_SST_timeseries_5nearest)
+
+MUR_data <- MUR_data %>% 
+  dplyr::rename(site = station) # Rename station name to site. This is done to match the wave data
+MUR_data$date <- (ymd(MUR_data$date))
+MUR_data <- MUR_data %>% 
+  rename(temp = med05)
+```
+
+## Matching
+
+With the MUR SST data now loaded into R i am able to match this dataset with the SACTN temperature dataset based on the data and time that temperature was collected.
+
+```{r}
+match_func <- function(df){
+  match <- SACTN_daily_clusters_sub_1  %>% 
+  left_join(df, by = c("site", "date")) %>% 
+  na.trim()
+  return(match)
+}
+insitu_MUR <- match_func(df = MUR_data)
+```
+
+## Matching the data
+
+Here i match the MUR satellite data with the wave dataset
+
+```{r}
+MUR_wave <- insitu_MUR %>% 
+  separate(index, into = c("site", "src"), sep = "/", remove = FALSE)
+
+MUR_7 <- combine_temp_wave_7m(df = MUR_wave)
+MUR_15 <- combine_temp_wave_15m(df = MUR_wave)
+```
+
+## The coefficient of determination
+
+Calculating the R2 value of each of the wind and wave variables
+
+```{r}
+temp_wave_R2_try1 <- function(df){
+  results <- df %>% 
+    select(-index, -src, -date, -length, -c(num:depth), -lat, -lon, -c(nearest1:dist2), -c(std05:std2)) %>%
+    gather(key = variable, 
+           value = value,
+           -cluster, -site, -temp) %>%
+    group_by(cluster, site, variable) %>%
+    na.omit() %>% 
+    nest() %>%
+    mutate(model = purrr::map(data, ~lm(temp ~ value, data = .))) %>%
+    unnest(model %>% purrr::map(glance)) %>%
+    select(cluster:variable, adj.r.squared, p.value) %>% 
+    arrange(cluster, site) %>% 
+    mutate(adj.r.squared = round(adj.r.squared, 2),
+           p.value = round(p.value, 4)) %>% 
+        dplyr::rename("R^2" = adj.r.squared) %>% 
+    dplyr::rename(P = p.value) %>% 
+    dplyr::rename(Cluster = cluster) %>% 
+    dplyr::rename(Site = site) %>% 
+    dplyr::rename(Variable = variable) 
+  return(results)
+  }
+
+MUR_7_R2 <- MUR_7 %>% 
+  temp_wave_R2_try1()
+MUR_15_R2 <- MUR_15 %>% 
+  temp_wave_R2_try1()
+```
+
+## The coefficient of determination between the *in situ* and satellite collected seawater temperature data
+
+```{r}
+insitu_MUR_comparison <- insitu_temp_comparison(df = insitu_MUR)
+summary(insitu_MUR_comparison)
+```
 
 
+# CMC satellite data
+
+Here i load the CMC SST data
+
+```{r}
+CMC_Bordjies_SST_timeseries_5nearest <- read_csv("data/CMC/CMC_Bordjies_SST_timeseries_5nearest.csv")
+CMC_Eastern_Beach_SST_timeseries_5nearest <- read_csv("data/CMC/CMC_Eastern Beach_SST_timeseries_5nearest.csv")
+CMC_Gansbaai_SST_timeseries_5nearest <- read_csv("data/CMC/CMC_Gansbaai_SST_timeseries_5nearest.csv")
+CMC_Gordons_Bay_SST_timeseries_5nearest <- read_csv("data/CMC/CMC_Gordons Bay_SST_timeseries_5nearest.csv")
+CMC_Hamburg_SST_timeseries_5nearest <- read_csv("data/CMC/CMC_Hamburg_SST_timeseries_5nearest.csv")
+CMC_Kalk_Bay_SST_timeseries_5nearest <- read_csv("data/CMC/CMC_Kalk Bay_SST_timeseries_5nearest.csv")
+CMC_Knysna_SST_timeseries_5nearest <- read_csv("data/CMC/CMC_Knysna_SST_timeseries_5nearest.csv")
+CMC_Lamberts_Bay_SST_timeseries_5nearest <- read_csv("data/CMC/CMC_Lamberts Bay_SST_timeseries_5nearest.csv")
+CMC_Leisure_Bay_SST_timeseries_5nearest <- read_csv("data/CMC/CMC_Leisure Bay_SST_timeseries_5nearest.csv")
+CMC_Mossel_Bay_SST_timeseries_5nearest <- read_csv("data/CMC/CMC_Mossel Bay_SST_timeseries_5nearest.csv")
+CMC_Muizenberg_SST_timeseries_5nearest <- read_csv("data/CMC/CMC_Muizenberg_SST_timeseries_5nearest.csv")
+CMC_Orient_Beach_SST_timeseries_5nearest <- read_csv("data/CMC/CMC_Orient Beach_SST_timeseries_5nearest.csv")
+CMC_Port_Edward_SST_timeseries_5nearest <- read_csv("data/CMC/CMC_Port Edward_SST_timeseries_5nearest.csv")
+CMC_Port_Nolloth_SST_timeseries_5nearest <- read_csv("data/CMC/CMC_Port Nolloth_SST_timeseries_5nearest.csv")
+CMC_Saldanha_Bay_SST_timeseries_5nearest <- read_csv("data/CMC/CMC_Saldanha Bay_SST_timeseries_5nearest.csv")
+CMC_Sea_Point_SST_timeseries_5nearest <- read_csv("data/CMC/CMC_Sea Point_SST_timeseries_5nearest.csv")
+CMC_Stilbaai_SST_timeseries_5nearest <- read_csv("data/CMC/CMC_Stilbaai_SST_timeseries_5nearest.csv")
+CMC_T_O_Strand_SST_timeseries_5nearest <- read_csv("data/CMC/CMC_T.O. Strand_SST_timeseries_5nearest.csv")
+
+CMC_data <- rbind(CMC_Bordjies_SST_timeseries_5nearest, CMC_Eastern_Beach_SST_timeseries_5nearest, CMC_Gansbaai_SST_timeseries_5nearest,
+                  CMC_Gordons_Bay_SST_timeseries_5nearest, CMC_Hamburg_SST_timeseries_5nearest, CMC_Kalk_Bay_SST_timeseries_5nearest,
+                  CMC_Knysna_SST_timeseries_5nearest,CMC_Lamberts_Bay_SST_timeseries_5nearest, CMC_Leisure_Bay_SST_timeseries_5nearest,
+                  CMC_Mossel_Bay_SST_timeseries_5nearest, CMC_Muizenberg_SST_timeseries_5nearest,CMC_Orient_Beach_SST_timeseries_5nearest,
+                  CMC_Port_Edward_SST_timeseries_5nearest, CMC_Port_Nolloth_SST_timeseries_5nearest,CMC_Saldanha_Bay_SST_timeseries_5nearest,
+                  CMC_Stilbaai_SST_timeseries_5nearest,CMC_T_O_Strand_SST_timeseries_5nearest, CMC_Sea_Point_SST_timeseries_5nearest)
+rm(CMC_Bordjies_SST_timeseries_5nearest, CMC_Eastern_Beach_SST_timeseries_5nearest, CMC_Gansbaai_SST_timeseries_5nearest,
+                  CMC_Gordons_Bay_SST_timeseries_5nearest, CMC_Hamburg_SST_timeseries_5nearest, CMC_Kalk_Bay_SST_timeseries_5nearest,
+                  CMC_Knysna_SST_timeseries_5nearest,CMC_Lamberts_Bay_SST_timeseries_5nearest, CMC_Leisure_Bay_SST_timeseries_5nearest,
+                  CMC_Mossel_Bay_SST_timeseries_5nearest, CMC_Muizenberg_SST_timeseries_5nearest,CMC_Orient_Beach_SST_timeseries_5nearest,
+                  CMC_Port_Edward_SST_timeseries_5nearest, CMC_Port_Nolloth_SST_timeseries_5nearest,CMC_Saldanha_Bay_SST_timeseries_5nearest,
+                  CMC_Stilbaai_SST_timeseries_5nearest,CMC_T_O_Strand_SST_timeseries_5nearest, CMC_Sea_Point_SST_timeseries_5nearest)
+CMC_data <- CMC_data %>% 
+  rename(site = station)
+CMC_data$date <- as.numeric(CMC_data$date)
+CMC_data$date <- (ymd(CMC_data$date))
+
+CMC_data <- CMC_data %>% 
+  rename(temp = med05)
+```
+
+## Matching
+
+With the CMC SST data now loaded into R i am able to match this dataset with the SACTN temperature dataset based on the data and time that temperature was collected.
+
+```{r}
+insitu_CMC <- match_func(df = CMC_data)
+```
+
+## Matching the data
+
+Here i match the CMC satellite data with the wave dataset 
+
+```{r}
+CMC_wave <- insitu_CMC %>% 
+  separate(index, into = c("site", "src"), sep = "/", remove = FALSE)
+
+# Combine the temperature and 7 m depth wave data
+CMC_7 <- combine_temp_wave_7m(df = CMC_wave)
+CMC_15 <- combine_temp_wave_15m(df = CMC_wave)
+```
+
+## The coefficient of determination
+
+Calculating the R2 value of each of the wind and wave variables
+
+```{r}
+# A function that runs a linear model on each metric of the combined data and get the R^2 value
+temp_wave_R2_try2 <- function(df){
+  results <- df %>% 
+    select(-index, -src, -date, -length, -c(num:depth), -c(nearest1:climnear2), -lat, -lon, -c(std05:clim2)) %>%
+    gather(key = variable, 
+           value = value,
+           -cluster, -site, -temp) %>%
+    group_by(cluster, site, variable) %>%
+    na.omit() %>% 
+    nest() %>%
+    mutate(model = purrr::map(data, ~lm(temp ~ value, data = .))) %>%
+    unnest(model %>% purrr::map(glance)) %>%
+    select(cluster:variable, adj.r.squared, p.value) %>% 
+    arrange(cluster, site) %>% 
+    mutate(adj.r.squared = round(adj.r.squared, 2),
+           p.value = round(p.value, 4)) %>% 
+        dplyr::rename("R^2" = adj.r.squared) %>% 
+    dplyr::rename(P = p.value) %>% 
+    dplyr::rename(Cluster = cluster) %>% 
+    dplyr::rename(Site = site) %>% 
+    dplyr::rename(Variable = variable) 
+  return(results)
+  }
+
+CMC_7_R2 <- CMC_7 %>% 
+  temp_wave_R2_try2()
+CMC_15_R2 <- CMC_7 %>% 
+  temp_wave_R2_try2()
+
+save(CMC_7_R2, file = "data/CMC_7_R2.RData")
+save(CMC_15_R2, file = "data/CMC_15_R2.RData")
+```
+
+## The coefficient of determination between the *in situ* and satellite collected seawater temperature data
+
+```{r}
+insitu_CMC_comparison <- insitu_temp_comparison(df = insitu_CMC)
+summary(insitu_CMC_comparison)
+```
+
+# K10 dataset
+
+Here i load the K10 SST dataset
+
+```{r}
+K10_Bordjies_SST_timeseries_5nearest <- read_csv("data/K10/K10_Bordjies_SST_timeseries_5nearest.csv")
+K10_Eastern_Beach_SST_timeseries_5nearest <- read_csv("data/K10/K10_Eastern Beach_SST_timeseries_5nearest.csv")
+K10_Gansbaai_SST_timeseries_5nearest <- read_csv("data/K10/K10_Gansbaai_SST_timeseries_5nearest.csv")
+K10_Gordons_Bay_SST_timeseries_5nearest <- read_csv("data/K10/K10_Gordons Bay_SST_timeseries_5nearest.csv")
+K10_Hamburg_SST_timeseries_5nearest <- read_csv("data/K10/K10_Hamburg_SST_timeseries_5nearest.csv")
+K10_Kalk_Bay_SST_timeseries_5nearest <- read_csv("data/K10/K10_Kalk Bay_SST_timeseries_5nearest.csv")
+K10_Knysna_SST_timeseries_5nearest <- read_csv("data/K10/K10_Knysna_SST_timeseries_5nearest.csv")
+K10_Lamberts_Bay_SST_timeseries_5nearest <- read_csv("data/K10/K10_Lamberts Bay_SST_timeseries_5nearest.csv")
+K10_Leisure_Bay_SST_timeseries_5nearest <- read_csv("data/K10/K10_Leisure Bay_SST_timeseries_5nearest.csv")
+K10_Mossel_Bay_SST_timeseries_5nearest <- read_csv("data/K10/K10_Mossel Bay_SST_timeseries_5nearest.csv")
+K10_Muizenberg_SST_timeseries_5nearest <- read_csv("data/K10/K10_Muizenberg_SST_timeseries_5nearest.csv")
+K10_Orient_Beach_SST_timeseries_5nearest <- read_csv("data/K10/K10_Orient Beach_SST_timeseries_5nearest.csv")
+K10_Port_Edward_SST_timeseries_5nearest <- read_csv("data/K10/K10_Port Edward_SST_timeseries_5nearest.csv")
+K10_Port_Nolloth_SST_timeseries_5nearest <- read_csv("data/K10/K10_Port Nolloth_SST_timeseries_5nearest.csv")
+K10_Saldanha_Bay_SST_timeseries_5nearest <- read_csv("data/K10/K10_Saldanha Bay_SST_timeseries_5nearest.csv")
+K10_Sea_Point_SST_timeseries_5nearest <- read_csv("data/K10/K10_Sea Point_SST_timeseries_5nearest.csv")
+K10_Stilbaai_SST_timeseries_5nearest <- read_csv("data/K10/K10_Stilbaai_SST_timeseries_5nearest.csv")
+K10_T_O_Strand_SST_timeseries_5nearest <- read_csv("data/K10/K10_T.O. Strand_SST_timeseries_5nearest.csv")
+
+K10_data <- rbind(K10_Bordjies_SST_timeseries_5nearest, K10_Eastern_Beach_SST_timeseries_5nearest,K10_Gansbaai_SST_timeseries_5nearest,
+                  K10_Gordons_Bay_SST_timeseries_5nearest,K10_Hamburg_SST_timeseries_5nearest,K10_Kalk_Bay_SST_timeseries_5nearest,
+                  K10_Knysna_SST_timeseries_5nearest, K10_Lamberts_Bay_SST_timeseries_5nearest,K10_Leisure_Bay_SST_timeseries_5nearest,
+                  K10_Mossel_Bay_SST_timeseries_5nearest,K10_Muizenberg_SST_timeseries_5nearest,K10_Orient_Beach_SST_timeseries_5nearest,
+                  K10_Port_Edward_SST_timeseries_5nearest,K10_Port_Nolloth_SST_timeseries_5nearest,K10_Saldanha_Bay_SST_timeseries_5nearest,
+                  K10_Stilbaai_SST_timeseries_5nearest,K10_T_O_Strand_SST_timeseries_5nearest, K10_Sea_Point_SST_timeseries_5nearest)
+rm(K10_Bordjies_SST_timeseries_5nearest, K10_Eastern_Beach_SST_timeseries_5nearest,K10_Gansbaai_SST_timeseries_5nearest,
+                  K10_Gordons_Bay_SST_timeseries_5nearest,K10_Hamburg_SST_timeseries_5nearest,K10_Kalk_Bay_SST_timeseries_5nearest,
+                  K10_Knysna_SST_timeseries_5nearest, K10_Lamberts_Bay_SST_timeseries_5nearest,K10_Leisure_Bay_SST_timeseries_5nearest,
+                  K10_Mossel_Bay_SST_timeseries_5nearest,K10_Muizenberg_SST_timeseries_5nearest,K10_Orient_Beach_SST_timeseries_5nearest,
+                  K10_Port_Edward_SST_timeseries_5nearest,K10_Port_Nolloth_SST_timeseries_5nearest,K10_Saldanha_Bay_SST_timeseries_5nearest,
+                  K10_Stilbaai_SST_timeseries_5nearest,K10_T_O_Strand_SST_timeseries_5nearest, K10_Sea_Point_SST_timeseries_5nearest)
+
+K10_data <- K10_data %>% 
+  rename(site = station)
+K10_data$date <- as.numeric(K10_data$date)
+K10_data$date <- (ymd(K10_data$date))
+
+K10_data <- K10_data %>% 
+  rename(temp = med05)
+```
+
+## Matching
+
+With the CMC SST data now loaded into R i am able to match this dataset with the SACTN temperature dataset based on the data and time that temperature was collected.
+
+```{r}
+insitu_K10 <- match_func(df = K10_data)
+```
+
+# Visualisation
+
+Here i create a basic plot to both the satellite and *in situ* collected data
+
+```{r}
+insitu_temp <- ggplot(data = insitu_AVHRR, aes(x = date, y = temp.x)) +
+  geom_line() +
+  facet_wrap(~site)
+insitu_temp
+
+Satellite_temp <- ggplot(data = insitu_K10, aes(x = date, y = temp.y)) +
+  geom_line() +
+  facet_wrap(~site)
+Satellite_temp
+```
+
+## Matching the data
+
+Here i match the K10 satellite data with the wave dataset
+
+```{r}
+K10_wave <- insitu_K10 %>% 
+  separate(index, into = c("site", "src"), sep = "/", remove = FALSE)
+
+# Combine the temperature and 7 m depth wave data
+K10_7 <- combine_temp_wave_7m(df = K10_wave)
+K10_15 <- combine_temp_wave_15m(df = K10_wave)
+```
+
+## The coefficient of determination
+
+Calculating the R2 value of each of the wind and wave variables
+
+```{r}
+K10_7_R2 <- K10_7 %>% 
+  temp_wave_R2_try1()
+K10_15_R2 <- K10_15 %>% 
+  temp_wave_R2_try1()
+
+save(K10_7_R2, file = "data/K10_7_R2.RData")
+save(K10_15_R2, file = "data/K10_15_R2.RData")
+```
+
+## The coefficient of determination between the *in situ* and satellite collected seawater temperature data
+
+```{r}
+insitu_K10_comparison <- insitu_temp_comparison(df = insitu_K10)
+summary(insitu_K10_comparison)
+```
+
+## Wind and wave rose diagrams
+
+The proceeding code and analyses focus on the predominant wind and wave directions for each of the sites. This was done in order to determine whether or not predominant wind and wave direction may have an impact on temperature variation at that parrticular site.
+
+```{r}
+library(circular)
+wave_daily_dir <- wave_data %>%
+  mutate(date = as.Date(date)) %>%
+  group_by(site, num, depth, date) %>%
+  summarise(dir_circ = mean.circular(circular(dir, units = "degrees")),
+            dirw_circ = mean.circular(circular(dirw, units = "degrees"))) 
+
+wave_daily <- wave_data %>%
+  mutate(date = as.Date(date)) %>%
+  group_by(site, num, depth, date) %>%
+  summarise_all(funs(mean = mean, sd = sd), na.rm = T) %>%
+  ungroup() %>% 
+  left_join(wave_daily_dir)
+```
 
 
+Calculating the mean and sd of each of the variables. Then calculating anomalies. The funs function, funs(), is used here as it provides a flexible way to generate a named list of functions for input to other functions such as the mean and sd:
+
+```{r}
+wave_daily <- wave_data %>%
+  mutate(date = as.Date(date)) %>%
+  group_by(site, num, depth, date) %>%
+  summarise_all(funs(mean = mean), na.rm = T) %>%
+  ungroup()
+
+anom_func <- function(m){
+  m1 <- m-mean(m, na.rm = T)
+  return(m1)
+}
+
+suppressWarnings(wave_daily_anom <- wave_daily %>% 
+  group_by(site, num, depth) %>% 
+  mutate_at(vars(-c(site:date)), anom_func))
+```
+
+Here i Calculate the annual wave dir and dirw for each of the sites excluding the year 2000:
+
+```{r, include=TRUE}
+# ?circular
+wave_annually_dir <- wave_data %>%
+  mutate(date = lubridate::year(date)) %>%
+  group_by(site, num, depth, date) %>%
+  summarise(dir_circ = mean(circular(dir, units = "degrees")),
+            dirw_circ = mean(circular(dirw, units = "degrees")))
+
+# Calculating the mean and sd for each of the sites excluding year 2000
+wave_annually <- wave_data %>%
+  mutate(date = lubridate::year(date)) %>%
+  group_by(site, num, depth, date) %>%
+  summarise_all(funs(mean = mean), na.rm = TRUE) %>%
+  ungroup() %>%
+  left_join(wave_annually_dir) %>% 
+  filter(date != 2000)
+
+suppressWarnings(wave_annually_anom <- wave_annually %>% 
+  group_by(site, num, depth) %>% 
+  mutate_at(vars(-c(site:date)), anom_func))
+```
+
+Splitting the wave data into the different depths; either a depth of 7m or a depth of 15m:
+
+```{r wave-depth-split}
+sites_complete_7 <- wave_daily %>%
+  filter(depth == "7m")
+
+sites_complete_15 <- wave_daily %>%
+  filter(depth == "15m")
+
+sites_complete_7_anom <- wave_daily_anom %>%
+  filter(depth == "7m")
+
+sites_complete_15_anom <- wave_daily_anom %>%
+  filter(depth == "15m")
+```
+
+Splitting the waves up into two different dataframes requires us to write a bit more code, but ultimately makes it easier to read. The function s.window controls how rapidly the seasonal component can change. Small values allow more rapid change. Setting the seasonal window to be infinite is equivalent to forcing the seasonal component to be periodic. The stlplus package for R has a plot_seasonal function that can be used to generate a cycle-subseries plot in order to visually calibrate s.window. 
+
+```{r}
+# Create site column from the index column
+SACTN_daily_clusters_sub <- SACTN_daily_clusters_sub %>% 
+  separate(index, into = c("site", "src"), sep = "/", remove = FALSE)
+
+# Combine the temperature and 7 m depth wave data
+SACTN_daily_clusters_7 <- SACTN_daily_clusters_sub %>% 
+  left_join(sites_complete_7, by = c("site", "date")) %>% 
+  na.trim() %>% 
+  group_by(site) %>% 
+  mutate(temp_flat = stlplus(x = temp, n.p = 365, s.window = "periodic")[[1]]$remainder)
+
+# Combine the temperature and 15 m depth wave data
+SACTN_daily_clusters_15 <- SACTN_daily_clusters_sub %>% 
+  left_join(sites_complete_15, by = c("site", "date")) %>% 
+  na.trim() %>% 
+  group_by(site) %>% 
+  mutate(temp_flat = stlplus(x = temp, n.p = 365, s.window = "periodic")[[1]]$remainder)
+
+# Combine the temperature and 7 m depth wave data
+SACTN_daily_clusters_7_anom <- SACTN_daily_clusters_sub %>% 
+  left_join(sites_complete_7_anom, by = c("site", "date")) %>% 
+  na.trim() %>% 
+  group_by(site) %>% 
+  mutate(temp_flat = stlplus(x = temp, n.p = 365, s.window = "periodic")[[1]]$remainder)
+
+# Combine the temperature and 15 m depth wave data
+SACTN_daily_clusters_15_anom <- SACTN_daily_clusters_sub %>% 
+  left_join(sites_complete_15_anom, by = c("site", "date")) %>% 
+  na.trim() %>% 
+  group_by(site) %>% 
+  mutate(temp_flat = stlplus(x = temp, n.p = 365, s.window = "periodic")[[1]]$remainder)
+```
+
+Plot for creating faceted line plots looking at comparisons of trends/patterns
+
+```{r plot-temp-wave-compare}
+temp_wave_compare <- function(df){
+  df1 <- df %>% 
+    dplyr::mutate(year = year(date), 
+                  week = week(date)) %>% 
+    dplyr::select(-date) %>% 
+    tidyr::gather(key = variable, value = value, 
+                  -c(index:src, year, week, length:depth)) %>% 
+    na.omit() %>% 
+    ungroup() %>% 
+    group_by(index, year, week, variable) %>% 
+    na.omit() %>% 
+    dplyr::summarise(value = mean(value, na.rm = T)) %>% 
+    arrange(index, year, week) %>% 
+    group_by(index, variable) %>% 
+    mutate(index2 = 1:n())
+  ggplot(data = df1, aes(x = index2)) +
+    geom_line(aes(y = value, colour = variable, group = )) +
+    facet_grid(variable~index, scales = "free_y")
+}
+```
+
+### Comparing waves and temperatures
+
+With our temperature and wave values paired up we now want to investigate what the relationship between these values may be. In order to do so we will use linear models, as this produces for us the coefficient of determination (R^2). We are going to use __`purrr`__ to do this as it will allow us to compare multiple variables at once: The following example uses purrr to solve a fairly realistic problem: split a data frame into pieces, fit a model to each piece, compute the summary, then extract the R2. The R2 value is a statistical measure of how close the data are to the fitted regression line. The R2 is the percentage of the response variable variation that is explained by a linear model.
+
+```{r compare-fun}
+# A function that runs a linear model on each metric of the combined data and get the R^2 value
+temp_wave_R2 <- function(df){
+  results <- df %>% 
+    select(-index, -src, -date, -length, -c(num:depth), -temp) %>%
+    gather(key = variable, 
+           value = value,
+           -cluster, -site, -temp_flat) %>%
+    group_by(cluster, site, variable) %>%
+    na.omit() %>% 
+    nest() %>%
+    mutate(model = purrr::map(data, ~lm(temp_flat ~ value, data = .))) %>%
+    unnest(model %>% purrr::map(glance)) %>%
+    select(cluster:variable, adj.r.squared, p.value) %>% 
+    arrange(cluster, site) %>% 
+    mutate(adj.r.squared = round(adj.r.squared, 2),
+           p.value = round(p.value, 4))
+  return(results)
+}
+```
 
 
+```{r compare}
+SACTN_7_R2 <- SACTN_daily_clusters_7 %>% 
+  temp_wave_R2()
+
+SACTN_15_R2 <- SACTN_daily_clusters_15 %>% 
+  temp_wave_R2()
+
+SACTN_7_R2_anom <- SACTN_daily_clusters_7_anom %>% 
+  temp_wave_R2()
+
+SACTN_15_R2_anom <- SACTN_daily_clusters_15_anom %>% 
+  temp_wave_R2()
+```
+
+As we may see from these results, the R^2 values between temperatures and wave data are rather low. With R^2 = 0.07 the highest value.
+
+#### Comparisons during only predominant wind/wave directions
+
+Due to the rather low R^2 values found above, the follow up is to ascertain waht the potential relationship is at each site only during the prevailing wind/wave directions.
+```{r compare-predom-fun}
+# A function that runs a linear model on each metric of the combined data and get the R^2 value
+temp_wave_predom_R2 <- function(df){
+  # Find predominant wave direction
+  predom_dir <- df %>% 
+    mutate(dir_round = round(dir_mean, -1)) %>%
+    group_by(cluster, site, dir_round) %>% 
+    summarise(dir_mean_n = n()) %>% 
+    na.omit() %>% 
+    filter(dir_mean_n == max(dir_mean_n)) %>% 
+    select(-dir_mean_n)
+  # Find predominant wind direction
+  predom_dirw <- df %>% 
+    mutate(dirw_round = round(dirw_mean, -1)) %>%
+    group_by(cluster, site, dirw_round) %>% 
+    summarise(dirw_mean_n = n()) %>% 
+    na.omit() %>% 
+    filter(dirw_mean_n == max(dirw_mean_n))%>% 
+    select(-dirw_mean_n)
+  
+  # Extract just those values
+  ## waves
+  df_dir <- df %>% 
+    mutate(dir_round = round(dir_mean, -1)) %>% 
+    right_join(predom_dir, by = c("site", "cluster", "dir_round")) %>%
+    select(-dir_round) %>%
+    temp_wave_R2() %>% 
+    right_join(predom_dir, by = c("site", "cluster")) %>% 
+    dplyr::rename(predom = dir_round) %>% 
+    mutate(predom_var = "dir")
+  ## wind
+  df_dirw <- df %>% 
+    mutate(dirw_round = round(dirw_mean, -1)) %>%
+    right_join(predom_dirw, by = c("site", "cluster", "dirw_round")) %>%
+    select(-dirw_round) %>% 
+    temp_wave_R2() %>% 
+    right_join(predom_dirw, by = c("site", "cluster")) %>% 
+    dplyr::rename(predom = dirw_round) %>% 
+    mutate(predom_var = "dirw")
+  
+  # Wrap it up
+  results <- rbind(df_dir, df_dirw)
+  return(results)
+}
+```
+
+```{r compare-predom}
+SACTN_7_predom_R2 <- SACTN_daily_clusters_7 %>% 
+  temp_wave_predom_R2()
+
+SACTN_15_predom_R2 <- SACTN_daily_clusters_15 %>% 
+  temp_wave_predom_R2()
+
+# SACTN_7_predom_R2_anom <- SACTN_daily_clusters_7_anom %>% 
+#   temp_wave_predom_R2()
+# 
+# SACTN_15_predom_R2_predom_anom <- SACTN_daily_clusters_15_anom %>% 
+#   temp_wave_predom_R2()
+```
+
+# Plotting the impact of predominant wind and wave direction on temperature.
+
+```{r, fig.cap = "Boxplot representing the adjusted R2 values", fig.height = 8, fig.width= 10}
+predominant_ww <- ggplot(data = SACTN_7_predom_R2, aes(x = addline_format(variable), y = adj.r.squared)) +
+  geom_boxplot(aes(colour = variable)) +
+  facet_wrap(~site, ncol = 6, nrow = 3) +
+  labs(y = "Coefficient of determination", x = "Average wind and wave variables") +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 15)) +
+      theme(axis.text = element_text(size = 10),
+          axis.title = element_text(size = 18),
+          legend.text = element_text(size = 14),
+          legend.title = element_text(size = 16)) 
+predominant_ww
+
+ggsave(plot = predominant_ww, filename = "figures/predominant_ww.pdf")
+```
+
+```{r}
+source("function/wind.rose.R")
+source("function/waverose.diagram.R")
+```
 
 
+```{r}
+wave_daily_renamed <- wave_daily %>% 
+  dplyr::rename(spd = spw_mean) %>%
+  dplyr::rename(dir = dirw_mean) 
+```
 
+```{r}
+p.wr2 <- plot.windrose(data = wave_daily_renamed,
+              spd = "spd",
+              dir = "dir")
+```
 
+```{r, fig.cap = "Windrose diagram representing the wind direction and speed for each of the sites", fig.height = 8, fig.width= 10}
+p.wr3 <- p.wr2 + facet_wrap(~site, ncol = 6, nrow = 3)
+p.wr3
 
+ggsave(plot = p.wr3, filename = "figures/p.wr3.pdf")
+```
 
+```{r}
+wave_daily_renamed <- wave_daily %>% 
+  dplyr::rename(spd = hs_mean) %>%
+  dplyr::rename(dir = dir_mean) 
+```
 
+```{r}
+p.wr2 <- plot.waverose(data = wave_daily_renamed,
+              spd = "spd",
+              dir = "dir") 
+p.wr2
+```
 
+```{r, fig.cap = "Windrose diagram representing the wind direction and speed for each of the sites", fig.height = 8, fig.width= 10}
+# now generate the faceting
+p.wave <- p.wr2 + facet_wrap(~site,
+                            ncol = 6, nrow = 3)
+p.wave
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ggsave(plot = p.wave, filename = "figures/p.wave.pdf")
+```
 
 
 
