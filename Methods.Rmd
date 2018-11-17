@@ -138,16 +138,16 @@ clust_i <- function(i) {
     borders() +
     geom_point(data = site_list,
                aes(x = lon, y = lat,
-                   colour = as.factor(kmeans(clust_columns, i)$cluster))) +
+                   colour = as.factor(kmeans(clust_columns, i)$cluster), size = 2)) +
     labs(colour = "cluster")  +
     annotate("text", label = "INDIAN\nOCEAN", x = 34.00, y = -35.0,
              size = 6.0, angle = 0, colour = "black") +
-    annotate("text", label = "ATLANTIC\nOCEAN", x = 14.00, y = -37.0,
+    annotate("text", label = "ATLANTIC\nOCEAN", x = 14.00, y = -35.0,
              size = 6.0, angle = 0, colour = "black") +
     geom_segment(aes(x = 17.2, y = -32.6, xend = 15.2, yend = -29.5),
                  arrow = arrow(length = unit(0.3, "cm")),
                  size = 0.1, colour = "black") +
-    annotate("text", label = "Benguela", x = 16.0, y = -31.8,
+    annotate("text", label = "Benguela", x = 16.0, y = -31.7,
              size = 6.5, angle = 302, colour = "black") +
     geom_segment(aes(x = 33, y = -29.5, xend = 29.8, yend = -33.0),
                 arrow = arrow(length = unit(0.3, "cm")),
@@ -296,6 +296,9 @@ site_list_sub <- rbind(sites_1_sub, sites_2_sub, sites_3_sub, sites_4_sub, sites
 # Then subset the daily data
 SACTN_daily_clusters_sub <- SACTN_daily_clusters %>%
   filter(index %in% site_list_sub$index)
+
+save(site_list_sub, file = "data/site_list_sub.RData")
+
 ```
 
 ### Site locations
@@ -476,6 +479,12 @@ SACTN_clust_3_match <- clust_match(df = SACTN_daily_clusters_sub, clust = 3)
 SACTN_clust_4_match <- clust_match(df = SACTN_daily_clusters_sub, clust = 4)
 SACTN_clust_5_match <- clust_match(df = SACTN_daily_clusters_sub, clust = 5)
 SACTN_clust_6_match <- clust_match(df = SACTN_daily_clusters_sub, clust = 6)
+# save(SACTN_clust_1_match, file = "data/SACTN_clust_1_match.RData")
+# save(SACTN_clust_2_match, file = "data/SACTN_clust_2_match.RData")
+# save(SACTN_clust_3_match, file = "data/SACTN_clust_3_match.RData")
+# save(SACTN_clust_4_match, file = "data/SACTN_clust_4_match.RData")
+# save(SACTN_clust_5_match, file = "data/SACTN_clust_5_match.RData")
+# save(SACTN_clust_6_match, file = "data/SACTN_clust_6_match.RData")
 
 clust_matched <- function(df) {
   SACTN_clust_x_matched <- df %>%
@@ -499,6 +508,13 @@ SACTN_clust_3_matched <- clust_matched(df = SACTN_clust_3_match)
 SACTN_clust_4_matched <- clust_matched(df = SACTN_clust_4_match)
 SACTN_clust_5_matched <- clust_matched(df = SACTN_clust_5_match)
 SACTN_clust_6_matched <- clust_matched(df = SACTN_clust_6_match)
+
+# save(SACTN_clust_1_match, file = "data/SACTN_clust_1_match.RData")
+# save(SACTN_clust_2_match, file = "data/SACTN_clust_2_match.RData")
+# save(SACTN_clust_3_match, file = "data/SACTN_clust_3_match.RData")
+# save(SACTN_clust_4_match, file = "data/SACTN_clust_4_match.RData")
+# save(SACTN_clust_5_match, file = "data/SACTN_clust_5_match.RData")
+# save(SACTN_clust_6_match, file = "data/SACTN_clust_6_match.RData")
 ```
 
 #### ANOVA
@@ -554,9 +570,9 @@ clust_plot <- function(df) {
     guides(fill = guide_legend(title = "Site\ntemperatures"))+
     coord_cartesian(ylim = c(0, 30)) +
     theme(axis.text = element_text(size = 18),
-          axis.title = element_text(size = 18),
-          legend.text = element_text(size = 14),
-          legend.title = element_text(size = 16))
+          axis.title = element_text(size = 24),
+          legend.text = element_text(size = 16),
+          legend.title = element_text(size = 1))
   return(plot1)
 }
 ```
@@ -603,17 +619,18 @@ clust_plot2 <- function(df){
     geom_smooth(method = "gam", se = F, aes(colour = index_pair), show.legend = T)  +
     labs(x = "Year", y = "Average temperature (°C)") +
     facet_wrap(~ month) +
-    theme_bw() +
     guides(fill=guide_legend(title = "Paired\nsites")) +
-    theme(axis.text = element_text(size = 18),
-          axis.title = element_text(size = 20),
-          legend.text = element_text(size = 18),
-          legend.title = element_text(size = 20))
+    theme(strip.text.x = element_text(size = 25)) +
+    theme(axis.text.x = element_text(angle = 90)) +
+    theme(axis.text = element_text(size = 30),
+          axis.title = element_text(size = 35),
+          legend.text = element_text(size = 30),
+          legend.title = element_text(size = 35))
   return(plot2)
 }
 ```
 
-```{r run_fun5, fig.cap = "Line graphs representing the monthly average temperatures between two sites (° Celsius). Each graphic showing a different month overtime from 1990 to 2016. These site locations are coloured by the temperature statistic relative to the legends provided. The linear lines are the linear models in their respective colours ", fig.height = 20, fig.width = 20}
+```{r run_fun5, fig.cap = "Line graphs representing the monthly average temperatures between two sites (° Celsius). Each graphic showing a different month overtime from 1990 to 2016. These site locations are coloured by the temperature statistic relative to the legends provided. The linear lines are the linear models in their respective colours ", fig.height = 30, fig.width = 30}
 (SACTN_clust_1_plot2 <- clust_plot2(df = SACTN_clust_1_matched))
 (SACTN_clust_2_plot2 <- clust_plot2(df = SACTN_clust_2_matched))
 (SACTN_clust_3_plot2 <- clust_plot2(df = SACTN_clust_3_matched))
@@ -626,7 +643,7 @@ combined2_plot <- ggarrange(SACTN_clust_1_plot2, SACTN_clust_2_plot2,
                            SACTN_clust_5_plot2, SACTN_clust_6_plot2, ncol = 2, nrow = 3)
 combined2_plot
 
-ggsave(plot = combined2_plot, filename = "figures/combined2_plot.pdf")
+ggsave(plot = combined2_plot, filename = "figures/combined2_plot.png")
 
 # ggsave(plot = SACTN_clust_1_plot2, filename = "figures/SACTN_clust_1_plot2.pdf")
 # ggsave(plot = SACTN_clust_2_plot2, filename = "figures/SACTN_clust_2_plot2.pdf")
@@ -783,7 +800,10 @@ mossel_bay <- map_dfr(dir("data/wave_data/Mossel Bay",
 
 wave_data <- rbind(bordjies, gansbaai, gordons_bay, kalk_bay, lamberts_bay, muizenberg, port_nolloth, port_edward,eastern_beach, hamburg, orient_beach, stilbaai, mossel_bay, knysna, to_strand, leisure_bay, sea_point, saldanha_bay)
 
+
 rm(bordjies, gansbaai, gordons_bay, kalk_bay, lamberts_bay, muizenberg, port_nolloth, port_edward,eastern_beach, hamburg, orient_beach, stilbaai, mossel_bay, knysna, to_strand, leisure_bay, sea_point, saldanha_bay)
+
+save(wave_data, file = "data/wave_data.RData")
 ```
 
 Converting the 3-hour resolution wave data into daily data. https://cran.r-project.org/web/packages/circular/circular.pdf (Pg 130). The circular function creates circular objects around the wind and wave direction. The wave and wind direction was collected every three hours and by using the circular function we calcuated the daily mean wave and wind direction. There is a numerically large gap between 360 and 2 where as in degrees its not as large. The circular mean function returns the mean direction of a vector of circular data.
@@ -802,8 +822,7 @@ wave_daily <- wave_data %>%
             spw_circ = mean.circular(circular(spw, units = "degrees")),
             hs_circ = mean.circular(circular(hs, units = "degrees")),
             tp_circ = mean.circular(circular(tp, units = "degrees")))
-  # mutate(dir_head = ,
-  #        dirw_head = )g
+save(wave_daily, file = "data/wave_daily.RData")
 ```
 
 Here we are splitting the daily wave data into depths of 7m and 15m respectivley
@@ -2114,6 +2133,10 @@ SACTN_7_predom_R2 <- SACTN_daily_clusters_7 %>%
 SACTN_15_predom_R2 <- SACTN_daily_clusters_15 %>% 
   temp_wave_predom_R2()
 
+save(SACTN_7_predom_R2, file = "data/SACTN_7_predom_R2.RData")
+save(SACTN_15_predom_R2, file = "data/SACTN_15_predom_R2.RData")
+
+
 renamed_SACTN_7_predom_R2 <- SACTN_7_predom_R2 %>% 
   dplyr::rename(Variables = variable)
 
@@ -2126,7 +2149,7 @@ renamed_SACTN_7_predom_R2 <- SACTN_7_predom_R2 %>%
 
 # Plotting the impact of predominant wind and wave direction on temperature.
 
-```{r, fig.cap = "Boxplot representing the adjusted R2 values", fig.height = 8, fig.width= 10}
+```{r, fig.cap = "Boxplot representing the adjusted R2 values", fig.height = 15, fig.width= 25}
 predominant_ww <- ggplot(data = renamed_SACTN_7_predom_R2, aes(x = addline_format(Variables), y = adj.r.squared)) +
   geom_boxplot(aes(colour = Variables)) +
   facet_wrap(~site, ncol = 6, nrow = 3) +
@@ -2134,11 +2157,12 @@ predominant_ww <- ggplot(data = renamed_SACTN_7_predom_R2, aes(x = addline_forma
   scale_x_discrete(labels = c('dir','dirw','hs', 'spw', 'tp')) +
   scale_color_manual(labels = c("dir", "dirw", "hs", "spw","tp"), values = c("firebrick2", "slate gray3","deepskyblue","gold1","darkorchid1")) +
   theme_bw() +
-  theme(axis.text.x = element_text(angle = 15)) +
-      theme(axis.text = element_text(size = 9),
-          axis.title = element_text(size = 12),
-          legend.text = element_text(size = 8),
-          legend.title = element_text(size = 10)) 
+  theme(strip.text.x = element_text(size = 25)) +
+  theme(axis.text.x = element_text(angle = 20)) +
+      theme(axis.text = element_text(size = 20),
+          axis.title = element_text(size = 25),
+          legend.text = element_text(size = 20),
+          legend.title = element_text(size = 25)) 
 predominant_ww
 
 # predominant15_ww <- ggplot(data = SACTN_15_predom_R2, aes(x = variable, y = adj.r.squared)) +
@@ -2148,7 +2172,7 @@ predominant_ww
 #   theme(axis.text.x = element_text(angle = 15)) +
 #   theme_bw()
 # predominant15_ww
-ggsave(plot = predominant_ww, filename = "figures/predominant_ww.pdf")
+ggsave(plot = predominant_ww, filename = "figures/predominant_ww.png")
 # ggsave(plot = predominant15_ww, filename = "figures/predominant15_ww.pdf")
 ```
 
@@ -2170,12 +2194,13 @@ p.wr2 <- plot.windrose(data = wave_daily_renamed,
               dir = "dir")
 ```
 
-```{r, fig.cap = "Windrose diagram representing the wind direction and speed for each of the sites", fig.height = 10, fig.width = 8}
+```{r, fig.cap = "Windrose diagram representing the wind direction and speed for each of the sites", fig.height = 20, fig.width = 20}
 # now generate the faceting
-p.wr3 <- p.wr2 + facet_wrap(~ site, ncol = 4, nrow = 5)
+p.wr3 <- p.wr2 + facet_wrap(.~ site, ncol = 4, nrow = 5) +
+  theme(strip.text.x = element_text(size = 25))
 p.wr3
 
-ggsave(plot = p.wr3, filename = "figures/p.wr3.pdf")
+ggsave(plot = p.wr3, filename = "figures/p.wr3.png")
 ```
 
 ```{r}
@@ -2191,11 +2216,13 @@ p.wr2 <- plot.waverose(data = wave_daily_renamed,
 p.wr2
 ```
 
-```{r, fig.cap = "Windrose diagram representing the wind direction and speed for each of the sites", fig.height = 10, fig.width = 8}
+```{r, fig.cap = "Windrose diagram representing the wind direction and speed for each of the sites", fig.height = 30, fig.width = 30}
 # now generate the faceting
 p.wave <- p.wr2 + facet_wrap(~site,
-                            ncol = 4, nrow = 5)
+                            ncol = 4, nrow = 5) +
+    theme(strip.text.x = element_text(size = 25))
+
 p.wave
 
-ggsave(plot = p.wave, filename = "figures/p.wave.pdf")
+ggsave(plot = p.wave, filename = "figures/p.wave.png")
 ```

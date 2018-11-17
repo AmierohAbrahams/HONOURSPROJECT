@@ -1,0 +1,477 @@
+---
+title: "Quantifying the impact of wind and wave action on seawater temperature along the South African coastline (Appendices)"
+author: 
+- affiliation: University of the Western Cape
+  name: Amieroh Abrahams
+date: "17 November 2018"
+output:
+  pdf_document:
+    fig_caption: yes
+    fig_height: 6.5
+    fig_width: 6.5
+    highlight: default
+    keep_tex: yes
+    latex_engine: xelatex
+    template: LaTeX/template-article_ajs.tex
+  html_document:
+    fig_caption: yes
+    fig_height: 7
+    fig_retina: 2
+    fig_width: 7
+    highlight: espresso
+    theme: cerulean
+    toc_float: no
+  md_document:
+    variant: markdown_github
+  word_document:
+    fig_caption: yes
+    fig_height: 7
+    fig_width: 7
+    highlight: zenburn
+    toc: no
+fontsize: 10pt
+geometry: margin=1in
+language: Australian
+papersize: A4
+tables: yes
+---
+
+This file was generated in R using Rmarkdown, with a bit of \LaTeX\ thrown in:
+```{r include = TRUE, results='markup'}
+sessionInfo()
+```
+
+
+\newpage
+
+\section*{\large{Appendix A}}
+
+<!-- \def\tiny{\@setfontsize\tiny{10pt}{11pt}} -->
+\begin{tiny}
+\begin{center}
+\setlength\tabcolsep{4pt}
+\begin{longtable}{|r|r|r|l|p{6cm}|}
+\caption{The 18 sites along the South African coastline, with approximate GPS coordinates and the cluster of which each site was gouped into based on maximum, minimum and mean temperature} \\
+
+% This is the header for the first page of the table...
+\toprule
+Site & SRC & Lon & Lat  \\
+\midrule
+\endfirsthead
+
+% This is the header for the second page of the table...
+\toprule
+Cluster & Lon & Lat & Site  \\
+\midrule
+\endhead
+
+% This is the footer for all pages except the last page of the table...
+\midrule
+\multicolumn{5}{l}{{Continued on Next Page\ldots}} \\
+\endfoot
+
+% This is the footer for the last page of the table...
+\bottomrule
+\endlastfoot
+
+% Now the data...
+
+Hamburg
+Eastern Beach
+Orient Beach
+Stilbaai
+Mossel Bay
+Knysna
+Saldanha Bay
+Bordjies
+Gansbaai
+Port Edward
+T.O. Strand
+Leisure Bay
+Port Nolloth
+Lamberts Bay
+Sea Point
+Kalk Bay
+Muizenberg
+Gordons Bay
+
+\end{longtable}
+\end{center}
+\end{tiny}
+
+\newpage
+
+\section*{\large{Appendix B}}
+
+\subsection*{Spatial analysis background and code}
+
+The intention of this section is to show the approach and **R** scripts used to  pull apart the spatial scales at which seaweed assemblages are structured around the coast of South Africa. Specifically, I wish to determine if these scales match those expressed by the coastal thermal provinces and the ocean regime underpinned by the Agulhas and Benguela Currents.
+
+\subsubsection*{The data}
+The SACTN dataset was the primary source of temperature data used in this study. This dataset consisted of *in situ* collected coastal seawater temperatures for 129 sites along the coast of South Africa, measured daily from 1972 until 2017. From this data 18 sites are selected (Appendix A). This study also make use of AVHRR, MUR, CMC and K10  satellite-derived SST datasets as well as wind and wave action data obtained from the SWAN model. 
+
+\subsubsection*{Setting up the analysis environment}
+This is **R**, so first I need to find, install and load various packages. Some of the packages will be available on CRAN and can be accessed and installed in the usual way, but others will have to be downloaded from [R Forge](https://r-forge.r-project.org/R/?group_id=195).
+
+```{r setup}
+library(tidyverse)
+library(ggpubr)
+library(zoo)
+library(lubridate)
+library(ggrepel)
+library(FNN)
+library(stringr)
+library(circular)
+library(broom)
+library(ggrepel)
+library(purrr)
+library(stlplus)
+source("functions/earthdist.R")
+source("functions/scale.bar.func.R")
+source("functions/wind.rose.R")
+source("functions/waverose.diagram.R")
+source("functions/match_func.R")
+source("functions/seasonal_match.R")
+source("functions/seasonal_match.R")
+source("functions/Load wave function.R")
+source("functions/R_func.R")
+```
+
+Now I start with the data.  The first step involves SACTN temperature dataset. First i compute the cluster analyses grouping sites based on minimum, maximum and mean temperatures. Thereafter I select all the sites with a overlapping time series with at lease 10 years of data and excluding temperatures collected deeper than 5m. This resulted in 18 sites, 3 per cluster.
+
+This thermal data contain various variables, in this study i only make use of some of them.
+
+```{r filtered-sites}
+# Read in the species data
+# Will be provided -- in the data folder as "site_list_sub.RData"
+
+# save(site_list_sub, file = "data/site_list_sub.RData")
+load("data/site_list_sub.RData")
+SACTN_daily_clusters_sub <- SACTN_daily_clusters %>%   #Subsetting the data
+  filter(index %in% site_list_sub$index)
+# save(SACTN_daily_clusters_sub, file = "data/SACTN_daily_clusters_sub.RData") #Saving the data for later use
+```
+
+
+Four bioregions are recognised for South Africa [@Bolton2004], namely the Benguela Marine Province (BMP, the Agulhas Marine Province (AMP) and the East Coast Transition Zone (ECTZ). My plotting functions partition the data into its respective groups and colour code the figures accordingly so I can see the temperature variation that exist between bioregion.
+
+With the temperature data of the 18 sites now loaded in, I am now able to calculate the distance between each of the sites. 
+1. Set up a geographic or Euclidian distance matrix representing the pairwise distances between the $n$ sites ($D=[d_{ij}]$). I already have a function for this and can be found in the folder titled functions.
+
+```{r}
+options(scipen=999) # Forces R to not use exponential notation
+sa_coast_prep <- sa_coast %>% 
+  mutate(site = 1:nrow(.),
+         X = deg2rad(X),
+         Y = deg2rad(Y)) %>% 
+  select(site, X, Y)
+
+sa_coast_dist <- as.data.frame(round(PairsDists(sa_coast_prep), 2)) %>% 
+  mutate(lon = sa_coast$X,
+         lat = sa_coast$Y) %>% 
+  dplyr::rename(dist = V1) %>%
+  select(lon, lat, dist) %>% 
+  mutate(cum_dist = cumsum(dist)) %>% 
+  mutate(dist = lag(dist),
+         cum_dist = lag(cum_dist))
+```
+
+\subsubsection*{Matching sites based on overlapping time series}
+
+Next i create a function to match the sites with each of the clusters. This allows me to compare whether or not a temperature variation exist between sites within the same cluster and to examine reasons for this variation. Here i also consider distance between sites. 
+
+```{r}
+load("data/SACTN_clust_1_match.RData")
+load("data/SACTN_clust_2_match.RData")
+load("data/SACTN_clust_3_match.RData")
+load("data/SACTN_clust_4_match.RData")
+load("data/SACTN_clust_5_match.RData")
+load("data/SACTN_clust_6_match.RData")
+```
+
+I then create a function which allows me to calculate the monthly mean temperature and standard deviation for each year and sites. Consequently we have a data frame with 7 columns and each of the rows representing each month for each of the years. By calculating the mean and SD for each site i am able identify trends in their temperatures and to compare these trends across sites within the same cluster. Mean and SD gives a broad look of the overall temperature for each of the sites. With each group of months representing the season.
+
+```{r}
+load("data/SACTN_clust_1_match.RData")
+load("data/SACTN_clust_2_match.RData")
+load("data/SACTN_clust_3_match.RData")
+load("data/SACTN_clust_4_match.RData")
+load("data/SACTN_clust_5_match.RData")
+load("data/SACTN_clust_6_match.RData")
+```
+
+\subsubsection*{Analyses}
+
+Next i do a three way ANOVA analayses this allows me to compare one variable in two or more groups taking into account the variability of other variables. This analysis of covariance is used to test the main effect of variables on a continuous variable. In this case we specifically analyse the relationship between the average temperature as a function of index pair (Paired sites), year and season. For this i create a function and so i replicate the same test for each of the 6 clusters.
+
+```{r}
+anova_clus_1_func1 <- anova_func(df = SACTN_clust_1_matched)
+summary(anova_clus_1_func1)
+anova_clus_2_func1 <- anova_func(df = SACTN_clust_2_matched)
+summary(anova_clus_2_func1)
+anova_clus_3_func1 <- anova_func(df = SACTN_clust_3_matched)
+summary(anova_clus_3_func1)
+anova_clus_4_func1 <- anova_func(df = SACTN_clust_4_matched)
+summary(anova_clus_4_func1)
+anova_clus_5_func1 <- anova_func(df = SACTN_clust_5_matched)
+summary(anova_clus_5_func1)
+anova_clus_6_func1 <- anova_func(df = SACTN_clust_6_matched)
+summary(anova_clus_6_func1)
+```
+
+Hereafter, I create a box plot also allowing me to observe whether or not a variation exist between sites within the same cluster. Box plots determine the strength of correlation of temperature between sites found within the same clusters along the coast. Similarly, I create a line plot, using the gam function in R. This allows me to assess whether or not an average temperature differences exist between sites on a seasonal basis and to examine the intensity of this variation over the past years. Due to the length of the ouput I have prevented the scrript from returning here. The scipt however may be found in my [GitHub](https://github.com/amierohabrahams/HONOURSPROJECT) repository, and the full code can be run in its entiety.
+
+\section*{\large{Appendix C}}
+\subsubsection*{Wind and wave data}
+
+Since the analysis prove that temperature variation exist between sites within the same cluster, I now continue with the analyses to determine if wind and wave action are the possible causes for this variation. Here i created a function to load in the wind and wave data. This data is presented in single folders for each of the 18 sites and as a result I will not be adding the code here. As mentioned earlier, this code is present in my Github repository.
+
+```{r}
+# source("functions/Load wave function.R") # I load this function in the code above
+load("data/wave_data")
+```
+
+Wave and wind data were modelled at three hour resolutions and at 7 and 15m contours. I now converted the data into daily data points in order to compare them with the temperature data, which is collected daily. The `circular()` function in R software is then used to create circular objects around the wave data in order to calculate the daily wave and wind parameters.
+
+```{r}
+load("data/wave_daily.RData")
+```
+
+Now that I have the daily values for the wind and wave variables, I am able to split the dataset into depths of 7 and 15meters.
+
+```{r}
+sites_complete_7a <- wave_daily %>%
+  filter(depth == "7m")
+
+sites_complete_15a <- wave_daily %>%
+  filter(depth == "15m")
+```
+
+Next I want to show the relationship between temperature and wind and wave action. I create a function matching the wind and wave data with the SACTN temperature data. This allows for further analyses.
+
+```{r}
+SACTN_daily_clusters_sub_1 <- SACTN_daily_clusters_sub %>% 
+  separate(index, into = c("site", "src"), sep = "/", remove = FALSE)
+
+try1 <- function(df) {
+  func1 <- df %>% 
+    left_join(sites_complete_7a, by = c("site", "date")) %>% 
+    na.trim() %>% 
+    group_by(site)
+    return(func1)
+}
+try2 <- function(df) {
+  func2 <- df %>% 
+    left_join(sites_complete_15a, by = c("site", "date")) %>% 
+    na.trim() %>% 
+    group_by(site)
+    return(func2)
+}
+
+SACTN_daily_clusters_7a <- try1(df = SACTN_daily_clusters_sub_1)
+SACTN_daily_clusters_15a <- try2(df = SACTN_daily_clusters_sub_1)
+```
+
+With the wind and wave data now matching the temperature data based on the date and site at which temperature was collected, I am now able to do a regression analyses. Here I create a function which calculates the coefficient of determination (*R*^2^). The coeffcient of determination was calculated to determine how differences in one variable can be explained by a difference in the second variable. 
+
+```{r}
+# source("functions/R_func.R")
+SACTN_7_R2 <- SACTN_daily_clusters_7a %>% 
+ temp_wave_R2_()
+SACTN_15_R2 <- SACTN_daily_clusters_15a %>% 
+  temp_wave_R2_()
+
+load("data/SACTN_7_R2.RData")
+load("data/SACTN_15_R2.RData")
+```
+
+I repeat the above code, allowing me to match the wind and wave data with the satellite collected SST data. Due to the length of script I do not include this here. The scipt however may be found in my [GitHub](https://github.com/amierohabrahams/HONOURSPROJECT) repository, as previously mentioned. I now read in the *R*^2^ value results for each of the satellite datasets.
+
+```{r}
+load("data/AVHRR_temp_7_R2.RData")
+load("data/AVHRR_temp_15_R2.RData")
+load("data/CMC_7_R2.RData")
+load("data/CMC_15_R2.RData")
+load("data/K10_7_R2.RData")
+load("data/K10_15_R2.RData")
+load("data/MUR_7_R2.RData")
+load("data/MUR_15_R2.RData")
+```
+
+The *R*^2^ values indicate that wind and wave action has no significant impact on temperature variation along the South African coastline, my next step is to determine the most predominant wind and wave direction for each of the 18 sites. By doing this i am able to determine whether or not predominant wind and wave direction may have a greater effect on temperature at each of the sites. Here I again make use of the `circular()` function which calculates the circular statistic for wind and wave direction only. I then split these dataset into two seperate datasets comprising of wind and wave data collected at 7 and 15m respectively.
+
+```{r}
+wave_daily_dir <- wave_data %>%
+  mutate(date = as.Date(date)) %>%
+  group_by(site, num, depth, date) %>%
+  summarise(dir_circ = mean.circular(circular(dir, units = "degrees")),
+            dirw_circ = mean.circular(circular(dirw, units = "degrees"))) 
+
+wave_daily <- wave_data %>%
+  mutate(date = as.Date(date)) %>%
+  group_by(site, num, depth, date) %>%
+  summarise_all(funs(mean = mean, sd = sd), na.rm = T) %>%
+  ungroup() %>% 
+  left_join(wave_daily_dir)
+
+sites_complete_7 <- wave_daily %>%
+  filter(depth == "7m")
+
+sites_complete_15 <- wave_daily %>%
+  filter(depth == "15m")
+```
+
+Splitting the waves up into two different dataframes requires me to write a bit more code, but ultimately makes it easier to read. The function s.window controls how rapidly the seasonal component can change. Small values allow more rapid change. Setting the seasonal window to be infinite is equivalent to forcing the seasonal component to be periodic. The stlplus package for R has a plot_seasonal function that can be used to generate a cycle-subseries plot in order to visually calibrate s.window. 
+
+```{r}
+# Create site column from the index column
+SACTN_daily_clusters_sub <- SACTN_daily_clusters_sub %>% 
+  separate(index, into = c("site", "src"), sep = "/", remove = FALSE)
+
+# Combine the temperature and 7 m depth wave data
+SACTN_daily_clusters_7 <- SACTN_daily_clusters_sub %>% 
+  left_join(sites_complete_7, by = c("site", "date")) %>% 
+  na.trim() %>% 
+  group_by(site) %>% 
+  mutate(temp_flat = stlplus(x = temp, n.p = 365, s.window = "periodic")[[1]]$remainder)
+
+# Combine the temperature and 15 m depth wave data
+SACTN_daily_clusters_15 <- SACTN_daily_clusters_sub %>% 
+  left_join(sites_complete_15, by = c("site", "date")) %>% 
+  na.trim() %>% 
+  group_by(site) %>% 
+  mutate(temp_flat = stlplus(x = temp, n.p = 365, s.window = "periodic")[[1]]$remainder)
+```
+
+Due to the rather low R^2 values found above, the follow up is to ascertain what the potential relationship is at each site only during the prevailing wind/wave directions. Here I create a function which selects the most predominant wind and wave direction at each of the sites.
+
+```{r}
+# A function that runs a linear model on each metric of the combined data and get the R^2 value
+temp_wave_predom_R2 <- function(df){
+  # Find predominant wave direction
+  predom_dir <- df %>% 
+    mutate(dir_round = round(dir_mean, -1)) %>%
+    group_by(cluster, site, dir_round) %>% 
+    summarise(dir_mean_n = n()) %>% 
+    na.omit() %>% 
+    filter(dir_mean_n == max(dir_mean_n)) %>% 
+    select(-dir_mean_n)
+  # Find predominant wind direction
+  predom_dirw <- df %>% 
+    mutate(dirw_round = round(dirw_mean, -1)) %>%
+    group_by(cluster, site, dirw_round) %>% 
+    summarise(dirw_mean_n = n()) %>% 
+    na.omit() %>% 
+    filter(dirw_mean_n == max(dirw_mean_n))%>% 
+    select(-dirw_mean_n)
+  
+  # Extract just those values
+  ## waves
+  df_dir <- df %>% 
+    mutate(dir_round = round(dir_mean, -1)) %>% 
+    right_join(predom_dir, by = c("site", "cluster", "dir_round")) %>%
+    select(-dir_round) %>%
+    temp_wave_R2() %>% 
+    right_join(predom_dir, by = c("site", "cluster")) %>% 
+    dplyr::rename(predom = dir_round) %>% 
+    mutate(predom_var = "dir")
+  ## wind
+  df_dirw <- df %>% 
+    mutate(dirw_round = round(dirw_mean, -1)) %>%
+    right_join(predom_dirw, by = c("site", "cluster", "dirw_round")) %>%
+    select(-dirw_round) %>% 
+    temp_wave_R2() %>% 
+    right_join(predom_dirw, by = c("site", "cluster")) %>% 
+    dplyr::rename(predom = dirw_round) %>% 
+    mutate(predom_var = "dirw")
+  
+  # Wrap it up
+  results <- rbind(df_dir, df_dirw)
+  return(results)
+}
+
+SACTN_7_predom_R2 <- SACTN_daily_clusters_7 %>% 
+  temp_wave_predom_R2()
+
+SACTN_15_predom_R2 <- SACTN_daily_clusters_15 %>% 
+  temp_wave_predom_R2()
+
+# save(SACTN_7_predom_R2, file = "data/SACTN_7_predom_R2.RData")
+# save(SACTN_15_predom_R2, file = "data/SACTN_15_predom_R2.RData")
+
+load("data/SACTN_7_predom_R2.RData")
+load("data/SACTN_15_predom_R2.RData")
+```
+
+Now i make a visualisation to reveal the *R*^2^ values obtained when comparing the most prevailing wind and wave direction on temperature. 
+
+```{r}
+renamed_SACTN_7_predom_R2 <- SACTN_7_predom_R2 %>% 
+  dplyr::rename(Variables = variable)
+
+predominant_ww <- ggplot(data = renamed_SACTN_7_predom_R2, aes(x = addline_format(Variables), y = adj.r.squared)) +
+  geom_boxplot(aes(colour = Variables)) +
+  facet_wrap(~site, ncol = 6, nrow = 3) +
+  labs(y = "Coefficient of determination", x = "Average wind and wave variables") +
+  scale_x_discrete(labels = c('dir','dirw','hs', 'spw', 'tp')) +
+  scale_color_manual(labels = c("dir", "dirw", "hs", "spw","tp"), values = c("firebrick2", "slate gray3","deepskyblue","gold1","darkorchid1")) +
+  theme_bw() +
+  theme(strip.text.x = element_text(size = 25)) +
+  theme(axis.text.x = element_text(angle = 20)) +
+      theme(axis.text = element_text(size = 20),
+          axis.title = element_text(size = 25),
+          legend.text = element_text(size = 20),
+          legend.title = element_text(size = 25)) 
+predominant_ww
+```
+
+I now create a wind and wave rose diagram. Wind and wave diagrams help visualise the patterns present at a particular site. Moving outward on the radial scale, the frequency associated with wind and waves coming from a partiular direction increases. Here i create a function to create snooty wind and wave plots. As before the functions are ran in the setup chunk of code at the begining of this document.
+
+```{r}
+# source("functions/wind.rose.R")
+
+# Now for creating the wind rose diagram
+
+wave_daily_renamed <- wave_daily %>% 
+  dplyr::rename(spd = spw_mean) %>%
+  dplyr::rename(dir = dirw_mean) 
+
+p.wr2 <- plot.windrose(data = wave_daily_renamed,
+              spd = "spd",
+              dir = "dir")
+
+p.wr3 <- p.wr2 + facet_wrap(.~ site, ncol = 4, nrow = 5) +
+  theme(strip.text.x = element_text(size = 25))
+p.wr3
+
+# ggsave(plot = p.wr3, filename = "figures/p.wr3.png")
+```
+
+Now for visualising the wave rose diagram
+
+```{r}
+# source("functions/waverose.diagram.R")
+
+# Now for creating the wave rose diagram
+
+wave_daily_renamed <- wave_daily %>% 
+  dplyr::rename(spd = hs_mean) %>%
+  dplyr::rename(dir = dir_mean) 
+
+p.wr2 <- plot.waverose(data = wave_daily_renamed,
+              spd = "spd",
+              dir = "dir") 
+p.wr2
+
+p.wave <- p.wr2 + facet_wrap(~site,
+                            ncol = 6, nrow = 3)
+p.wave
+
+# ggsave(plot = p.wave, filename = "figures/p.wave.pdf")
+```
+
+
+
+
+
+
