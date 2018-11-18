@@ -42,7 +42,7 @@ trial_load <- function(directory){
 
 # Loading the site wave data ----------------------------------------------
 
-sites_complete <- read_csv("data/sites_complete.csv") %>% 
+sites_complete <- read_csv("../data/sites_complete.csv") %>% 
   select(-site_list) %>% 
   rename(site_real = site) %>% 
   gather(key = "depth", value = "site", -site_real, -lon, -lat)
@@ -51,10 +51,10 @@ sites_complete <- read_csv("data/sites_complete.csv") %>%
 
 # Testing with the wave data ----------------------------------------------
 
-FB <- trial_load("data/wave_data/FB")
-TB <- trial_load("data/wave_data/TB")
-HE <- trial_load("data/wave_data/HE")
-SH <- trial_load("data/wave_data/SH")
+FB <- trial_load("../data/wave_data/FB")
+TB <- trial_load("../data/wave_data/TB")
+HE <- trial_load("../data/wave_data/HE")
+SH <- trial_load("../data/wave_data/SH")
 
 # Combining all the wave data collected a the different sites 
 wave_data <- rbind(FB, TB, HE, SH)
