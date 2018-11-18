@@ -34,7 +34,7 @@ geometry: margin=1in
 language: Australian
 papersize: A4
 tables: yes
-bibliography: LaTeX/seaweed-bibliography.bib
+bibliography: LaTeX/appendices.bib
 ---
 
 This file was generated in R using Rmarkdown, with a bit of \LaTeX\ thrown in:
