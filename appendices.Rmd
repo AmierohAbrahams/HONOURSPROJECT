@@ -107,12 +107,25 @@ SACTN_daily_clusters <- SACTN_daily_v4.2 %>%
   filter(index %in% site_list_clusters$index)
 ```
 
+With the sites now split into six clusters, the next step is to reduce the number of sites per cluster down to a manageable, but still representative, sub-sample of the whole. This is done primarily for two reasons. The first, simply, is to allow for the comparisons to be more readily interpretable by humans. The second more objective reason is to allow for an equal amount of sampling per cluster. The East coast is much more heavily sampled than the rest and so this imbalance must be addressed. The criteria that must be considered for the sub-samples are that both instrument types (UTR and thermometer) are present, and as many sources are included as are possible. This thermal data contain various variables, in this study i only make use of some of them. This resulted in 18 sites, 3 per cluster. My plotting functions partition the data into its respective groups and colour code the figures accordingly.
+
+```{r filtered-sites}
+# Read in the species data
+# Will be provided -- in the data folder as "site_list_sub.RData"
+
+# save(site_list_sub, file = "data/site_list_sub.RData")
+load("data/site_list_sub.RData")
+SACTN_daily_clusters_sub <- SACTN_daily_clusters %>%   #Subsetting the data
+  filter(index %in% site_list_sub$index)
+# save(SACTN_daily_clusters_sub, file = "data/SACTN_daily_clusters_sub.RData") #Saving the data for later use
+```
+
 <!-- \def\tiny{\@setfontsize\tiny{10pt}{11pt}} -->
 \begin{tiny}
 \begin{center}
 \setlength\tabcolsep{4pt}
 \begin{longtable}{|r|r|r|l|p{6cm}|}
-\caption{The 18 sites along the South African coastline, with approximate GPS coordinates and the cluster of which each site was gouped into based on maximum, minimum and mean temperature} \\
+\caption{The 18 sites along the South African coastline, with approximate GPS coordinates, source and the cluster of which each site belong to based on maximum, minimum and mean temperature} \\
 
 % This is the header for the first page of the table...
 \toprule
@@ -160,23 +173,7 @@ Cluster & Site & SRC & Lon & Lat  \\
 \end{center}
 \end{tiny}
 
-With the sites now split into six clusters, the next step is to reduce the number of sites per cluster down to a manageable, but still representative, sub-sample of the whole. This is done primarily for two reasons. The first, simply, is to allow for the comparisons to be more readily interpretable by humans. The second more objective reason is to allow for an equal amount of sampling per cluster. The East coast is much more heavily sampled than the rest and so this imbalance must be addressed. The criteria that must be considered for the sub-samples are that both instrument types (UTR and thermometer) are present, and as many sources are included as are possible. This thermal data contain various variables, in this study i only make use of some of them. This resulted in 18 sites, 3 per cluster.
-
-```{r filtered-sites}
-# Read in the species data
-# Will be provided -- in the data folder as "site_list_sub.RData"
-
-# save(site_list_sub, file = "data/site_list_sub.RData")
-load("data/site_list_sub.RData")
-SACTN_daily_clusters_sub <- SACTN_daily_clusters %>%   #Subsetting the data
-  filter(index %in% site_list_sub$index)
-# save(SACTN_daily_clusters_sub, file = "data/SACTN_daily_clusters_sub.RData") #Saving the data for later use
-```
-
-My plotting functions partition the data into its respective groups and colour code the figures accordingly.
-
-With the temperature data now loaded in, I am now able to calculate the distance between each of the sites. 
-1. Set up a geographic or Euclidian distance matrix representing the pairwise distances between the $n$ sites ($D=[d_{ij}]$). I already have a function for this and can be found in the folder titled functions.
+With the temperature data now loaded in, I am now able to calculate the distance between each of the sites. Here I set up a geographic or Euclidian distance matrix representing the pairwise distances between the $n$ sites ($D=[d_{ij}]$). I already have a function for this and can be found in the folder titled functions.
 
 ```{r}
 options(scipen=999) # Forces R to not use exponential notation
@@ -198,7 +195,7 @@ sa_coast_dist <- as.data.frame(round(PairsDists(sa_coast_prep), 2)) %>%
 
 \subsubsection*{Matching sites based on overlapping time series}
 
-Next i create a function to match the sites with each of the clusters. This allows me to compare whether or not a temperature variation exist between sites within the same cluster and to examine reasons for this variation. Here i also consider distance between sites. 
+Next I create a function to match the sites with each of the clusters. This allows me to compare whether or not a temperature variation exist between sites within the same cluster and to examine reasons for this variation. Here i also consider distance between sites. 
 
 ```{r}
 load("data/SACTN_clust_1_match.RData")
@@ -222,7 +219,7 @@ load("data/SACTN_clust_6_match.RData")
 
 \subsubsection*{Analyses}
 
-Next i do a three way ANOVA analayses this allows me to compare one variable in two or more groups taking into account the variability of other variables. This analysis of covariance is used to test the main effect of variables on a continuous variable. In this case we specifically analyse the relationship between the average temperature as a function of index pair (Paired sites), year and season. For this i create a function and so i replicate the same test for each of the 6 clusters.
+Here I do a three way ANOVA analayses. This allows me to compare one variable in two or more groups taking into account the variability of other variables. This analysis of covariance is used to test the main effect of variables on a continuous variable. In this case we specifically analyse the relationship between the average temperature as a function of index pair (Paired sites), year and season. For this I create a function and so I replicate the same test for each of the 6 clusters.
 
 ```{r}
 anova_clus_1_func1 <- anova_func(df = SACTN_clust_1_matched)
