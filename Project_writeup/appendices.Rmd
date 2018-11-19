@@ -128,7 +128,9 @@ With the sites now split into eight clusters, the next step is to reduce the num
 load("../data/site_list_sub.RData")
 SACTN_daily_clusters_sub <- SACTN_daily_clusters %>%   #Subsetting the data
   filter(index %in% site_list_sub$index)
-# save(SACTN_daily_clusters_sub, file = "data/SACTN_daily_clusters_sub.RData") #Saving the data for later use
+# Saving the data for later use
+# save(SACTN_daily_clusters_sub,
+#      file = "data/SACTN_daily_clusters_sub.RData") 
 ```
 
 <!-- \def\tiny{\@setfontsize\tiny{10pt}{11pt}} -->
@@ -308,8 +310,8 @@ With the wind and wave data now matching the temperature data based on the date 
 load("../data/SACTN_7_R2.RData")
 load("../data/SACTN_15_R2.RData")
 
-SACTN_7_R2 <- SACTN_daily_clusters_7a %>% 
- temp_wave_R2_()
+SACTN_7_R2 <- SACTN_daily_clusters_7a %>%
+  temp_wave_R2_()
 SACTN_15_R2 <- SACTN_daily_clusters_15a %>% 
   temp_wave_R2_()
 ```
@@ -449,9 +451,11 @@ renamed_SACTN_7_predom_R2 <- SACTN_7_predom_R2 %>%
 predominant_ww <- ggplot(data = renamed_SACTN_7_predom_R2, aes(x = addline_format(Variables), y = adj.r.squared)) +
   geom_boxplot(aes(colour = Variables)) +
   facet_wrap(~site, ncol = 6, nrow = 3) +
-  labs(y = "Coefficient of determination", x = "Average wind and wave variables") +
+  labs(y = "Coefficient of determination",
+       x = "Average wind and wave variables") +
   scale_x_discrete(labels = c('dir','dirw','hs', 'spw', 'tp')) +
-  scale_color_manual(labels = c("dir", "dirw", "hs", "spw","tp"), values = c("firebrick2", "slate gray3","deepskyblue","gold1","darkorchid1")) +
+  scale_color_manual(labels = c("dir", "dirw", "hs", "spw","tp"),
+                     values = c("firebrick2", "slate gray3","deepskyblue","gold1","darkorchid1")) +
   theme_bw() +
   theme(strip.text.x = element_text(size = 25)) +
   theme(axis.text.x = element_text(angle = 20)) +
@@ -508,7 +512,7 @@ p.wave
 ```
 
 
-
+\subsection*{References}
 
 
 

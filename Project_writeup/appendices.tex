@@ -1,4 +1,4 @@
-\documentclass[10pt,A4,]{article}
+\documentclass[10pt,a4,]{article}
 % \RequirePackage[l2tabu, orthodox]{nag}
 \usepackage[a4paper,text={16.5cm,25.2cm},centering,margin=2.6cm]{geometry}
 % \usepackage[left=1.0in,top=1.0in,right=1.0in,bottom=1.0in]{geometry}
@@ -83,53 +83,43 @@
 \usepackage{framed}
 \definecolor{shadecolor}{RGB}{248,248,248}
 \newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
-\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
 \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
 \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
-\newcommand{\ImportTok}[1]{#1}
-\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
 \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
-\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
-\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
-\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
-\newcommand{\BuiltInTok}[1]{#1}
-\newcommand{\ExtensionTok}[1]{#1}
-\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
-\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
-\newcommand{\RegionMarkerTok}[1]{#1}
-\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
 \newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
 \newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
 
 
 \usepackage{longtable,booktabs}
 \setlength\heavyrulewidth{0.1em}
 \setlength\lightrulewidth{0.0625em}
 
-\usepackage{graphicx}
-% We will generate all images so they have a width \maxwidth. This means
-% that they will get their normal width if they fit onto the page, but
-% are scaled down if they would overflow the margins.
-\makeatletter
-\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
-\else\Gin@nat@width\fi}
-\makeatother
-\let\Oldincludegraphics\includegraphics
-\renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=\maxwidth]{#1}}
 
 \title{Quantifying the impact of wind and wave action on seawater temperature
 along the South African coastline (Appendices)  }
@@ -265,23 +255,26 @@ This file was generated in R using Rmarkdown, with a bit of
 \end{Shaded}
 
 \begin{verbatim}
-## R version 3.5.0 (2018-04-23)
+## R version 3.5.1 (2018-07-02)
 ## Platform: x86_64-apple-darwin15.6.0 (64-bit)
 ## Running under: macOS  10.14.1
 ## 
 ## Matrix products: default
-## BLAS: /Library/Frameworks/R.framework/Versions/3.5/Resources/lib/libRblas.0.dylib
-## LAPACK: /Library/Frameworks/R.framework/Versions/3.5/Resources/lib/libRlapack.dylib
+## BLAS: /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libBLAS.dylib
+## LAPACK: /System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/libLAPACK.dylib
 ## 
 ## locale:
 ## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
 ## 
 ## attached base packages:
-## [1] stats     grDevices utils     datasets  graphics  methods   base     
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+## [1] RevoUtils_11.0.1
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] compiler_3.5.0  backports_1.1.2 magrittr_1.5    rprojroot_1.3-2
-##  [5] tools_3.5.0     htmltools_0.3.6 yaml_2.2.0      Rcpp_1.0.0     
+##  [1] compiler_3.5.1  backports_1.1.2 magrittr_1.5    rprojroot_1.3-2
+##  [5] tools_3.5.1     htmltools_0.3.6 yaml_2.2.0      Rcpp_1.0.0     
 ##  [9] stringi_1.2.4   rmarkdown_1.10  knitr_1.20      stringr_1.3.1  
 ## [13] digest_0.6.18   evaluate_0.12
 \end{verbatim}
@@ -320,275 +313,25 @@ accessed and installed in the usual way.
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(tidyverse)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## -- Attaching packages ---------------------------------------------------------------------------------------------- tidyverse 1.2.1 --
-\end{verbatim}
-
-\begin{verbatim}
-## v ggplot2 3.1.0     v purrr   0.2.5
-## v tibble  1.4.2     v dplyr   0.7.8
-## v tidyr   0.8.2     v stringr 1.3.1
-## v readr   1.1.1     v forcats 0.3.0
-\end{verbatim}
-
-\begin{verbatim}
-## -- Conflicts ------------------------------------------------------------------------------------------------- tidyverse_conflicts() --
-## x dplyr::filter() masks stats::filter()
-## x dplyr::lag()    masks stats::lag()
-## x dplyr::n()      masks .env::n()
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(ggpubr)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## Loading required package: magrittr
-\end{verbatim}
-
-\begin{verbatim}
-## 
-## Attaching package: 'magrittr'
-\end{verbatim}
-
-\begin{verbatim}
-## The following object is masked from 'package:purrr':
-## 
-##     set_names
-\end{verbatim}
-
-\begin{verbatim}
-## The following object is masked from 'package:tidyr':
-## 
-##     extract
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(zoo)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## 
-## Attaching package: 'zoo'
-\end{verbatim}
-
-\begin{verbatim}
-## The following objects are masked from 'package:base':
-## 
-##     as.Date, as.Date.numeric
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(lubridate)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## 
-## Attaching package: 'lubridate'
-\end{verbatim}
-
-\begin{verbatim}
-## The following object is masked from 'package:base':
-## 
-##     date
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(ggrepel)}
 \KeywordTok{library}\NormalTok{(FNN)}
 \KeywordTok{library}\NormalTok{(stringr)}
 \KeywordTok{library}\NormalTok{(circular)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## 
-## Attaching package: 'circular'
-\end{verbatim}
-
-\begin{verbatim}
-## The following objects are masked from 'package:stats':
-## 
-##     sd, var
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(broom)}
 \KeywordTok{library}\NormalTok{(ggrepel)}
 \KeywordTok{library}\NormalTok{(purrr)}
 \KeywordTok{library}\NormalTok{(stlplus)}
 \KeywordTok{source}\NormalTok{(}\StringTok{"../functions/earthdist.R"}\NormalTok{)}
 \KeywordTok{source}\NormalTok{(}\StringTok{"../functions/scale.bar.func.R"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## 
-## Attaching package: 'maps'
-\end{verbatim}
-
-\begin{verbatim}
-## The following object is masked from 'package:purrr':
-## 
-##     map
-\end{verbatim}
-
-\begin{verbatim}
-## Loading required package: sp
-\end{verbatim}
-
-\begin{verbatim}
-## Checking rgeos availability: TRUE
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \KeywordTok{source}\NormalTok{(}\StringTok{"../functions/wind.rose.R"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## Loading required package: RColorBrewer
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \KeywordTok{source}\NormalTok{(}\StringTok{"../functions/waverose.diagram.R"}\NormalTok{)}
 \KeywordTok{source}\NormalTok{(}\StringTok{"../functions/match_func.R"}\NormalTok{)}
 \KeywordTok{source}\NormalTok{(}\StringTok{"../functions/seasonal_match.R"}\NormalTok{)}
 \KeywordTok{source}\NormalTok{(}\StringTok{"../functions/anova_func.R"}\NormalTok{)}
 \KeywordTok{source}\NormalTok{(}\StringTok{"../functions/Load_wave_function.R"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## Parsed with column specification:
-## cols(
-##   site = col_character(),
-##   lon = col_double(),
-##   lat = col_double(),
-##   site_list = col_character(),
-##   wave_7 = col_character(),
-##   wave_15 = col_character()
-## )
-\end{verbatim}
-
-\begin{verbatim}
-## 
-  |                                                                       
-  |                                                                 |   0%
-  |                                                                       
-  |===                                                              |   5%
-  |                                                                       
-  |======                                                           |  10%
-  |                                                                       
-  |=========                                                        |  14%
-  |                                                                       
-  |============                                                     |  19%
-  |                                                                       
-  |===============                                                  |  24%
-  |                                                                       
-  |===================                                              |  29%
-  |                                                                       
-  |======================                                           |  33%
-  |                                                                       
-  |=========================                                        |  38%
-  |                                                                       
-  |============================                                     |  43%
-  |                                                                       
-  |===============================                                  |  48%
-  |                                                                       
-  |==================================                               |  52%
-  |                                                                       
-  |=====================================                            |  57%
-  |                                                                       
-  |========================================                         |  62%
-  |                                                                       
-  |===========================================                      |  67%
-  |                                                                       
-  |==============================================                   |  71%
-  |                                                                       
-  |==================================================               |  76%
-  |                                                                       
-  |=====================================================            |  81%
-  |                                                                       
-  |========================================================         |  86%
-  |                                                                       
-  |===========================================================      |  90%
-  |                                                                       
-  |==============================================================   |  95%
-  |                                                                       
-  |=================================================================| 100%
-## 
-  |                                                                       
-  |                                                                 |   0%
-  |                                                                       
-  |====                                                             |   6%
-  |                                                                       
-  |========                                                         |  12%
-  |                                                                       
-  |===========                                                      |  18%
-  |                                                                       
-  |===============                                                  |  24%
-  |                                                                       
-  |===================                                              |  29%
-  |                                                                       
-  |=======================                                          |  35%
-  |                                                                       
-  |===========================                                      |  41%
-  |                                                                       
-  |===============================                                  |  47%
-  |                                                                       
-  |==================================                               |  53%
-  |                                                                       
-  |======================================                           |  59%
-  |                                                                       
-  |==========================================                       |  65%
-  |                                                                       
-  |==============================================                   |  71%
-  |                                                                       
-  |==================================================               |  76%
-  |                                                                       
-  |======================================================           |  82%
-  |                                                                       
-  |=========================================================        |  88%
-  |                                                                       
-  |=============================================================    |  94%
-  |                                                                       
-  |=================================================================| 100%
-## 
-  |                                                                       
-  |                                                                 |   0%
-  |                                                                       
-  |================================                                 |  50%
-  |                                                                       
-  |=================================================================| 100%
-## 
-  |                                                                       
-  |                                                                 |   0%
-  |                                                                       
-  |================================                                 |  50%
-  |                                                                       
-  |=================================================================| 100%
-\end{verbatim}
-
-\begin{verbatim}
-## Joining, by = "site"
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \KeywordTok{source}\NormalTok{(}\StringTok{"../functions/R_func.R"}\NormalTok{)}
 \KeywordTok{source}\NormalTok{(}\StringTok{"../functions/temp_r2.R"}\NormalTok{)}
 \KeywordTok{source}\NormalTok{(}\StringTok{"../functions/temp_wave_r2.R"}\NormalTok{)}
@@ -605,21 +348,21 @@ representing the South African coastline, such as the mean, minimum and
 maximum temperatures. These values vary among coastal sections due to
 the influence of the cold Benguala and warm Agulhas currents. At the
 broad scale, this region exhibits a large variation in seawater
-temperatures along its coastline (Mead et al. 2013; Smit et al. 2013)
+temperatures along its coastline (Mead et al., 2013; Smit et al., 2013)
 and is divided into four bioregions, each with contrasting temperatures.
 These bioregions are the Benguela Marrine Province (BMP),
 Benguela-Agulhas Transition Zone (B-ATZ), the Agulhas Marine Province
-(AMP) and the East Coast Transition Zone (ECTZ) (Smit, Bolton, and
-Anderson 2017). The Benguela Marine Province (BMP) is located to the
-west of Cape Point and is characterized by the movement of cold water
-from the Southern Ocean moving north. The cold temperate west coast
-mentioned above is greatly affected by the upwelling caused by offshore
-winds, generated by the cold Benguela current. Thus the seawater
-temperatures found around South Africa's coastline exhibits a large
-variational range. My plotting functions partition the data into the
-clusters and colour code each point accordingly so that I am able to see
-patterns that exist and distictly group the different sites with similar
-temperatures along the three distinct coasts.
+(AMP) and the East Coast Transition Zone (ECTZ) (Smit et al., 2017). The
+Benguela Marine Province (BMP) is located to the west of Cape Point and
+is characterized by the movement of cold water from the Southern Ocean
+moving north. The cold temperate west coast mentioned above is greatly
+affected by the upwelling caused by offshore winds, generated by the
+cold Benguela current. Thus the seawater temperatures found around South
+Africa's coastline exhibits a large variational range. My plotting
+functions partition the data into the clusters and colour code each
+point accordingly so that I am able to see patterns that exist and
+distictly group the different sites with similar temperatures along the
+three distinct coasts.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -647,7 +390,7 @@ deeper than 5m.
 \NormalTok{site_list_clusters <-}\StringTok{ }\NormalTok{site_list }\OperatorTok{%>%}\StringTok{ }
 \StringTok{  }\KeywordTok{filter}\NormalTok{(length }\OperatorTok{>=}\StringTok{ }\DecValTok{3650}\NormalTok{, depth }\OperatorTok{<=}\StringTok{ }\DecValTok{5}\NormalTok{)}
 
-\NormalTok{SACTN_daily_clusters <-}\StringTok{ }\NormalTok{SACTN_daily_v4.}\DecValTok{2} \OperatorTok{%>%}\StringTok{ }
+\NormalTok{SACTN_daily_clusters <-}\StringTok{ }\NormalTok{SACTN_daily_v4}\FloatTok{.2} \OperatorTok{%>%}\StringTok{ }
 \StringTok{  }\KeywordTok{left_join}\NormalTok{(site_list[,}\KeywordTok{c}\NormalTok{(}\DecValTok{4}\NormalTok{, }\DecValTok{13}\NormalTok{, }\DecValTok{21}\NormalTok{)], }\DataTypeTok{by =} \StringTok{"index"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
 \StringTok{  }\KeywordTok{filter}\NormalTok{(index }\OperatorTok{%in%}\StringTok{ }\NormalTok{site_list_clusters}\OperatorTok{$}\NormalTok{index)}
 \end{Highlighting}
@@ -677,13 +420,15 @@ accordingly.
 \KeywordTok{load}\NormalTok{(}\StringTok{"../data/site_list_sub.RData"}\NormalTok{)}
 \NormalTok{SACTN_daily_clusters_sub <-}\StringTok{ }\NormalTok{SACTN_daily_clusters }\OperatorTok{%>%}\StringTok{   }\CommentTok{#Subsetting the data}
 \StringTok{  }\KeywordTok{filter}\NormalTok{(index }\OperatorTok{%in%}\StringTok{ }\NormalTok{site_list_sub}\OperatorTok{$}\NormalTok{index)}
-\CommentTok{# save(SACTN_daily_clusters_sub, file = "data/SACTN_daily_clusters_sub.RData") #Saving the data for later use}
+\CommentTok{# Saving the data for later use}
+\CommentTok{# save(SACTN_daily_clusters_sub,}
+\CommentTok{#      file = "data/SACTN_daily_clusters_sub.RData") }
 \end{Highlighting}
 \end{Shaded}
 
 \begin{tiny}
 \begin{center}
-\setlength\tabcolsep{4pt}
+\setlength\tabcolsep{3pt}
 \begin{longtable}{|r|r|r|l|p{6cm}|}
 \caption{The 18 sites along the South African coastline, with approximate GPS coordinates, source and the cluster of which each site belong to based on maximum, minimum and mean temperature} \\
 
@@ -811,160 +556,20 @@ clusters.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{anova_clus_1_func1 <-}\StringTok{ }\KeywordTok{anova_func}\NormalTok{(}\DataTypeTok{df =}\NormalTok{ SACTN_clust_1_matched)}
-\KeywordTok{summary}\NormalTok{(anova_clus_1_func1)}
+\NormalTok{anova_clus_}\DecValTok{1}\NormalTok{_func1 <-}\StringTok{ }\KeywordTok{anova_func}\NormalTok{(}\DataTypeTok{df =}\NormalTok{ SACTN_clust_}\DecValTok{1}\NormalTok{_matched)}
+\KeywordTok{summary}\NormalTok{(anova_clus_}\DecValTok{1}\NormalTok{_func1)}
+\NormalTok{anova_clus_}\DecValTok{2}\NormalTok{_func1 <-}\StringTok{ }\KeywordTok{anova_func}\NormalTok{(}\DataTypeTok{df =}\NormalTok{ SACTN_clust_}\DecValTok{2}\NormalTok{_matched)}
+\KeywordTok{summary}\NormalTok{(anova_clus_}\DecValTok{2}\NormalTok{_func1)}
+\NormalTok{anova_clus_}\DecValTok{3}\NormalTok{_func1 <-}\StringTok{ }\KeywordTok{anova_func}\NormalTok{(}\DataTypeTok{df =}\NormalTok{ SACTN_clust_}\DecValTok{3}\NormalTok{_matched)}
+\KeywordTok{summary}\NormalTok{(anova_clus_}\DecValTok{3}\NormalTok{_func1)}
+\NormalTok{anova_clus_}\DecValTok{4}\NormalTok{_func1 <-}\StringTok{ }\KeywordTok{anova_func}\NormalTok{(}\DataTypeTok{df =}\NormalTok{ SACTN_clust_}\DecValTok{4}\NormalTok{_matched)}
+\KeywordTok{summary}\NormalTok{(anova_clus_}\DecValTok{4}\NormalTok{_func1)}
+\NormalTok{anova_clus_}\DecValTok{5}\NormalTok{_func1 <-}\StringTok{ }\KeywordTok{anova_func}\NormalTok{(}\DataTypeTok{df =}\NormalTok{ SACTN_clust_}\DecValTok{5}\NormalTok{_matched)}
+\KeywordTok{summary}\NormalTok{(anova_clus_}\DecValTok{5}\NormalTok{_func1)}
+\NormalTok{anova_clus_}\DecValTok{6}\NormalTok{_func1 <-}\StringTok{ }\KeywordTok{anova_func}\NormalTok{(}\DataTypeTok{df =}\NormalTok{ SACTN_clust_}\DecValTok{6}\NormalTok{_matched)}
+\KeywordTok{summary}\NormalTok{(anova_clus_}\DecValTok{6}\NormalTok{_func1)}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{verbatim}
-##                         Df Sum Sq Mean Sq F value     Pr(>F)    
-## index_pair               2  15.28   7.642  12.071 0.00000876 ***
-## year                     1   0.07   0.072   0.114    0.73553    
-## season                   3   9.53   3.177   5.019    0.00205 ** 
-## index_pair:year          2   1.75   0.876   1.384    0.25198    
-## index_pair:season        6  13.07   2.179   3.442    0.00261 ** 
-## year:season              3   4.01   1.338   2.113    0.09844 .  
-## index_pair:year:season   6   7.93   1.322   2.088    0.05426 .  
-## Residuals              326 206.39   0.633                       
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 32 observations deleted due to missingness
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{anova_clus_2_func1 <-}\StringTok{ }\KeywordTok{anova_func}\NormalTok{(}\DataTypeTok{df =}\NormalTok{ SACTN_clust_2_matched)}
-\KeywordTok{summary}\NormalTok{(anova_clus_2_func1)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-##                          Df Sum Sq Mean Sq F value               Pr(>F)
-## index_pair                2  418.6  209.29 166.848 < 0.0000000000000002
-## year                      1   41.7   41.66  33.211    0.000000010818789
-## season                    3  144.1   48.04  38.296 < 0.0000000000000002
-## index_pair:year           2   71.4   35.70  28.463    0.000000000000907
-## index_pair:season         6  125.9   20.98  16.722 < 0.0000000000000002
-## year:season               3    7.7    2.57   2.050                0.105
-## index_pair:year:season    6   10.6    1.76   1.403                0.210
-## Residuals              1065 1335.9    1.25                             
-##                           
-## index_pair             ***
-## year                   ***
-## season                 ***
-## index_pair:year        ***
-## index_pair:season      ***
-## year:season               
-## index_pair:year:season    
-## Residuals                 
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 103 observations deleted due to missingness
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{anova_clus_3_func1 <-}\StringTok{ }\KeywordTok{anova_func}\NormalTok{(}\DataTypeTok{df =}\NormalTok{ SACTN_clust_3_matched)}
-\KeywordTok{summary}\NormalTok{(anova_clus_3_func1)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-##                         Df Sum Sq Mean Sq F value               Pr(>F)    
-## index_pair               2    2.9    1.45   1.165               0.3127    
-## year                     1    0.3    0.27   0.218               0.6405    
-## season                   3  598.7  199.58 159.866 < 0.0000000000000002 ***
-## index_pair:year          2   18.8    9.38   7.514               0.0006 ***
-## index_pair:season        6   91.6   15.26  12.223    0.000000000000564 ***
-## year:season              3    3.5    1.18   0.942               0.4201    
-## index_pair:year:season   6   19.7    3.29   2.635               0.0157 *  
-## Residuals              584  729.1    1.25                                 
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 148 observations deleted due to missingness
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{anova_clus_4_func1 <-}\StringTok{ }\KeywordTok{anova_func}\NormalTok{(}\DataTypeTok{df =}\NormalTok{ SACTN_clust_4_matched)}
-\KeywordTok{summary}\NormalTok{(anova_clus_4_func1)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-##                          Df Sum Sq   Mean Sq F value Pr(>F)
-## index_pair                2 0.0028 0.0013828   0.736  0.479
-## year                      1 0.0009 0.0009298   0.495  0.482
-## season                    3 0.0042 0.0014164   0.754  0.520
-## index_pair:year           2 0.0003 0.0001743   0.093  0.911
-## index_pair:season         6 0.0062 0.0010282   0.547  0.772
-## year:season               3 0.0091 0.0030444   1.621  0.183
-## index_pair:year:season    6 0.0047 0.0007898   0.420  0.866
-## Residuals              1208 2.2693 0.0018786               
-## 28 observations deleted due to missingness
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{anova_clus_5_func1 <-}\StringTok{ }\KeywordTok{anova_func}\NormalTok{(}\DataTypeTok{df =}\NormalTok{ SACTN_clust_5_matched)}
-\KeywordTok{summary}\NormalTok{(anova_clus_5_func1)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-##                          Df Sum Sq Mean Sq F value               Pr(>F)
-## index_pair                2  196.7   98.34  77.103 < 0.0000000000000002
-## year                      1  220.4  220.39 172.803 < 0.0000000000000002
-## season                    3  114.5   38.15  29.915 < 0.0000000000000002
-## index_pair:year           2   35.5   17.74  13.913       0.000001028948
-## index_pair:season         6   23.2    3.86   3.029              0.00601
-## year:season               3  135.2   45.06  35.333 < 0.0000000000000002
-## index_pair:year:season    6   71.0   11.83   9.279       0.000000000522
-## Residuals              1515 1932.2    1.28                             
-##                           
-## index_pair             ***
-## year                   ***
-## season                 ***
-## index_pair:year        ***
-## index_pair:season      ** 
-## year:season            ***
-## index_pair:year:season ***
-## Residuals                 
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 49 observations deleted due to missingness
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{anova_clus_6_func1 <-}\StringTok{ }\KeywordTok{anova_func}\NormalTok{(}\DataTypeTok{df =}\NormalTok{ SACTN_clust_6_matched)}
-\KeywordTok{summary}\NormalTok{(anova_clus_6_func1)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-##                          Df Sum Sq Mean Sq F value               Pr(>F)
-## index_pair                2  419.7  209.83 132.044 < 0.0000000000000002
-## year                      1    0.2    0.18   0.115              0.73446
-## season                    3   24.8    8.26   5.196              0.00144
-## index_pair:year           2  347.4  173.70 109.308 < 0.0000000000000002
-## index_pair:season         6  485.8   80.97  50.950 < 0.0000000000000002
-## year:season               3    1.9    0.63   0.397              0.75486
-## index_pair:year:season    6    7.9    1.31   0.826              0.54998
-## Residuals              1223 1943.5    1.59                             
-##                           
-## index_pair             ***
-## year                      
-## season                 ** 
-## index_pair:year        ***
-## index_pair:season      ***
-## year:season               
-## index_pair:year:season    
-## Residuals                 
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 336 observations deleted due to missingness
-\end{verbatim}
 
 Hereafter, I create a box plot also allowing me to observe whether or
 not a variation exist between sites within the same cluster. Box plots
@@ -978,7 +583,8 @@ returning here. The scipt however may be found in my
 \href{https://github.com/amierohabrahams/HONOURSPROJECT}{GitHub}
 repository, and the full code can be run in its entiety.
 
-\section*{\large{Appendix C}}\subsubsection*{Wind and wave data}
+\section*{\large{Appendix C}}
+\subsubsection*{Wind and wave data}
 
 Since the analysis prove that temperature variation exist between sites
 within the same cluster, I now continue with the analyses to determine
@@ -1060,13 +666,13 @@ in one variable can be explained by a difference in the second variable.
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{# source("functions/R_func.R")}
-\NormalTok{SACTN_7_R2 <-}\StringTok{ }\NormalTok{SACTN_daily_clusters_7a }\OperatorTok{%>%}\StringTok{ }
-\StringTok{ }\KeywordTok{temp_wave_R2_}\NormalTok{()}
-\NormalTok{SACTN_15_R2 <-}\StringTok{ }\NormalTok{SACTN_daily_clusters_15a }\OperatorTok{%>%}\StringTok{ }
-\StringTok{  }\KeywordTok{temp_wave_R2_}\NormalTok{()}
-
 \KeywordTok{load}\NormalTok{(}\StringTok{"../data/SACTN_7_R2.RData"}\NormalTok{)}
 \KeywordTok{load}\NormalTok{(}\StringTok{"../data/SACTN_15_R2.RData"}\NormalTok{)}
+
+\NormalTok{SACTN_}\DecValTok{7}\NormalTok{_R2 <-}\StringTok{ }\NormalTok{SACTN_daily_clusters_7a }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{temp_wave_R2_}\NormalTok{()}
+\NormalTok{SACTN_}\DecValTok{15}\NormalTok{_R2 <-}\StringTok{ }\NormalTok{SACTN_daily_clusters_15a }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{temp_wave_R2_}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1116,15 +722,7 @@ and wave data collected at 7 and 15m respectively.
 \StringTok{  }\KeywordTok{summarise_all}\NormalTok{(}\KeywordTok{funs}\NormalTok{(}\DataTypeTok{mean =}\NormalTok{ mean, }\DataTypeTok{sd =}\NormalTok{ sd), }\DataTypeTok{na.rm =}\NormalTok{ T) }\OperatorTok{%>%}
 \StringTok{  }\KeywordTok{ungroup}\NormalTok{() }\OperatorTok{%>%}\StringTok{ }
 \StringTok{  }\KeywordTok{left_join}\NormalTok{(wave_daily_dir)}
-\end{Highlighting}
-\end{Shaded}
 
-\begin{verbatim}
-## Joining, by = c("site", "num", "depth", "date")
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \NormalTok{sites_complete_}\DecValTok{7}\NormalTok{ <-}\StringTok{ }\NormalTok{wave_daily }\OperatorTok{%>%}
 \StringTok{  }\KeywordTok{filter}\NormalTok{(depth }\OperatorTok{==}\StringTok{ "7m"}\NormalTok{)}
 
@@ -1164,8 +762,9 @@ calibrate \texttt{s.window}.
 \end{Highlighting}
 \end{Shaded}
 
+\hypertarget{comparing-waves-and-temperatures}{%
 \subsubsection{Comparing waves and
-temperatures}\label{comparing-waves-and-temperatures}
+temperatures}\label{comparing-waves-and-temperatures}}
 
 With our temperature and wave values paired up we now want to
 investigate what the relationship between these values may be. In order
@@ -1192,7 +791,7 @@ each of the sites.
 \NormalTok{temp_wave_predom_R2 <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(df)\{}
   \CommentTok{# Find predominant wave direction}
 \NormalTok{  predom_dir <-}\StringTok{ }\NormalTok{df }\OperatorTok{%>%}\StringTok{ }
-\StringTok{    }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{dir_round =} \KeywordTok{round}\NormalTok{(dir_mean, }\OperatorTok{-}\DecValTok{1}\NormalTok{)) }\OperatorTok{%>%}
+\StringTok{    }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{dir_round =} \KeywordTok{round}\NormalTok{(dir_mean, }\DecValTok{-1}\NormalTok{)) }\OperatorTok{%>%}
 \StringTok{    }\KeywordTok{group_by}\NormalTok{(cluster, site, dir_round) }\OperatorTok{%>%}\StringTok{ }
 \StringTok{    }\KeywordTok{summarise}\NormalTok{(}\DataTypeTok{dir_mean_n =} \KeywordTok{n}\NormalTok{()) }\OperatorTok{%>%}\StringTok{ }
 \StringTok{    }\KeywordTok{na.omit}\NormalTok{() }\OperatorTok{%>%}\StringTok{ }
@@ -1200,7 +799,7 @@ each of the sites.
 \StringTok{    }\KeywordTok{select}\NormalTok{(}\OperatorTok{-}\NormalTok{dir_mean_n)}
   \CommentTok{# Find predominant wind direction}
 \NormalTok{  predom_dirw <-}\StringTok{ }\NormalTok{df }\OperatorTok{%>%}\StringTok{ }
-\StringTok{    }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{dirw_round =} \KeywordTok{round}\NormalTok{(dirw_mean, }\OperatorTok{-}\DecValTok{1}\NormalTok{)) }\OperatorTok{%>%}
+\StringTok{    }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{dirw_round =} \KeywordTok{round}\NormalTok{(dirw_mean, }\DecValTok{-1}\NormalTok{)) }\OperatorTok{%>%}
 \StringTok{    }\KeywordTok{group_by}\NormalTok{(cluster, site, dirw_round) }\OperatorTok{%>%}\StringTok{ }
 \StringTok{    }\KeywordTok{summarise}\NormalTok{(}\DataTypeTok{dirw_mean_n =} \KeywordTok{n}\NormalTok{()) }\OperatorTok{%>%}\StringTok{ }
 \StringTok{    }\KeywordTok{na.omit}\NormalTok{() }\OperatorTok{%>%}\StringTok{ }
@@ -1208,18 +807,18 @@ each of the sites.
 \StringTok{    }\KeywordTok{select}\NormalTok{(}\OperatorTok{-}\NormalTok{dirw_mean_n)}
   
   \CommentTok{# Extract just those values}
-\NormalTok{  ## waves}
+  \CommentTok{## waves}
 \NormalTok{  df_dir <-}\StringTok{ }\NormalTok{df }\OperatorTok{%>%}\StringTok{ }
-\StringTok{    }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{dir_round =} \KeywordTok{round}\NormalTok{(dir_mean, }\OperatorTok{-}\DecValTok{1}\NormalTok{)) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{    }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{dir_round =} \KeywordTok{round}\NormalTok{(dir_mean, }\DecValTok{-1}\NormalTok{)) }\OperatorTok{%>%}\StringTok{ }
 \StringTok{    }\KeywordTok{right_join}\NormalTok{(predom_dir, }\DataTypeTok{by =} \KeywordTok{c}\NormalTok{(}\StringTok{"site"}\NormalTok{, }\StringTok{"cluster"}\NormalTok{, }\StringTok{"dir_round"}\NormalTok{)) }\OperatorTok{%>%}
 \StringTok{    }\KeywordTok{select}\NormalTok{(}\OperatorTok{-}\NormalTok{dir_round) }\OperatorTok{%>%}
 \StringTok{    }\KeywordTok{temp_wave_R2}\NormalTok{() }\OperatorTok{%>%}\StringTok{ }
 \StringTok{    }\KeywordTok{right_join}\NormalTok{(predom_dir, }\DataTypeTok{by =} \KeywordTok{c}\NormalTok{(}\StringTok{"site"}\NormalTok{, }\StringTok{"cluster"}\NormalTok{)) }\OperatorTok{%>%}\StringTok{ }
 \StringTok{    }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{rename}\NormalTok{(}\DataTypeTok{predom =}\NormalTok{ dir_round) }\OperatorTok{%>%}\StringTok{ }
 \StringTok{    }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{predom_var =} \StringTok{"dir"}\NormalTok{)}
-\NormalTok{  ## wind}
+  \CommentTok{## wind}
 \NormalTok{  df_dirw <-}\StringTok{ }\NormalTok{df }\OperatorTok{%>%}\StringTok{ }
-\StringTok{    }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{dirw_round =} \KeywordTok{round}\NormalTok{(dirw_mean, }\OperatorTok{-}\DecValTok{1}\NormalTok{)) }\OperatorTok{%>%}
+\StringTok{    }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{dirw_round =} \KeywordTok{round}\NormalTok{(dirw_mean, }\DecValTok{-1}\NormalTok{)) }\OperatorTok{%>%}
 \StringTok{    }\KeywordTok{right_join}\NormalTok{(predom_dirw, }\DataTypeTok{by =} \KeywordTok{c}\NormalTok{(}\StringTok{"site"}\NormalTok{, }\StringTok{"cluster"}\NormalTok{, }\StringTok{"dirw_round"}\NormalTok{)) }\OperatorTok{%>%}
 \StringTok{    }\KeywordTok{select}\NormalTok{(}\OperatorTok{-}\NormalTok{dirw_round) }\OperatorTok{%>%}\StringTok{ }
 \StringTok{    }\KeywordTok{temp_wave_R2}\NormalTok{() }\OperatorTok{%>%}\StringTok{ }
@@ -1232,36 +831,12 @@ each of the sites.
   \KeywordTok{return}\NormalTok{(results)}
 \NormalTok{\}}
 
-\NormalTok{SACTN_7_predom_R2 <-}\StringTok{ }\NormalTok{SACTN_daily_clusters_}\DecValTok{7} \OperatorTok{%>%}\StringTok{ }
+\NormalTok{SACTN_}\DecValTok{7}\NormalTok{_predom_R2 <-}\StringTok{ }\NormalTok{SACTN_daily_clusters_}\DecValTok{7} \OperatorTok{%>%}\StringTok{ }
 \StringTok{  }\KeywordTok{temp_wave_predom_R2}\NormalTok{()}
-\end{Highlighting}
-\end{Shaded}
 
-\begin{verbatim}
-## Warning: attributes are not identical across measure variables;
-## they will be dropped
-
-## Warning: attributes are not identical across measure variables;
-## they will be dropped
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{SACTN_15_predom_R2 <-}\StringTok{ }\NormalTok{SACTN_daily_clusters_}\DecValTok{15} \OperatorTok{%>%}\StringTok{ }
+\NormalTok{SACTN_}\DecValTok{15}\NormalTok{_predom_R2 <-}\StringTok{ }\NormalTok{SACTN_daily_clusters_}\DecValTok{15} \OperatorTok{%>%}\StringTok{ }
 \StringTok{  }\KeywordTok{temp_wave_predom_R2}\NormalTok{()}
-\end{Highlighting}
-\end{Shaded}
 
-\begin{verbatim}
-## Warning: attributes are not identical across measure variables;
-## they will be dropped
-
-## Warning: attributes are not identical across measure variables;
-## they will be dropped
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \CommentTok{# save(SACTN_7_predom_R2, file = "data/SACTN_7_predom_R2.RData")}
 \CommentTok{# save(SACTN_15_predom_R2, file = "data/SACTN_15_predom_R2.RData")}
 
@@ -1280,15 +855,17 @@ direction on temperature.
   \KeywordTok{gsub}\NormalTok{(}\StringTok{'-'}\NormalTok{, }\StringTok{'}\CharTok{\textbackslash{}n}\StringTok{'}\NormalTok{, x)}
 \NormalTok{\}}
 
-\NormalTok{renamed_SACTN_7_predom_R2 <-}\StringTok{ }\NormalTok{SACTN_7_predom_R2 }\OperatorTok{%>%}\StringTok{ }
+\NormalTok{renamed_SACTN_}\DecValTok{7}\NormalTok{_predom_R2 <-}\StringTok{ }\NormalTok{SACTN_}\DecValTok{7}\NormalTok{_predom_R2 }\OperatorTok{%>%}\StringTok{ }
 \StringTok{  }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{rename}\NormalTok{(}\DataTypeTok{Variables =}\NormalTok{ variable)}
 
-\NormalTok{predominant_ww <-}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ renamed_SACTN_7_predom_R2, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =} \KeywordTok{addline_format}\NormalTok{(Variables), }\DataTypeTok{y =}\NormalTok{ adj.r.squared)) }\OperatorTok{+}
+\NormalTok{predominant_ww <-}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ renamed_SACTN_}\DecValTok{7}\NormalTok{_predom_R2, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =} \KeywordTok{addline_format}\NormalTok{(Variables), }\DataTypeTok{y =}\NormalTok{ adj.r.squared)) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{geom_boxplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{colour =}\NormalTok{ Variables)) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{facet_wrap}\NormalTok{(}\OperatorTok{~}\NormalTok{site, }\DataTypeTok{ncol =} \DecValTok{6}\NormalTok{, }\DataTypeTok{nrow =} \DecValTok{3}\NormalTok{) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{y =} \StringTok{"Coefficient of determination"}\NormalTok{, }\DataTypeTok{x =} \StringTok{"Average wind and wave variables"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{y =} \StringTok{"Coefficient of determination"}\NormalTok{,}
+       \DataTypeTok{x =} \StringTok{"Average wind and wave variables"}\NormalTok{) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{scale_x_discrete}\NormalTok{(}\DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{'dir'}\NormalTok{,}\StringTok{'dirw'}\NormalTok{,}\StringTok{'hs'}\NormalTok{, }\StringTok{'spw'}\NormalTok{, }\StringTok{'tp'}\NormalTok{)) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{scale_color_manual}\NormalTok{(}\DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"dir"}\NormalTok{, }\StringTok{"dirw"}\NormalTok{, }\StringTok{"hs"}\NormalTok{, }\StringTok{"spw"}\NormalTok{,}\StringTok{"tp"}\NormalTok{), }\DataTypeTok{values =} \KeywordTok{c}\NormalTok{(}\StringTok{"firebrick2"}\NormalTok{, }\StringTok{"slate gray3"}\NormalTok{,}\StringTok{"deepskyblue"}\NormalTok{,}\StringTok{"gold1"}\NormalTok{,}\StringTok{"darkorchid1"}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_color_manual}\NormalTok{(}\DataTypeTok{labels =} \KeywordTok{c}\NormalTok{(}\StringTok{"dir"}\NormalTok{, }\StringTok{"dirw"}\NormalTok{, }\StringTok{"hs"}\NormalTok{, }\StringTok{"spw"}\NormalTok{,}\StringTok{"tp"}\NormalTok{),}
+                     \DataTypeTok{values =} \KeywordTok{c}\NormalTok{(}\StringTok{"firebrick2"}\NormalTok{, }\StringTok{"slate gray3"}\NormalTok{,}\StringTok{"deepskyblue"}\NormalTok{,}\StringTok{"gold1"}\NormalTok{,}\StringTok{"darkorchid1"}\NormalTok{)) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{theme_bw}\NormalTok{() }\OperatorTok{+}
 \StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{strip.text.x =} \KeywordTok{element_text}\NormalTok{(}\DataTypeTok{size =} \DecValTok{25}\NormalTok{)) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{axis.text.x =} \KeywordTok{element_text}\NormalTok{(}\DataTypeTok{angle =} \DecValTok{20}\NormalTok{)) }\OperatorTok{+}
@@ -1299,8 +876,6 @@ direction on temperature.
 \NormalTok{predominant_ww}
 \end{Highlighting}
 \end{Shaded}
-
-\includegraphics{appendices_files/figure-latex/Boxplot representing R2 values-1.pdf}
 
 I now create a wind and wave rose diagram. Wind and wave diagrams help
 visualise the patterns present at a particular site. Moving outward on
@@ -1322,27 +897,11 @@ chunk of code at the begining of this document.
 \NormalTok{p.wr2 <-}\StringTok{ }\KeywordTok{plot.windrose}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ wave_daily_renamed,}
               \DataTypeTok{spd =} \StringTok{"spd"}\NormalTok{,}
               \DataTypeTok{dir =} \StringTok{"dir"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
 
-\begin{verbatim}
-## Hadley broke my code
-\end{verbatim}
-
-\includegraphics{appendices_files/figure-latex/Windrose diagram -1.pdf}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \NormalTok{p.wr3 <-}\StringTok{ }\NormalTok{p.wr2 }\OperatorTok{+}\StringTok{ }\KeywordTok{facet_wrap}\NormalTok{(.}\OperatorTok{~}\StringTok{ }\NormalTok{site, }\DataTypeTok{ncol =} \DecValTok{4}\NormalTok{, }\DataTypeTok{nrow =} \DecValTok{5}\NormalTok{) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{strip.text.x =} \KeywordTok{element_text}\NormalTok{(}\DataTypeTok{size =} \DecValTok{25}\NormalTok{))}
 \NormalTok{p.wr3}
-\end{Highlighting}
-\end{Shaded}
 
-\includegraphics{appendices_files/figure-latex/Windrose diagram -2.pdf}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \CommentTok{# ggsave(plot = p.wr3, filename = "figures/p.wr3.png")}
 \end{Highlighting}
 \end{Shaded}
@@ -1362,61 +921,34 @@ Now for visualising the wave rose diagram
 \NormalTok{p.wr2 <-}\StringTok{ }\KeywordTok{plot.waverose}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ wave_daily_renamed,}
               \DataTypeTok{spd =} \StringTok{"spd"}\NormalTok{,}
               \DataTypeTok{dir =} \StringTok{"dir"}\NormalTok{) }
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## Warning in brewer.pal(min(max(0, n.colors.in.range), min(2, n.colors.in.range)), : minimal value for n is 3, returning requested palette with 3 different levels
-\end{verbatim}
-
-\begin{verbatim}
-## Hadley broke my code
-\end{verbatim}
-
-\includegraphics{appendices_files/figure-latex/Waverose diagram -1.pdf}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \NormalTok{p.wr2}
-\end{Highlighting}
-\end{Shaded}
 
-\includegraphics{appendices_files/figure-latex/Waverose diagram -2.pdf}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \NormalTok{p.wave <-}\StringTok{ }\NormalTok{p.wr2 }\OperatorTok{+}\StringTok{ }\KeywordTok{facet_wrap}\NormalTok{(}\OperatorTok{~}\NormalTok{site,}
                             \DataTypeTok{ncol =} \DecValTok{6}\NormalTok{, }\DataTypeTok{nrow =} \DecValTok{3}\NormalTok{)}
 \NormalTok{p.wave}
-\end{Highlighting}
-\end{Shaded}
 
-\includegraphics{appendices_files/figure-latex/Waverose diagram -3.pdf}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \CommentTok{# ggsave(plot = p.wave, filename = "figures/p.wave.pdf")}
 \end{Highlighting}
 \end{Shaded}
 
+\subsection*{References}
+
 \hypertarget{refs}{}
-\hypertarget{ref-Mead2013}{}
-Mead, A, CL Griffiths, GM Branch, CD McQuaid, LK Blamey, JJ Bolton, RJ
-Anderson, et al. 2013. ``Human-Mediated Drivers of Change---impacts on
-Coastal Ecosystems and Marine Biota of South Africa.'' \emph{African
-Journal of Marine Science} 35 (3). Taylor \& Francis: 403--25.
+\leavevmode\hypertarget{ref-Mead2013}{}%
+Mead, A., Griffiths, C., Branch, G., McQuaid, C., Blamey, L., Bolton,
+J., et al. (2013). Human-mediated drivers of change---impacts on coastal
+ecosystems and marine biota of south africa. \emph{African Journal of
+Marine Science} 35, 403--425.
 
-\hypertarget{ref-Smit2017}{}
-Smit, Albertus J, John J Bolton, and Robert J Anderson. 2017. ``Seaweeds
-in Two Oceans: Beta-Diversity.'' \emph{Frontiers in Marine Science} 4.
-Frontiers: 404.
+\leavevmode\hypertarget{ref-Smit2017}{}%
+Smit, A. J., Bolton, J. J., and Anderson, R. J. (2017). Seaweeds in two
+oceans: Beta-diversity. \emph{Frontiers in Marine Science} 4, 404.
 
-\hypertarget{ref-Smit2013}{}
-Smit, Albertus J, Michael Roberts, Robert J Anderson, Francois Dufois,
-Sheldon FJ Dudley, Thomas G Bornman, Jennifer Olbers, and John J Bolton.
-2013. ``A Coastal Seawater Temperature Dataset for Biogeographical
-Studies: Large Biases Between in Situ and Remotely-Sensed Data Sets
-Around the Coast of South Africa.'' \emph{PLoS One} 8 (12). Public
-Library of Science: e81944.
+\leavevmode\hypertarget{ref-Smit2013}{}%
+Smit, A. J., Roberts, M., Anderson, R. J., Dufois, F., Dudley, S. F.,
+Bornman, T. G., et al. (2013). A coastal seawater temperature dataset
+for biogeographical studies: Large biases between in situ and
+remotely-sensed data sets around the coast of south africa. \emph{PLoS
+One} 8, e81944.
 
 \end{document}
