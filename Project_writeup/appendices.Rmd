@@ -305,13 +305,13 @@ With the wind and wave data now matching the temperature data based on the date 
 
 ```{r}
 # source("functions/R_func.R")
+load("../data/SACTN_7_R2.RData")
+load("../data/SACTN_15_R2.RData")
+
 SACTN_7_R2 <- SACTN_daily_clusters_7a %>% 
  temp_wave_R2_()
 SACTN_15_R2 <- SACTN_daily_clusters_15a %>% 
   temp_wave_R2_()
-
-load("../data/SACTN_7_R2.RData")
-load("../data/SACTN_15_R2.RData")
 ```
 
 I repeat the above code, allowing me to match the wind and wave data with the satellite collected SST data. Due to the length of script I do not include this here. The scipt however may be found in my [GitHub](https://github.com/amierohabrahams/HONOURSPROJECT) repository, as previously mentioned. I now read in the *R*^2^ value results for each of the satellite datasets.
