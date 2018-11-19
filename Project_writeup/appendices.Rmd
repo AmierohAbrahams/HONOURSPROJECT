@@ -1,6 +1,5 @@
 ---
-title: Quantifying the impact of wind and wave action on seawater temperature along
-  the South African coastline (Appendices)
+title: Quantifying the impact of wind and wave action on seawater temperature along the South African coastline (Appendices)
 author:
 - affiliation: University of the Western Cape
   name: Amieroh Abrahams
